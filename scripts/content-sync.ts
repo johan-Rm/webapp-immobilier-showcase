@@ -47,7 +47,12 @@ if (!API_URL || !PROJECT_ID || !SERVICE_EMAIL || !SERVICE_PASSWORD) {
 // Types API
 // ---------------------------------------------------------------------------
 
-type HydraCollection<TItem> = { 'hydra:member'?: TItem[]; member?: TItem[] }
+type HydraCollection<TItem> = {
+  'hydra:member'?: TItem[]
+  member?: TItem[]
+  'hydra:view'?: { 'hydra:next'?: string }
+  view?: { next?: string }
+}
 
 type ApiOffer = {
   price: string
@@ -169,19 +174,33 @@ function authHeaders(token: string) {
 }
 
 async function fetchCollection<TItem>(url: string, token: string): Promise<TItem[]> {
-  const res = await fetch(url, { headers: authHeaders(token) })
-  const raw = await res.text()
-  if (!res.ok) throw new Error(`Fetch failed [${res.status}] ${url}\n${raw.slice(0, 500)}`)
-  let json: HydraCollection<TItem>
-  try {
-    json = JSON.parse(raw) as HydraCollection<TItem>
-  } catch {
-    const contentType = res.headers.get('content-type') ?? 'inconnu'
-    throw new Error(
-      `Réponse non-JSON [${res.status}] ${url}\n  content-type: ${contentType}\n  corps (500 premiers car.): ${raw.slice(0, 500)}`,
-    )
+  const items: TItem[] = []
+  const visited = new Set<string>()
+  let pageUrl: string | undefined = url
+
+  while (pageUrl) {
+    if (new URL(pageUrl).origin !== new URL(url).origin) {
+      throw new Error(`Pagination URL outside API origin: ${pageUrl}`)
+    }
+    if (visited.has(pageUrl)) throw new Error(`Pagination loop: ${pageUrl}`)
+    visited.add(pageUrl)
+    const res = await fetch(pageUrl, { headers: authHeaders(token) })
+    const raw = await res.text()
+    if (!res.ok) throw new Error(`Fetch failed [${res.status}] ${pageUrl}\n${raw.slice(0, 500)}`)
+    let json: HydraCollection<TItem>
+    try {
+      json = JSON.parse(raw) as HydraCollection<TItem>
+    } catch {
+      const contentType = res.headers.get('content-type') ?? 'inconnu'
+      throw new Error(
+        `Réponse non-JSON [${res.status}] ${pageUrl}\n  content-type: ${contentType}\n  corps (500 premiers car.): ${raw.slice(0, 500)}`,
+      )
+    }
+    items.push(...(json['hydra:member'] ?? json.member ?? []))
+    const next = json['hydra:view']?.['hydra:next'] ?? json.view?.next
+    pageUrl = next ? new URL(next, pageUrl).href : undefined
   }
-  return json['hydra:member'] ?? json['member'] ?? []
+  return items
 }
 
 function projectUrl(path: string, locale: string) {
