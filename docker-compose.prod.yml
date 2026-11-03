@@ -63,6 +63,8 @@ services:
       - ${SCHEMAS_PATH:-../../schemas}:/opt/app-schemas
       - ${CONTENT_HOST_DIR:-./content}:/app/content
       - ${MEDIA_HOST_DIR:-./public/images}:/app/.output/public/images
+      # IPX lit les sources dans le dossier public, indépendamment du build.
+      - ${MEDIA_HOST_DIR:-./public/images}:/app/public/images:ro
       # Persistance des demandes de contact (survit à la recréation du conteneur).
       - ${DATA_HOST_DIR:-./.data}:/app/.data
     networks:
