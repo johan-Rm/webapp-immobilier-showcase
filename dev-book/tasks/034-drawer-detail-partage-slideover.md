@@ -6,9 +6,9 @@ dependances: [031]
 # 034 — Drawer de détail partagé (shell USlideover)
 
 **Goal:** Factoriser le « chrome de drawer » dupliqué entre la fiche détail classique
-([app/components/screen/PropertyDetail.vue](../../app/components/screen/PropertyDetail.vue))
+([app/components/screen/PropertyDetail.vue](../../webapp/app/components/screen/PropertyDetail.vue))
 et le parcours immersif
-([app/components/property/ExceptionalInfoPanel.vue](../../app/components/property/ExceptionalInfoPanel.vue))
+([app/components/property/ExceptionalInfoPanel.vue](../../webapp/app/components/property/ExceptionalInfoPanel.vue))
 dans un composant présentationnel unique basé sur `USlideover` (Nuxt UI v4), au lieu de deux
 `<aside>` + `<Teleport>`/`<Transition>` réimplémentés à la main.
 
@@ -25,8 +25,8 @@ incomplètement :
   `Teleport`.
 
 Le projet a déjà un patron répété pour ce besoin
-([CommandPropertySlideover.vue](../../app/components/CommandPropertySlideover.vue),
-[dashboard/PropertyEditorSlideover.vue](../../app/components/dashboard/PropertyEditorSlideover.vue)) :
+([CommandPropertySlideover.vue](../../webapp/app/components/CommandPropertySlideover.vue),
+[dashboard/PropertyEditorSlideover.vue](../../webapp/app/components/dashboard/PropertyEditorSlideover.vue)) :
 `USlideover` + `isMobile` (matchMedia `(max-width: 1023px)`) + `slideoverUi` qui bascule
 largeur/hauteur. `USlideover` apporte nativement Teleport, focus-trap, scroll-lock, ESC,
 `role=dialog`, transitions.

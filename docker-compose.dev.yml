@@ -1,33 +1,33 @@
 services:
   webapp-localhost:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ./webapp
+      dockerfile: ../Dockerfile.dev
     user: '${DOCKER_UID:-1000}:${DOCKER_GID:-1000}'
     working_dir: /app
     init: true
     command: bun run dev -- --host 0.0.0.0 --port 3000
     volumes:
-      - ./app:/app/app
-      - ./server:/app/server
-      - ./shared:/app/shared
-      - ./services:/app/services
-      - ./nuxt.config.ts:/app/nuxt.config.ts
-      - ./schemas:/app/schemas
-      - ./content:/app/content
-      - ./.data:/app/.data
-      - ./public:/app/public
-      - ./scripts:/app/scripts
+      - ./webapp/app:/app/app
+      - ./webapp/server:/app/server
+      - ./webapp/shared:/app/shared
+      - ./webapp/services:/app/services
+      - ./webapp/nuxt.config.ts:/app/nuxt.config.ts
+      - ./webapp/schemas:/app/schemas
+      - ./webapp/content:/app/content
+      - ./webapp/.data:/app/.data
+      - ./webapp/public:/app/public
+      - ./webapp/scripts:/app/scripts
       # Setup reads the existing host config; it must not create a container-only .env.
-      - ./.env:/app/.env:ro
-      - ./dev-book/fixtures:/app/dev-book/fixtures:ro
-      - ${SCHEMAS_PATH:?SCHEMAS_PATH must be set}:/opt/app-schemas
+      - ./webapp/.env:/app/.env:ro
+      - ./webapp/fixtures:/app/fixtures:ro
+      - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
       - '${WEBAPP_DEV_PORT:-3000}:3000'
     env_file:
-      - .env
+      - ./webapp/.env
     environment:
       NODE_ENV: development
       SCHEMAS_PATH: /opt/app-schemas
@@ -43,8 +43,8 @@ services:
     profiles:
       - e2e
     build:
-      context: .
-      dockerfile: Dockerfile.playwright
+      context: ./webapp
+      dockerfile: ../Dockerfile.playwright
     user: '${DOCKER_UID:-1000}:${DOCKER_GID:-1000}'
     working_dir: /app
     init: true
@@ -52,24 +52,24 @@ services:
       webapp-localhost:
         condition: service_healthy
     env_file:
-      - .env
+      - ./webapp/.env
     environment:
       CI: 'true'
       HOME: /tmp
       PLAYWRIGHT_BASE_URL: http://webapp-localhost:3000
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     volumes:
-      - ./.tmp/playwright:/app/.tmp/playwright
+      - ./webapp/.tmp/playwright:/app/.tmp/playwright
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     command: bun run test:e2e
 
   webapp-ssr:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./webapp
+      dockerfile: ../Dockerfile
       additional_contexts:
-        schemas: ${SCHEMAS_PATH:?SCHEMAS_PATH must be set}
+        schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
       args:
         APP_ENV: ${APP_ENV:-dev}
         SITE_URL: ${SITE_URL:-http://webapp.localhost:8080}
@@ -79,7 +79,7 @@ services:
     working_dir: /app
     init: true
     env_file:
-      - .env
+      - ./webapp/.env
     environment:
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
@@ -96,10 +96,10 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
-      - ./.data:/app/.data
-      - ./content:/app/content
-      - ${SCHEMAS_PATH:?SCHEMAS_PATH must be set}:/opt/app-schemas
-      - ${MEDIA_HOST_DIR:-./public/images}:/app/.output/public/images
+      - ./webapp/.data:/app/.data
+      - ./webapp/content:/app/content
+      - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
+      - ${MEDIA_HOST_DIR:-./webapp/public/images}:/app/.output/public/images
     healthcheck:
       test: ['CMD-SHELL', 'wget -q --spider http://127.0.0.1:3000/ || exit 1']
       interval: 5s

@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1.4
+# Contexte de build : webapp/ (défini dans les fichiers Compose).
 # Dockerfile (production-like SSR)
 
 FROM oven/bun:1.4.0-alpine AS build

@@ -6,11 +6,11 @@
 
 **Constat (vérifié) :** `CommandPaletteModal.vue` n'est monté dans aucun layout ni page — il n'est déjà jamais rendu. Son unique déclencheur clavier était `meta+k`. En retirant `meta+k` et `escape`, l'état `isCommandPaletteOpen` et les actions `open/close/toggleCommandPalette` n'ont plus aucun consommateur : c'est du code mort qu'on retire dans le même périmètre puisqu'il ne meurt **qu'à cause** de cette task.
 
-**Refonte de la recherche de biens (`ctrl+s`) :** la modale centrée actuelle (`UModal` + `UCommandPalette`) est remplacée par un **slideover latéral droit** au look du sidebar dashboard ([PropertySidebar.vue](../../app/components/dashboard/PropertySidebar.vue)) : fond `#212121`, liseré olive `#6B7A4A`, champ de recherche, liste `identifier` + titre. Contenu volontairement réduit à **recherche texte + liste** (pas de filtres type/catégorie). Mécanisme : `USlideover` en overlay (côté `right` desktop, `bottom` mobile), fermable Escape / clic extérieur. La navigation vers la fiche du bien est conservée.
+**Refonte de la recherche de biens (`ctrl+s`) :** la modale centrée actuelle (`UModal` + `UCommandPalette`) est remplacée par un **slideover latéral droit** au look du sidebar dashboard ([PropertySidebar.vue](../../webapp/app/components/dashboard/PropertySidebar.vue)) : fond `#212121`, liseré olive `#6B7A4A`, champ de recherche, liste `identifier` + titre. Contenu volontairement réduit à **recherche texte + liste** (pas de filtres type/catégorie). Mécanisme : `USlideover` en overlay (côté `right` desktop, `bottom` mobile), fermable Escape / clic extérieur. La navigation vers la fiche du bien est conservée.
 
 **Comportement attendu hors connexion :** `meta+q` et `ctrl+s` sont **silencieusement inactifs** quand l'utilisateur n'est pas connecté. Le garde est un **no-op** (`return`) : il ne déclenche **aucune navigation** et **n'ouvre jamais la page de connexion**. Le raccourci ne fait simplement rien.
 
-**Architecture:** Tous les raccourcis sont déclarés dans le bloc `defineShortcuts` (client-only) de `_useDashboard` ([app/composables/useDashboard.ts:105-145](../../app/composables/useDashboard.ts#L105-L145)). L'état de connexion est fourni par `useUserSession().loggedIn` (nuxt-auth-utils), déjà utilisé dans [app/middleware/auth.ts](../../app/middleware/auth.ts) et [app/composables/useApp.ts:50](../../app/composables/useApp.ts#L50).
+**Architecture:** Tous les raccourcis sont déclarés dans le bloc `defineShortcuts` (client-only) de `_useDashboard` ([app/composables/useDashboard.ts:105-145](../../webapp/app/composables/useDashboard.ts#L105-L145)). L'état de connexion est fourni par `useUserSession().loggedIn` (nuxt-auth-utils), déjà utilisé dans [app/middleware/auth.ts](../../webapp/app/middleware/auth.ts) et [app/composables/useApp.ts:50](../../webapp/app/composables/useApp.ts#L50).
 
 **Tech Stack:** Nuxt 4, Vue 3 Composition API, Nuxt UI (`defineShortcuts`), nuxt-auth-utils (`useUserSession`), TypeScript strict.
 
@@ -57,7 +57,7 @@
 
 - [ ] **Étape 1 : Ajouter la déclaration**
 
-Dans `_useDashboard`, après `const route = useRoute()` ([ligne 36](../../app/composables/useDashboard.ts#L36)), ajouter :
+Dans `_useDashboard`, après `const route = useRoute()` ([ligne 36](../../webapp/app/composables/useDashboard.ts#L36)), ajouter :
 
 ```typescript
 const { loggedIn } = useUserSession()
@@ -79,7 +79,7 @@ On supprime `meta_k`, `escape` et `ctrl_m`, et on ajoute un garde `if (!loggedIn
 
 - [ ] **Étape 1 : Remplacer le bloc `defineShortcuts`**
 
-Remplacer le contenu actuel ([lignes 106-144](../../app/composables/useDashboard.ts#L106-L144)) par :
+Remplacer le contenu actuel ([lignes 106-144](../../webapp/app/composables/useDashboard.ts#L106-L144)) par :
 
 ```typescript
 defineShortcuts({
@@ -165,8 +165,8 @@ git rm app/components/CommandPaletteModal.vue
 
 `ctrl+s` ouvre aujourd'hui une modale centrée (`UModal` + `UCommandPalette`). On la remplace par un **slideover latéral droit** au look du sidebar dashboard, contenu réduit à **recherche texte + liste**.
 
-Référence de thème et de mécanisme : [PropertyEditorSlideover.vue](../../app/components/dashboard/PropertyEditorSlideover.vue) (USlideover, `side` responsive, `:ui` `bg-[#212121] text-white`, overlay `bg-black/55`).
-Référence de style de liste : [PropertySidebar.vue](../../app/components/dashboard/PropertySidebar.vue) — la liste de résultats doit être **graphiquement identique** : item `identifier` mono + titre tronqué, hover `bg-white/5`, **item actif** `bg-white/10` avec identifiant en olive `#6B7A4A` (inactif en `text-white/35`), piloté par un `activeIndex`.
+Référence de thème et de mécanisme : [PropertyEditorSlideover.vue](../../webapp/app/components/dashboard/PropertyEditorSlideover.vue) (USlideover, `side` responsive, `:ui` `bg-[#212121] text-white`, overlay `bg-black/55`).
+Référence de style de liste : [PropertySidebar.vue](../../webapp/app/components/dashboard/PropertySidebar.vue) — la liste de résultats doit être **graphiquement identique** : item `identifier` mono + titre tronqué, hover `bg-white/5`, **item actif** `bg-white/10` avec identifiant en olive `#6B7A4A` (inactif en `text-white/35`), piloté par un `activeIndex`.
 
 **Polices :** le slideover est monté dans le layout **public**, il n'hérite donc pas des polices du dashboard. On les force explicitement, conformément au thème dashboard : **Rationale** sur le titre (`font-[rationale]`), **Inter** sur les textes (`font-[Inter]` sur le conteneur), `font-mono` sur l'identifiant (comme `PropertySidebar`).
 
@@ -292,7 +292,7 @@ Côté script :
 
 - [ ] **Étape 3 : Mettre à jour le montage dans `default.vue`**
 
-Dans [app/layouts/default.vue:23](../../app/layouts/default.vue#L23), remplacer :
+Dans [app/layouts/default.vue:23](../../webapp/app/layouts/default.vue#L23), remplacer :
 
 ```vue
 <LazyCommandPropertyModal />

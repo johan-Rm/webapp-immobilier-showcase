@@ -5,11 +5,11 @@ services:
     # Tourne avec l'UID/GID hôte : pas de fichiers root créés dans le dépôt monté.
     user: '${DOCKER_UID:-1000}:${DOCKER_GID:-1000}'
     env_file:
-      - ${ENV_FILE:-.env.preprod}
+      - ${ENV_FILE:-webapp/.env.preprod}
     volumes:
-      - ./:/app
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/public/images}:/app/public/images
-      - ${SCHEMAS_PATH:-../../schemas}:/opt/app-schemas
+      - ./webapp:/app
+      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/public/images
+      - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
     environment:
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
@@ -23,10 +23,10 @@ services:
   webapp-ssr:
     restart: unless-stopped
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./webapp
+      dockerfile: ../Dockerfile
       additional_contexts:
-        schemas: ${SCHEMAS_PATH:-../../schemas}
+        schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
       args:
         APP_ENV: ${APP_ENV:-production}
         SITE_URL: ${SITE_URL:?SITE_URL is required — set it in .env.preprod}
@@ -34,7 +34,7 @@ services:
     working_dir: /app
     init: true
     env_file:
-      - ${ENV_FILE:-.env.preprod}
+      - ${ENV_FILE:-webapp/.env.preprod}
     environment:
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
@@ -54,13 +54,13 @@ services:
     expose:
       - '3000'
     volumes:
-      - ${SCHEMAS_PATH:-../../schemas}:/opt/app-schemas
-      - ${CONTENT_HOST_DIR:-./content}:/app/content
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/public/images}:/app/.output/public/images:ro
+      - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
+      - ${CONTENT_HOST_DIR:-./webapp/content}:/app/content
+      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/.output/public/images:ro
       # IPX lit les sources dans le dossier public, indépendamment du build.
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/public/images}:/app/public/images:ro
+      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/public/images:ro
       # Persistance des demandes de contact (survit à la recréation du conteneur).
-      - ${DATA_HOST_DIR:-./.data}:/app/.data
+      - ${DATA_HOST_DIR:-./webapp/.data}:/app/.data
     networks:
       app_stack: {}
       edge_network:

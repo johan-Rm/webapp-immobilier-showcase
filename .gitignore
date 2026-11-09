@@ -34,9 +34,9 @@ nginx/certs/*
 .bun-cache
 
 # Content généré par make content-sync
-content/*/accommodations/
-content/*/metadata/category-code.yaml
-content/*/metadata/media-object.yaml
+webapp/content/*/accommodations/
+webapp/content/*/metadata/category-code.yaml
+webapp/content/*/metadata/media-object.yaml
 
 # Nuxt 4 ref
 nuxt-4-reference
@@ -45,18 +45,18 @@ nuxt-4-reference
 .worktrees/
 
 # Generated/public assets
-public/images/
+webapp/public/images/
 lighthouse-*
-!scripts/lighthouse-*.sh
+!webapp/scripts/lighthouse-*.sh
 firefox.*
 .tmp/playwright/
 
 # Bootstrap state
-scripts/bootstrap-data/.state
+webapp/scripts/bootstrap-data/.state
 
 # Artefacts de build temporaires (maquette HTML)
 .tmp
 
 # Contrats générés ; les sources YAML restent versionnées
-schemas/interfaces/
-schemas/dtos/
+webapp/schemas/interfaces/
+webapp/schemas/dtos/

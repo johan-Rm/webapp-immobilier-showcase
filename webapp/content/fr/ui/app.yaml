@@ -1,0 +1,117 @@
+i18n:
+  sourceLocale: fr
+  enabledLocales:
+    - fr
+    - en
+    - es
+
+components:
+  langSwitcher:
+    navAriaLabel: Changer de langue
+  logo:
+    ariaLabel: Showcase Immobilier
+  navigationMain:
+    closeMenuAriaLabel: Fermer le menu
+    contactDetailsTitle: Coordonnées
+    mainMenuAriaLabel: Menu principal
+    stayConnectedTitle: Restez connecté
+  socialNetwork:
+    closeMenuAriaLabel: Fermer les réseaux sociaux
+    navAriaLabel: Réseaux sociaux
+    openMenuAriaLabel: Ouvrir les réseaux sociaux
+
+footer:
+  accommodationTypes:
+    label: Types de biens
+    menu: accommodationTypes
+  credits: '© 2026 Showcase Immobilier'
+  meta:
+    label: Informations
+    menu: meta
+  services:
+    label: Services
+    menu: services
+  showColorModeToggle: false
+  socialLinks: []
+
+navigation:
+  agency:
+    name: L’agence
+    url: /l-agence
+  apartment:
+    name: Appartement
+    url: /biens/appartement
+  commercial-business:
+    name: Affaire commerciale
+    url: /biens/affaires-commerciales
+  commercial-property:
+    name: Local commercial
+    url: /biens/local-commercial
+  contact:
+    name: Contact
+    url: /contact
+    label: Nous contacter
+  country-house:
+    name: Maison de campagne
+    url: /biens/maison-de-campagne
+  dar:
+    name: Dar
+    url: /biens/dar
+  essaouira-the-jewel:
+    name: Essaouira le joyau authentique
+    url: /essaouira-le-joyau-authentique
+  fees:
+    name: Honoraires
+    url: /honoraires
+  for-sale:
+    description: Sélection de riads et maisons d’exception à acquérir, ancrées entre palmeraies et médinas.
+    imageIdentifier: /demo/coast.svg
+    name: Biens à la Vente
+    url: /properties/bien-a-vendre
+  golf-villa:
+    name: Villa golf
+    url: /biens/villa-golf
+  guest-house:
+    name: Maison d'hôtes
+    url: /biens/maisons-dhotes
+  guest-room:
+    name: Chambre d'hôtes
+    url: /biens/chambre-dhotes
+  home-staging:
+    name: Home Staging
+    url: /home-staging
+  investing:
+    name: Investir
+    url: /investir
+    label: Plus d'infos
+  partnerships:
+    name: Partenariats
+    url: /partnerships
+  land:
+    name: Terrain
+    url: /biens/terrain
+  lease-management:
+    name: Location gérance
+    url: /biens/location-gerance
+  legal-notice:
+    name: Mentions légales
+    url: /mentions-legales
+  long-term-rental:
+    description: Offre dédiée aux hôteliers, marques et événements à la recherche d’écrins sensoriels.
+    imageIdentifier: /demo/coast.svg
+    name: Locations longue durée
+    url: /properties/location-longue-duree
+  rental-management:
+    name: Gestion locative
+    url: /gestion-locative
+  riad:
+    name: Riad
+    url: /biens/riad
+  seasonal-rental:
+    description: Villas, patios et kasbahs disponibles en séjour, pensées pour des expériences lumineuses.
+    imageIdentifier: /demo/coast.svg
+    name: Locations saisonnière
+    url: /properties/location-saisonniere
+  town-house:
+    name: Maison de ville
+    url: /biens/maison-de-ville

@@ -6,7 +6,7 @@ Cette documentation complete les README locaux et centralise les conventions tra
 
 ## Ordre de lecture
 
-1. [Architecture](./2.architecture/index.md)
+1. [Architecture](2.architecture/index.md)
 2. la section thematique concernee
 3. le `README.md` local du dossier concerne
 

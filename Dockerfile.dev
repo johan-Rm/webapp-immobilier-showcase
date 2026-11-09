@@ -1,3 +1,4 @@
+# Contexte de build : webapp/ (défini dans les fichiers Compose).
 FROM oven/bun:1.4.0-alpine
 
 RUN apk add --no-cache bash git curl python3 make g++ nodejs

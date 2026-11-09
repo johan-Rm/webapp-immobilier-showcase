@@ -2,7 +2,7 @@
 
 - Role: definir le lien entre les conventions locales, la documentation detaillee, les
   regles YAML et les scripts de verification CI.
-- Related: [../../app/README.md](../../app/README.md), [../2.architecture/index.md](../2.architecture/index.md)
+- Related: [../../app/README.md](../../webapp/app/README.md), [../2.architecture/index.md](../2.architecture/index.md)
 
 ## Intent
 
