@@ -137,3 +137,7 @@ conventions retrouvent les écarts préexistants documentés ci-dessus.
 Intégration locale demandée dans develop, par avance rapide depuis la branche
 chore/regrouper-webapp. Aucun fetch/push, PR ou déploiement n’est demandé.
 L’exception temporaire d’installation dans AGENTS est levée avec cette validation.
+
+Commit d’implémentation : `55c384120e161cf5a0f1fec43227ac9bb24a158c`.
+Le contrôle de contribution sur la plage depuis la base déclarée est conforme :
+un commit, déclaration complète et amorçage par le SHA du contenu validé.
