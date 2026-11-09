@@ -3,6 +3,12 @@
 Fichier de gouvernance local Codex. Complète le socle global `~/.agents/AGENTS.md` sans le
 répéter. Les profils, principes d'ingénierie et mode d'exécution sont dans le global.
 
+## Organisation du dépôt
+
+La racine applicative Nuxt est `webapp/`. Les chemins des couches ci-dessous
+sont relatifs à `webapp/`. Exécuter les commandes Bun depuis ce dossier.
+La documentation `docs/`, le suivi `dev-book/` et Docker/Make restent à la racine.
+
 ## Mission produit
 
 Webapp immobilière éditoriale pour Essaouira et sa région. Interface calme, crédible,

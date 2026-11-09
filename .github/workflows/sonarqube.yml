@@ -9,6 +9,9 @@ on:
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
     steps:
       - uses: actions/checkout@v4
         with:

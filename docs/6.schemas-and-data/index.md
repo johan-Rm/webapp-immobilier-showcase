@@ -6,5 +6,5 @@ Cette section couvre la source de verite des schemas, la generation d interfaces
 
 Lectures prioritaires :
 
-1. [Schema Source](./1.schema-source.md)
-2. [Interface Generation](./2.interface-generation.md)
+1. [Schema Source](1.schema-source.md)
+2. [Interface Generation](2.interface-generation.md)

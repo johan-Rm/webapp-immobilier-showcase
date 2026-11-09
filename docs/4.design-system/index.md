@@ -8,9 +8,9 @@ Cette section couvre la configuration Tailwind, le système de tokens, les palet
 
 | Document                                              | Contenu                                                                 |
 | ----------------------------------------------------- | ----------------------------------------------------------------------- |
-| [1. Tailwind et tokens](./1.tailwind-et-tokens.md)    | Config Tailwind, pattern token-based RGB, tokens sémantiques, entry CSS |
-| [2. Thèmes et palettes](./2.themes-et-palettes.md)    | Source `themes.yaml`, palettes, les 3 thèmes, pipeline YAML → CSS       |
-| [3. Color mode et useDesignSystem](./3.color-mode.md) | Composable principal, flux de changement de thème, mode cinéma          |
+| [1. Tailwind et tokens](1.tailwind-et-tokens.md)    | Config Tailwind, pattern token-based RGB, tokens sémantiques, entry CSS |
+| [2. Thèmes et palettes](2.themes-et-palettes.md)    | Source `themes.yaml`, palettes, les 3 thèmes, pipeline YAML → CSS       |
+| [3. Color mode et useDesignSystem](3.color-mode.md) | Composable principal, flux de changement de thème, mode cinéma          |
 
 ## Principes fondamentaux
 

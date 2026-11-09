@@ -1,7 +1,7 @@
 # BFF Dashboard Symfony
 
 - Role: documenter l'integration BFF entre le dashboard et l'API Symfony (routes, modele d'ecriture, projection de lecture).
-- Related: [../../server/README.md](../../server/README.md), [../2.architecture/2.data-flow.md](../2.architecture/2.data-flow.md)
+- Related: [../../server/README.md](../../webapp/server/README.md), [../2.architecture/2.data-flow.md](../2.architecture/2.data-flow.md)
 
 ## Intent
 

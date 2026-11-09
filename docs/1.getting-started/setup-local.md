@@ -1,5 +1,8 @@
 # Setup local de Showcase Immobilier
 
+Le code Nuxt et ses données locales sont regroupés dans `webapp/`.
+Les commandes Docker et Make ci-dessous se lancent depuis la racine du dépôt.
+
 ## Repartir de zéro avec Docker Compose
 
 Procédure locale vérifiée dans les Makefiles le 4 octobre 2026. Docker Compose
@@ -15,11 +18,11 @@ les fichiers `.env` et les sources du projet sont conservés.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-docker compose -f docker-compose.dev.yml --profile e2e down -v --remove-orphans
+docker compose --env-file webapp/.env -f docker-compose.dev.yml --profile e2e down -v --remove-orphans
 
 # Caches uniquement : ne pas supprimer public/images ni originals
-rm -rf .nuxt .output .data
-mkdir -p .data
+rm -rf webapp/.nuxt webapp/.output webapp/.data
+mkdir -p webapp/.data
 ```
 
 Le frontend n’utilise pas de volume nommé pour ses données : `.data` est un dossier
@@ -52,17 +55,17 @@ restent à préparer.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-test -f .env || cp .env.example .env
+test -f webapp/.env || cp webapp/.env.example webapp/.env
 
 make dev-build-localhost-no-cache
 
-docker compose -f docker-compose.dev.yml run --rm --no-deps \
+docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps \
   webapp-localhost bun run setup:local
 
 make dev-webapp-localhost
 ```
 
-Le `.env` existant est conservé et monté en lecture seule dans le conteneur de
+Le `webapp/.env` existant est conservé et monté en lecture seule dans le conteneur de
 développement ; `env_file` seul transmet les variables sans monter le fichier.
 Les fixtures versionnées sont également montées en lecture seule. Si le modèle vient d’être copié, remplacer la
 valeur d’exemple `NUXT_SESSION_PASSWORD` par un secret aléatoire d’au moins
@@ -82,7 +85,7 @@ make dev-playwright BUILD=1
 ```
 
 Les tests Playwright contrôlent les affichages desktop et mobile. Les rapports
-sont rangés dans `.tmp/playwright/`. La commande Playwright peut arrêter le
+sont rangés dans `webapp/.tmp/playwright/`. La commande Playwright peut arrêter le
 conteneur frontend à la fin ; relancer `make dev-webapp-localhost` au besoin.
 
 ### 5. Arrêter après le test
@@ -90,7 +93,7 @@ conteneur frontend à la fin ; relancer `make dev-webapp-localhost` au besoin.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-docker compose -f docker-compose.dev.yml --profile e2e down
+docker compose --env-file webapp/.env -f docker-compose.dev.yml --profile e2e down
 
 cd /home/johan/www/graines-digitales/api/symfony-8-api-platform
 make dev-down
@@ -100,17 +103,17 @@ Ces commandes d’arrêt conservent les volumes et la BDD recréée.
 
 ## Données et contrats du setup
 
-Les sources de contrats sont versionnées dans `schemas/source/webapp/` et
-`schemas/source/dtos/symfony_api/`. Les biens fictifs viennent de
-`dev-book/fixtures/catalog/` (catalogue Blueprint de démonstration conservé).
-Les photos originales sont restaurées dans `public/images/` et `public/poc/`.
-Les illustrations SVG neutres restent disponibles dans `public/demo/`.
+Les sources de contrats sont versionnées dans `webapp/schemas/source/webapp/` et
+`webapp/schemas/source/dtos/symfony_api/`. Les biens fictifs viennent de
+`webapp/fixtures/catalog/` (catalogue Blueprint de démonstration conservé).
+Les photos originales sont restaurées dans `webapp/public/images/` et `webapp/public/poc/`.
+Les illustrations SVG neutres restent disponibles dans `webapp/public/demo/`.
 
-Le setup initialise `.env` uniquement s'il manque, avec un secret neuf.
+Le setup initialise `webapp/.env` uniquement s'il manque, avec un secret neuf.
 Les référentiels et les localisations du catalogue sont conservés.
-Le contenu généré est rangé dans `content/{locale}/metadata/` et
-`content/{locale}/accommodations/`. Les contrats sont générés dans
-`schemas/interfaces/` et `schemas/dtos/`.
+Le contenu généré est rangé dans `webapp/content/{locale}/metadata/` et
+`webapp/content/{locale}/accommodations/`. Les contrats sont générés dans
+`webapp/schemas/interfaces/` et `webapp/schemas/dtos/`.
 
 Le setup est rejouable avec des données fictives. S'il détecte un bien sans marqueur
 `dataSource: fixture` ou un référentiel non fictif, il s'arrête avant toute écriture.
@@ -144,8 +147,8 @@ créer un snapshot initial du contenu nettoyé plutôt que pousser les branches 
 
 ```bash
 make quality-check
-docker compose -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run test
-docker compose -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run build
+docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run test
+docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run build
 ```
 
 Contrôler les trois langues, une liste de biens, une fiche fictive, le contact,
@@ -153,7 +156,7 @@ les mentions et les partenariats. Le setup ne doit joindre aucune API externe.
 
 Le contact affiché est `contact@showcase-immobilier.example`, une adresse de
 démonstration sans envoi. Aucun ancien numéro n’est réutilisé. Le stamp transparent
-`public/branding/showcase-stamp.svg` est prêt pour le backend.
+`webapp/public/branding/showcase-stamp.svg` est prêt pour le backend.
 
 ## Stamp côté backend
 
@@ -164,6 +167,6 @@ des webapps. La régénération doit repartir des originaux, sans superposition 
 les photos déjà marquées. La configuration du projet backend et la régénération
 n'ont pas encore été exécutées ; les intégrations restent désactivées ici.
 
-`public/images/` reste ignoré par Git : les photos restaurées sont disponibles
+`webapp/public/images/` reste ignoré par Git : les photos restaurées sont disponibles
 localement, mais un nouveau clone aura besoin de récupérer les médias du backend
-ou d'une copie de ce dossier. `public/poc/` est versionné.
+ou d'une copie de ce dossier. `webapp/public/poc/` est versionné.

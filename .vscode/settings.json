@@ -2,6 +2,9 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {},
   "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": ["./webapp"],
+  "prettier.prettierPath": "./webapp/node_modules/prettier",
+  "prettier.configPath": "./webapp/prettier.config.cjs",
   "eslint.validate": ["javascript", "typescript", "vue"],
   "files.associations": {
     "*.css": "tailwindcss"
@@ -10,5 +13,7 @@
     "strings": "on"
   },
   "tailwindCSS.classAttributes": ["class", "ui"],
-  "tailwindCSS.experimental.classRegex": [["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]]
+  "tailwindCSS.experimental.classRegex": [
+    ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ]
 }

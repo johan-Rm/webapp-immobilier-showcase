@@ -1,7 +1,7 @@
 # SonarQube Cloud
 
 - Role: documenter l analyse qualite generale par SonarQube Cloud.
-- Related: [./ci-conventions-validation.md](./ci-conventions-validation.md), [../../sonar-project.properties](../../sonar-project.properties)
+- Related: [./ci-conventions-validation.md](ci-conventions-validation.md), [../../sonar-project.properties](../../sonar-project.properties)
 
 ## Intent
 

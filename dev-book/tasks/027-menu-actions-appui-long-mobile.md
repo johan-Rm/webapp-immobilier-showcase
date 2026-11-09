@@ -9,7 +9,7 @@
 
 ## Problème
 
-Le dashboard expose 3 actions via raccourcis clavier dans [useDashboard.ts](../../app/composables/useDashboard.ts) :
+Le dashboard expose 3 actions via raccourcis clavier dans [useDashboard.ts](../../webapp/app/composables/useDashboard.ts) :
 
 - `meta+q` → panneau `designControls`
 - `ctrl+s` → slideover de recherche de biens

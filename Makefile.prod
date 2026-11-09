@@ -2,7 +2,7 @@
 # Docker Compose PROD
 # ============================
 
-PROD_ENV_FILE ?= .env.prod
+PROD_ENV_FILE ?= webapp/.env.prod
 # ENV_FILE est exporté pour que `env_file:` dans le compose pointe le même
 # fichier que `--env-file` (source unique de vérité, surcharge cohérente).
 COMPOSE_PROD = ENV_FILE=$(PROD_ENV_FILE) docker compose --env-file $(PROD_ENV_FILE) -f docker-compose.prod.yml
@@ -18,7 +18,7 @@ PROD_BUILD_SERVICES = webapp-ssr
 # Préflight : valide la configuration avant tout build/up (bloquant)
 
 prod-check:
-	@scripts/ci/deploy-check.sh $(PROD_ENV_FILE) docker-compose.prod.yml prod
+	@webapp/scripts/ci/deploy-check.sh $(PROD_ENV_FILE) docker-compose.prod.yml prod
 
 # Content Sync
 

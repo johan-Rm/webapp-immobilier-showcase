@@ -8,9 +8,9 @@ et workflow des assistants IA.
 
 ## Pages disponibles
 
-- [Setup local](./setup-local.md) : reset Docker complet, BDD, setup et données de démonstration.
+- [Setup local](setup-local.md) : reset Docker complet, BDD, setup et données de démonstration.
 
-- [Workflow IA dans VSCode](./ai-workflow.md) : comment Claude Code et Codex lisent la
+- [Workflow IA dans VSCode](ai-workflow.md) : comment Claude Code et Codex lisent la
   gouvernance, dans quel ordre, et comment ils livrent.
 
-- [Médias préprod VPS](./preprod-media-vps.md) : montages, Nginx et validation des uploads.
+- [Médias préprod VPS](preprod-media-vps.md) : montages, Nginx et validation des uploads.
