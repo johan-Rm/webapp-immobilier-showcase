@@ -80,6 +80,7 @@
 import { defineAsyncComponent, type Component } from 'vue'
 
 import ScreenRealEstateFullImage from '~/components/screen/real-estate/FullImage.vue'
+import ScreenRealEstateRounded from '~/components/screen/real-estate/Rounded.vue'
 
 // 2. Types et constantes statiques
 /**
@@ -111,6 +112,7 @@ const SCREEN_IDS = {
 // Les garder séparés des ids d'écran évite de coupler l'URL publique à l'implémentation.
 const LANDING_SLUGS = {
   fullImage: 'full-image',
+  rounded: 'rounded',
   split: 'split',
   threeColProperties: 'three-col-properties',
 } as const
@@ -126,6 +128,11 @@ const ScreenRealEstateThreeColProperties = defineAsyncComponent(
 // Registre local des variantes de landing disponibles pour la page d'accueil.
 // Chaque entrée associe un slug public, le bloc éditorial attendu et le composant d'affichage.
 const landingScreens = [
+  {
+    slug: LANDING_SLUGS.rounded,
+    screenId: SCREEN_IDS.realEstateFullImage,
+    component: ScreenRealEstateRounded,
+  },
   {
     slug: LANDING_SLUGS.fullImage,
     screenId: SCREEN_IDS.realEstateFullImage,

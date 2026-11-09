@@ -1,6 +1,6 @@
 <template>
   <div class="relative h-dvh w-screen overflow-hidden">
-    <div class="absolute inset-x-0 top-0 z-50">
+    <div v-if="!isFramedLanding" class="absolute inset-x-0 top-0 z-50">
       <div
         class="grid min-h-24 grid-cols-2 px-4 pt-6 lg:min-h-32 2xl:min-h-48 2xl:pt-10 2xl:pl-16"
         :class="headerBackgroundClass"
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="absolute right-4 bottom-4 z-50">
+    <div v-if="!isFramedLanding" class="absolute right-4 bottom-4 z-50">
       <LazyNavigationSocialNetwork />
     </div>
     <UMain class="h-full w-full">
@@ -45,6 +45,8 @@ isHeroImageReady.value = true
 
 const { isPhoneDevice, isTabletPortrait } = useDeviceDetect()
 const { screenStatus } = useScreenSystem()
+const route = useRoute()
+const localePath = useLocalePath()
 
 // 5. Etat local
 
@@ -53,6 +55,16 @@ const { screenStatus } = useScreenSystem()
 // 7. Validation et helpers purs
 
 // 8. Computed UI-ready
+const isFramedLanding = computed(() => {
+  const raw = route.query.landing
+  const landing = Array.isArray(raw) ? raw[0] : raw
+  return (
+    route.path === localePath('/') &&
+    landing === 'rounded' &&
+    (!activeScreenId.value || activeScreenId.value === 'screen-landing')
+  )
+})
+
 const activeScreenId = computed<string | null>(() => screenStatus.value.currentId)
 
 const headerBackgroundClass = computed<string>(() => {
