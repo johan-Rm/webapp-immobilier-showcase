@@ -3,15 +3,26 @@
 Vitrine immobilière de démonstration pour Essaouira : Nuxt 4, Vue 3, TypeScript,
 Nuxt UI et Bun, SSR et trois langues (`fr`, `en`, `es`).
 
+L’interface privilégie une exploration calme et lisible, puis la prise de contact,
+sans pression commerciale. Concevoir d’abord pour le mobile ; préserver les Core Web
+Vitals, le rendu serveur et le SEO par une structure sémantique indexable et un sitemap.
+
 Dépôt : [johan-Rm/showcase-immobilier-webapp](https://github.com/johan-Rm/showcase-immobilier-webapp).
 
 ## Organisation du dépôt
 
 - `webapp/` : sources Nuxt, configurations, dépendances, tests et fixtures.
 - `docs/` et `dev-book/` : documentation et suivi du projet.
-- Racine : gouvernance, CI et infrastructure Docker/Make.
+- `infra/docker/` : Dockerfiles et configurations Compose.
+- `infra/nginx/` : configuration Nginx et certificats locaux.
+- `infra/make/` : Makefiles secondaires ; le `Makefile` racine expose les commandes.
+- Racine : gouvernance et configuration des outils ; les workflows CI restent dans `.github/workflows/`.
 
-Les commandes `make` se lancent à la racine. Pour Bun :
+Les commandes `make` se lancent à la racine. Les appels directs à Compose utilisent
+`--project-directory .` pour résoudre les chemins depuis cette racine et conserver
+l’identité du projet. Docker lit `webapp/.dockerignore`, son contexte de build.
+
+Pour Bun :
 
 ```bash
 cd webapp
@@ -35,7 +46,7 @@ make dev-build-localhost
 Préparer les données et contrats dans Docker :
 
 ```bash
-docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run setup:local
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run setup:local
 ```
 
 Puis démarrer le mode souhaité :
@@ -79,3 +90,6 @@ Procédure de migration : [setup local](docs/1.getting-started/setup-local.md).
 Le catalogue Blueprint et ses photos sont conservés comme démonstration.
 Le setup recopie `webapp/fixtures/catalog/` avec les localisations originales.
 Les illustrations `webapp/public/demo/` restent disponibles en complément.
+
+Le développement assisté par IA suit les [règles du projet](AGENTS.md#conventions-de-workflow) et les skills AIDE.
+Les conventions Nuxt et les commandes de développement restent inchangées.

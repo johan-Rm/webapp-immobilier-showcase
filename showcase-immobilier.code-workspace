@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "name": "principal",
+      "path": ".",
+    },
+    {
+      "name": "web",
+      "path": "worktree/web",
+    },
+    {
+      "name": "bff",
+      "path": "worktree/bff",
+    },
+    {
+      "name": "domaine",
+      "path": "worktree/domaine",
+    },
+    {
+      "name": "devops",
+      "path": "worktree/devops",
+    },
+  ],
+}

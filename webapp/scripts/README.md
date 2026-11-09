@@ -9,7 +9,7 @@ contrats YAML locaux. Lancer `bun run setup:local` après installation.
 
 Le contrôle `check:app:types` applique la règle de placement aux types manuels.
 Les dossiers de contrats générés sont déclarés dans
-`scripts/ci/app/rules.yaml` (`generatedTypesDirs`) et restent dans leur couche
+`codebase-integrity/domaines/architecture-dependances/regles.yaml` (`generatedTypesDirs`) et restent dans leur couche
 `schemas/`. Les doublons et imports de types manuels continuent d'être contrôlés.
 
 `content-sync.ts` synchronise aussi le bloc `i18n` de `content/fr/ui/app.yaml`

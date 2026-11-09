@@ -1,10 +1,6 @@
-approval_policy = "on-request"
-sandbox_mode = "danger-full-access"
-
+# Les permissions et le modèle restent ceux de la session utilisateur.
 [context]
 include = [
   "AGENTS.md",
-  "CONSTITUTION.md",
-  "**/README.md",
-  "./docs/2.architecture/"
+  "docs/2.architecture/"
 ]

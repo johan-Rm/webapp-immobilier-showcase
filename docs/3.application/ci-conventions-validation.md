@@ -14,7 +14,7 @@ renvoie vers `docs/`. La documentation detaillee reste la source explicative ; l
 reste le point d entree local.
 
 Les conventions techniques automatisables doivent etre protegees par le CI/CD. Les scripts
-dans `scripts/ci/app/` executent ces controles.
+dans `codebase-integrity/domaines/` executent ces controles.
 
 ## README Contract
 

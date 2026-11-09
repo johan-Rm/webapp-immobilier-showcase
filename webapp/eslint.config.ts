@@ -17,6 +17,8 @@ const configRootDir = dirname(fileURLToPath(import.meta.url))
 const config: Linter.FlatConfig[] = [
   {
     ignores: [
+      '**/worktree/**',
+      '**/.worktrees/**',
       '**/.nuxt/**',
       '**/.output/**',
       '**/.data/**',

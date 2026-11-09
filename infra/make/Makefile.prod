@@ -1,0 +1,92 @@
+# ============================
+# Docker Compose PROD
+# ============================
+
+PROD_ENV_FILE ?= webapp/.env.prod
+# ENV_FILE est exporté pour que `env_file:` dans le compose pointe le même
+# fichier que `--env-file` (source unique de vérité, surcharge cohérente).
+COMPOSE_PROD = ENV_FILE=$(PROD_ENV_FILE) docker compose --project-directory . --env-file $(PROD_ENV_FILE) -f infra/docker/docker-compose.prod.yml
+
+PROD_CORE_SERVICES = webapp-ssr
+PROD_BUILD_SERVICES = webapp-ssr
+
+.PHONY: prod-check prod-up prod-up-build prod-up-wait prod-down prod-clean prod-stop prod-status
+.PHONY: prod-build prod-build-no-cache prod-pull prod-deploy prod-deploy-no-cache
+.PHONY: prod-content-sync prod-content-sync-dry
+.PHONY: prod-logs prod-logs-service prod-logs-webapp
+
+# Préflight : valide la configuration avant tout build/up (bloquant)
+
+prod-check:
+	@codebase-integrity/domaines/construction-livraison/scripts/deploy-check.sh $(PROD_ENV_FILE) infra/docker/docker-compose.prod.yml prod
+
+# Content Sync
+
+prod-content-sync:
+	$(COMPOSE_PROD) run --rm content-sync
+
+prod-content-sync-dry:
+	$(COMPOSE_PROD) run --rm content-sync bun scripts/content-sync.ts --dry-run
+
+# Up / Build / Deploy
+
+prod-up:
+	$(COMPOSE_PROD) up -d $(PROD_CORE_SERVICES)
+
+prod-up-wait:
+	$(COMPOSE_PROD) up -d --wait $(PROD_CORE_SERVICES)
+
+prod-up-build:
+	$(COMPOSE_PROD) up -d --build $(PROD_CORE_SERVICES)
+
+prod-build:
+	$(COMPOSE_PROD) build $(PROD_BUILD_SERVICES)
+
+prod-build-no-cache:
+	$(COMPOSE_PROD) build --no-cache $(PROD_BUILD_SERVICES)
+
+prod-pull:
+	$(COMPOSE_PROD) pull $(PROD_CORE_SERVICES)
+
+# Déploiement : préflight → build → up avec attente du healthcheck.
+# Le contenu est un volume runtime : `make prod-content-sync` se lance séparément
+# (dépend de l'API Symfony) et est reflété sans rebuild.
+
+prod-deploy:
+	$(MAKE) prod-check
+	$(MAKE) prod-build
+	$(MAKE) prod-up-wait
+
+prod-deploy-no-cache:
+	$(MAKE) prod-check
+	$(MAKE) prod-build-no-cache
+	$(MAKE) prod-up-wait
+
+# Lifecycle
+
+prod-stop:
+	$(COMPOSE_PROD) stop
+
+prod-down:
+	$(COMPOSE_PROD) down
+
+prod-clean:
+	$(COMPOSE_PROD) down -v --remove-orphans
+
+prod-status:
+	$(COMPOSE_PROD) ps
+
+# Logs
+
+prod-logs:
+	$(COMPOSE_PROD) logs $(FOLLOW) --tail=$(TAIL)
+
+prod-logs-service:
+	@if [ -z "$(S)" ]; then \
+		echo "Missing S=<service>. Example: make prod-logs-service S=webapp-ssr"; \
+		exit 2; \
+	fi
+	$(COMPOSE_PROD) logs $(FOLLOW) --tail=$(TAIL) $(S)
+
+prod-logs-webapp:
+	$(COMPOSE_PROD) logs $(FOLLOW) --tail=$(TAIL) webapp-ssr

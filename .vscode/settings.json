@@ -15,5 +15,13 @@
   "tailwindCSS.classAttributes": ["class", "ui"],
   "tailwindCSS.experimental.classRegex": [
     ["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ]
+  ],
+  "search.exclude": {
+    "worktree/**": true,
+    ".worktrees/**": true
+  },
+  "files.watcherExclude": {
+    "**/worktree/**": true,
+    "**/.worktrees/**": true
+  }
 }

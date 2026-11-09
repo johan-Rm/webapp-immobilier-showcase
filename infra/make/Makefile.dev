@@ -1,0 +1,134 @@
+GIT_COMMON_DIR := $(shell git rev-parse --path-format=absolute --git-common-dir)
+COMPOSE_FILE := infra/docker/docker-compose.dev.yml
+DOCKER_RUN := docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) run --rm webapp-localhost
+PLAYWRIGHT_RUN := docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) --profile e2e up $(if $(BUILD),--build) --abort-on-container-exit --exit-code-from playwright playwright
+
+export DOCKER_UID := $(shell id -u)
+export DOCKER_GID := $(shell id -g)
+
+.PHONY: dev-env
+.PHONY: dev-webapp-localhost dev-webapp-ssr dev-nginx
+.PHONY: dev-build dev-build-no-cache
+.PHONY: dev-build-localhost dev-build-localhost-no-cache
+.PHONY: dev-build-ssr dev-build-ssr-no-cache
+.PHONY: dev-down dev-logs
+.PHONY: dev-shell-webapp-localhost dev-shell-webapp-ssr dev-shell-nginx
+.PHONY: dev-analyze dev-analyse
+.PHONY: dev-playwright dev-playwright-report
+.PHONY: quality-check quality-lint-check quality-lint-fix quality-format-check quality-type-check
+.PHONY: quality-conventions-check quality-generate-schemas
+.PHONY: dev-content-sync dev-content-sync-dry
+
+dev-env:
+	@test -f webapp/.env || cp webapp/.env.example webapp/.env
+
+dev-webapp-localhost: dev-env
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up webapp-localhost
+
+dev-webapp-ssr: dev-env
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up $(if $(BUILD),--build) webapp-ssr nginx
+
+dev-nginx: dev-env
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up nginx
+
+dev-build:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build $(if $(NO_CACHE),--no-cache)
+
+dev-build-no-cache:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache
+
+dev-build-localhost:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build webapp-localhost
+
+dev-build-localhost-no-cache:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache webapp-localhost
+
+dev-build-ssr:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build webapp-ssr
+
+dev-build-ssr-no-cache:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache webapp-ssr
+
+dev-down:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) down
+
+dev-logs:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) logs -f --tail=200
+
+dev-shell-webapp-localhost:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) exec webapp-localhost sh
+
+dev-shell-webapp-ssr:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) exec webapp-ssr sh
+
+dev-shell-nginx:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) exec nginx sh
+
+dev-analyze:
+	cd webapp && bunx nuxi analyze
+
+dev-analyse: dev-analyze
+
+dev-playwright: dev-env
+	@mkdir -p webapp/.tmp/playwright
+	$(PLAYWRIGHT_RUN)
+
+dev-playwright-report:
+	cd webapp && bun run test:e2e:report
+
+quality-check:
+	$(DOCKER_RUN) bun run quality:check
+
+quality-lint-check:
+	$(DOCKER_RUN) bun run lint:check
+
+quality-lint-fix:
+	$(DOCKER_RUN) bun run lint:fix
+
+quality-format-check:
+	$(DOCKER_RUN) bun run format:check
+
+quality-type-check:
+	$(DOCKER_RUN) bun run type-check
+
+quality-generate-schemas:
+	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
+
+quality-conventions-check:
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) run --rm --volume "$(CURDIR):$(CURDIR):ro" --env AIDE_GIT_ROOT="$(CURDIR)" --volume "$(CURDIR)/.git:/app/.git:ro" --volume "$(GIT_COMMON_DIR):$(GIT_COMMON_DIR):ro" webapp-localhost sh -c "bun run check:app:types && bun run check:app:images && bun run check:app:components:no-business-logic && bun run check:app:script-setup-standard && bun run check:app:soc && bun run check:app:code-quality && bun run check:app:solid && bun run check:app:guards && bun run check:services:no-framework-imports"
+
+dev-content-sync:
+	$(DOCKER_RUN) bun scripts/content-sync.ts
+
+dev-content-sync-dry:
+	$(DOCKER_RUN) bun scripts/content-sync.ts --dry-run
+
+.PHONY: maquette-html
+
+maquette-html:
+	cd webapp && bash scripts/build/maquette-statique.sh
+
+.PHONY: generate-static
+
+generate-static:
+	cd webapp && STATIC_OUTPUT=true NODE_ENV=production bun run generate
+
+.PHONY: export-maquette
+
+# Exporte la maquette HTML autonome vers un dossier de livraison.
+# Usage : make export-maquette DEST=/chemin/vers/le/dossier
+DEST ?= exports/maquette-html
+
+export-maquette:
+	@test -n "$(DEST)" || { echo "DEST est requis : make export-maquette DEST=/chemin"; exit 1; }
+	cd webapp && STATIC_OUTPUT=true NODE_ENV=production bun run generate
+	@mkdir -p "$(DEST)"
+	cp -r webapp/.output/public/. "$(DEST)"/
+	cd webapp && bun scripts/build/maquette-html.ts "$(abspath $(DEST))"
+	@echo "Variante des fiches, panneau de details ouvert"
+	@cd webapp && bash scripts/build/variante-panneaux.sh "$(abspath $(DEST))"
+	@echo "Variante des accueils, menu principal ouvert"
+	@cd webapp && bash scripts/build/variante-menu.sh "$(abspath $(DEST))"
+	@echo
+	@echo "Maquette exportee : $(DEST)"
+	@echo "Ouvrir : $(DEST)/fr/index.html"

@@ -1,0 +1,45 @@
+# Commandes du cadre ; aucun service ni worktree créé implicitement.
+export LAYER BASE HEAD IMAGE
+export AIDE_REPO := $(CURDIR)
+.PHONY: worktree-add worktree-list lane-env lane-check lane-setup lane-up lane-down aide-check contribution-check
+
+worktree-add:
+	@test -n "$${LAYER}" -a -n "$${BASE}" || { echo 'LAYER et BASE explicites requis'; exit 1; }
+	python3 codebase-integrity/domaines/construction-livraison/scripts/worktrees.py add --layer "$${LAYER}" --branch "layers/$${LAYER}" --base "$${BASE}"
+
+worktree-list:
+	python3 codebase-integrity/domaines/construction-livraison/scripts/worktrees.py list
+
+lane-env:
+	python3 codebase-integrity/domaines/construction-livraison/scripts/environment.py prepare --layer "$${LAYER}"
+
+lane-check:
+	python3 codebase-integrity/domaines/construction-livraison/scripts/environment.py validate --layer "$${LAYER}"
+
+lane-setup: lane-check
+	$(DOCKER_RUN) bun run setup:local
+
+lane-up: lane-check
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up -d $(if $(BUILD),--build) webapp-localhost
+
+lane-down: lane-check
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) down
+
+aide-check:
+	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py
+	python3 codebase-integrity/domaines/construction-livraison/scripts/check_demands.py
+	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py
+	python3 -B codebase-integrity/commun/test_domains.py
+
+contribution-check:
+	@test -n "$${BASE}" || { echo 'BASE explicite requise'; exit 1; }
+	python3 codebase-integrity/domaines/construction-livraison/scripts/contribution.py --repo "$${AIDE_REPO}" --base "$${BASE}" --head "$${HEAD:-HEAD}"
+
+.PHONY: aide-runtime-check
+aide-runtime-check:
+	@test -n "$${IMAGE}" || { echo 'IMAGE locale existante requise'; exit 1; }
+	python3 codebase-integrity/domaines/construction-livraison/scripts/check_runtime.py --image "$${IMAGE}"
+
+.PHONY: integrity-domains
+integrity-domains:
+	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py --list

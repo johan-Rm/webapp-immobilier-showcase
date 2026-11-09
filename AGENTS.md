@@ -1,104 +1,45 @@
-# AGENTS — Contexte projet : showcase-immobilier-webapp
+# Consignes des agents
 
-Fichier de gouvernance local Codex. Complète le socle global `~/.agents/AGENTS.md` sans le
-répéter. Les profils, principes d'ingénierie et mode d'exécution sont dans le global.
+## Réponses et documents
 
-## Organisation du dépôt
+Rédiger des réponses et documents concis et précis, avec les décisions et preuves nécessaires.
+Chaque information a une source de référence unique : vérifier l’existant et privilégier
+un lien plutôt qu’une copie. Ne créer du contenu que s’il apporte une information distincte.
 
-La racine applicative Nuxt est `webapp/`. Les chemins des couches ci-dessous
-sont relatifs à `webapp/`. Exécuter les commandes Bun depuis ce dossier.
-La documentation `docs/`, le suivi `dev-book/` et Docker/Make restent à la racine.
+## Avant d’intervenir
 
-## Mission produit
+- Respecter les instructions explicites de l’utilisateur ; ne déléguer que sur demande explicite.
+- Lire la demande, la carte et la [configuration des couches](infra/config/layers.json). Respecter worktree, branche, chemins autorisés et dépendances par commits.
+- Lire les README de la racine au dossier concerné et les seuls standards utiles de l’[architecture](docs/2.architecture/index.md). Préserver les rubriques et leur ordre ; appliquer les [conventions documentaires](docs/README.md#conventions-techniques).
+- Avant toute écriture, vérifier le chemin absolu, la branche, l’index et `git status --porcelain=v1 --untracked-files=all` dans le worktree affecté.
+- Une couche sale ou occupée bloque une nouvelle mission. Une reprise préserve ses changements identifiés ; un arbre propre ne prouve pas la disponibilité.
+- Préserver le travail existant, les worktrees, les `.env` et les données. Aucun stash, `reset --hard`, force-push ou suppression de worktree pour résoudre une situation ; aucun rebase de branche partagée ou occupée sans coordination.
 
-Webapp immobilière éditoriale pour Essaouira et sa région. Interface calme, crédible,
-orientée exploration puis contact. SEO-first, SSR, mobile-first, Core Web Vitals prioritaires.
+## Conventions de workflow
 
-## Priorités produit
+- Intégration : `develop` ; production : `master`. Aucune contribution de tâche sur ces branches.
+- Les missions utilisent les branches et chemins définis dans `infra/config/layers.json`. Créer les worktrees uniquement sur affectation, selon les [commandes locales](worktree/README.md).
+- Appliquer l’étape demandée avec le skill disponible de développement ou de consolidation, sans passage automatique à la suivante. Les procédures détaillées restent dans les skills.
+- L’implémentation ne crée aucun commit. La validation humaine explicite d’une carte autorise ses commits locaux et traces documentaires via `verifier-arbitrer-demande` ou `verifier-arbitrer-consolidation`, sans confirmation supplémentaire. Ne jamais inventer de verdict.
+- La reconstitution réunit les commits validés dans le principal libre et propre, sur `demands/DEM-NNN` depuis `develop`, avec traçabilité des SHA. Aucun échange de travail non commité.
+- Invoquer `livrer-demande` ou `livrer-consolidation` autorise les contrôles, fetch, push sans forcer, PR vers `develop`, Rebase and merge et suivi des seules couches libres prévus par ces skills. Une instruction limitée à la PR conserve cette limite. Aucun déploiement de production implicite.
+- Hors de ces autorisations, les opérations Git d’écriture nécessitent une demande explicite.
 
-1. clarté pour l'utilisateur final — parcours simple, navigation explicite
-2. lisibilité du contenu — interfaces sobres, éditoriales, non agressives commercialement
-3. performance et Core Web Vitals stables
-4. SEO by design — structure sémantique, indexabilité, sitemap
+## Contrôles et fin du travail
 
-## Contraintes spécifiques
+- Appliquer les [conventions Codebase Integrity](codebase-integrity/README.md). Leur évolution et celle des contrôles passent par une consolidation déclarée.
+- Exécuter les contrôles proportionnés au changement depuis le worktree affecté ; avant PR, vérifier la plage complète par rapport à la cible d’intégration vérifiée et lancer les contrôles qualité, conventions et tests adaptés.
+- Présenter le résultat, les vérifications et leurs limites, avec documentation à jour et preuves dans la carte. Un résultat inconnu ne vaut pas réussite ; une implémentation ne vaut pas validation humaine.
 
-- SSR-safe par défaut — tout code client-only doit être justifié
-- `services/` est framework-agnostic — jamais d'import Vue, Nuxt ou Pinia dans ce dossier
-- Nuxt UI couvre la majorité des composants UI — toujours vérifier avant d'écrire du HTML brut
-- les images passent obligatoirement par `@nuxt/image`
-- i18n actif — tout texte visible passe par les clés de traduction
-- jamais de `any` TypeScript sans justification explicite
+## Demandes et cartes
 
-## Stack
+- Indiquer le type de demande : `développement` ou `consolidation`. Suivre les [conventions et modèles du dev-book](dev-book/README.md).
+- Réserver `DEM-*` aux demandes dans `dev-book/demand/` ; les cartes résident dans `dev-book/tasks/`.
+- Consigner la session réelle de création, issue du contexte ou de `CODEX_THREAD_ID` / `CODEX_SESSION_ID`, jamais inventée. Une source absente ou contradictoire bloque la création. Une reprise conserve la session d’origine et ajoute la session intervenante.
 
-- Framework : Nuxt 4, Vue 3, TypeScript strict
-- UI : Nuxt UI v4, Tailwind CSS
-- Contenu : Nuxt Content (Markdown + YAML)
-- État : Pinia
-- Runtime : Bun
+## Références selon la tâche
 
-## Architecture — sources à lire avant d'agir
-
-`docs/2.architecture/` contient 13 standards qui font autorité. Lire en priorité selon le
-périmètre :
-
-- architecture générale → `1.application-architecture.md`
-- pages et navigation → `3.page-layout-screen-model.md`
-- SSR et hydratation → `4.ssr-safety.md`
-- frontières entre couches → `5.responsibility-boundaries.md`
-- composables → `8.composables-standard.md`
-- stores Pinia → `11.stores-standard.md`
-- contenu Markdown/YAML → `12.content-model.md`
-
-## Frontières de responsabilité
-
-```
-app/pages/        orchestre la route et les meta
-app/components/   affichage uniquement
-app/composables/  logique reactive exposée à l'UI
-app/stores/       état global partagé
-services/         logique métier pure (framework-agnostic, zéro import Vue/Nuxt/Pinia)
-server/           BFF Nitro entre le frontend et l'API Symfony (auth, dashboard, sitemap)
-shared/           utilitaires et contrats partageables
-```
-
-## Détail services/ (framework-agnostic)
-
-- `services/api/` — appels vers l'API Symfony
-- `services/mapper/` — mapping API → types UI (accommodation, webPage)
-- `services/seo/` — données structurées Schema.org
-- `services/content/` — utilitaires MDC / Nuxt Content
-- `services/converter/schema/` — génération d'artefacts TypeScript depuis les schémas YAML
-- `services/infra/resolver/` — résolution de chemins
-- `services/utils/` — utilitaires CLI et système de fichiers
-
-## Détail server/ (BFF Nitro)
-
-- `server/api/dashboard/` — proxy vers l'API Symfony (biens, médias, catégories, statut)
-- `server/api/content/` — proxy Nuxt Content
-- `server/api/__sitemap__/` — sitemap dynamique
-- `server/routes/auth/` — OAuth Google (login backoffice)
-- `server/utils/dashboard/` — auth Symfony, cache, mapper, export Markdown
-
-## Modèle de navigation
-
-Navigation par screens plein viewport (`data-screen`, ancres, transitions x/y).
-Lire `docs/2.architecture/3.page-layout-screen-model.md` avant toute modification de page.
-
-## Commandes courantes
-
-```bash
-bun run dev               # développement local
-bun run quality:check     # lint + format + type-check
-bun run lint:check        # ESLint
-bun run format:check      # Prettier
-bun run type-check        # vue-tsc
-```
-
-## Workflow de développement
-
-1. spec dans `dev-book/` si feature structurante
-2. tâche dans `dev-book/tasks/`
-3. branche dédiée depuis `develop`
-4. PR vers `develop`, merge vers `master` en production
+- Produit, organisation du dépôt et démarrage : [README](README.md).
+- Architecture et standards applicatifs : [index d’architecture](docs/2.architecture/index.md), notamment le [modèle de pages et screens](docs/2.architecture/3.page-layout-screen-model.md) avant toute modification de page.
+- Isolation des environnements : [worktrees](worktree/README.md) ; Git seul n’isole pas les services et les données de l’API externe.
+- Autres guides durables : [index documentaire](docs/index.md).
