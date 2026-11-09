@@ -20,3 +20,6 @@ nginx/certs
 
 # Runtime media are mounted separately; never bake originals into images.
 public/images/
+
+worktree
+.worktrees

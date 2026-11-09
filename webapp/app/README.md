@@ -19,8 +19,11 @@ frontend.
 ## Conventions techniques
 
 > Les conventions décrites dans cette section peuvent être vérifiées automatiquement via des scripts CI/CD.
-> Les règles concrètes de validation automatisée sont déclarées en YAML dans `scripts/ci/app/`.
+> Les règles concrètes de validation automatisée sont déclarées en YAML dans `codebase-integrity/domaines/*/regles.yaml`.
 > Pour le détail, voir [docs/3.application/ci-conventions-validation.md](../../docs/3.application/ci-conventions-validation.md).
+
+Vérifier les composants disponibles dans Nuxt UI avant d’écrire du HTML brut.
+Tout texte visible passe par les clés de traduction.
 
 ### Sur-vérification des variables
 
@@ -96,7 +99,7 @@ ses règles YAML de verrouillage.
 
 ### Images
 
-Toute image affichée dans `app/` passe par le composant `<AppImage>`.
+Toute image affichée dans `app/` passe par le composant `<AppImage>`, qui utilise `@nuxt/image`.
 
 Les balises `<img>`, `<NuxtImg>` et `<NuxtPicture>` sont interdites en dehors de `app/components/AppImage.vue`.
 

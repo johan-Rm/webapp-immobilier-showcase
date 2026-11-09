@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 const resolvePath = (path: string): string => fileURLToPath(new URL(path, import.meta.url))
 
@@ -19,6 +19,7 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
+    exclude: [...configDefaults.exclude, '**/worktree/**', '**/.worktrees/**'],
     include: ['**/*.vitest.ts'],
   },
 })

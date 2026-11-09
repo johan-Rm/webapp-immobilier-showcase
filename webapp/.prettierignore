@@ -20,3 +20,6 @@ schemas/interfaces
 # Certificats TLS locaux et captures réseau (non formatables)
 nginx/certs
 *.har
+
+worktree
+.worktrees

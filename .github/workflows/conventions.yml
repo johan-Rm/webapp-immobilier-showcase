@@ -6,7 +6,10 @@ on:
     branches: [develop, master]
 
 jobs:
+  aide:
+    uses: ./.github/workflows/ai-development-engineering.yml
   conventions:
+    needs: aide
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,6 +20,7 @@ jobs:
         with:
           bun-version: 1.4.0
       - run: bun install
+      - run: bun install --frozen-lockfile --cwd ../codebase-integrity
       - run: bun run check:app:types
       - run: bun run check:app:images
       - run: bun run check:app:components:no-business-logic

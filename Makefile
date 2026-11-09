@@ -3,9 +3,10 @@ SHELL := /bin/bash
 TAIL ?= 200
 FOLLOW ?= -f
 
-include Makefile.dev
-include Makefile.preprod
-include Makefile.prod
+include infra/make/Makefile.dev
+include infra/make/Makefile.preprod
+include infra/make/Makefile.prod
+include infra/make/Makefile.ai-development-engineering
 
 .PHONY: help
 
@@ -17,6 +18,7 @@ help:
 	@printf "\n"
 
 	@printf "🔧 Commandes communes\n\n"
+	@printf "  Cadre AIDE : AGENTS.md et skills AIDE\n"
 	@printf "  quality-check               Lint + Format + Type Check\n"
 	@printf "  quality-lint-check          ESLint\n"
 	@printf "  quality-lint-fix            ESLint Fix\n"

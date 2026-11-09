@@ -1,0 +1,59 @@
+{
+  "project": "showcase-immobilier",
+  "devPortBase": 19300,
+  "publicPortBase": 19400,
+  "layers": {
+    "web": {
+      "branch": "layers/web",
+      "role": "Interface publique et dashboard, contenus et parcours",
+      "id": 1,
+      "prefix": "WEB",
+      "paths": [
+        "webapp/app/",
+        "webapp/content/",
+        "webapp/public/",
+        "webapp/fixtures/",
+        "webapp/tests/"
+      ]
+    },
+    "bff": {
+      "branch": "layers/bff",
+      "role": "Routes et traitements Nitro",
+      "id": 2,
+      "prefix": "BFF",
+      "paths": [
+        "webapp/server/"
+      ]
+    },
+    "domaine": {
+      "branch": "layers/domaine",
+      "role": "Logique métier et contrats partageables",
+      "id": 3,
+      "prefix": "DOM",
+      "paths": [
+        "webapp/services/",
+        "webapp/shared/",
+        "webapp/schemas/"
+      ]
+    },
+    "devops": {
+      "branch": "layers/devops",
+      "role": "Cadre IA, infrastructure, configuration et scripts",
+      "id": 4,
+      "prefix": "OPS",
+      "paths": [
+        "codebase-integrity/",
+        "infra/",
+        "docs/",
+        "dev-book/",
+        "webapp/scripts/"
+      ]
+    }
+  },
+  "defaultLayer": "devops",
+  "requireBasePaths": [
+    "webapp/package.json",
+    "infra/config/layers.json",
+    "AGENTS.md"
+  ]
+}

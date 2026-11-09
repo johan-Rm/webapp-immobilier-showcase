@@ -7,7 +7,7 @@
 
 SonarQube Cloud complete les controles locaux du projet.
 
-Les scripts `scripts/ci/app/` et leurs regles YAML protegent les conventions specifiques
+Les scripts `codebase-integrity/domaines/` et leurs regles YAML protegent les conventions specifiques
 au projet. SonarQube Cloud analyse la qualite generale : dette technique, duplications,
 maintenabilite, securite et bugs potentiels.
 
@@ -38,7 +38,7 @@ sont exclus de l analyse.
 
 ## Operating Rule
 
-Les regles projet tres specifiques restent dans les YAML de `scripts/ci/app/`.
+Les regles projet tres specifiques restent dans les YAML de `codebase-integrity/domaines/`.
 
 SonarQube ne doit pas devenir le proprietaire des conventions locales comme la structure
 `script setup`, le placement des types ou les contraintes propres a `<AppImage>`.

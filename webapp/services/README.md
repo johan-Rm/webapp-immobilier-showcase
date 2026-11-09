@@ -18,7 +18,7 @@ Cette couche n'a pas de rôle framework : elle est agnostique par contrat (voir 
 ## Conventions techniques
 
 > Les conventions automatisables de cette section sont protégées par la CI. Les règles
-> concrètes sont déclarées en YAML dans `scripts/ci/services/`.
+> concrètes sont déclarées en YAML dans `codebase-integrity/domaines/architecture-dependances/regles.yaml`.
 > Pour le modèle complet, voir
 > [docs/3.application/ci-conventions-validation.md](../../docs/3.application/ci-conventions-validation.md).
 

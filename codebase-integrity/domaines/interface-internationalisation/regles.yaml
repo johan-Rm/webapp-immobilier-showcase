@@ -1,0 +1,24 @@
+rules:
+  - name: app-images-use-app-image
+    requiresManualReview: false
+    severity: error
+    description: 'Toute image affichee dans app passe par AppImage avec un preset.'
+    allowedFiles:
+      - app/components/AppImage.vue
+    forbiddenTags:
+      - img
+      - NuxtImg
+      - NuxtPicture
+    inlineImageProps:
+      - ':width='
+      - ':format='
+      - ':quality='
+      - ':fit='
+      - ':sizes='
+
+  - name: app-images-no-height-prop
+    requiresManualReview: false
+    severity: error
+    description: 'Les images dans app ne doivent pas declarer de prop height dans le template.'
+    forbiddenProps:
+      - height

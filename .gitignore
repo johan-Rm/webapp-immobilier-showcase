@@ -27,8 +27,8 @@ lighthouse*.json
 !.env.example
 
 # Nginx local certs
-nginx/certs/*
-!nginx/certs/.gitkeep
+infra/nginx/certs/*
+!infra/nginx/certs/.gitkeep
 
 # Bun
 .bun-cache
@@ -60,3 +60,9 @@ webapp/scripts/bootstrap-data/.state
 # Contrats générés ; les sources YAML restent versionnées
 webapp/schemas/interfaces/
 webapp/schemas/dtos/
+
+# Couches AIDE (le guide reste versionné)
+/worktree/*
+!/worktree/README.md
+__pycache__/
+*.pyc

@@ -1,0 +1,62 @@
+rules:
+  - name: app-types-placement
+    requiresManualReview: false
+    severity: error
+    description: 'Un type TypeScript manuel partage doit etre defini dans shared/types/ ; les contrats generes restent dans schemas/.'
+    sharedTypesDir: shared/types
+    generatedTypesDirs:
+      - schemas/interfaces
+      - schemas/dtos
+    aliases:
+      '~/': app
+      '@/': app
+      '#shared/': shared
+      '@schemas/': schemas
+      '@services/': services
+
+  - name: app-no-fetch-in-components
+    requiresManualReview: true
+    severity: warning
+    description: 'Les composants app/components/ ne doivent pas appeler $fetch ou useFetch directement.'
+    patterns:
+      - '$fetch('
+      - 'useFetch('
+      - 'useLazyFetch('
+
+  - name: app-no-store-write-in-components
+    requiresManualReview: true
+    severity: warning
+    description: 'Les composants app/components/ ne doivent pas ecrire directement dans un store.'
+    patterns:
+      - '.$patch('
+
+  - name: app-components-no-business-logic
+    requiresManualReview: true
+    severity: warning
+    description: 'Detecte les computed suspects qui combinent source globale et transformation de donnees.'
+    globalSourcePattern: "^use\\w+Store$|^useAppConfig$"
+    globalSourceFunctions:
+      - storeToRefs
+    transforms:
+      - '.map('
+      - '.filter('
+      - '.reduce('
+      - '.push('
+
+  - name: services-no-framework-imports
+    requiresManualReview: false
+    severity: error
+    description: 'Aucun fichier de services/ ne doit importer Vue, Nuxt, Pinia ou un auto-import Nuxt.'
+    paths:
+      - services
+    extensions:
+      - .ts
+    forbiddenModules:
+      - vue
+      - 'vue/'
+      - nuxt
+      - 'nuxt/'
+      - '#app'
+      - '#imports'
+      - pinia
+      - '@pinia/'

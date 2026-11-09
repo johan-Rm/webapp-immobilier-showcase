@@ -6,7 +6,10 @@ on:
     branches: [develop, master]
 
 jobs:
+  aide:
+    uses: ./.github/workflows/ai-development-engineering.yml
   quality:
+    needs: aide
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -20,3 +23,4 @@ jobs:
       - run: bun run lint:check
       - run: bun run format:check
       - run: bun run type-check
+      - run: bun run test

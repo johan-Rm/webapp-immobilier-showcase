@@ -1,20 +1,14 @@
 # Workflow IA dans VSCode
 
-- Rôle : décrire comment les assistants IA (Claude Code et Codex) travaillent dans VSCode sur ce projet : quelle gouvernance ils lisent, dans quel ordre, et comment ils livrent.
+- Rôle : décrire comment Codex travaillent dans VSCode sur ce projet : quelle gouvernance ils lisent, dans quel ordre, et comment ils livrent.
 - Related : [../index.md](../index.md), [../2.architecture/index.md](../2.architecture/index.md)
 
 ## Assistants en place
 
-Deux assistants IA interviennent depuis VSCode. Chacun lit son propre fichier de gouvernance,
-résolu en cascade du plus global au plus local. Le fichier local du projet a toujours la
-priorité la plus haute.
+Les consignes propres au projet résident dans [AGENTS.md](../../AGENTS.md).
+Les instructions globales sont fournies par la session. Les procédures de travail
+sont définies dans les skills disponibles ; `.codex/` contient la configuration locale.
 
-| Assistant   | Fichier de gouvernance | Cascade (global → local)                                                                       |
-| ----------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
-| Claude Code | `CLAUDE.md`            | `~/.claude/CLAUDE.md` → `graines-digitales/CLAUDE.md` → `showcase-immobilier-webapp/CLAUDE.md` |
-| Codex       | `AGENTS.md`            | `~/.agents/AGENTS.md` → `graines-digitales/AGENTS.md` → `showcase-immobilier-webapp/AGENTS.md` |
-
-Le runtime Codex propre au projet est isolé dans `.codex/` (qui renvoie au socle global).
 Les extensions VSCode attendues côté éditeur sont déclarées dans `.vscode/extensions.json`
 (Volar, ESLint, Prettier) : elles garantissent que le formatage et le lint vus par l'humain
 et par l'IA sont identiques.
@@ -37,8 +31,7 @@ L'assistant qualifie d'abord la demande, puis lit la source qui en est propriét
 L'assistant part du contexte le plus proche du changement et ne remonte vers une règle
 globale que si nécessaire. Il ne charge jamais toute la documentation par défaut.
 
-1. Le fichier de gouvernance de l'assistant utilisé (`CLAUDE.md` pour Claude Code,
-   `AGENTS.md` pour Codex).
+1. Le fichier de gouvernance `AGENTS.md` et le skill applicable.
 2. Les seuls fichiers `docs/2.architecture/` liés au périmètre modifié.
 3. La section `docs/` thématique si une convention transverse est concernée.
 4. Le `README.md` local du dossier modifié.
@@ -85,9 +78,8 @@ source au lieu de recopier le contenu.
 
 ## Skills
 
-> À documenter ultérieurement : un chapitre détaillant les skills disponibles et leur
-> périmètre d'usage. Objectif : **aligner les skills entre Codex et Claude** pour qu'un même
-> besoin déclenche le même outillage quel que soit l'assistant utilisé depuis VSCode.
+La liste des skills disponibles est fournie par la session. Les invoquer selon
+les [règles du projet](../../AGENTS.md#conventions-de-workflow), sans recopier leurs procédures dans cette documentation.
 
 ## Points de vigilance
 

@@ -18,7 +18,7 @@ les fichiers `.env` et les sources du projet sont conservés.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-docker compose --env-file webapp/.env -f docker-compose.dev.yml --profile e2e down -v --remove-orphans
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml --profile e2e down -v --remove-orphans
 
 # Caches uniquement : ne pas supprimer public/images ni originals
 rm -rf webapp/.nuxt webapp/.output webapp/.data
@@ -59,7 +59,7 @@ test -f webapp/.env || cp webapp/.env.example webapp/.env
 
 make dev-build-localhost-no-cache
 
-docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps \
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps \
   webapp-localhost bun run setup:local
 
 make dev-webapp-localhost
@@ -93,7 +93,7 @@ conteneur frontend à la fin ; relancer `make dev-webapp-localhost` au besoin.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-docker compose --env-file webapp/.env -f docker-compose.dev.yml --profile e2e down
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml --profile e2e down
 
 cd /home/johan/www/graines-digitales/api/symfony-8-api-platform
 make dev-down
@@ -147,8 +147,8 @@ créer un snapshot initial du contenu nettoyé plutôt que pousser les branches 
 
 ```bash
 make quality-check
-docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run test
-docker compose --env-file webapp/.env -f docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run build
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run test
+docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run build
 ```
 
 Contrôler les trois langues, une liste de biens, une fiche fictive, le contact,
