@@ -20,10 +20,10 @@ dateModified: '2023-02-16T11:40:34+01:00'
 ---
 identifier: 'screen-real-estate-full-image'
 headline: 'Showcase Immobilier - Agence Immobilière à Essaouira'
-image: '/images/essaouira-en-drone.jpg'
+image: '/images/maison-mid-century-los-angeles.jpg'
 hasPart:
   - additionalType: 'mobile-portrait-background'
-    image: '/images/medina-dessaouira-remparts-vertical.jpg'
+    image: '/images/maison-mid-century-los-angeles.jpg'
 links:
   - for-sale
   - seasonal-rental
