@@ -62,7 +62,7 @@
                   color="neutral"
                   variant="ghost"
                   class="text-foreground inline-flex h-8 w-8 items-center justify-center rounded-full p-0"
-                  aria-label="Contacter Showcase Immobilier via WhatsApp"
+                  :aria-label="`Contacter ${appConfig.organization.fullName} via WhatsApp`"
                   :ui="{
                     base: 'rounded-full cursor-pointer ring-0 hover:bg-surface/10',
                   }"

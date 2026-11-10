@@ -17,6 +17,7 @@
 <script lang="ts" setup>
 // 4. Composables, stores, routeur
 
+const appConfig = useAppConfig()
 const logger = useLogger({ module: 'app' })
 // Locale active utilisée pour synchroniser lang HTML et forcer un re-init des données.
 const { localeSetting } = useLang()
@@ -136,7 +137,7 @@ watch(
 // 11. Metadonnees ecran ou page
 
 useHead(() => ({
-  title: 'Showcase Immobilier',
+  title: appConfig.organization.fullName,
   htmlAttrs: {
     // Synchronise l'attribut lang du document HTML avec la locale active.
     lang: localeSetting.value,

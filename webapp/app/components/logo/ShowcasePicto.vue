@@ -10,9 +10,8 @@
 
 <script setup lang="ts">
 // 1. Imports
+import LogoPictoSvg from '@site-assets/logo/showcase-picto.svg'
 import { computed } from 'vue'
-
-import LogoPictoSvg from '~/assets/logo/showcase-picto.svg'
 
 // 2. Types et constantes statiques
 type PresetSize = 'xs' | 'sm' | 'md' | 'lg'

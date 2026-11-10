@@ -1,7 +1,4 @@
----
-blueprint_source: /app/docs/blueprints/modern-webapp-nuxt/directory-structure/public/README.md
-blueprint_copied_at: 2026-01-22T13:03:48+00:00
----
+# Ressources publiques
 
-Les illustrations neutres sont versionnées dans `demo/`. Le favicon représente
-un bâtiment générique. Le setup ne télécharge aucun média client.
+Les fichiers publics résident dans `sites/<client>/public/`. Les URL existantes
+restent identiques. Voir [les layers clients](../../docs/2.architecture/14.site-layers.md).

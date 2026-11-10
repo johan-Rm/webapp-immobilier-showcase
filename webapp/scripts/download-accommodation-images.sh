@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OUTPUT_DIR="public/images"
+OUTPUT_DIR="$(bun -e 'import {siteMediaRoot} from "./services/infra/resolver/site.ts"; console.log(siteMediaRoot())')"
 mkdir -p "$OUTPUT_DIR"
 
 download_image() {

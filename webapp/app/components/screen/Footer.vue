@@ -288,7 +288,7 @@ type ContactEntry = {
 const SCREEN_ID = 'screen-footer'
 const COLUMN_TEMPLATE: ScreenColumnTemplate = 'split-67-33'
 const DEFAULT_BACKGROUND_IMAGE_URL = '/demo/coast.svg'
-const DEFAULT_BACKGROUND_IMAGE_ALT = 'Showcase Immobilier'
+const DEFAULT_BACKGROUND_IMAGE_ALT = useAppConfig().organization.fullName
 const LINK_FILL_TEXT_CLASS = 'from-secondary to-foreground/70 inline-block'
 
 // 3. Props et emits

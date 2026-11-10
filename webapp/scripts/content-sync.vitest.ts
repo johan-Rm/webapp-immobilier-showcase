@@ -51,6 +51,8 @@ const sync = (args: string[] = [], fail = false) =>
       encoding: 'utf8',
       env: {
         ...process.env,
+        CONTENT_PATH: join(root, 'content'),
+        CONTENT_SYNC_MEDIA_DIR: join(root, 'media'),
         SYMFONY_API_URL: 'http://sync.test',
         SYMFONY_PROJECT_ID: 'test',
         SYMFONY_SERVICE_EMAIL: 'test@example.com',

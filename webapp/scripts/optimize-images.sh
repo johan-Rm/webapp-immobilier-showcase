@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DIR="${1:-public/images}"
+DIR="${1:-$(bun -e 'import {siteMediaRoot} from "./services/infra/resolver/site.ts"; console.log(siteMediaRoot())')}"
 BACKUP_DIR="${DIR}__backup"
 
 MAX_WIDTH=2560

@@ -37,3 +37,5 @@ Lectures prioritaires :
     correspondance schema.org et pipeline de transformation vers les contrats applicatifs.
 13. [Routing And Middleware](13.routing-and-middleware.md) : structure des routes, préfixe de
     locale, middlewares globaux, scroll behavior et conventions de navigation.
+
+- [Layers clients immobiliers](14.site-layers.md) : composition, sélection et ajout de clients.

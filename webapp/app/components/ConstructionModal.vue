@@ -16,7 +16,7 @@
             id="construction-modal-title"
             class="text-2xl font-bold tracking-tight text-white sm:text-3xl"
           >
-            Showcase Immobilier
+            {{ appConfig.organization.fullName }}
           </h2>
           <p class="text-sm font-medium tracking-[0.15em] text-white/70 uppercase sm:text-base">
             Agence Immobilière Essaouira

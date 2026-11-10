@@ -8,15 +8,18 @@ services:
       - ${ENV_FILE:-webapp/.env.preprod}
     volumes:
       - ./webapp:/app
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/public/images
+      - ${CONTENT_HOST_DIR:-./webapp/sites/${GD_TARGET:-showcase-immobilier}/content}:/app/content
+      - ${MEDIA_HOST_DIR:-./webapp/sites/${GD_TARGET:-showcase-immobilier}/public/images}:/app/public/images
       - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
     environment:
+      GD_TARGET: ${GD_TARGET:-showcase-immobilier}
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
+      CONTENT_PATH: /app/content
       CONTENT_SYNC_MEDIA_DIR: /app/public/images
       HOME: /tmp
       BUN_INSTALL_CACHE_DIR: /tmp/.bun-cache
-    command: sh -c "bun install --frozen-lockfile && bun scripts/content-sync.ts"
+    command: sh -c 'bun install --frozen-lockfile && bun scripts/content-sync.ts'
     networks:
       app_stack: {}
 
@@ -28,6 +31,7 @@ services:
       additional_contexts:
         schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
       args:
+        GD_TARGET: ${GD_TARGET:-showcase-immobilier}
         APP_ENV: ${APP_ENV:-production}
         SITE_URL: ${SITE_URL:?SITE_URL is required — set it in .env.preprod}
         SITE_NAME: ${SITE_NAME:?SITE_NAME is required — set it in .env.preprod}
@@ -36,6 +40,7 @@ services:
     env_file:
       - ${ENV_FILE:-webapp/.env.preprod}
     environment:
+      GD_TARGET: ${GD_TARGET:-showcase-immobilier}
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
       NUXT_RESEND_API_KEY: ${RESEND_API_KEY:-}
@@ -55,10 +60,10 @@ services:
       - '3000'
     volumes:
       - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas
-      - ${CONTENT_HOST_DIR:-./webapp/content}:/app/content
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/.output/public/images:ro
+      - ${CONTENT_HOST_DIR:-./webapp/sites/${GD_TARGET:-showcase-immobilier}/content}:/app/content
+      - ${MEDIA_HOST_DIR:-./webapp/sites/${GD_TARGET:-showcase-immobilier}/public/images}:/app/.output/public/images:ro
       # IPX lit les sources dans le dossier public, indépendamment du build.
-      - ${MEDIA_HOST_DIR:-/var/www/graines-digitales/webapps/showcase-immobilier/webapp/public/images}:/app/public/images:ro
+      - ${MEDIA_HOST_DIR:-./webapp/sites/${GD_TARGET:-showcase-immobilier}/public/images}:/app/public/images:ro
       # Persistance des demandes de contact (survit à la recréation du conteneur).
       - ${DATA_HOST_DIR:-./webapp/.data}:/app/.data
     networks:

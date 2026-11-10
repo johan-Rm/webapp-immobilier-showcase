@@ -4,6 +4,7 @@
 
 FROM oven/bun:1.4.0-alpine AS build
 
+ARG GD_TARGET=showcase-immobilier
 ARG APP_ENV=prod
 ARG SITE_URL=https://example.com
 ARG SITE_NAME="Mon Webapp"
@@ -16,6 +17,7 @@ RUN apk add --no-cache bash git curl python3 make g++ nodejs \
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV GD_TARGET=${GD_TARGET}
 ENV APP_ENV=${APP_ENV}
 ENV SITE_URL=${SITE_URL}
 ENV SITE_NAME=${SITE_NAME}
@@ -59,8 +61,6 @@ ENV PUBLIC_HOST=localhost
 ENV PUBLIC_PORT=3001
 
 COPY --from=build /app/.output ./.output
-COPY --from=build /app/content /app/content
-COPY --from=build /app/themes.yaml /app/themes.yaml
 COPY --from=build /opt/app-schemas /opt/app-schemas
 COPY --from=build /app/scripts/entrypoint-ssr.sh /entrypoint-ssr.sh
 

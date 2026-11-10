@@ -21,6 +21,7 @@ import { config as loadDotenv } from 'dotenv'
 import YAML from 'yaml'
 
 import { parseProjectLocales, updateAppLocalesYaml } from '../services/content/projectLocales'
+import { siteContentRoot, siteMediaRoot } from '../services/infra/resolver/site'
 import { FALLBACK_LOCALE } from '../shared/utils/locale'
 
 loadDotenv({ path: resolve(process.cwd(), '.env') })
@@ -36,10 +37,8 @@ const API_URL = process.env.SYMFONY_API_URL ?? ''
 const PROJECT_ID = process.env.SYMFONY_PROJECT_ID ?? ''
 const SERVICE_EMAIL = process.env.SYMFONY_SERVICE_EMAIL ?? ''
 const SERVICE_PASSWORD = process.env.SYMFONY_SERVICE_PASSWORD ?? ''
-const CONTENT_DIR = join(process.cwd(), 'content')
-const MEDIA_DIR = resolve(
-  process.env.CONTENT_SYNC_MEDIA_DIR ?? join(process.cwd(), 'public/images'),
-)
+const CONTENT_DIR = siteContentRoot()
+const MEDIA_DIR = siteMediaRoot()
 
 if (!API_URL || !PROJECT_ID || !SERVICE_EMAIL || !SERVICE_PASSWORD) {
   console.error('[content-sync] Erreur : variables SYMFONY_* manquantes dans .env')

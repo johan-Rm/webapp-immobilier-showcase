@@ -17,7 +17,6 @@ RUN mkdir -p /app/.nuxt /app/node_modules/.cache \
     && chown bun:bun /app
 
 ENV NODE_ENV=development
-ENV CONTENT_PATH=/app/content
 ENV SCHEMAS_PATH=/opt/app-schemas
 
 EXPOSE 3000

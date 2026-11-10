@@ -4,9 +4,11 @@ import type { WebPageDto } from '@schemas/dtos'
 
 import { existsSync } from 'node:fs'
 import { readFile, readdir } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { join } from 'node:path'
 
 import YAML from 'yaml'
+
+import { currentSiteContentRoot } from '../site'
 
 import { normalizeLocale } from '#shared/utils/locale'
 
@@ -66,22 +68,11 @@ const isFixtureAccommodation = (frontmatter: Record<string, unknown>): boolean =
 }
 
 export const resolveRuntimeContentRoot = (): string => {
-  const candidates = [
-    process.env.CONTENT_PATH?.trim(),
-    join(process.cwd(), 'content'),
-    resolve(process.cwd(), '..', 'content'),
-    join(process.cwd(), '.output', 'content'),
-  ].filter((value): value is string => Boolean(value))
-
-  const match = candidates.find((dir) => existsSync(dir))
-
-  if (!match) {
-    throw new Error(
-      `[content] Aucun dossier de contenu trouvé. Chemins testés: ${candidates.join(', ')}`,
-    )
+  const directory = currentSiteContentRoot()
+  if (!existsSync(directory)) {
+    throw new Error(`[content] Dossier du client introuvable : ${directory}`)
   }
-
-  return match
+  return directory
 }
 
 const parseFrontmatter = (raw: string, source: string): Record<string, unknown> => {

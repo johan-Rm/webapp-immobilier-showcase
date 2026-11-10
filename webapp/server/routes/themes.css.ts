@@ -135,7 +135,7 @@ const buildThemeCss = (key: string, theme: ThemeDefinition, palettes: ThemeYaml[
 }
 
 export default defineEventHandler(async (event) => {
-  const raw = await readThemeSource(import.meta.url)
+  const raw = await readThemeSource()
   const themesData = parse(raw) as ThemeYaml
   const themes = themesData?.themes ?? {}
   const palettes = themesData?.colors ?? themes.colors ?? {}

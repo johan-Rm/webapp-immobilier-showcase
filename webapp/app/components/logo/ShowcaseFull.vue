@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 // 1. Imports
-import LogoSvg from '~/assets/logo/showcase-full.svg'
+import LogoSvg from '@site-assets/logo/showcase-full.svg'
 
 // 2. Types et constantes statiques
 /**

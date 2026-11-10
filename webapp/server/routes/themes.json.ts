@@ -58,7 +58,7 @@ const resolveThemeColors = (
   })
 
 export default defineEventHandler(async () => {
-  const raw = await readThemeSource(import.meta.url)
+  const raw = await readThemeSource()
   const data = parse(raw) as ThemeYaml
   const themes = data?.themes ?? {}
   const palettes = data?.colors ?? themes.colors ?? {}
