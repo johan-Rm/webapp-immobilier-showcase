@@ -44,3 +44,7 @@ make aide-runtime-check IMAGE=showcase-immobilier-dev-webapp-localhost:latest
 Le contrôle utilise un snapshot temporaire sans les `.env` locaux, lance Web et BFF,
 compare leurs réponses et écritures, puis arrête ses conteneurs. Il conserve le snapshot
 en cas d’échec pour diagnostic et le supprime en cas de succès.
+
+Les deux sites SSR d’une couche utilisent son même port public isolé, distingués
+par les domaines du [guide des layers](../docs/2.architecture/14.site-layers.md).
+`make dev-check-ssr` découvre ce port auprès du Nginx de la pile courante.

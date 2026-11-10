@@ -22,7 +22,7 @@
       "id": "app-no-redundant-guards",
       "nom": "Sur-vérification des variables",
       "domaine": "qualite",
-      "source": "webapp/app/README.md#sur-vérification-des-variables",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#sur-vérification-des-variables",
       "controles": [
         {
           "id": "app-no-redundant-guards",
@@ -37,7 +37,7 @@
       "id": "vue-block-order",
       "nom": "Ordre des blocs Vue",
       "domaine": "qualite",
-      "source": "webapp/app/README.md#ordre-des-blocs-dans-un-fichier-vue",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#ordre-des-blocs-dans-un-fichier-vue",
       "controles": [
         {
           "id": "vue-block-order",
@@ -52,7 +52,7 @@
       "id": "app-script-setup-standard",
       "nom": "Structure du script setup",
       "domaine": "qualite",
-      "source": "webapp/app/README.md#structure-interne-de-",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#structure-interne-de-",
       "controles": [
         {
           "id": "app-script-setup-standard",
@@ -67,7 +67,7 @@
       "id": "ui-ready-data",
       "nom": "Données prêtes pour le template",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#données-prêtes-pour-le-template",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#données-prêtes-pour-le-template",
       "controles": [
         {
           "id": "ui-ready-data",
@@ -82,7 +82,7 @@
       "id": "module-wrappers",
       "nom": "Encapsulation des modules externes",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#encapsulation-des-modules-externes",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#encapsulation-des-modules-externes",
       "controles": [
         {
           "id": "module-wrappers",
@@ -97,7 +97,7 @@
       "id": "app-images",
       "nom": "Images via AppImage",
       "domaine": "interface-i18n",
-      "source": "webapp/app/README.md#images",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#images",
       "controles": [
         {
           "id": "app-images",
@@ -112,7 +112,7 @@
       "id": "app-components-no-business-logic",
       "nom": "Logique métier des composants",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#logique-métier-dans-les-composants",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#logique-métier-dans-les-composants",
       "controles": [
         {
           "id": "app-components-no-business-logic",
@@ -127,7 +127,7 @@
       "id": "app-types-placement",
       "nom": "Placement des types partagés",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#placement-des-types",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#placement-des-types",
       "controles": [
         {
           "id": "app-types-placement",
@@ -142,7 +142,7 @@
       "id": "app-no-fetch-in-components",
       "nom": "Fetch des composants",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#fetch-dans-les-composants",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#fetch-dans-les-composants",
       "controles": [
         {
           "id": "app-no-fetch-in-components",
@@ -157,7 +157,7 @@
       "id": "app-no-store-write-in-components",
       "nom": "Mutations de store dans les composants",
       "domaine": "architecture",
-      "source": "webapp/app/README.md#mutations-de-store-dans-les-composants",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#mutations-de-store-dans-les-composants",
       "controles": [
         {
           "id": "app-no-store-write-in-components",
@@ -172,7 +172,7 @@
       "id": "app-large-component",
       "nom": "Taille des composants",
       "domaine": "qualite",
-      "source": "webapp/app/README.md#composants-larges",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#composants-larges",
       "controles": [
         {
           "id": "app-large-component",
@@ -187,7 +187,7 @@
       "id": "app-composable-many-returns",
       "nom": "Retours des composables",
       "domaine": "qualite",
-      "source": "webapp/app/README.md#composables-avec-beaucoup-de-retours",
+      "source": "webapp/sites/showcase-immobilier/app/README.md#composables-avec-beaucoup-de-retours",
       "controles": [
         {
           "id": "app-composable-many-returns",
