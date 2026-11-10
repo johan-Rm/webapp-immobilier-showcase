@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée et commitée localement le 2026-11-10 ; contrôles globaux différés
+- État : correction validée humainement le 2026-11-10 ; commit local autorisé
 - Chemins autorisés : Config Nuxt/TypeScript/Vitest/Tailwind/ESLint/Playwright de `webapp/`, `webapp/base/nuxt.config.ts`, `webapp/base/README.md`, scripts et workflow qualité, `sonar-project.properties` : liste exacte OPS-004 dans l’inventaire.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; pas de dépendance de réalisation à WEB-001/002. Consommer leurs contrats de chemins confirmés ; exécuter les contrôles globaux après leurs commits.
 
@@ -84,3 +84,29 @@ les builds et parcours des vrais clients, encore dépendants des cartes Web.
 
 - Réalisation : `943ac3e2fbc1b269435936112be9efcea6b17ce3`.
 - Aucun push, PR ou fusion ; suite hors de cette étape de validation.
+
+## Correction à l’étape 03
+
+La suppression complète des paths manuels a révélé des erreurs de résolution de
+modules et d’inférence appConfig dans Showcase ; le contrôle de référence du
+principal conserve zéro erreur. La politique d’alias historique est donc conservée,
+avec les chemins app calculés pour la cible et #components pour les imports de
+screens. `prepare:types` génère `.nuxt/tsconfig.site.json`, étendu par tsconfig.json.
+Aucun changement de strict, skipLibCheck, seuil, règle, code métier ou API.
+Cette correction non commitée ne peut pas encore être consommée par Web ; ses
+preuves d’ensemble restent différées à sa validation et reprise par commit.
+
+Preuves de correction : fixture réelle de composition/build et alias, 2 tests
+réussis (`/tmp/dem003-ops004-correction-tests.log`) ; lint réussi. La comparaison
+sur Showcase préparé explicitement retrouve 9 erreurs avec les alias remplacés,
+zéro avec la politique historique adaptée via une configuration temporaire
+(`/tmp/dem003-types-compat.log`). Ce diagnostic n’est pas une consommation de la
+correction non commitée par Web : la commande ordinaire reste à revalider après
+commit et cherry-pick. Les réglages strict et skipLibCheck restent hérités inchangés.
+Le verdict humain précédent couvre uniquement `943ac3e`, pas cette correction.
+
+Validation de la correction le 2026-11-10 : « c’est validé », après essais humains
+sur le vhost Web et présentation des preuves et de la limite TypeScript.
+Le contenu présenté a été revérifié par empreinte avant indexation. Le contrôle
+ordinaire sera exécuté après reprise du commit dans Web ; aucune modification
+supplémentaire de source n’est autorisée par cette vérification.
