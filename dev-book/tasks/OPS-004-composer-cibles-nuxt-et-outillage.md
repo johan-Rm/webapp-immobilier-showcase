@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : correction validée humainement le 2026-11-10 ; commit local autorisé
+- État : validée et commitée localement le 2026-11-10 ; à reconstituer
 - Chemins autorisés : Config Nuxt/TypeScript/Vitest/Tailwind/ESLint/Playwright de `webapp/`, `webapp/base/nuxt.config.ts`, `webapp/base/README.md`, scripts et workflow qualité, `sonar-project.properties` : liste exacte OPS-004 dans l’inventaire.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; pas de dépendance de réalisation à WEB-001/002. Consommer leurs contrats de chemins confirmés ; exécuter les contrôles globaux après leurs commits.
 
@@ -82,7 +82,8 @@ les builds et parcours des vrais clients, encore dépendants des cartes Web.
 
 ## Commits
 
-- Réalisation : `943ac3e2fbc1b269435936112be9efcea6b17ce3`.
+- Réalisation initiale : `943ac3e2fbc1b269435936112be9efcea6b17ce3`.
+- Correction validée : `0fb11118275083408e7f7a37f6cd9d12ff3133e2`.
 - Aucun push, PR ou fusion ; suite hors de cette étape de validation.
 
 ## Correction à l’étape 03
@@ -93,8 +94,8 @@ principal conserve zéro erreur. La politique d’alias historique est donc cons
 avec les chemins app calculés pour la cible et #components pour les imports de
 screens. `prepare:types` génère `.nuxt/tsconfig.site.json`, étendu par tsconfig.json.
 Aucun changement de strict, skipLibCheck, seuil, règle, code métier ou API.
-Cette correction non commitée ne peut pas encore être consommée par Web ; ses
-preuves d’ensemble restent différées à sa validation et reprise par commit.
+Cette limite décrivait l’étape 03 ; la correction a ensuite été validée et
+reprise par commit dans Web.
 
 Preuves de correction : fixture réelle de composition/build et alias, 2 tests
 réussis (`/tmp/dem003-ops004-correction-tests.log`) ; lint réussi. La comparaison
@@ -110,3 +111,7 @@ sur le vhost Web et présentation des preuves et de la limite TypeScript.
 Le contenu présenté a été revérifié par empreinte avant indexation. Le contrôle
 ordinaire sera exécuté après reprise du commit dans Web ; aucune modification
 supplémentaire de source n’est autorisée par cette vérification.
+
+Clôture à l’étape 04 : correction `0fb11118275083408e7f7a37f6cd9d12ff3133e2`
+reprise dans Web par `93eba2a`. Qualité Showcase et types Client 2 ordinaires
+réussis ; suites finales 70 et 45 tests réussis. Aucun code métier changé.

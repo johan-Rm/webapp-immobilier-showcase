@@ -6,7 +6,7 @@
 - Couche : web
 - Branche : layers/web
 - Worktree : worktree/web
-- État : validée humainement le 2026-11-10 ; commit local autorisé
+- État : validée et commitée localement le 2026-11-10 ; à reconstituer
 - Chemins autorisés : `webapp/app/`, `webapp/sites/showcase-immobilier/app/`, les README de cette cible et `webapp/sites/README.md`, sa `nuxt.config.ts`, `webapp/base/real-estate/`, `webapp/tests/layers/showcase-components.vitest.ts`.
 - Dépendances : OPS-003 source `3043960c8f6752ddfdfeae6ce114244fe64633b1` repris par `010cee5` ; autres dépendances et limite de correction dans les preuves.
 
@@ -103,5 +103,5 @@ absentes des commits et conservées dans le worktree.
 
 ## Commits
 
-Commit local de réalisation de cette carte ; SHA consigné dans la trace de clôture.
+- Réalisation : `ac57e313712614caa07d0780d847c6ab588dc67f`.
 Aucun push, PR ni fusion.
