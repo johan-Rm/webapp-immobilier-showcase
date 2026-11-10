@@ -12,10 +12,11 @@ class LayerRouting(unittest.TestCase):
             matches = [(len(prefix), name) for name, layer in config['layers'].items()
                        for prefix in layer.get('paths', []) if path.startswith(prefix)]
             return max(matches)[1] if matches else config['defaultLayer']
-        for path in ['webapp/app/pages/index.vue', 'webapp/sites/showcase-immobilier/nuxt.config.ts',
+        for path in ['webapp/sites/showcase-immobilier/nuxt.config.ts',
                      'webapp/sites/client2-immobilier/app/pages/index.vue',
                      'webapp/base/real-estate/components/screen/Hero.vue']:
             self.assertEqual(owner(path), 'web')
+        self.assertEqual(owner('webapp/app/pages/index.vue'), 'devops')
         for path in ['webapp/nuxt.config.ts', 'webapp/base/nuxt.config.ts', 'webapp/base/README.md']:
             self.assertEqual(owner(path), 'devops')
         self.assertEqual(owner('webapp/server/api/probe.ts'), 'bff')

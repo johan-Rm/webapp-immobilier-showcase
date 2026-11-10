@@ -173,3 +173,10 @@ ou d'une copie de ce dossier. `webapp/sites/showcase-immobilier/public/poc/` est
 
 Les chemins ci-dessus concernent le client historique. Voir
 [les layers clients](../2.architecture/14.site-layers.md) pour une autre cible.
+
+## Deux sites SSR locaux
+
+Après préparation de Showcase, `make dev-webapp-ssr BUILD=1` démarre les deux
+services et Nginx. Les domaines, l’isolation des cibles et `make dev-check-ssr`
+sont décrits dans [le guide des layers](../2.architecture/14.site-layers.md).
+Client 2 ne nécessite pas le setup des données ou les identifiants Showcase.
