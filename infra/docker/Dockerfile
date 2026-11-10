@@ -37,9 +37,11 @@ COPY . ./
 
 COPY --from=schemas . /opt/app-schemas/
 
-RUN test -f /opt/app-schemas/dtos/symfony_api/accommodation.yaml \
-    && test -f /opt/app-schemas/dtos/symfony_api/web_page.yaml \
-    && test -d /opt/app-schemas/webapp
+RUN if [ "$GD_TARGET" = "showcase-immobilier" ]; then \
+      test -f /opt/app-schemas/dtos/symfony_api/accommodation.yaml \
+      && test -f /opt/app-schemas/dtos/symfony_api/web_page.yaml \
+      && test -d /opt/app-schemas/webapp; \
+    fi
 
 RUN node ./node_modules/nuxt/bin/nuxt.mjs build
 
