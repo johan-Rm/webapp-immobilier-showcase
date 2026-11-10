@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path'
 
 import { createJiti } from 'jiti'
 
+import { writeSiteTypeScriptConfig } from './scripts/build/site'
 import { resolveSiteId } from './shared/site/registry'
 
 const siteId = resolveSiteId(process.env.GD_TARGET)
@@ -39,6 +40,11 @@ export default defineNuxtConfig({
     ...(process.env.DIGITAL_ORCHESTRATION_CORE_PATH?.trim()
       ? { '@DigitalOrchestrationCore': resolve(process.env.DIGITAL_ORCHESTRATION_CORE_PATH.trim()) }
       : {}),
+  },
+  hooks: {
+    'prepare:types': async () => {
+      await writeSiteTypeScriptConfig(resolve(__dirname, '.nuxt'), siteId)
+    },
   },
   nitro: {
     alias: { '#site': join(siteRoot, 'site.ts') },

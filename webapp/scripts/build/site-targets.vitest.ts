@@ -14,6 +14,8 @@ import { dirname, join, resolve } from 'node:path'
 
 import { afterEach, expect, it } from 'vitest'
 
+import { siteTypeScriptPaths } from './site'
+
 const roots: string[] = []
 afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })))
 
@@ -26,6 +28,8 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
     mkdirSync(dirname(absolute), { recursive: true })
     writeFileSync(absolute, text)
   }
+  mkdirSync(join(root, 'scripts/build'), { recursive: true })
+  cpSync(join(webapp, 'scripts/build/site.ts'), join(root, 'scripts/build/site.ts'))
   cpSync(join(webapp, 'nuxt.config.ts'), join(root, 'nuxt.config.ts'))
   cpSync(join(webapp, 'tsconfig.json'), join(root, 'tsconfig.json'))
   symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
@@ -95,3 +99,13 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
   expect(unknown.status).not.toBe(0)
   expect(unknown.stdout + unknown.stderr).toContain('Client inconnu')
 }, 180000)
+
+it('génère les alias compatibles sans importer une application voisine', () => {
+  for (const id of ['showcase-immobilier', 'client2-immobilier']) {
+    const paths = siteTypeScriptPaths(id)
+    expect(paths['~/*']).toEqual([`../sites/${id}/app/*`])
+    expect(paths['#imports']).toEqual(['./imports'])
+    expect(paths['#components']).toEqual(['./components'])
+    expect(paths['#site']).toEqual(['../shared/site/definition.d.ts'])
+  }
+})
