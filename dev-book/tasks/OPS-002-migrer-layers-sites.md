@@ -6,7 +6,7 @@
 - Couche : mission transverse autorisée par l’utilisateur, sans délégation
 - Branche : feat/nuxt-site-layers
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
-- État : validée par l’humain, commit local autorisé
+- État : validée et commitée localement, à livrer
 - Chemins autorisés : webapp/, infra/docker/, docs/, README.md, .gitignore, cette carte
 - Dépendances : aucune ; base 1ae0ce888dc80f04640abd47f508b6ec80fa50fb
 
@@ -69,4 +69,5 @@ screens appartient au prochain objectif.
 
 ## Commits
 
-Commit local autorisé pour le premier lot ; SHA consigné après création.
+Implémentation validée : `ddab1c01092cbe9c9d8f99b72b00ee01c5e09818`.
+Aucune reconstitution, publication distante ou fusion effectuée.
