@@ -35,6 +35,7 @@ const bgImageUrl = '/images/essaouira-navigation-hero.jpg'
 const props = defineProps<FooterScreenProps>()
 
 // 4. Composables, stores, routeur
+const appConfig = useAppConfig()
 const { setScreenMeta } = useScreenSystem()
 
 // 5. Etat local
@@ -50,7 +51,7 @@ const backgroundImage = computed<{ url: string; alt: string }>(() => {
   if (typeof image === 'string' && image.trim().length > 0) {
     return {
       url: image,
-      alt: 'Showcase Immobilier',
+      alt: appConfig.organization.fullName,
     }
   }
 
@@ -68,7 +69,7 @@ const backgroundImage = computed<{ url: string; alt: string }>(() => {
         rawImage.caption.trim().length > 0
           ? rawImage.caption
           : undefined) ??
-        'Showcase Immobilier'
+        appConfig.organization.fullName
 
       return {
         url,
@@ -79,7 +80,7 @@ const backgroundImage = computed<{ url: string; alt: string }>(() => {
 
   return {
     url: bgImageUrl,
-    alt: 'Showcase Immobilier',
+    alt: appConfig.organization.fullName,
   }
 })
 

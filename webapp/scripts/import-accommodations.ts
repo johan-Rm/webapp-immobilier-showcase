@@ -16,6 +16,8 @@ import { join, resolve } from 'node:path'
 import { config as loadDotenv } from 'dotenv'
 import YAML from 'yaml'
 
+import { siteContentRoot } from '../services/infra/resolver/site'
+
 loadDotenv({ path: resolve(process.cwd(), '.env') })
 
 // ---------------------------------------------------------------------------
@@ -24,7 +26,7 @@ loadDotenv({ path: resolve(process.cwd(), '.env') })
 
 const isDryRun = process.argv.includes('--dry-run')
 const LOCALE = 'fr'
-const CONTENT_DIR = join(process.cwd(), 'content', LOCALE, 'accommodations')
+const CONTENT_DIR = join(siteContentRoot(), LOCALE, 'accommodations')
 
 const API_URL = process.env.SYMFONY_API_URL ?? ''
 const PROJECT_ID = process.env.SYMFONY_PROJECT_ID ?? ''

@@ -1,38 +1,4 @@
 export default defineAppConfig({
-  global: {},
-  organization: {
-    acronym: 'SI',
-    fullName: 'Showcase Immobilier',
-    alternateName: 'Showcase Immobilier',
-    location: 'Essaouira',
-    image: '/favicon.svg',
-    email: ['contact@showcase-immobilier.example'],
-    phoneNumbers: [] as string[],
-    description:
-      'Showcase Immobilier accompagne vos projets immobiliers à Essaouira investissement, achat, vente et gestion locative avec une expertise locale et internationale.',
-  },
-  menu: {
-    mainMenuCenterImageUrl: '/images/essaouira-navigation-hero.jpg',
-    primaryMenuItems: ['for-sale', 'seasonal-rental', 'long-term-rental'],
-    secondaryMenuItems: ['agency', 'home-staging', 'rental-management', 'investing', 'contact'],
-    otherItems: ['essaouira-the-jewel'],
-    accommodationTypes: [
-      'apartment',
-      'riad',
-      'guest-house',
-      'golf-villa',
-      'country-house',
-      'town-house',
-      'land',
-      'commercial-business',
-      'lease-management',
-      'commercial-property',
-      'dar',
-      'guest-room',
-    ],
-    services: ['home-staging', 'rental-management', 'investing'],
-    meta: ['agency', 'fees', 'legal-notice', 'partnerships'],
-  },
   ui: {
     primary: 'primary',
     gray: 'surface',

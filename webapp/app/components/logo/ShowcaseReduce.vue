@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 // 1. Imports
-import ReduceLogoSvg from '~/assets/logo/showcase-reduce.svg'
+import ReduceLogoSvg from '@site-assets/logo/showcase-reduce.svg'
 
 // 2. Types et constantes statiques
 type PresetSize = 'sm' | 'md' | 'lg' | 'xl'

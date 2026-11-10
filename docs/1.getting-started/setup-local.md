@@ -106,13 +106,13 @@ Ces commandes d’arrêt conservent les volumes et la BDD recréée.
 Les sources de contrats sont versionnées dans `webapp/schemas/source/webapp/` et
 `webapp/schemas/source/dtos/symfony_api/`. Les biens fictifs viennent de
 `webapp/fixtures/catalog/` (catalogue Blueprint de démonstration conservé).
-Les photos originales sont restaurées dans `webapp/public/images/` et `webapp/public/poc/`.
-Les illustrations SVG neutres restent disponibles dans `webapp/public/demo/`.
+Les photos originales sont restaurées dans `webapp/sites/showcase-immobilier/public/images/` et `webapp/sites/showcase-immobilier/public/poc/`.
+Les illustrations SVG neutres restent disponibles dans `webapp/sites/showcase-immobilier/public/demo/`.
 
 Le setup initialise `webapp/.env` uniquement s'il manque, avec un secret neuf.
 Les référentiels et les localisations du catalogue sont conservés.
-Le contenu généré est rangé dans `webapp/content/{locale}/metadata/` et
-`webapp/content/{locale}/accommodations/`. Les contrats sont générés dans
+Le contenu généré est rangé dans `webapp/sites/showcase-immobilier/content/{locale}/metadata/` et
+`webapp/sites/showcase-immobilier/content/{locale}/accommodations/`. Les contrats sont générés dans
 `webapp/schemas/interfaces/` et `webapp/schemas/dtos/`.
 
 Le setup est rejouable avec des données fictives. S'il détecte un bien sans marqueur
@@ -156,7 +156,7 @@ les mentions et les partenariats. Le setup ne doit joindre aucune API externe.
 
 Le contact affiché est `contact@showcase-immobilier.example`, une adresse de
 démonstration sans envoi. Aucun ancien numéro n’est réutilisé. Le stamp transparent
-`webapp/public/branding/showcase-stamp.svg` est prêt pour le backend.
+`webapp/sites/showcase-immobilier/public/branding/showcase-stamp.svg` est prêt pour le backend.
 
 ## Stamp côté backend
 
@@ -167,6 +167,9 @@ des webapps. La régénération doit repartir des originaux, sans superposition 
 les photos déjà marquées. La configuration du projet backend et la régénération
 n'ont pas encore été exécutées ; les intégrations restent désactivées ici.
 
-`webapp/public/images/` reste ignoré par Git : les photos restaurées sont disponibles
+`webapp/sites/showcase-immobilier/public/images/` reste ignoré par Git : les photos restaurées sont disponibles
 localement, mais un nouveau clone aura besoin de récupérer les médias du backend
-ou d'une copie de ce dossier. `webapp/public/poc/` est versionné.
+ou d'une copie de ce dossier. `webapp/sites/showcase-immobilier/public/poc/` est versionné.
+
+Les chemins ci-dessus concernent le client historique. Voir
+[les layers clients](../2.architecture/14.site-layers.md) pour une autre cible.

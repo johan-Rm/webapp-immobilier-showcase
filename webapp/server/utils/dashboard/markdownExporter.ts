@@ -9,9 +9,11 @@ import type {
 
 import { randomUUID } from 'node:crypto'
 import { mkdir, readdir, readFile, rename, unlink, writeFile } from 'node:fs/promises'
-import { basename, dirname, isAbsolute, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 
 import YAML from 'yaml'
+
+import { currentSiteContentRoot } from '../site'
 
 function isFixture(accommodation: DashboardAccommodation): boolean {
   const additionalProperty = accommodation.frontmatter.additionalProperty
@@ -32,11 +34,7 @@ function buildMarkdown(frontmatter: Record<string, DashboardEditableValue>, body
 export type MarkdownExportResult =
   { updated: true; filePath: string } | { updated: false; reason: string }
 
-export const resolveContentRoot = (): string => {
-  const configuredPath = process.env.CONTENT_PATH?.trim()
-  if (!configuredPath) return join(process.cwd(), 'content')
-  return isAbsolute(configuredPath) ? configuredPath : join(process.cwd(), configuredPath)
-}
+export const resolveContentRoot = currentSiteContentRoot
 
 const writeMarkdownAtomically = async (filePath: string, content: string): Promise<void> => {
   await mkdir(dirname(filePath), { recursive: true })

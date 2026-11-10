@@ -16,7 +16,8 @@
       "#shared": ["./shared"],
       "#shared/*": ["./shared/*"],
       "@schemas/*": ["./schemas/*"],
-      "@services/*": ["./services/*"]
+      "@services/*": ["./services/*"],
+      "#site": ["./shared/site/definition.d.ts"]
     }
   }
 }

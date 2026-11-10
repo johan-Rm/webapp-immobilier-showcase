@@ -11,7 +11,8 @@ Dépôt : [johan-Rm/showcase-immobilier-webapp](https://github.com/johan-Rm/show
 
 ## Organisation du dépôt
 
-- `webapp/` : sources Nuxt, configurations, dépendances, tests et fixtures.
+- `webapp/` : socle Nuxt, configurations, dépendances, tests et fixtures.
+- `webapp/sites/<client>/` : layers clients, contenus, thèmes et médias.
 - `docs/` et `dev-book/` : documentation et suivi du projet.
 - `infra/docker/` : Dockerfiles et configurations Compose.
 - `infra/nginx/` : configuration Nginx et certificats locaux.
@@ -34,7 +35,7 @@ bun run dev
 
 Prérequis : Docker Compose et Make. Les schémas YAML sont inclus dans
 `webapp/schemas/source/`. Le catalogue et les référentiels de démonstration sont versionnés
-dans `webapp/fixtures/` ; les photos dans `webapp/public/images/` doivent être conservées
+dans `webapp/fixtures/` ; les photos dans `webapp/sites/showcase-immobilier/public/images/` doivent être conservées
 ou récupérées séparément, car ce dossier est ignoré par Git.
 
 Depuis un checkout avec son `webapp/.env` local renseigné :
@@ -80,8 +81,12 @@ complète de reset et la préparation de `webapp/.env` sont détaillées dans
 
 ## Configuration d'un futur projet
 
-Remplacer l'identité dans `webapp/app/app.config.ts`, les contenus dans `webapp/content/` et
-les visuels dans `webapp/public/`. Configurer les connexions dans `webapp/.env` après avoir créé
+La sélection du client et la procédure d’ajout sont décrites dans
+[le guide des layers](docs/2.architecture/14.site-layers.md). Sans `GD_TARGET`,
+les commandes existantes servent Showcase Immobilier.
+
+Remplacer l'identité dans `webapp/sites/showcase-immobilier/app/app.config.ts`, les contenus dans `webapp/sites/showcase-immobilier/content/` et
+les visuels dans `webapp/sites/showcase-immobilier/public/`. Configurer les connexions dans `webapp/.env` après avoir créé
 les comptes et le projet backend appropriés. Les pages de mentions et de partenariats
 décrivent une démonstration et doivent être adaptées au futur éditeur avant publication.
 
@@ -89,7 +94,7 @@ Procédure de migration : [setup local](docs/1.getting-started/setup-local.md).
 
 Le catalogue Blueprint et ses photos sont conservés comme démonstration.
 Le setup recopie `webapp/fixtures/catalog/` avec les localisations originales.
-Les illustrations `webapp/public/demo/` restent disponibles en complément.
+Les illustrations `webapp/sites/showcase-immobilier/public/demo/` restent disponibles en complément.
 
 Le développement assisté par IA suit les [règles du projet](AGENTS.md#conventions-de-workflow) et les skills AIDE.
 Les conventions Nuxt et les commandes de développement restent inchangées.

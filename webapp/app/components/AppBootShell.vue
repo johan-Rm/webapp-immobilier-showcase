@@ -13,7 +13,7 @@
       size="5xl"
       :force-visible="true"
       :color-class="props.logoColorClass"
-      :aria-label="props.logoAriaLabel"
+      :aria-label="props.logoAriaLabel || appConfig.organization.fullName"
     />
   </div>
 </template>
@@ -38,14 +38,15 @@ const props = withDefaults(
     logoColorClass?: BootShellLogoColorClass
   }>(),
   {
+    logoAriaLabel: '',
     ariaLabel: 'Chargement initial de l application',
-    logoAriaLabel: 'Showcase Immobilier',
     logoColorClass: 'text-surface',
   },
 )
 
 // 4. Composables, stores, routeur
 
+const appConfig = useAppConfig()
 const logger = useLogger({ module: 'app-boot-shell' })
 const { isLandingShellVisible } = useApp()
 const { initCoreDataStatus, isInitCoreDataReady } = useNuxtServerInit()

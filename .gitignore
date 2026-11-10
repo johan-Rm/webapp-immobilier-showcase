@@ -66,3 +66,11 @@ webapp/schemas/dtos/
 !/worktree/README.md
 __pycache__/
 *.pyc
+
+# Client-specific runtime data and media
+webapp/sites/*/public/images/
+webapp/sites/*/content/*/accommodations/
+webapp/sites/*/content/*/metadata/category-code.yaml
+webapp/sites/*/content/*/metadata/media-object.yaml
+
+/tmp/

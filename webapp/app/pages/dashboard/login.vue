@@ -9,12 +9,12 @@
             <LogoShowcaseMark class="h-5 w-auto shrink-0 text-[#6B7A4A]" aria-hidden="true" />
             <p class="text-xs font-semibold tracking-[0.18em] uppercase">
               <span class="text-white/40">Dashboard</span>
-              <span class="text-[#6B7A4A]"> Showcase Immobilier</span>
+              <span class="text-[#6B7A4A]"> {{ appConfig.organization.fullName }}</span>
             </p>
           </div>
 
           <h1 class="text-4xl leading-tight text-white uppercase sm:text-5xl lg:text-6xl">
-            Showcase Immobilier
+            {{ appConfig.organization.fullName }}
           </h1>
         </div>
 
@@ -71,9 +71,10 @@
 
 <script setup lang="ts">
 // 1. Imports
-import LogoShowcaseMark from '~/assets/logo/showcase-picto.svg'
+import LogoShowcaseMark from '@site-assets/logo/showcase-picto.svg'
 
 // 4. Composables, stores, routeur
+const appConfig = useAppConfig()
 const { loggedIn, fetch } = useUserSession()
 
 // 6. Data inputs

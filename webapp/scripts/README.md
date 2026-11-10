@@ -16,3 +16,6 @@ Les dossiers de contrats générés sont déclarés dans
 depuis les langues du projet Symfony. Les champs éditoriaux existants sont
 conservés. Publication après réussite ; aucune écriture en `--dry-run`.
 Le filtre `--locale=` porte sur les contenus, pas sur la liste complète des langues.
+
+Les scripts de contenu et de médias suivent `GD_TARGET`, comme Nuxt. Les chemins
+et surcharges sont décrits dans [le guide des layers](../../docs/2.architecture/14.site-layers.md).

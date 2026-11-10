@@ -15,7 +15,7 @@
           <span
             class="mt-1 block truncate font-[rationale] text-base leading-none font-medium tracking-wider text-[#6B7A4A]/70 uppercase"
           >
-            Showcase Immobilier
+            {{ appConfig.organization.fullName }}
           </span>
         </div>
       </div>
@@ -133,7 +133,7 @@
         <span
           class="mt-1 block font-[rationale] text-lg leading-none font-medium tracking-wider whitespace-nowrap text-[#6B7A4A]/70 uppercase"
         >
-          Showcase Immobilier
+          {{ appConfig.organization.fullName }}
         </span>
       </div>
     </div>
@@ -218,7 +218,7 @@
 // 1. Imports
 import type { ComponentPublicInstance } from 'vue'
 
-import LogoShowcaseMark from '~/assets/logo/showcase-picto.svg'
+import LogoShowcaseMark from '@site-assets/logo/showcase-picto.svg'
 
 // 2. Types et constantes statiques
 type WorkspaceUser = {
@@ -254,6 +254,9 @@ const emit = defineEmits<{
   'update:selectedCategory': [value: string]
   'update:identifierSearch': [value: string]
 }>()
+
+// 4. Composables, stores, routeur
+const appConfig = useAppConfig()
 
 // 5. Etat local
 const isTopbarOpen = ref(false)

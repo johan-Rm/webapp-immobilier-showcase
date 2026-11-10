@@ -8,19 +8,24 @@ services:
     init: true
     command: bun run dev -- --host 0.0.0.0 --port 3000
     volumes:
+      - ./webapp/base:/app/base:ro
+      - ./webapp/sites:/app/sites
       - ./webapp/app:/app/app
       - ./webapp/server:/app/server
       - ./webapp/shared:/app/shared
       - ./webapp/services:/app/services
       - ./webapp/nuxt.config.ts:/app/nuxt.config.ts
+      - ./webapp/tsconfig.json:/app/tsconfig.json:ro
+      - ./webapp/vitest.config.ts:/app/vitest.config.ts:ro
+      - ./webapp/tailwind.config.ts:/app/tailwind.config.ts:ro
       - ./webapp/package.json:/app/package.json:ro
       - ./webapp/eslint.config.ts:/app/eslint.config.ts:ro
       - ./webapp/prettier.config.cjs:/app/prettier.config.cjs:ro
       - ./codebase-integrity:/codebase-integrity:ro
       - ./webapp/schemas:/app/schemas
-      - ./webapp/content:/app/content
+      - ./webapp/sites/${GD_TARGET:-showcase-immobilier}/content:/app/content
       - ./webapp/.data:/app/.data
-      - ./webapp/public:/app/public
+      - ./webapp/sites/${GD_TARGET:-showcase-immobilier}/public:/app/public
       - ./webapp/scripts:/app/scripts
       # Setup reads the existing host config; it must not create a container-only .env.
       - ./webapp/.env:/app/.env:ro
@@ -33,6 +38,7 @@ services:
     env_file:
       - ./webapp/.env
     environment:
+      GD_TARGET: ${GD_TARGET:-showcase-immobilier}
       NODE_ENV: development
       AIDE_WEBAPP_ROOT: /app
       NODE_PATH: /app/node_modules
@@ -77,6 +83,7 @@ services:
       additional_contexts:
         schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
       args:
+        GD_TARGET: ${GD_TARGET:-showcase-immobilier}
         APP_ENV: ${APP_ENV:-dev}
         SITE_URL: ${SITE_URL:-http://webapp.localhost:8080}
         SITE_NAME: ${SITE_NAME:-Mon Webapp}
@@ -87,6 +94,7 @@ services:
     env_file:
       - ./webapp/.env
     environment:
+      GD_TARGET: ${GD_TARGET:-showcase-immobilier}
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
       CONTENT_PATH: /app/content
@@ -103,9 +111,9 @@ services:
       - 'host.docker.internal:host-gateway'
     volumes:
       - ./webapp/.data:/app/.data
-      - ./webapp/content:/app/content
+      - ./webapp/sites/${GD_TARGET:-showcase-immobilier}/content:/app/content
       - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas:ro
-      - ${MEDIA_HOST_DIR:-./webapp/public/images}:/app/.output/public/images
+      - ./webapp/sites/${GD_TARGET:-showcase-immobilier}/public/images:/app/.output/public/images
     healthcheck:
       test: ['CMD-SHELL', 'wget -q --spider http://127.0.0.1:3000/ || exit 1']
       interval: 5s

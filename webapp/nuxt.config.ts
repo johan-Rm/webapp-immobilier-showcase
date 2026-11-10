@@ -1,9 +1,28 @@
+import type { SiteDefinition } from './shared/types/site'
+
+import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 import ViteYaml from '@modyfi/vite-plugin-yaml'
+import { createJiti } from 'jiti'
 
 import { runSchemaHook } from './scripts/build/schema-hook'
+import { packageSite } from './scripts/build/site'
+import { resolveSiteId } from './shared/site/registry'
 import { FALLBACK_LOCALE, AVAILABLES_LOCALES } from './shared/utils/locale'
+
+const siteId = resolveSiteId(process.env.GD_TARGET)
+const siteRoot = resolve(__dirname, 'sites', siteId)
+if (!existsSync(join(siteRoot, 'nuxt.config.ts')) || !existsSync(join(siteRoot, 'site.ts'))) {
+  throw new Error(`[site] Client inconnu : ${siteId}`)
+}
+const site = await createJiti(import.meta.url).import<SiteDefinition>(join(siteRoot, 'site.ts'), {
+  default: true,
+})
+if (site.id !== siteId || !site.name?.trim()) {
+  throw new Error(`[site] Identité invalide pour ${siteId}`)
+}
+const contentRoot = resolve(__dirname, process.env.CONTENT_PATH || `sites/${siteId}/content`)
 
 const appEnv = process.env.APP_ENV?.trim().toLowerCase() === 'prod' ? 'prod' : 'dev'
 const nodeEnv = process.env.NODE_ENV?.trim().toLowerCase()
@@ -24,12 +43,22 @@ const nitroContentCacheHeaders =
     : {}
 
 export default defineNuxtConfig({
+  // La racine orchestre ; seuls la cible puis le socle fournissent l'interface.
+  srcDir: './base',
+  extends: [siteRoot, './base'],
+  pinia: { storesDirs: ['stores'] },
+
   compatibilityDate: '2025-07-15',
+
+  dir: { public: join(siteRoot, 'public') },
 
   devtools: { enabled: false },
 
   typescript: {
     strict: true,
+    tsConfig: {
+      include: ['../app/**/*', `../sites/${siteId}/app/**/*`],
+    },
   },
 
   ssr: true,
@@ -65,13 +94,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
-    resendFromEmail: process.env.RESEND_FROM_EMAIL ?? 'Showcase Immobilier <contact@example.com>',
+    resendFromEmail: process.env.RESEND_FROM_EMAIL ?? `${site.name} <contact@example.com>`,
     contactToEmail: process.env.CONTACT_TO_EMAIL ?? '',
     contactBccEmails: process.env.CONTACT_BCC_EMAILS ?? '',
     contactReplyToEmail: process.env.CONTACT_REPLY_TO_EMAIL ?? '',
     contactSubmissionsPath:
       process.env.CONTACT_SUBMISSIONS_PATH ??
-      join(process.cwd(), '.data', 'contact-submissions.csv'),
+      join(process.cwd(), '.data', siteId, 'contact-submissions.csv'),
     symfony: {
       apiUrl: symfonyApiUrl,
       apiDocsUrl: symfonyApiDocsUrl,
@@ -81,8 +110,9 @@ export default defineNuxtConfig({
     },
 
     public: {
+      siteId,
       appEnv,
-      siteName: process.env.SITE_NAME?.trim() || 'Showcase Immobilier',
+      siteName: process.env.SITE_NAME?.trim() || site.name,
       siteUrl,
       isIndexable: appEnv === 'prod' && !isDevRuntime,
       webVitalsEnabled: process.env.WEB_VITALS_ENABLED === 'true',
@@ -111,6 +141,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    alias: { '#site': join(siteRoot, 'site.ts') },
+    hooks: {
+      compiled: async (nitro) => {
+        await packageSite(siteRoot, nitro.options.output.dir, siteId, contentRoot)
+      },
+    },
     prerender: {
       // Les images transformees a la volee (`/_ipx/...`) sont decouvertes par le
       // parcours des liens, mais leur generation ne rend jamais la main : la
@@ -166,6 +202,10 @@ export default defineNuxtConfig({
   },
 
   alias: {
+    '~': resolve(__dirname, 'app'),
+    '@': resolve(__dirname, 'app'),
+    '#site': join(siteRoot, 'site.ts'),
+    '@site-assets': join(siteRoot, 'app/assets'),
     '@schemas': resolve(__dirname, 'schemas'),
     '@services': resolve(__dirname, 'services'),
     '@utils': resolve(__dirname, 'app/utils'),
@@ -238,7 +278,7 @@ export default defineNuxtConfig({
     },
     url: '/api/openapi',
     metaData: {
-      title: 'Showcase Immobilier API Documentation',
+      title: `${site.name} API Documentation`,
     },
   },
 

@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url'
 
 import YAML from 'yaml'
 
+import { siteContentRoot, siteMediaRoot } from '../services/infra/resolver/site'
+
 const LOCALES = ['fr', 'en', 'es'] as const
 const CATEGORY_KEYS = [
   'apartment',
@@ -47,6 +49,7 @@ const isDemoFixture = (value: unknown): boolean =>
 
 /** Prépare exclusivement des données de démonstration ; refuse d'écraser un contenu réel. */
 export const setupLocal = async (root = process.cwd()): Promise<void> => {
+  const contentRoot = siteContentRoot(root)
   const fixtureRoot = join(root, 'fixtures/accommodations')
   const fixtures = await Promise.all(
     (await readdir(fixtureRoot))
@@ -56,7 +59,7 @@ export const setupLocal = async (root = process.cwd()): Promise<void> => {
 
   // Valider tous les dossiers avant de commencer à écrire.
   for (const locale of LOCALES) {
-    const directory = join(root, 'content', locale, 'accommodations')
+    const directory = join(contentRoot, locale, 'accommodations')
     if (existsSync(directory)) {
       for (const name of await readdir(directory)) {
         if (!name.endsWith('.md')) continue
@@ -67,7 +70,7 @@ export const setupLocal = async (root = process.cwd()): Promise<void> => {
       }
     }
     for (const name of ['category-code.yaml', 'media-object.yaml']) {
-      const path = join(root, 'content', locale, 'metadata', name)
+      const path = join(contentRoot, locale, 'metadata', name)
       if (!existsSync(path)) continue
       const data = YAML.parse(await readFile(path, 'utf8')) as {
         items?: { id?: string }[]
@@ -92,7 +95,7 @@ export const setupLocal = async (root = process.cwd()): Promise<void> => {
   }
 
   for (const locale of LOCALES) {
-    const directory = join(root, 'content', locale)
+    const directory = join(contentRoot, locale)
     const catalog = join(root, 'fixtures/catalog', locale)
     if (existsSync(catalog)) {
       await cp(catalog, directory, { recursive: true })
@@ -177,7 +180,7 @@ export const setupLocal = async (root = process.cwd()): Promise<void> => {
     }
   }
   await mkdir(join(root, '.data'), { recursive: true })
-  await mkdir(join(root, 'public/images'), { recursive: true })
+  await mkdir(siteMediaRoot(root), { recursive: true })
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

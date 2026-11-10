@@ -5,6 +5,9 @@ blueprint_copied_at: 2026-01-22T13:03:48+00:00
 
 # Dossier `content/{lang}/`
 
+Le contenu effectif réside dans `sites/<client>/content/`. Voir
+[les layers clients](../../docs/2.architecture/14.site-layers.md).
+
 ## 1. Rôle et responsabilités
 
 - Projection de lecture runtime par langue (`fr`, `en`, etc.) : métadonnées métier, contenus éditoriaux et messages.

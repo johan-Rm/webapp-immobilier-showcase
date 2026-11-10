@@ -2,6 +2,8 @@ import type { Config } from 'tailwindcss'
 
 import defaultTheme from 'tailwindcss/defaultTheme'
 
+import { resolveSiteId } from './shared/site/registry'
+
 const color = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`
 const scale = (name: string) => ({
   50: color(`${name}-50`),
@@ -24,6 +26,7 @@ const scaleWithDefault = (name: string, defaultVar = name) => ({
 const config: Config = {
   darkMode: 'class',
   content: [
+    `./sites/${resolveSiteId(process.env.GD_TARGET)}/app/**/*.{vue,js,ts}`,
     './app/components/**/*.{vue,js,ts}',
     './app/layouts/**/*.{vue,js,ts}',
     './app/pages/**/*.{vue,js,ts}',
