@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée humainement le 2026-11-10 ; commit local autorisé
+- État : validée et commitée localement le 2026-11-10 ; contrôles globaux différés
 - Chemins autorisés : `infra/docker/Dockerfile`, `infra/docker/Dockerfile.dev`, `infra/docker/docker-compose.dev.yml`, `infra/nginx/vhost.conf`, `infra/make/Makefile.dev`, `infra/tests/test_local_ssr.py`, `infra/scripts/check-local-ssr.py`, `webapp/.env.example`.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; contrats GD_TARGET et chemins connus. Pas de dépendance de réalisation aux cartes UI/config ; leurs commits sont requis pour construire et tester les deux vraies images.
 
@@ -37,7 +37,7 @@ Exclure les vhosts et déploiements de production ; préserver les `.env` exista
 
 ## Réalisation et preuves
 
-Implémentée le 2026-11-10, non commitée, à vérifier. Base :
+Implémentation réalisée le 2026-11-10. Base présentée à la validation :
 `6f4ebb114a9e856e762690b46425e11f5df65796`, worktree Devops / `layers/devops`.
 Deux images/cibles SSR fixes ; Client 2 sans env_file, secrets ni volumes Showcase.
 Nginx route les trois hôtes ; les commandes SSR construisent/lancent les deux
@@ -72,5 +72,5 @@ les builds et parcours des vrais clients, encore dépendants des cartes Web.
 
 ## Commits
 
-Commit de réalisation de cette carte ; SHA consigné après création dans la trace
-locale de validation DEM-003.
+- Réalisation : `74e6948fa8ca4a4a1960b7afd65645e4935934a0`.
+- Aucun push, PR ou fusion ; suite hors de cette étape de validation.

@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée humainement le 2026-11-10 ; commit local autorisé
+- État : validée et commitée localement le 2026-11-10 ; contrôles globaux différés
 - Chemins autorisés : `infra/config/layers.json`, `codebase-integrity/` : uniquement les fichiers de la section OPS-003 de l’inventaire principal.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; aucune dépendance de réalisation.
 
@@ -38,7 +38,7 @@ portée dans le README Codebase Integrity ; protocole final dans OPS-006.
 
 ## Réalisation et preuves
 
-Implémentée le 2026-11-10, non commitée, à vérifier. Base :
+Implémentation réalisée le 2026-11-10. Base présentée à la validation :
 `6f4ebb114a9e856e762690b46425e11f5df65796`, worktree Devops / `layers/devops`.
 Routage ajouté ; découverte frontend commune pour les scanners, exceptions images
 précises, alias par application et catalogue rattaché provisoirement à Showcase.
@@ -70,5 +70,5 @@ les builds et parcours des vrais clients, encore dépendants des cartes Web.
 
 ## Commits
 
-Commit de réalisation de cette carte ; SHA consigné après création dans la trace
-locale de validation DEM-003.
+- Réalisation : `3043960c8f6752ddfdfeae6ce114244fe64633b1`.
+- Aucun push, PR ou fusion ; suite hors de cette étape de validation.
