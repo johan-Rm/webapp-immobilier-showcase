@@ -11,7 +11,12 @@ import { basename, extname, relative } from 'node:path'
 
 import { parse } from '@typescript-eslint/parser'
 
-import { ROOT, listProjectFiles, loadValidationRule } from '../../../commun/validation-rules'
+import {
+  ROOT,
+  isFrontendFile,
+  listProjectFiles,
+  loadValidationRule,
+} from '../../../commun/validation-rules'
 
 type LargeComponentRule = { maxLines?: number }
 type LargeTypeRule = { maxFields?: number }
@@ -41,9 +46,7 @@ function extractScriptContent(content: string): string {
 // --- Large component ---
 
 export function checkLargeComponents(): Violation[] {
-  const files = listProjectFiles(['.vue']).filter((f) =>
-    relative(ROOT, f).startsWith('app/components/'),
-  )
+  const files = listProjectFiles(['.vue']).filter((f) => isFrontendFile(f, ['components']))
   return files.flatMap((file) => {
     let content: string
     try {
@@ -168,8 +171,7 @@ function countReturnKeys(content: string): number {
 
 export function checkComposableManyReturns(): Violation[] {
   const files = listProjectFiles(['.ts']).filter((f) => {
-    const rel = relative(ROOT, f)
-    return rel.startsWith('app/composables/') && basename(f).startsWith('use')
+    return isFrontendFile(f, ['composables']) && basename(f).startsWith('use')
   })
   const violations: Violation[] = []
 

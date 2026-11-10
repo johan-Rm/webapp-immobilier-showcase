@@ -11,7 +11,12 @@
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 
-import { ROOT, listProjectFiles, loadValidationRule } from '../../../commun/validation-rules'
+import {
+  ROOT,
+  isFrontendFile,
+  listProjectFiles,
+  loadValidationRule,
+} from '../../../commun/validation-rules'
 
 type PatternRule = {
   patterns?: string[]
@@ -36,7 +41,7 @@ type Violation = {
 }
 
 function collectVueFiles(): FilePath[] {
-  return listProjectFiles(['.vue']).filter((f) => relative(ROOT, f).startsWith('app/components/'))
+  return listProjectFiles(['.vue']).filter((f) => isFrontendFile(f, ['components']))
 }
 
 function extractScriptLineOffset(content: string): number {

@@ -11,7 +11,12 @@
 import { readFileSync } from 'node:fs'
 import { extname, relative } from 'node:path'
 
-import { ROOT, listProjectFiles, loadValidationRule } from '../../../commun/validation-rules'
+import {
+  ROOT,
+  isFrontendFile,
+  listProjectFiles,
+  loadValidationRule,
+} from '../../../commun/validation-rules'
 
 type GuardRule = {
   patterns?: string[]
@@ -120,9 +125,7 @@ function report(violations: Violation[]): void {
 }
 
 if (import.meta.main) {
-  const files = listProjectFiles(['.ts', '.vue']).filter(
-    (f) => relative(ROOT, f).startsWith('app/') && !f.startsWith(ROOT + '/scripts/'),
-  )
+  const files = listProjectFiles(['.ts', '.vue']).filter((f) => isFrontendFile(f))
   const violations = files.flatMap(checkFile)
   report(violations)
   process.exit(0)

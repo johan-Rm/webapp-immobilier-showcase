@@ -15,7 +15,12 @@ import { relative } from 'node:path'
 
 import { parse } from '@typescript-eslint/parser'
 
-import { ROOT, listProjectFiles, loadValidationRule } from '../../../commun/validation-rules'
+import {
+  ROOT,
+  isFrontendFile,
+  listProjectFiles,
+  loadValidationRule,
+} from '../../../commun/validation-rules'
 
 type NoBusinessLogicRule = {
   globalSourcePattern?: string
@@ -43,7 +48,7 @@ export type Violation = {
 }
 
 export function collectVueFiles(): FilePath[] {
-  return listProjectFiles(['.vue']).filter((f) => relative(ROOT, f).startsWith('app/components/'))
+  return listProjectFiles(['.vue']).filter((f) => isFrontendFile(f, ['components']))
 }
 
 export function extractScriptContent(content: string): string {
