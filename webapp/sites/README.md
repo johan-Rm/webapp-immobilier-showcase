@@ -3,7 +3,8 @@
 ## Rôle et responsabilités
 
 Une Nuxt Layer par client : identité, contenus, médias, thèmes et surcharges UI.
-Le socle et le dashboard restent partagés.
+Chaque client possède son application. Showcase seul charge actuellement les
+screens immobiliers et son dashboard ; Client 2 reste une page SSR minimale.
 
 ## Conventions techniques
 
