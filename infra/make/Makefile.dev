@@ -26,7 +26,7 @@ dev-webapp-localhost: dev-env
 	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up webapp-localhost
 
 dev-webapp-ssr: dev-env
-	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up $(if $(BUILD),--build) webapp-ssr nginx
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up $(if $(BUILD),--build) webapp-ssr client2-ssr nginx
 
 dev-nginx: dev-env
 	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up nginx
@@ -44,10 +44,10 @@ dev-build-localhost-no-cache:
 	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache webapp-localhost
 
 dev-build-ssr:
-	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build webapp-ssr
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build webapp-ssr client2-ssr
 
 dev-build-ssr-no-cache:
-	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache webapp-ssr
+	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) build --no-cache webapp-ssr client2-ssr
 
 dev-down:
 	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) down
@@ -132,3 +132,9 @@ export-maquette:
 	@echo
 	@echo "Maquette exportee : $(DEST)"
 	@echo "Ouvrir : $(DEST)/fr/index.html"
+
+.PHONY: dev-check-ssr
+
+dev-check-ssr:
+	@ssr_address="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) port nginx 80)"; \
+	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}"
