@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée humainement le 2026-11-10 ; vérifications réunies réussies
+- État : validée et commitée localement le 2026-11-10 ; à reconstituer
 - Chemins autorisés : `infra/config/layers.json`, `codebase-integrity/conventions.json`, test documentaire prévu, README racine, guides docs et `worktree/README.md` : liste exacte OPS-006 dans l’inventaire principal, incluant l’adaptation du test de routage au retrait de l’ancien préfixe.
 - Dépendances : Réalisation : OPS-003, car cette carte finalise son routage et ses références. Commit source `3043960c8f6752ddfdfeae6ce114244fe64633b1`, présent sur cette branche. Vérification globale : commits WEB-001/002 et OPS-004/005 réunis.
 
@@ -93,5 +93,5 @@ La reconstitution et la livraison ne sont pas effectuées dans cette validation.
 
 ## Commits
 
-Commit local de réalisation de cette carte ; SHA consigné dans la trace de clôture.
+- Réalisation : `53bf861c591d39d868f256864d7040cac5aa21a1`.
 Aucun push, PR ou fusion.
