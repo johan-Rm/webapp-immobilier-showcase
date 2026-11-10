@@ -20,7 +20,7 @@ frontend.
 
 > Les conventions décrites dans cette section peuvent être vérifiées automatiquement via des scripts CI/CD.
 > Les règles concrètes de validation automatisée sont déclarées en YAML dans `codebase-integrity/domaines/*/regles.yaml`.
-> Pour le détail, voir [docs/3.application/ci-conventions-validation.md](../../docs/3.application/ci-conventions-validation.md).
+> Pour le détail, voir [docs/3.application/ci-conventions-validation.md](../../../../docs/3.application/ci-conventions-validation.md).
 
 Vérifier les composants disponibles dans Nuxt UI avant d’écrire du HTML brut.
 Tout texte visible passe par les clés de traduction.
@@ -47,7 +47,7 @@ Le contenu de `<script setup lang="ts">` suit un ordre de blocs défini : import
 
 Le template consomme des valeurs déjà préparées. La logique métier ne doit pas fuir dans la couche d'affichage.
 
-@see [docs/2.architecture/6.script-setup-standard.md](../../docs/2.architecture/6.script-setup-standard.md)
+@see [docs/2.architecture/6.script-setup-standard.md](../../../../docs/2.architecture/6.script-setup-standard.md)
 
 Règle YAML : `app-script-setup-standard`
 
@@ -125,7 +125,7 @@ source de vérité est le schéma YAML, et leur compatibilité est contrôlée p
 
 Un type local non exporté reste dans le fichier qui l'utilise.
 
-@see [docs/2.architecture/9.types-placement.md](../../docs/2.architecture/9.types-placement.md)
+@see [docs/2.architecture/9.types-placement.md](../../../../docs/2.architecture/9.types-placement.md)
 
 Règle YAML : `app-types-placement`
 

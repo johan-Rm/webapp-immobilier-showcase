@@ -19,7 +19,7 @@ partage.
 
 La place de cette couche dans l'architecture et la structure interne recommandée sont
 définies dans
-[docs/2.architecture/8.composables-standard.md](../../../docs/2.architecture/8.composables-standard.md).
+[docs/2.architecture/8.composables-standard.md](../../../../../docs/2.architecture/8.composables-standard.md).
 
 ## Conventions techniques
 

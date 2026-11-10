@@ -17,7 +17,7 @@ métier et ne connaît pas l'UI ; il expose un contrat typé que les composables
 
 Les conventions détaillées (styles de store, setters défensifs, merge de listes, flags
 `loading`/`error`, dépendances entre stores, règles SSR, naming) sont définies dans
-[docs/2.architecture/11.stores-standard.md](../../../docs/2.architecture/11.stores-standard.md).
+[docs/2.architecture/11.stores-standard.md](../../../../../docs/2.architecture/11.stores-standard.md).
 
 ## Conventions techniques
 

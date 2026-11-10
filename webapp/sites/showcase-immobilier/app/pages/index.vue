@@ -77,10 +77,14 @@
 
 <script setup lang="ts">
 // 1. Imports
-import { defineAsyncComponent, type Component } from 'vue'
+import type { Component } from 'vue'
 
-import ScreenRealEstateFullImage from '~/components/screen/real-estate/FullImage.vue'
-import ScreenRealEstateRounded from '~/components/screen/real-estate/Rounded.vue'
+import {
+  ScreenRealEstateFullImage,
+  ScreenRealEstateRounded,
+  LazyScreenRealEstateSplit,
+  LazyScreenRealEstateThreeColProperties,
+} from '#components'
 
 // 2. Types et constantes statiques
 /**
@@ -117,13 +121,8 @@ const LANDING_SLUGS = {
   threeColProperties: 'three-col-properties',
 } as const
 
-const ScreenRealEstateSplit = defineAsyncComponent(
-  () => import('~/components/screen/real-estate/Split.vue'),
-)
-
-const ScreenRealEstateThreeColProperties = defineAsyncComponent(
-  () => import('~/components/screen/real-estate/ThreeColProperties.vue'),
-)
+const ScreenRealEstateSplit = LazyScreenRealEstateSplit
+const ScreenRealEstateThreeColProperties = LazyScreenRealEstateThreeColProperties
 
 // Registre local des variantes de landing disponibles pour la page d'accueil.
 // Chaque entrée associe un slug public, le bloc éditorial attendu et le composant d'affichage.

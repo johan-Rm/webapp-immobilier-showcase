@@ -20,7 +20,7 @@ besoin avant la première navigation. À ce titre, ce dossier est responsable de
   première interaction ou fallback (`deferred-runtime.client.ts`)
 
 La chaîne de résolution des locales est documentée dans
-[docs/2.architecture/13.routing-and-middleware.md](../../../docs/2.architecture/13.routing-and-middleware.md).
+[docs/2.architecture/13.routing-and-middleware.md](../../../../../docs/2.architecture/13.routing-and-middleware.md).
 
 ## Conventions techniques
 

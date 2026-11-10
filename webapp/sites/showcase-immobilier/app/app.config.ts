@@ -1,4 +1,94 @@
 export default defineAppConfig({
+  ui: {
+    primary: 'primary',
+    gray: 'surface',
+    colors: {
+      primary: 'primary',
+      secondary: 'secondary',
+      danger: 'danger',
+      success: 'success',
+      info: 'info',
+      warning: 'warning',
+      error: 'error',
+      neutral: 'neutral',
+    },
+    button: {
+      default: {
+        color: 'primary',
+        variant: 'solid',
+        size: 'md',
+      },
+      variants: {
+        solid: 'solid',
+        outline: 'outline',
+        ghost: 'ghost',
+      },
+      color: {
+        primary: 'primary',
+        secondary: 'secondary',
+        danger: 'danger',
+      },
+    },
+    toast: {
+      slots: {
+        root: 'relative group overflow-hidden rounded-lg border p-4 shadow-xl ring-0 flex items-center gap-2.5 focus:outline-none',
+        title: 'min-w-0 truncate text-sm font-medium whitespace-nowrap',
+        description: 'hidden',
+        icon: 'shrink-0 size-5',
+        close: 'p-0',
+        progress:
+          'absolute inset-x-0 bottom-0 opacity-80 [&_[role=progressbar]]:bg-current/20 [&_[role=progressbar]>div]:bg-current',
+      },
+      variants: {
+        color: {
+          success: {
+            root: 'border-white/15! bg-[#212121]! text-white! focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70',
+            title: 'text-white!',
+            description: 'text-white/80',
+            icon: 'text-[#6B7A4A]!',
+            progress: 'text-[#6B7A4A]!',
+            close: 'text-[#6B7A4A]! hover:bg-[#6B7A4A]/10 hover:text-[#6B7A4A]!',
+          },
+          info: {
+            root: 'border-white/15! bg-[#212121]! text-white! focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70',
+            title: 'text-white!',
+            description: 'text-white/80',
+            icon: 'text-[#33CCFF]!',
+            progress: 'text-[#33CCFF]!',
+            close: 'text-[#33CCFF]! hover:bg-[#33CCFF]/10 hover:text-[#33CCFF]!',
+          },
+          warning: {
+            root: 'border-white/15! bg-[#212121]! text-white! focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70',
+            title: 'text-white!',
+            description: 'text-white/80',
+            icon: 'text-[#FFA500]!',
+            progress: 'text-[#FFA500]!',
+            close: 'text-[#FFA500]! hover:bg-[#FFA500]/10 hover:text-[#FFA500]!',
+          },
+          error: {
+            root: 'border-white/15! bg-[#212121]! text-white! focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70',
+            title: 'text-white!',
+            description: 'text-white/80',
+            icon: 'text-[#FF5757]!',
+            progress: 'text-[#FF5757]!',
+            close: 'text-[#FF5757]! hover:bg-[#FF5757]/10 hover:text-[#FF5757]!',
+          },
+          neutral: {
+            root: 'border-white/15! bg-[#212121]! text-white! focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70',
+            title: 'text-white!',
+            description: 'text-white/75',
+            icon: 'text-white!',
+            progress: 'text-white!',
+            close: 'text-white! hover:bg-white/10 hover:text-white!',
+          },
+        },
+      },
+      defaultVariants: {
+        color: 'neutral',
+      },
+    },
+  },
+
   global: {},
   organization: {
     acronym: 'SI',
