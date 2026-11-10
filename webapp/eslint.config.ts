@@ -103,7 +103,7 @@ const config: Linter.FlatConfig[] = [
   },
 
   {
-    files: ['app/pages/**/*.vue', 'app/layouts/**/*.vue'],
+    files: ['sites/*/app/pages/**/*.vue', 'sites/*/app/layouts/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
     },

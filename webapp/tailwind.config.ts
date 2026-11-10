@@ -27,10 +27,9 @@ const config: Config = {
   darkMode: 'class',
   content: [
     `./sites/${resolveSiteId(process.env.GD_TARGET)}/app/**/*.{vue,js,ts}`,
-    './app/components/**/*.{vue,js,ts}',
-    './app/layouts/**/*.{vue,js,ts}',
-    './app/pages/**/*.{vue,js,ts}',
-    './app/app.vue',
+    ...(resolveSiteId(process.env.GD_TARGET) === 'showcase-immobilier'
+      ? ['./base/real-estate/components/**/*.{vue,js,ts}']
+      : []),
   ],
   theme: {
     extend: {
