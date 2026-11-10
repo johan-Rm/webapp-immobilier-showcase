@@ -27,9 +27,14 @@
  */
 
 import { readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { relative } from 'node:path'
 
-import { ROOT, listProjectFiles, loadValidationRule } from '../../../commun/validation-rules'
+import {
+  ROOT,
+  isFrontendFile,
+  listProjectFiles,
+  loadValidationRule,
+} from '../../../commun/validation-rules'
 
 type ScriptSetupRule = {
   sectionCount?: number
@@ -55,8 +60,9 @@ export type Violation = {
 }
 
 export function collectVueFiles(): FilePath[] {
-  const scopes = ['app/components/', 'app/pages/', 'app/layouts/']
-  return listProjectFiles(['.vue']).filter((f) => scopes.some((s) => f.startsWith(join(ROOT, s))))
+  return listProjectFiles(['.vue']).filter((f) =>
+    isFrontendFile(f, ['components', 'pages', 'layouts']),
+  )
 }
 
 export function extractScriptBlock(content: string): { text: string; lineOffset: number } | null {

@@ -34,6 +34,14 @@
 
 Les conventions Nuxt restent définies dans les README applicatifs et les [standards d’architecture](../docs/2.architecture/index.md). Leurs vérificateurs et leurs tests sont regroupés sous `codebase-integrity/domaines/`, sans duplication.
 
+Les contrôles frontend découvrent tous les fichiers Git de `app/`, des
+`sites/<client>/app/` et de `base/real-estate/`, y compris les clients inactifs.
+Les scopes composants, pages, layouts et composables restent distincts. L’exception
+image concerne seulement `components/AppImage.vue` à la racine d’une application ;
+un fichier homonyme dans le catalogue ou un sous-dossier reste contrôlé.
+Les alias frontend des imports de types se résolvent dans l’application du fichier ;
+ceux du catalogue, provisoirement consommé par Showcase seul, ciblent son application.
+
 Le créateur refuse une base sans les fichiers requis par `requireBasePaths`,
 notamment le regroupement `webapp/` et la configuration des couches.
 

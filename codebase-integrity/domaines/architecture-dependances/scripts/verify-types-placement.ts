@@ -22,6 +22,7 @@ import { parse } from '@typescript-eslint/parser'
 
 import {
   ROOT,
+  frontendAppRoot,
   listProjectFiles,
   loadValidationRule,
   projectPath,
@@ -134,7 +135,11 @@ export function extractDefinitions(content: string, file: FilePath): Definition[
   return defs
 }
 
-export function resolveImportPath(importPath: string, fromFile: FilePath): FilePath | null {
+export function resolveImportPath(
+  importPath: string,
+  fromFile: FilePath,
+  root = ROOT,
+): FilePath | null {
   const isExternal =
     !importPath.startsWith('.') &&
     !importPath.startsWith('/') &&
@@ -145,7 +150,19 @@ export function resolveImportPath(importPath: string, fromFile: FilePath): FileP
   const aliasMatch = ALIAS_MAP.find(([prefix]) => importPath.startsWith(prefix))
   if (aliasMatch) {
     const [prefix, target] = aliasMatch
-    base = target + importPath.slice(prefix.length)
+    // Le catalogue n'est actuellement activé que par Showcase.
+    const appRoot =
+      frontendAppRoot(fromFile, root) ??
+      (relativePath(root, fromFile).startsWith('base/real-estate/')
+        ? resolve(root, 'sites/showcase-immobilier/app')
+        : null)
+    const appAlias = prefix === '~/' || prefix === '@/'
+    const utilsAlias = prefix === '@utils/'
+    const resolvedTarget =
+      appRoot && (appAlias || utilsAlias)
+        ? resolve(appRoot, utilsAlias ? 'utils' : '.') + '/'
+        : target
+    base = resolvedTarget + importPath.slice(prefix.length)
   } else {
     base = resolve(dirname(fromFile), importPath)
   }

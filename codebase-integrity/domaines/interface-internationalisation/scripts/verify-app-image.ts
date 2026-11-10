@@ -16,9 +16,10 @@ import { relative } from 'node:path'
 
 import {
   ROOT,
+  isFrontendFile,
   listProjectFiles,
   loadValidationRule,
-  projectPaths,
+  isImageWrapper,
 } from '../../../commun/validation-rules'
 
 type AppImageRule = {
@@ -37,7 +38,8 @@ const RULE = loadValidationRule<AppImageRule & { name: string; requiresManualRev
 const NO_HEIGHT_RULE = loadValidationRule<
   NoHeightPropRule & { name: string; requiresManualReview: boolean }
 >('app-images-no-height-prop')
-const ALLOWED_FILES = new Set(projectPaths(RULE.allowedFiles ?? ['app/components/AppImage.vue']))
+
+const ALLOW_APP_IMAGE = RULE.allowedFiles?.includes('app/components/AppImage.vue') ?? true
 
 const FORBIDDEN_TAGS = RULE.forbiddenTags ?? ['img', 'NuxtImg', 'NuxtPicture']
 const INLINE_IMAGE_PROPS = RULE.inlineImageProps ?? [
@@ -64,7 +66,7 @@ function hasVueProp(block: string, prop: string): boolean {
 }
 
 export function collectVueFiles(): FilePath[] {
-  return listProjectFiles(['.vue']).filter((f) => relative(ROOT, f).startsWith('app/'))
+  return listProjectFiles(['.vue']).filter((f) => isFrontendFile(f))
 }
 
 export function extractTemplate(content: string): { text: string; offset: number } | null {
@@ -95,7 +97,7 @@ export function checkFile(file: FilePath): Violation[] {
   const { text: template, offset } = tpl
 
   // Règle 1 — balises image brutes interdites (sauf AppImage.vue qui wrap NuxtImg)
-  if (!ALLOWED_FILES.has(file)) {
+  if (!(ALLOW_APP_IMAGE && isImageWrapper(file))) {
     for (const tag of FORBIDDEN_TAGS) {
       const regex = new RegExp(`<${tag}\\b`, 'g')
       let match: RegExpExecArray | null

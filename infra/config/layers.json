@@ -10,6 +10,8 @@
       "prefix": "WEB",
       "paths": [
         "webapp/app/",
+        "webapp/sites/",
+        "webapp/base/real-estate/",
         "webapp/content/",
         "webapp/public/",
         "webapp/fixtures/",
@@ -21,20 +23,14 @@
       "role": "Routes et traitements Nitro",
       "id": 2,
       "prefix": "BFF",
-      "paths": [
-        "webapp/server/"
-      ]
+      "paths": ["webapp/server/"]
     },
     "domaine": {
       "branch": "layers/domaine",
-      "role": "Logique métier et contrats partageables",
+      "role": "Logique m\u00e9tier et contrats partageables",
       "id": 3,
       "prefix": "DOM",
-      "paths": [
-        "webapp/services/",
-        "webapp/shared/",
-        "webapp/schemas/"
-      ]
+      "paths": ["webapp/services/", "webapp/shared/", "webapp/schemas/"]
     },
     "devops": {
       "branch": "layers/devops",

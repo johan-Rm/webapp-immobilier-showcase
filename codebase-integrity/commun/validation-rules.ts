@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
-import { extname, join, resolve } from 'node:path'
+import { extname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import YAML from 'yaml'
@@ -94,4 +94,36 @@ export function loadValidationRule<T extends ValidationRuleBase & Record<string,
 
   assertRuleBase(rule, name)
   return rule as T
+}
+
+// Git reste la source de l'inventaire ; aucune sélection par GD_TARGET.
+export function frontendRelativePath(file: string, root = ROOT): string | null {
+  const path = relative(root, file).replaceAll('\\', '/')
+  if (path.startsWith('app/')) return path.slice(4)
+  const site = path.match(/^sites\/[^/]+\/app\/(.+)$/)
+  if (site) return site[1]!
+  if (path.startsWith('base/real-estate/')) return path.slice('base/real-estate/'.length)
+  return null
+}
+
+export function isFrontendFile(file: string, sections: string[] = [], root = ROOT): boolean {
+  const path = frontendRelativePath(file, root)
+  return (
+    path !== null && (sections.length === 0 || sections.some((part) => path.startsWith(part + '/')))
+  )
+}
+
+export function frontendAppRoot(file: string, root = ROOT): string | null {
+  const path = relative(root, file).replaceAll('\\', '/')
+  const site = path.match(/^sites\/[^/]+\/app(?:\/|$)/)
+  if (site) return join(root, site[0])
+  if (path.startsWith('app/')) return join(root, 'app')
+  return null
+}
+
+export function isImageWrapper(file: string, root = ROOT): boolean {
+  return (
+    frontendAppRoot(file, root) !== null &&
+    frontendRelativePath(file, root) === 'components/AppImage.vue'
+  )
 }
