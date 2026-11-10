@@ -10,6 +10,11 @@ jobs:
     uses: ./.github/workflows/ai-development-engineering.yml
   quality:
     needs: aide
+    strategy:
+      matrix:
+        target: [showcase-immobilier, client2-immobilier]
+    env:
+      GD_TARGET: ${{ matrix.target }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,3 +29,4 @@ jobs:
       - run: bun run format:check
       - run: bun run type-check
       - run: bun run test
+      - run: python3 -m unittest discover -s ../infra/tests -v

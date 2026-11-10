@@ -1,11 +1,13 @@
-# Socle immobilier
+# Catalogue de layers
 
 ## Rôle et responsabilités
 
-Déclarer `../app` comme source de la layer commune sans déplacer les chemins
-historiques. La racine compose cette layer après celle du client.
+Accueillir les layers explicitement étendues par les sites. La racine Nuxt choisit
+l’application du client ; elle n’étend pas ce dossier globalement.
 
 ## Conventions techniques
 
+Une layer métier déclare ses sources dans sa propre configuration ; elle ne doit
+pas sélectionner implicitement l’application d’un client. Le catalogue immobilier
+prévu dans `real-estate/` reste dépendant de Showcase pour ses composants de support.
 Voir [la composition des layers](../../docs/2.architecture/14.site-layers.md).
-Les conventions du frontend restent dans [app/README.md](../app/README.md).

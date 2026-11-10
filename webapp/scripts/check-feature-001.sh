@@ -26,17 +26,21 @@ info "CA5/CA6: Fichiers blueprint"
 info "CA7: TypeScript strict"
 
 # CA3/CA4 : arborescence et symlinks
+site_id="${GD_TARGET:-showcase-immobilier}"
+[[ "$site_id" =~ ^[a-z][a-z0-9]*(-[a-z0-9]+)*$ ]] || exit 1
+site_app="sites/$site_id/app"
+
 required_dirs=(
-  "app"
-  "app/assets"
-  "app/components"
-  "app/composables"
-  "app/layouts"
-  "app/middleware"
-  "app/pages"
-  "app/plugins"
-  "app/stores"
-  "app/utils"
+  "$site_app"
+  "$site_app/assets"
+  "$site_app/components"
+  "$site_app/composables"
+  "$site_app/layouts"
+  "$site_app/middleware"
+  "$site_app/pages"
+  "$site_app/plugins"
+  "$site_app/stores"
+  "$site_app/utils"
   "content"
   "schemas"
   "services"
@@ -47,16 +51,16 @@ required_dirs=(
 )
 
 blueprint_readmes=(
-  "app/README.md"
-  "app/assets/README.md"
-  "app/components/README.md"
-  "app/composables/README.md"
-  "app/layouts/README.md"
-  "app/middleware/README.md"
-  "app/pages/README.md"
-  "app/plugins/README.md"
-  "app/stores/README.md"
-  "app/utils/README.md"
+  "$site_app/README.md"
+  "$site_app/assets/README.md"
+  "$site_app/components/README.md"
+  "$site_app/composables/README.md"
+  "$site_app/layouts/README.md"
+  "$site_app/middleware/README.md"
+  "$site_app/pages/README.md"
+  "$site_app/plugins/README.md"
+  "$site_app/stores/README.md"
+  "$site_app/utils/README.md"
   "content/README.md"
   "schemas/README.md"
   "services/README.md"
@@ -66,7 +70,7 @@ blueprint_readmes=(
   "scripts/README.md"
 )
 required_files=(
-  "app/assets/main.scss"
+  "$site_app/assets/main.css"
 )
 
 check_dirs_and_readmes() {
@@ -124,7 +128,13 @@ else
   status=1
 fi
 
-check_dirs_and_readmes
+if [[ "$site_id" == "showcase-immobilier" ]]; then
+  check_dirs_and_readmes
+else
+  for file in "sites/$site_id/nuxt.config.ts" "sites/$site_id/site.ts" "$site_app/app.vue" "$site_app/pages/index.vue"; do
+    [[ -f "$file" ]] || { fail "Manque fichier requis: $file"; status=1; }
+  done
+fi
 
 # CA5/CA6 : fichiers blueprint présents et alignés
 compare_file() {

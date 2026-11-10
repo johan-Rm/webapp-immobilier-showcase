@@ -16,13 +16,25 @@ export default defineConfig({
       '@schemas/': `${resolvePath('./schemas')}/`,
       '@services': resolvePath('./services'),
       '@services/': `${resolvePath('./services')}/`,
-      '~': resolvePath('./app'),
-      '~/': `${resolvePath('./app')}/`,
+      '@': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`),
+      '@utils': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app/utils`),
+      '@site-assets': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app/assets`),
+      '~': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`),
+      '~/': `${resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`)}/`,
     },
   },
   test: {
     environment: 'node',
     exclude: [...configDefaults.exclude, '**/worktree/**', '**/.worktrees/**'],
-    include: ['**/*.vitest.ts'],
+    include: [
+      'scripts/**/*.vitest.ts',
+      'services/**/*.vitest.ts',
+      'shared/**/*.vitest.ts',
+      'tests/**/*.vitest.ts',
+      `sites/${resolveSiteId(process.env.GD_TARGET)}/**/*.vitest.ts`,
+      ...(resolveSiteId(process.env.GD_TARGET) === 'showcase-immobilier'
+        ? ['server/**/*.vitest.ts']
+        : []),
+    ],
   },
 })
