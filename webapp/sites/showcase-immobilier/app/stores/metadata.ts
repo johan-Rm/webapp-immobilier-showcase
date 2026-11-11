@@ -54,7 +54,9 @@ const sortMediaByModificationDate = (
 ): number => {
   const leftTime = Date.parse(left.dateModified ?? '')
   const rightTime = Date.parse(right.dateModified ?? '')
-  return (Number.isNaN(rightTime) ? 0 : rightTime) - (Number.isNaN(leftTime) ? 0 : leftTime)
+  const leftTimestamp = Number.isNaN(leftTime) ? 0 : leftTime
+  const rightTimestamp = Number.isNaN(rightTime) ? 0 : rightTime
+  return rightTimestamp - leftTimestamp
 }
 
 const getCategoryCodeIsEnabled = (item: {

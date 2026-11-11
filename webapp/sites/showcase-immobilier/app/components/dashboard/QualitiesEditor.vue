@@ -38,13 +38,24 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardQualitiesEditor' })
 
 type Quality = { name: string; value: number }
 
 const MIN_QUALITY_VALUE = 0
+
 const MAX_QUALITY_VALUE = 100
 
+const DEFAULT_QUALITIES: Quality[] = [
+  { name: 'Confort', value: 0 },
+  { name: 'Architecture', value: 0 },
+  { name: 'Intérieur', value: 0 },
+]
+
+// 3. Props et emits
 const props = defineProps<{
   modelValue: DashboardEditableValue
 }>()
@@ -53,12 +64,22 @@ const emit = defineEmits<{
   'update:modelValue': [value: DashboardEditableValue]
 }>()
 
-const DEFAULT_QUALITIES: Quality[] = [
-  { name: 'Confort', value: 0 },
-  { name: 'Architecture', value: 0 },
-  { name: 'Intérieur', value: 0 },
-]
+// 4. Composables, stores, routeur
 
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const normalizeQualityValue = (value: unknown): number => {
+  const numericValue = typeof value === 'number' ? value : Number.parseInt(String(value).trim(), 10)
+
+  if (!Number.isFinite(numericValue)) return MIN_QUALITY_VALUE
+
+  return Math.min(MAX_QUALITY_VALUE, Math.max(MIN_QUALITY_VALUE, Math.round(numericValue)))
+}
+
+// 8. Computed UI-ready
 const qualities = computed<Quality[]>(() => {
   const incoming = Array.isArray(props.modelValue)
     ? props.modelValue.flatMap((item) => {
@@ -75,6 +96,7 @@ const qualities = computed<Quality[]>(() => {
   })
 })
 
+// 9. Actions et handlers
 const emitUpdate = (next: Quality[]): void => {
   emit('update:modelValue', next)
 }
@@ -84,19 +106,17 @@ const updateName = (index: number, name: string): void => {
   emitUpdate(next)
 }
 
-const normalizeQualityValue = (value: unknown): number => {
-  const numericValue = typeof value === 'number' ? value : Number.parseInt(String(value).trim(), 10)
-
-  if (!Number.isFinite(numericValue)) return MIN_QUALITY_VALUE
-
-  return Math.min(MAX_QUALITY_VALUE, Math.max(MIN_QUALITY_VALUE, Math.round(numericValue)))
-}
-
 const updateValue = (index: number, value: unknown): void => {
   const nextValue = normalizeQualityValue(value)
   const next = qualities.value.map((q, i) => (i === index ? { ...q, value: nextValue } : q))
   emitUpdate(next)
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>
 
 <style scoped>

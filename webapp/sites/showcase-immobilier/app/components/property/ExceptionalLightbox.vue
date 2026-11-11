@@ -39,9 +39,7 @@
         :src="media.src"
         :alt="media.alt"
         class="max-h-full max-w-full rounded-md object-contain shadow-2xl"
-        sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw"
-        fit="contain"
-        :quality="85"
+        v-bind="IMAGE_PRESETS.exceptionalLightbox"
         loading="eager"
       />
 
@@ -69,6 +67,10 @@
 // 1. Imports
 import type { ExceptionalMedia } from '#shared/types/exceptional'
 
+import { IMAGE_PRESETS } from '~/composables/useAppImage'
+
+// 2. Types et constantes statiques
+
 // 3. Props et emits
 defineProps<{
   media: ExceptionalMedia | null
@@ -76,5 +78,24 @@ defineProps<{
   index: number
   total: number
 }>()
+
 const emit = defineEmits<{ close: []; navigate: [offset: number] }>()
+
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+
+// 8. Computed UI-ready
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

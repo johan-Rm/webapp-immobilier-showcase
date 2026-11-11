@@ -89,17 +89,25 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import { useDashboardPlaceText } from '~/composables/dashboard/useDashboardPlaceText'
 import { useDashboardSave } from '~/composables/dashboard/useDashboardSave'
 import { useSymfonyStatus } from '~/composables/dashboard/useSymfonyStatus'
 
+// 2. Types et constantes statiques
 type DashboardLocale = 'fr' | 'en' | 'es'
+
 type EditorSection = 'content' | 'media'
+
 type EditorProcess = 'edit' | 'create'
+
 type DashboardDraft = { frontmatter: DashboardEditableRecord; body: string }
+
 type BlockMenuItem = { label: string; icon?: string; onSelect?: () => void }
+
 defineOptions({ name: 'DashboardPropertyEditorSlideover' })
 
+// 3. Props et emits
 const props = defineProps<{
   open: boolean
   process: EditorProcess
@@ -113,25 +121,7 @@ const emit = defineEmits<{
   created: [identifier: string]
 }>()
 
-const activeSection = ref<EditorSection>('content')
-const activeLocale = ref<DashboardLocale>('fr')
-const drafts = ref<Record<DashboardLocale, DashboardDraft> | null>(null)
-const dirtyLocalizedFields = ref<
-  Record<DashboardLocale, Set<DashboardLocalizedAccommodationField>>
->({
-  fr: new Set(),
-  en: new Set(),
-  es: new Set(),
-})
-const expandedBlocks = ref<Set<string>>(new Set<string>())
-const isMobile = ref(false)
-const localeLoadToken = ref(0)
-const skipNextLocaleLoad = ref(false)
-// Brouillon de création en cours : identifier renvoyé au premier POST, et indicateur
-// de finalisation (le bien existe alors et ne doit plus être purgé à la fermeture).
-const creatorDraftIdentifier = ref<string | null>(null)
-const creatorFinalized = ref(false)
-const isDiscardModalOpen = ref(false)
+// 4. Composables, stores, routeur
 const toast = useToast()
 
 const {
@@ -143,6 +133,7 @@ const {
   saveMultilingual,
   reset: resetSave,
 } = useDashboardSave()
+
 const {
   placeName,
   placeText,
@@ -153,54 +144,60 @@ const {
   updatePlaceText,
   savePlaceText,
 } = useDashboardPlaceText()
+
 const { available: symfonyAvailable, check: checkSymfonyStatus } = useSymfonyStatus()
+
 const { enabledLocales, sourceLocale: projectSourceLocale } = useProjectLocales()
 
-const slideroverUi = computed(() =>
-  isMobile.value
-    ? {
-        content: 'max-h-[82dvh] bg-[#212121] text-white ring-0 shadow-none',
-        overlay: 'bg-black/55',
-      }
-    : {
-        content:
-          'max-w-[min(92vw,34rem)] bg-[#212121] text-white ring-0 sm:ring-0 shadow-none sm:shadow-none',
-        overlay: 'bg-black/55',
-      },
-)
+const router = useRouter()
 
-onMounted(() => {
-  const mq = window.matchMedia('(max-width: 1023px)')
-  isMobile.value = mq.matches
-  const handler = (e: MediaQueryListEvent) => {
-    isMobile.value = e.matches
-  }
-  mq.addEventListener('change', handler)
-  onUnmounted(() => mq.removeEventListener('change', handler))
+// 5. Etat local
+const activeSection = ref<EditorSection>('content')
+
+const activeLocale = ref<DashboardLocale>('fr')
+
+const drafts = ref<Record<DashboardLocale, DashboardDraft> | null>(null)
+
+const dirtyLocalizedFields = ref<
+  Record<DashboardLocale, Set<DashboardLocalizedAccommodationField>>
+>({
+  fr: new Set(),
+  en: new Set(),
+  es: new Set(),
 })
 
+const expandedBlocks = ref<Set<string>>(new Set<string>())
+
+const isMobile = ref(false)
+
+const localeLoadToken = ref(0)
+
+const skipNextLocaleLoad = ref(false)
+
+// Brouillon de création en cours : identifier renvoyé au premier POST, et indicateur
+// de finalisation (le bien existe alors et ne doit plus être purgé à la fermeture).
+const creatorDraftIdentifier = ref<string | null>(null)
+
+const creatorFinalized = ref(false)
+
+const isDiscardModalOpen = ref(false)
+
+const localizedFieldSet = new Set<string>(DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS)
+
+// 6. Data inputs
+// Onglets limites aux locales activees du projet (les drafts restent indexes
+// sur le catalogue complet, voir createDrafts).
+const localeTabs: DashboardLocale[] = enabledLocales.value.map((locale) => locale.code)
+
+// 7. Validation et helpers purs
 const cloneEditableRecord = (value: DashboardEditableRecord): DashboardEditableRecord =>
   JSON.parse(JSON.stringify(value)) as DashboardEditableRecord
 
 const cloneEditableValue = (value: DashboardEditableValue): DashboardEditableValue =>
   JSON.parse(JSON.stringify(value)) as DashboardEditableValue
 
-const localizedFieldSet = new Set<string>(DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS)
-// Onglets limites aux locales activees du projet (les drafts restent indexes
-// sur le catalogue complet, voir createDrafts).
-const localeTabs: DashboardLocale[] = enabledLocales.value.map((locale) => locale.code)
-
 const isDashboardLocale = (value: string | undefined): value is DashboardLocale =>
   value === 'fr' || value === 'en' || value === 'es'
-
-const createDirtyState = (): Record<
-  DashboardLocale,
-  Set<DashboardLocalizedAccommodationField>
-> => ({
-  fr: new Set(),
-  en: new Set(),
-  es: new Set(),
-})
 
 const isLocalizedField = (path: string): path is DashboardLocalizedAccommodationField =>
   localizedFieldSet.has(path)
@@ -232,6 +229,155 @@ const withPreviewFallbacks = (accommodation: DashboardAccommodation): DashboardE
   return frontmatter
 }
 
+const createFallbackDraft = (accommodation?: DashboardAccommodation | null): DashboardDraft => {
+  const frontmatter = accommodation ? withPreviewFallbacks(accommodation) : {}
+  DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS.forEach((field) => {
+    frontmatter[field] = ''
+  })
+  return { frontmatter, body: '' }
+}
+
+const getNestedValue = (record: DashboardEditableRecord, path: string): DashboardEditableValue => {
+  const [first, ...rest] = path.split('.')
+  if (!first) return null
+  const current = record[first] ?? null
+  if (rest.length === 0) return current
+  if (current === null || typeof current !== 'object' || Array.isArray(current)) return null
+  return getNestedValue(current as DashboardEditableRecord, rest.join('.'))
+}
+
+const needsDiscardConfirm = (): boolean =>
+  process.value === 'create' && Boolean(creatorDraftIdentifier.value) && !creatorFinalized.value
+
+const toTranslationValue = (
+  draft: DashboardDraft,
+  field: DashboardLocalizedAccommodationField,
+): string | null => {
+  if (field === 'body') return draft.body
+  const value = getNestedValue(draft.frontmatter, field)
+  return typeof value === 'string' ? value : null
+}
+
+const buildTranslations = (): DashboardAccommodationTranslationPayload[] => {
+  if (!drafts.value) return []
+
+  return localeTabs
+    .map((locale): DashboardAccommodationTranslationPayload | null => {
+      const fields = dirtyLocalizedFields.value[locale]
+      if (fields.size === 0) return null
+
+      const translation: DashboardAccommodationTranslationPayload = { locale }
+      fields.forEach((field) => {
+        translation[field] = toTranslationValue(drafts.value![locale], field)
+      })
+      return translation
+    })
+    .filter((translation): translation is DashboardAccommodationTranslationPayload =>
+      Boolean(translation),
+    )
+}
+
+const buildActiveLocaleTranslation = (): DashboardAccommodationTranslationPayload | null => {
+  if (!activeDraft.value) return null
+
+  const translation: DashboardAccommodationTranslationPayload = { locale: activeLocale.value }
+  DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS.forEach((field) => {
+    translation[field] = toTranslationValue(activeDraft.value!, field)
+  })
+  return translation
+}
+
+const ensureTranslations = (
+  translations: DashboardAccommodationTranslationPayload[],
+): DashboardAccommodationTranslationPayload[] => {
+  if (translations.length > 0) return translations
+
+  const activeTranslation = buildActiveLocaleTranslation()
+  return activeTranslation ? [activeTranslation] : []
+}
+
+const resolveSaveLocale = (
+  translations: DashboardAccommodationTranslationPayload[],
+): LocaleCode => {
+  return translations.length > 1
+    ? projectSourceLocale.value
+    : (translations[0]?.locale ?? activeLocale.value)
+}
+
+// 8. Computed UI-ready
+const slideroverUi = computed(() =>
+  isMobile.value
+    ? {
+        content: 'max-h-[82dvh] bg-[#212121] text-white ring-0 shadow-none',
+        overlay: 'bg-black/55',
+      }
+    : {
+        content:
+          'max-w-[min(92vw,34rem)] bg-[#212121] text-white ring-0 sm:ring-0 shadow-none sm:shadow-none',
+        overlay: 'bg-black/55',
+      },
+)
+
+const isOpen = computed<boolean>({
+  get: () => props.open,
+  set: (value) => emit('update:open', value),
+})
+
+const process = computed<EditorProcess>({
+  get: () => props.process,
+  set: (value) => emit('update:process', value),
+})
+
+const activeDraft = computed<DashboardDraft | null>(
+  () => drafts.value?.[activeLocale.value] ?? null,
+)
+
+const associatedMediaValue = computed<DashboardEditableValue>(
+  () => activeDraft.value?.frontmatter.associatedMedia ?? [],
+)
+
+const isActiveValue = computed<boolean>(
+  () => getNestedValue(activeDraft.value?.frontmatter ?? {}, 'isActive') !== false,
+)
+
+const activePlaceCode = computed<string | null>(() => {
+  const value = getNestedValue(activeDraft.value?.frontmatter ?? {}, 'place')
+  return typeof value === 'string' && value.trim() ? value : null
+})
+
+const titleDraftValue = computed<string>(() => {
+  if (!activeDraft.value) return props.accommodation?.preview.title ?? 'Bien immobilier'
+  const name = getNestedValue(activeDraft.value.frontmatter, 'name')
+  return typeof name === 'string' && name
+    ? name
+    : (props.accommodation?.preview.title ?? 'Bien immobilier')
+})
+
+const propertyMenuItems = computed<BlockMenuItem[][]>(() => [
+  [
+    {
+      label: 'Voir sur le site',
+      icon: 'i-lucide-external-link',
+      // TODO: ouvrir dans un nouvel onglet quand la page publique sera stable
+      onSelect: () => {
+        if (!props.accommodation) return
+        const { listingSlug, categorySlug, slug } = props.accommodation.preview
+        router.push(`/properties/${listingSlug}/${categorySlug}/${slug}`)
+      },
+    },
+  ],
+])
+
+// 9. Actions et handlers
+const createDirtyState = (): Record<
+  DashboardLocale,
+  Set<DashboardLocalizedAccommodationField>
+> => ({
+  fr: new Set(),
+  en: new Set(),
+  es: new Set(),
+})
+
 const createDraftFromAccommodation = (accommodation: DashboardAccommodation): DashboardDraft => ({
   frontmatter: withPreviewFallbacks(accommodation),
   body: accommodation.body ?? '',
@@ -251,14 +397,6 @@ const createDraftFromTranslation = (
     frontmatter,
     body: translation.body ?? '',
   }
-}
-
-const createFallbackDraft = (accommodation?: DashboardAccommodation | null): DashboardDraft => {
-  const frontmatter = accommodation ? withPreviewFallbacks(accommodation) : {}
-  DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS.forEach((field) => {
-    frontmatter[field] = ''
-  })
-  return { frontmatter, body: '' }
 }
 
 const createDrafts = (
@@ -297,67 +435,6 @@ const setNestedValue = (
   return { ...record, [first]: setNestedValue(parentObj, rest.join('.'), value) }
 }
 
-const getNestedValue = (record: DashboardEditableRecord, path: string): DashboardEditableValue => {
-  const [first, ...rest] = path.split('.')
-  if (!first) return null
-  const current = record[first] ?? null
-  if (rest.length === 0) return current
-  if (current === null || typeof current !== 'object' || Array.isArray(current)) return null
-  return getNestedValue(current as DashboardEditableRecord, rest.join('.'))
-}
-
-const isOpen = computed<boolean>({
-  get: () => props.open,
-  set: (value) => emit('update:open', value),
-})
-
-const process = computed<EditorProcess>({
-  get: () => props.process,
-  set: (value) => emit('update:process', value),
-})
-
-const activeDraft = computed<DashboardDraft | null>(
-  () => drafts.value?.[activeLocale.value] ?? null,
-)
-
-const associatedMediaValue = computed<DashboardEditableValue>(
-  () => activeDraft.value?.frontmatter.associatedMedia ?? [],
-)
-
-const isActiveValue = computed<boolean>(
-  () => getNestedValue(activeDraft.value?.frontmatter ?? {}, 'isActive') !== false,
-)
-
-const activePlaceCode = computed<string | null>(() => {
-  const value = getNestedValue(activeDraft.value?.frontmatter ?? {}, 'place')
-  return typeof value === 'string' && value.trim() ? value : null
-})
-
-const titleDraftValue = computed<string>(() => {
-  if (!activeDraft.value) return props.accommodation?.preview.title ?? 'Bien immobilier'
-  const name = getNestedValue(activeDraft.value.frontmatter, 'name')
-  return typeof name === 'string' && name
-    ? name
-    : (props.accommodation?.preview.title ?? 'Bien immobilier')
-})
-
-const router = useRouter()
-
-const propertyMenuItems = computed<BlockMenuItem[][]>(() => [
-  [
-    {
-      label: 'Voir sur le site',
-      icon: 'i-lucide-external-link',
-      // TODO: ouvrir dans un nouvel onglet quand la page publique sera stable
-      onSelect: () => {
-        if (!props.accommodation) return
-        const { listingSlug, categorySlug, slug } = props.accommodation.preview
-        router.push(`/properties/${listingSlug}/${categorySlug}/${slug}`)
-      },
-    },
-  ],
-])
-
 const discardCreatorDraft = async (identifier: string): Promise<void> => {
   try {
     await $fetch(`/api/dashboard/accommodations/${encodeURIComponent(identifier)}`, {
@@ -378,9 +455,6 @@ const discardCreatorDraft = async (identifier: string): Promise<void> => {
     })
   }
 }
-
-const needsDiscardConfirm = (): boolean =>
-  process.value === 'create' && Boolean(creatorDraftIdentifier.value) && !creatorFinalized.value
 
 const resetCreatorState = (): void => {
   creatorDraftIdentifier.value = null
@@ -422,11 +496,6 @@ const discardDraftOnUnload = (): void => {
     keepalive: true,
   }).catch(() => undefined)
 }
-
-onMounted(() => {
-  window.addEventListener('pagehide', discardDraftOnUnload)
-  onUnmounted(() => window.removeEventListener('pagehide', discardDraftOnUnload))
-})
 
 const handleOpenUpdate = (value: boolean): void => {
   if (value) {
@@ -517,61 +586,6 @@ const saveActivePlaceText = async (): Promise<boolean> => {
   return savePlaceText(activePlaceCode.value, activeLocale.value)
 }
 
-const toTranslationValue = (
-  draft: DashboardDraft,
-  field: DashboardLocalizedAccommodationField,
-): string | null => {
-  if (field === 'body') return draft.body
-  const value = getNestedValue(draft.frontmatter, field)
-  return typeof value === 'string' ? value : null
-}
-
-const buildTranslations = (): DashboardAccommodationTranslationPayload[] => {
-  if (!drafts.value) return []
-
-  return localeTabs
-    .map((locale): DashboardAccommodationTranslationPayload | null => {
-      const fields = dirtyLocalizedFields.value[locale]
-      if (fields.size === 0) return null
-
-      const translation: DashboardAccommodationTranslationPayload = { locale }
-      fields.forEach((field) => {
-        translation[field] = toTranslationValue(drafts.value![locale], field)
-      })
-      return translation
-    })
-    .filter((translation): translation is DashboardAccommodationTranslationPayload =>
-      Boolean(translation),
-    )
-}
-
-const buildActiveLocaleTranslation = (): DashboardAccommodationTranslationPayload | null => {
-  if (!activeDraft.value) return null
-
-  const translation: DashboardAccommodationTranslationPayload = { locale: activeLocale.value }
-  DASHBOARD_LOCALIZED_ACCOMMODATION_FIELDS.forEach((field) => {
-    translation[field] = toTranslationValue(activeDraft.value!, field)
-  })
-  return translation
-}
-
-const ensureTranslations = (
-  translations: DashboardAccommodationTranslationPayload[],
-): DashboardAccommodationTranslationPayload[] => {
-  if (translations.length > 0) return translations
-
-  const activeTranslation = buildActiveLocaleTranslation()
-  return activeTranslation ? [activeTranslation] : []
-}
-
-const resolveSaveLocale = (
-  translations: DashboardAccommodationTranslationPayload[],
-): LocaleCode => {
-  return translations.length > 1
-    ? projectSourceLocale.value
-    : (translations[0]?.locale ?? activeLocale.value)
-}
-
 const loadLocaleDrafts = async (accommodation?: DashboardAccommodation | null): Promise<void> => {
   if (!accommodation) return
 
@@ -650,6 +664,7 @@ const handleSave = async (): Promise<void> => {
   emit('saved')
 }
 
+// 10. Watch et watchEffect
 watch(
   () => props.accommodation?.slug,
   async () => {
@@ -695,4 +710,22 @@ watch(
   },
   { immediate: true },
 )
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
+onMounted(() => {
+  const mq = window.matchMedia('(max-width: 1023px)')
+  isMobile.value = mq.matches
+  const handler = (e: MediaQueryListEvent) => {
+    isMobile.value = e.matches
+  }
+  mq.addEventListener('change', handler)
+  onUnmounted(() => mq.removeEventListener('change', handler))
+})
+
+onMounted(() => {
+  window.addEventListener('pagehide', discardDraftOnUnload)
+  onUnmounted(() => window.removeEventListener('pagehide', discardDraftOnUnload))
+})
 </script>

@@ -22,6 +22,13 @@ export const IMAGE_PRESETS = {
   realEstateCard: createResponsiveImagePreset(800, '800px'),
   compactCard: createResponsiveImagePreset(600, '600px'),
   galleryLightbox: createResponsiveImagePreset(1200, '1200px'),
+  exceptionalLightbox: {
+    width: 1200,
+    format: 'webp',
+    quality: 85,
+    fit: 'contain',
+    sizes: 'sm:100vw md:100vw lg:100vw xl:100vw 2xl:100vw',
+  },
   galleryColumn: createResponsiveImagePreset(600, '600px'),
   thumbnail: createResponsiveImagePreset(300, '300px'),
   heroMobile: createResponsiveImagePreset(800, '800px'),

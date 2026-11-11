@@ -19,18 +19,20 @@
 </template>
 
 <script setup lang="ts">
-// 2. Types et constantes statiques
+// 1. Imports
 
+// 2. Types et constantes statiques
 // Doit correspondre à la durée `duration-500` de la transition CSS de sortie.
 const LANDING_SHELL_EXIT_DURATION_MS = 500
+
 // Filet de sécurité : si l'init ou l'image hero n'aboutissent jamais (API en panne,
 // requête suspendue), le shell se retire au lieu de masquer le site indéfiniment.
 const LANDING_SHELL_FAILSAFE_MS = 8000
 
-// 3. Props et emits
 // Doit rester un sous-ensemble de LogoColorClass (LogoShowcaseFull).
 type BootShellLogoColorClass = 'text-foreground/90' | 'text-white/90' | 'text-surface'
 
+// 3. Props et emits
 const props = withDefaults(
   defineProps<{
     ariaLabel?: string
@@ -45,27 +47,36 @@ const props = withDefaults(
 )
 
 // 4. Composables, stores, routeur
-
 const appConfig = useAppConfig()
+
 const logger = useLogger({ module: 'app-boot-shell' })
+
 const { isLandingShellVisible } = useApp()
+
 const { initCoreDataStatus, isInitCoreDataReady } = useNuxtServerInit()
 
-// 5. Etat local
-
-// Référence au timer de complétion : permet d'annuler le délai si l'état redevient visible.
-let completionTimer: ReturnType<typeof setTimeout> | null = null
-// Timer du filet de sécurité : force la complétion si le boot ne se termine jamais.
-let failsafeTimer: ReturnType<typeof setTimeout> | null = null
 // Partagé avec app.vue via useState : signal de fin de vie du shell pour la session courante.
 const hasLandingShellCompleted = useState<boolean>('app.boot-shell.completed', () => false)
+
 // Accès direct pour le logging : même clé que FullImage.vue.
 const isHeroImageReady = useState<boolean>('screen.real-estate-full-image.hero-ready', () => false)
 
+// 5. Etat local
+// Référence au timer de complétion : permet d'annuler le délai si l'état redevient visible.
+let completionTimer: ReturnType<typeof setTimeout> | null = null
+
+// Timer du filet de sécurité : force la complétion si le boot ne se termine jamais.
+let failsafeTimer: ReturnType<typeof setTimeout> | null = null
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+
 // 8. Computed UI-ready
 
-// 10. Watch et watchEffect
+// 9. Actions et handlers
 
+// 10. Watch et watchEffect
 // Orchestre le cycle de vie du shell.
 // Quand isLandingShellVisible passe à false, démarre un timer égal à la durée
 // de la transition CSS avant de signaler la complétion à app.vue (démontage du v-if).
@@ -113,8 +124,9 @@ watch(
   { immediate: true },
 )
 
-// 12. Lifecycle
+// 11. Metadonnees ecran ou page
 
+// 12. Lifecycle
 onMounted(() => {
   failsafeTimer = setTimeout(() => {
     failsafeTimer = null

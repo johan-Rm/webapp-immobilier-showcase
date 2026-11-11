@@ -57,6 +57,8 @@
 // 1. Imports
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
+// 2. Types et constantes statiques
+
 // 3. Props et emits
 const props = withDefaults(
   defineProps<{
@@ -74,13 +76,16 @@ const props = withDefaults(
 
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
+// 4. Composables, stores, routeur
+
 // 5. Etat local
 const isMobile = ref(false)
+
 let mediaQuery: MediaQueryList | null = null
 
-const handleMediaQueryChange = (event: MediaQueryListEvent): void => {
-  isMobile.value = event.matches
-}
+// 6. Data inputs
+
+// 7. Validation et helpers purs
 
 // 8. Computed UI-ready
 const slideoverUi = computed(() =>
@@ -94,6 +99,15 @@ const slideoverUi = computed(() =>
         overlay: 'bg-black/55',
       },
 )
+
+// 9. Actions et handlers
+const handleMediaQueryChange = (event: MediaQueryListEvent): void => {
+  isMobile.value = event.matches
+}
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
 
 // 12. Lifecycle
 onMounted(() => {

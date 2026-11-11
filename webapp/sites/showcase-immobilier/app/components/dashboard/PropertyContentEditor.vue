@@ -137,13 +137,18 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import { DEFAULT_PRICE_CURRENCY } from '#shared/types/accommodation'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardPropertyContentEditor' })
 
 type DashboardDraft = { frontmatter: DashboardEditableRecord; body: string }
+
 type BlockMenuItem = { label: string; icon?: string; onSelect?: () => void }
+
 type Block = { id: string; label: string; icon: string; actions: BlockMenuItem[][] }
+
 type FieldConfig = {
   key: string
   label: string
@@ -157,6 +162,7 @@ type FieldConfig = {
   showLabel?: boolean
   hint?: string
 }
+
 type FrontmatterSection = {
   id: string
   label: string
@@ -165,6 +171,7 @@ type FrontmatterSection = {
   fields: FieldConfig[]
 }
 
+// 3. Props et emits
 const props = defineProps<{
   activeDraft: DashboardDraft
   expandedBlocks: Set<string>
@@ -184,8 +191,34 @@ const emit = defineEmits<{
   'update-place-text': [value: string]
 }>()
 
+// 4. Composables, stores, routeur
 const metadataStore = useMetadataStore()
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const getNestedValue = (record: DashboardEditableRecord, path: string): DashboardEditableValue => {
+  const [first, ...rest] = path.split('.')
+  if (!first) return null
+  const current = record[first] ?? null
+  if (rest.length === 0) return current
+  if (current === null || typeof current !== 'object' || Array.isArray(current)) return null
+  return getNestedValue(current as DashboardEditableRecord, rest.join('.'))
+}
+
+const getFieldValue = (
+  path: string,
+  defaultValue?: DashboardEditableValue,
+): DashboardEditableValue => {
+  const value = getNestedValue(props.activeDraft.frontmatter, path)
+  return value ?? defaultValue ?? null
+}
+
+// 8. Computed UI-ready
 const accommodationForm = computed(() => metadataStore.getAccommodationForm)
+
 const dashboardContent = computed(() => metadataStore.getDashboardContent)
 
 const frontmatterSections = computed<FrontmatterSection[]>(() => {
@@ -424,20 +457,11 @@ const displayedBlocks = computed<Block[]>(() =>
 // Blocs `hasPart` (screens du parcours) du brouillon de la locale active.
 const hasPartValue = computed<DashboardEditableValue>(() => getFieldValue('hasPart', []))
 
-const getNestedValue = (record: DashboardEditableRecord, path: string): DashboardEditableValue => {
-  const [first, ...rest] = path.split('.')
-  if (!first) return null
-  const current = record[first] ?? null
-  if (rest.length === 0) return current
-  if (current === null || typeof current !== 'object' || Array.isArray(current)) return null
-  return getNestedValue(current as DashboardEditableRecord, rest.join('.'))
-}
+// 9. Actions et handlers
 
-const getFieldValue = (
-  path: string,
-  defaultValue?: DashboardEditableValue,
-): DashboardEditableValue => {
-  const value = getNestedValue(props.activeDraft.frontmatter, path)
-  return value ?? defaultValue ?? null
-}
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

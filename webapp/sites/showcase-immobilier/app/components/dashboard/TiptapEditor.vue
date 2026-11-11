@@ -28,29 +28,13 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import { Table, TableCell, TableHeader, TableRow } from '@tiptap/extension-table'
 import { Markdown } from '@tiptap/markdown'
 import MarkdownIt from 'markdown-it'
 
+// 2. Types et constantes statiques
 const md = new MarkdownIt()
-
-const toHtml = (markdown: string): string => md.render(markdown)
-
-const props = defineProps<{
-  modelValue: string
-}>()
-
-const emit = defineEmits<{
-  'update:modelValue': [value: string]
-}>()
-
-const editor = useEditor({
-  extensions: [TiptapStarterKit, Markdown, Table, TableRow, TableCell, TableHeader],
-  content: toHtml(props.modelValue),
-  onUpdate: ({ editor: e }) => {
-    emit('update:modelValue', e.getMarkdown())
-  },
-})
 
 type ToolbarItem = {
   name: string
@@ -61,6 +45,34 @@ type ToolbarItem = {
   action: () => boolean | undefined
 }
 
+// 3. Props et emits
+const props = defineProps<{
+  modelValue: string
+}>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
+
+// 4. Composables, stores, routeur
+const editor = useEditor({
+  extensions: [TiptapStarterKit, Markdown, Table, TableRow, TableCell, TableHeader],
+  content: toHtml(props.modelValue),
+  onUpdate: ({ editor: e }) => {
+    emit('update:modelValue', e.getMarkdown())
+  },
+})
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+function toHtml(markdown: string): string {
+  return md.render(markdown)
+}
+
+// 8. Computed UI-ready
 const toolbarGroups = computed<ToolbarItem[][]>(() => [
   [
     {
@@ -155,6 +167,9 @@ const toolbarGroups = computed<ToolbarItem[][]>(() => [
   ],
 ])
 
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
 watch(
   () => props.modelValue,
   (value) => {
@@ -166,6 +181,9 @@ watch(
   },
 )
 
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 onBeforeUnmount(() => {
   unref(editor)?.destroy()
 })

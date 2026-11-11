@@ -118,11 +118,13 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import type { DashboardEditableValue } from '#shared/types/dashboardAccommodation'
 import type { MediaObject } from '@schemas/interfaces'
 
 import { IMAGE_PRESETS } from '~/composables/useAppImage'
 
+// 2. Types et constantes statiques
 type AssocItem = {
   image: string
   caption: string
@@ -139,21 +141,49 @@ type ResolvedItem = {
 
 defineOptions({ name: 'DashboardPropertyAssociatedMediaEditor' })
 
+// 3. Props et emits
 const props = defineProps<{
   associatedMedia: DashboardEditableValue
   fullWidthItems?: boolean
   hideAddButton?: boolean
 }>()
 
-const fullWidthItems = computed<boolean>(() => props.fullWidthItems === true)
-const hideAddButton = computed<boolean>(() => props.hideAddButton === true)
-
 const emit = defineEmits<{
   'update:associatedMedia': [value: DashboardEditableValue]
 }>()
 
+// 4. Composables, stores, routeur
 const metadataStore = useMetadataStore()
+
+// 5. Etat local
 const isPickerOpen = ref(false)
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const getCaptionFor = (identifier: string): string =>
+  parsedAssocMedia.value.find((a) => a.image === identifier)?.caption ||
+  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ||
+  ''
+
+const getMediaCaption = (identifier: string): string =>
+  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ?? ''
+
+const swapItems = <T,>(items: T[], fromIndex: number, toIndex: number): T[] => {
+  const fromItem = items[fromIndex]
+  const toItem = items[toIndex]
+  if (fromItem === undefined || toItem === undefined) return items
+
+  const next = [...items]
+  next[fromIndex] = toItem
+  next[toIndex] = fromItem
+  return next
+}
+
+// 8. Computed UI-ready
+const fullWidthItems = computed<boolean>(() => props.fullWidthItems === true)
+
+const hideAddButton = computed<boolean>(() => props.hideAddButton === true)
 
 const parsedAssocMedia = computed<AssocItem[]>(() => {
   if (!Array.isArray(props.associatedMedia)) return []
@@ -191,11 +221,7 @@ const resolvedItems = computed<ResolvedItem[]>(() => {
   })
 })
 
-const getCaptionFor = (identifier: string): string =>
-  parsedAssocMedia.value.find((a) => a.image === identifier)?.caption ||
-  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ||
-  ''
-
+// 9. Actions et handlers
 const setRepresentative = (identifier: string): void => {
   emitAssocMedia(
     parsedAssocMedia.value.map((a) => ({
@@ -208,10 +234,14 @@ const setRepresentative = (identifier: string): void => {
 const updateCaption = (identifier: string, caption: string): void => {
   const current = parsedAssocMedia.value
   const idx = current.findIndex((a) => a.image === identifier)
-  const updated: AssocItem[] =
-    idx >= 0
-      ? current.map((item, i) => (i === idx ? { ...item, caption } : item))
-      : [...current, { image: identifier, caption, keywords: [], representativeOfPage: false }]
+  if (idx < 0) {
+    emitAssocMedia([
+      ...current,
+      { image: identifier, caption, keywords: [], representativeOfPage: false },
+    ])
+    return
+  }
+  const updated = current.map((item, i) => (i === idx ? { ...item, caption } : item))
   emitAssocMedia(updated)
 }
 
@@ -219,22 +249,8 @@ const emitAssocMedia = (items: AssocItem[]): void => {
   emit('update:associatedMedia', items)
 }
 
-const getMediaCaption = (identifier: string): string =>
-  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ?? ''
-
 const removeIdentifier = (identifier: string): void => {
   emitAssocMedia(parsedAssocMedia.value.filter((a) => a.image !== identifier))
-}
-
-const swapItems = <T,>(items: T[], fromIndex: number, toIndex: number): T[] => {
-  const fromItem = items[fromIndex]
-  const toItem = items[toIndex]
-  if (fromItem === undefined || toItem === undefined) return items
-
-  const next = [...items]
-  next[fromIndex] = toItem
-  next[toIndex] = fromItem
-  return next
 }
 
 const moveUp = (index: number): void => {
@@ -267,4 +283,10 @@ const onUploaded = (mediaObjects: MediaObject[]): void => {
 
   emitAssocMedia(nextItems)
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

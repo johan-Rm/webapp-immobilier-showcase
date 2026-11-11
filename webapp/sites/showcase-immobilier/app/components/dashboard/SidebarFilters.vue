@@ -110,6 +110,8 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+
 // 2. Types et constantes statiques
 type SelectOption = { label: string; value: string }
 
@@ -132,8 +134,15 @@ const emit = defineEmits<{
   'update:identifierSearch': [value: string]
 }>()
 
+// 4. Composables, stores, routeur
+
 // 5. Etat local
 const activeField = ref<'search' | 'listing' | 'category' | null>(null)
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const stripCount = (label: string): string => label.replace(/\s*\(\d+\)$/, '').trim()
 
 // 8. Computed UI-ready
 const wrapperClass = computed<string>(() =>
@@ -155,8 +164,6 @@ const optionsStyle = computed<string>(() =>
     ? 'background-color: #212121; border-top: 1px solid rgba(107, 122, 74, 0.35); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);'
     : '',
 )
-
-const stripCount = (label: string): string => label.replace(/\s*\(\d+\)$/, '').trim()
 
 const selectedListingLabel = computed<string>(() =>
   stripCount(
@@ -181,4 +188,10 @@ const selectCategory = (value: string): void => {
   emit('update:selectedCategory', value)
   activeField.value = null
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

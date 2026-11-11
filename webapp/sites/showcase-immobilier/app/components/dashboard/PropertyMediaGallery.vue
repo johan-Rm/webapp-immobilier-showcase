@@ -175,8 +175,10 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import type { MediaObject } from '@schemas/interfaces'
 
+// 2. Types et constantes statiques
 type AssocItem = {
   image: string
   caption: string
@@ -194,6 +196,9 @@ type ResolvedImage = {
 
 defineOptions({ name: 'DashboardPropertyMediaGallery' })
 
+const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+// 3. Props et emits
 const props = defineProps<{
   associatedMedia: DashboardEditableValue
 }>()
@@ -202,22 +207,44 @@ const emit = defineEmits<{
   'update:associatedMedia': [value: DashboardEditableValue]
 }>()
 
+// 4. Composables, stores, routeur
 const metadataStore = useMetadataStore()
 
+// 5. Etat local
 const search = ref('')
+
 const showAssociatedOnly = ref(false)
+
 const isUploadOpen = ref(false)
+
 const scrollContainerRef = ref<HTMLDivElement | null>(null)
+
 const showScrollTop = ref(false)
 
-const onScroll = (): void => {
-  showScrollTop.value = (scrollContainerRef.value?.scrollTop ?? 0) > 200
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const deriveReference = (mainEntity: string, identifier: string): string => {
+  if (mainEntity && mainEntity !== 'ImageObject') return mainEntity
+  if (uuidRe.test(identifier)) return ''
+  return (identifier.split('-')[0] ?? '').toUpperCase()
 }
 
-const scrollToTop = (): void => {
-  scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' })
+const getDateTimestamp = (value?: string): number => {
+  if (!value) return 0
+  const timestamp = Date.parse(value)
+  return Number.isNaN(timestamp) ? 0 : timestamp
 }
 
+const getAssocMeta = (identifier: string): AssocItem | undefined =>
+  parsedAssocMedia.value.find((a) => a.image === identifier)
+
+const isAssociated = (identifier: string): boolean => imageIdentifiers.value.includes(identifier)
+
+const getMediaCaption = (identifier: string): string =>
+  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ?? ''
+
+// 8. Computed UI-ready
 const parsedAssocMedia = computed<AssocItem[]>(() => {
   if (!Array.isArray(props.associatedMedia)) return []
   return props.associatedMedia.flatMap((entry) => {
@@ -239,20 +266,6 @@ const parsedAssocMedia = computed<AssocItem[]>(() => {
 const imageIdentifiers = computed<string[]>(() =>
   parsedAssocMedia.value.map((a) => a.image).filter(Boolean),
 )
-
-const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
-const deriveReference = (mainEntity: string, identifier: string): string => {
-  if (mainEntity && mainEntity !== 'ImageObject') return mainEntity
-  if (uuidRe.test(identifier)) return ''
-  return (identifier.split('-')[0] ?? '').toUpperCase()
-}
-
-const getDateTimestamp = (value?: string): number => {
-  if (!value) return 0
-  const timestamp = Date.parse(value)
-  return Number.isNaN(timestamp) ? 0 : timestamp
-}
 
 const allImages = computed<ResolvedImage[]>(() =>
   metadataStore.getImageObjects
@@ -283,17 +296,18 @@ const filteredImages = computed<ResolvedImage[]>(() => {
   )
 })
 
-const getAssocMeta = (identifier: string): AssocItem | undefined =>
-  parsedAssocMedia.value.find((a) => a.image === identifier)
+// 9. Actions et handlers
+const onScroll = (): void => {
+  showScrollTop.value = (scrollContainerRef.value?.scrollTop ?? 0) > 200
+}
 
-const isAssociated = (identifier: string): boolean => imageIdentifiers.value.includes(identifier)
+const scrollToTop = (): void => {
+  scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 const emitAssocMedia = (items: AssocItem[]): void => {
   emit('update:associatedMedia', items)
 }
-
-const getMediaCaption = (identifier: string): string =>
-  metadataStore.getImageObjectsByIdentifier.get(identifier)?.caption ?? ''
 
 const associate = (identifier: string, caption = getMediaCaption(identifier)): void => {
   if (imageIdentifiers.value.includes(identifier)) return
@@ -335,4 +349,10 @@ const onUploaded = (mediaObjects: MediaObject[]): void => {
 
   emitAssocMedia(nextItems)
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

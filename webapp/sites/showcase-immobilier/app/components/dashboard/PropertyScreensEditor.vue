@@ -124,9 +124,9 @@ import type {
 
 import { DASHBOARD_SCREEN_TEMPLATES } from '#shared/types/dashboardAccommodation'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardPropertyScreensEditor' })
 
-// 2. Types et constantes statiques
 const DEFAULT_TEMPLATE = 'SCREEN_ACCOMMODATION_FULL'
 
 // 3. Props et emits
@@ -135,10 +135,15 @@ const props = defineProps<{
   /** Médias associés du bien, transmis aux cartes pour la sélection d'images. */
   availableMedia: DashboardEditableValue
 }>()
+
 const emit = defineEmits<{ 'update:screens': [value: DashboardEditableValue] }>()
 
-// 5. État local
+// 4. Composables, stores, routeur
+
+// 5. Etat local
 const openIndex = ref<number | null>(null)
+
+// 6. Data inputs
 
 // 7. Validation et helpers purs
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -223,4 +228,10 @@ const move = (index: number, direction: 1 | -1): void => {
 const toggle = (index: number): void => {
   openIndex.value = openIndex.value === index ? null : index
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

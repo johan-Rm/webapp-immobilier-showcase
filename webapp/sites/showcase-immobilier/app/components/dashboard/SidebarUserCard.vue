@@ -51,10 +51,21 @@ const props = withDefaults(
   },
 )
 
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+
 // 8. Computed UI-ready
 const sizeClass = computed<string>(() => (props.size === 'sm' ? 'h-8 w-8' : 'h-9 w-9'))
+
 const textSizeClass = computed<string>(() => (props.size === 'sm' ? 'text-xs' : 'text-sm'))
+
 const nameSizeClass = computed<string>(() => (props.size === 'sm' ? 'text-xs' : 'text-sm'))
+
 const emailSizeClass = computed<string>(() =>
   props.size === 'sm' ? 'text-[0.65rem]' : 'text-[0.7rem]',
 )
@@ -72,4 +83,12 @@ const userInitials = computed<string>(() => {
     .map((part) => part[0]?.toUpperCase() ?? '')
     .join('')
 })
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

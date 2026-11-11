@@ -73,26 +73,38 @@
 // 1. Imports
 import LogoShowcaseMark from '@site-assets/logo/showcase-picto.svg'
 
+// 2. Types et constantes statiques
+const inputUi = {
+  base: 'bg-[#e8ecdd] border border-[#6B7A4A]/20 text-[#212121] placeholder:text-[#212121]/40 focus:border-[#6B7A4A] focus:ring-0',
+}
+
+// 3. Props et emits
+
 // 4. Composables, stores, routeur
 const appConfig = useAppConfig()
+
 const { loggedIn, fetch } = useUserSession()
 
-// 6. Data inputs
 await fetch()
+
 if (loggedIn.value) {
   await navigateTo('/dashboard')
 }
 
 // 5. Etat local
 const isLoading = ref(false)
+
 const error = ref<string | null>(null)
+
 const form = reactive({ email: '', password: '' })
 
-const inputUi = {
-  base: 'bg-[#e8ecdd] border border-[#6B7A4A]/20 text-[#212121] placeholder:text-[#212121]/40 focus:border-[#6B7A4A] focus:ring-0',
-}
+// 6. Data inputs
 
-// 9. Handlers et actions
+// 7. Validation et helpers purs
+
+// 8. Computed UI-ready
+
+// 9. Actions et handlers
 const onSubmit = async () => {
   error.value = null
   isLoading.value = true
@@ -121,10 +133,14 @@ const onSubmit = async () => {
   }
 }
 
+// 10. Watch et watchEffect
+
 // 11. Metadonnees ecran ou page
 definePageMeta({
   layout: 'dashboard',
 })
+
+// 12. Lifecycle
 </script>
 
 <style scoped>
