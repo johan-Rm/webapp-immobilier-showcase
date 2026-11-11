@@ -1,25 +1,36 @@
+# Read DTO observed at Symfony 9fed427; future SaaS contracts live in shared/types/saas/.
 article:
-  identifier:
+  id:
+    type: string
+  project: # JSON-LD relation or embedded read representation.
+    type: string|object
+  status:
     type: string
   slug:
     type: string
-  name:
-    type: string
-  description:
-    type: string
-  body:
-    type: string
   headline:
     type: string
-  datePublished:
+  body:
+    type: string|null
+  schemaData:
+    type: object|null
+  requestedLocale:
     type: string
-  isActive:
+  locale:
+    type: string
+  fallbackLocale:
+    type: string|null
+  fallback:
     type: boolean
-  metaTitle:
-    type: string
-  metaDescription:
-    type: string
-  dateCreated:
-    type: string
-  dateModified:
-    type: string
+  translations: # Included by read:with-translations only; no published snapshots in this API.
+    type: array<object>
+  createdAt:
+    type: datetime
+  updatedAt:
+    type: datetime
+  publishedAt: # Existing aggregate audit field, not a per-locale published snapshot.
+    type: datetime|null
+  createdBy:
+    type: string|object|null
+  updatedBy:
+    type: string|object|null
