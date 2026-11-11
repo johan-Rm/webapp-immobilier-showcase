@@ -79,3 +79,16 @@ absentes des commits et conservées dans le worktree.
 
 - Réalisation : `669ab4cafe68b3ee92a34aa60b630b9574820156`.
 Aucun push, PR ni fusion.
+
+## Vérification après correction des contrats — 2026-11-11
+
+Le comportement Client 2 est inchangé après la correction de préparation des
+types portée par OPS-004. Les smokes existants desktop et mobile passent sur
+l’artefact autonome reconstruit : HTML SSR minimal, titre, langue française,
+aucune requête aux API, thèmes ou images Showcase ; dashboard et thème en 404.
+Aucune erreur navigateur. Preuve : `/tmp/dem003-final-browser-client2-immobilier.log`.
+Aucun `.env`, contenu ou secret Showcase utilisé par le serveur de vérification ;
+serveur éphémère arrêté en fin de test. Aucune nouvelle validation humaine déduite.
+
+Validation humaine du contrôle complémentaire le 2026-11-11 : « c’est validé ».
+Le correctif commun est commité dans OPS-004 ; cette carte ne reçoit aucun changement fonctionnel.
