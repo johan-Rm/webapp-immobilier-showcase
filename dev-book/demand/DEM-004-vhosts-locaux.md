@@ -3,7 +3,7 @@
 - Type : développement
 - Session de création et de reconstitution : 01a1ca55-428a-73c2-8ba4-240528dc1169
 - Date : 2026-11-11
-- État : livraison en cours ; contrôles avant PR
+- État : contrôles locaux réussis ; prête pour PR et intégration
 - Cadrage confirmé : « go », après restitution dans la session de création
 - Branche : demands/DEM-004 ; worktree principal : `.`
 - Base develop locale : `35d4a0636914b103b84afdf6efb01ffc0b25fea2`
@@ -90,3 +90,13 @@ validés, plus les présentes traces documentaires. GitHub autorise Rebase and m
 Principal réservé à DEM-004 ; Web propre, sans contribution au-delà de la base,
 mission DEM-003 clôturée ; DevOps propre, portant les seuls commits DEM-004 validés.
 Aucun layers/* publié ; aucun changement des .env, données ou worktrees.
+
+Contrôles avant PR : `make quality-check` et `make quality-conventions-check`
+réussis ; 78 tests applicatifs réussis via le conteneur de développement avec
+`bunx nuxt prepare && bun run test`. Le lancement brut sans préparation avait
+échoué sur le tsconfig généré absent, sans exécuter de tests ; aucune modification
+de code n’a été nécessaire. Contrôle de contribution complet depuis origin/develop
+réussi, sans amorçage ni exception. Les 10 tests infra et les 111 tests du cadre
+portent sur le même résultat fonctionnel reconstitué. Les contrôles GitHub du HEAD
+publié seront requis avant Rebase and merge ; leurs résultats et le suivi final
+seront consignés dans le brouillon local existant.
