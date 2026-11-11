@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée et commitée localement le 2026-11-10 ; à reconstituer
+- État : correctifs du 2026-11-11 validés par l’humain ; commit local à créer
 - Chemins autorisés : Config Nuxt/TypeScript/Vitest/Tailwind/ESLint/Playwright de `webapp/`, `webapp/base/nuxt.config.ts`, `webapp/base/README.md`, scripts et workflow qualité, `sonar-project.properties` : liste exacte OPS-004 dans l’inventaire.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; pas de dépendance de réalisation à WEB-001/002. Consommer leurs contrats de chemins confirmés ; exécuter les contrôles globaux après leurs commits.
 
@@ -115,3 +115,52 @@ supplémentaire de source n’est autorisée par cette vérification.
 Clôture à l’étape 04 : correction `0fb11118275083408e7f7a37f6cd9d12ff3133e2`
 reprise dans Web par `93eba2a`. Qualité Showcase et types Client 2 ordinaires
 réussis ; suites finales 70 et 45 tests réussis. Aucun code métier changé.
+
+## Écart CI relevé le 2026-11-11
+
+Sur le commit publié `d97fbda`, le job qualité Client 2 échoue avec TS2307 :
+`shared/types/content.ts` importe `../../schemas/interfaces` et
+`shared/types/dashboardAccommodation.ts` importe `@schemas/interfaces`, absents
+sur le checkout CI. Preuve : job GitHub `130420960304`, copie locale du journal
+`/tmp/dem003-ci-quality-client2.log`. Le job Showcase est ensuite annulé par la
+matrice CI ; cette annulation ne démontre pas un échec de ses types.
+Les types Client 2 locaux précédemment réussis disposaient des contrats déjà
+générés et ne couvraient donc pas ce checkout vierge. Aucune configuration,
+convention ou règle n’est modifiée dans la reprise du correctif d’images ;
+la préparation des contrats en CI reste à corriger et vérifier avant livraison.
+
+## Reprise du 2026-11-11 — contrats sur checkout vierge
+
+Après demande de poursuivre les corrections restantes, reprise dans le principal
+sur `demands/DEM-003`, base `d97fbda992a67a96abff8513e1b9de4b6b5b2be6`.
+Le hook commun `prepare:types` génère désormais les interfaces et DTO avant la
+configuration TypeScript de la cible. Aucune donnée, initialisation, route BFF
+ou configuration Symfony de Showcase n’est ajoutée à Client 2.
+
+Le test de cibles existant copie les sources YAML et le générateur réels, retire
+les artefacts avant chaque cible et exécute `nuxt prepare` puis `vue-tsc --noEmit`.
+Il passe pour les deux cibles sans schémas générés préalables. La fixture du vrai
+Client 2 fournit également les sources communes tout en conservant toutes ses
+assertions d’absence des composants, routes, secrets et bootstrap Showcase.
+Les chemins sources sont figés sur ceux de la fixture pour ne pas hériter d’une
+source de schémas externe de l’utilisateur. Les sources seules sont copiées ;
+aucun `.env`, secret, contenu client ou artefact de contrats existant n’est repris.
+
+Chemins de correction : `webapp/nuxt.config.ts`,
+`webapp/scripts/build/site-targets.vitest.ts`, `webapp/tests/layers/client2.vitest.ts`,
+`webapp/schemas/README.md` et `docs/2.architecture/14.site-layers.md`.
+Le test isolé de cibles passe (2 cas). Les deux qualités et builds SSR passent ;
+les tests Client 2 passent (45 cas sur 9 fichiers). Les résultats Showcase sont
+consignés dans WEB-001. Logs : `/tmp/dem003-final-client2-immobilier-{quality-check,test,build}.log`.
+Les contrats communs sont donc préparés sur checkout vierge sans reprise des
+artefacts du principal. Le comportement d’isolation est confirmé par WEB-002.
+État du correctif : implémenté, non commité, à vérifier ; le verdict historique
+ne vaut pas validation de cette reprise. Aucune modification des contrôles
+Codebase Integrity, de leurs seuils ou de leurs exceptions.
+
+## Validation des correctifs du 2026-11-11
+
+Verdict humain explicite : « c’est validé ». Il couvre le correctif présenté,
+ses tests et ses limites documentées ci-dessus. Empreinte du lot vérifiée avant
+consignation : 55 fichiers inchangés depuis la présentation sur `d97fbda`.
+Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.

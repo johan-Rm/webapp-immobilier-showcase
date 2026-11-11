@@ -17,7 +17,8 @@ UI est déplacé vers son périmètre local plutôt que d'alourdir ce contrat pa
 
 Les sources YAML sont versionnées dans `source/webapp/` et
 `source/dtos/symfony_api/`. Le resolver les utilise par défaut ; `SCHEMAS_PATH`
-permet une source externe explicite. `bun run setup:local` régénère les contrats.
+permet une source externe explicite. `nuxt prepare` et `bun run type-check` génèrent les contrats pour chaque cible ;
+`bun run setup:local` les régénère également. Aucun contenu client n’est requis.
 
 ## Conventions techniques
 

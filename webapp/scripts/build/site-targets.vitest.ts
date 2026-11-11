@@ -30,10 +30,13 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
   }
   mkdirSync(join(root, 'scripts/build'), { recursive: true })
   cpSync(join(webapp, 'scripts/build/site.ts'), join(root, 'scripts/build/site.ts'))
+  cpSync(join(webapp, 'scripts/build/schema-hook.ts'), join(root, 'scripts/build/schema-hook.ts'))
+  cpSync(join(webapp, 'services'), join(root, 'services'), { recursive: true })
+  cpSync(join(webapp, 'schemas/source'), join(root, 'schemas/source'), { recursive: true })
   cpSync(join(webapp, 'nuxt.config.ts'), join(root, 'nuxt.config.ts'))
   cpSync(join(webapp, 'tsconfig.json'), join(root, 'tsconfig.json'))
   symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
-  symlinkSync(join(webapp, 'shared'), join(root, 'shared'), 'dir')
+  cpSync(join(webapp, 'shared'), join(root, 'shared'), { recursive: true })
   file('package.json', '{"type":"module"}')
   file(
     'base/real-estate/nuxt.config.ts',
@@ -53,14 +56,35 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
     )
   }
   for (const id of ['showcase-immobilier', 'client2-immobilier']) {
+    rmSync(join(root, 'schemas/interfaces'), { recursive: true, force: true })
+    rmSync(join(root, 'schemas/dtos'), { recursive: true, force: true })
+    expect(existsSync(join(root, 'schemas/interfaces'))).toBe(false)
     const result = spawnSync('node', [join(root, 'node_modules/nuxt/bin/nuxt.mjs'), 'prepare'], {
       cwd: root,
       encoding: 'utf8',
       timeout: 60000,
-      env: { ...process.env, GD_TARGET: id, NUXT_TELEMETRY_DISABLED: '1' },
+      env: {
+        ...process.env,
+        GD_TARGET: id,
+        NUXT_TELEMETRY_DISABLED: '1',
+        SCHEMAS_PATH: join(root, 'schemas/source'),
+      },
     })
     expect(result.error, result.stderr).toBeUndefined()
     expect(result.status, result.stdout + result.stderr).toBe(0)
+    expect(existsSync(join(root, 'schemas/interfaces/index.ts'))).toBe(true)
+    expect(existsSync(join(root, 'schemas/dtos/index.ts'))).toBe(true)
+    const types = spawnSync(
+      'node',
+      [join(root, 'node_modules/vue-tsc/bin/vue-tsc.js'), '--noEmit'],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        timeout: 60000,
+      },
+    )
+    expect(types.error, types.stderr).toBeUndefined()
+    expect(types.status, types.stdout + types.stderr).toBe(0)
     const components = readFileSync(join(root, '.nuxt/components.d.ts'), 'utf8')
     const routes = readFileSync(join(root, '.nuxt/types/nitro-routes.d.ts'), 'utf8')
     const tsconfig = readFileSync(join(root, '.nuxt/tsconfig.json'), 'utf8')
@@ -73,7 +97,7 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
         '/app',
     )
   }
-  // La cible vide doit construire sans thème, contenu ni hook de schémas.
+  // La cible vide construit avec les contrats communs, sans thème ni contenu Showcase.
   const build = spawnSync('node', [join(root, 'node_modules/nuxt/bin/nuxt.mjs'), 'build'], {
     cwd: root,
     encoding: 'utf8',
@@ -81,6 +105,7 @@ it('compose deux sources et serveurs isolés avec la vraie configuration racine'
     env: {
       ...process.env,
       GD_TARGET: 'client2-immobilier',
+      SCHEMAS_PATH: join(root, 'schemas/source'),
       NODE_ENV: 'production',
       NUXT_TELEMETRY_DISABLED: '1',
     },

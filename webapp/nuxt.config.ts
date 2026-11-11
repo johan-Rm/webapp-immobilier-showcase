@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path'
 
 import { createJiti } from 'jiti'
 
+import { runSchemaHook } from './scripts/build/schema-hook'
 import { writeSiteTypeScriptConfig } from './scripts/build/site'
 import { resolveSiteId } from './shared/site/registry'
 
@@ -43,6 +44,7 @@ export default defineNuxtConfig({
   },
   hooks: {
     'prepare:types': async () => {
+      await runSchemaHook()
       await writeSiteTypeScriptConfig(resolve(__dirname, '.nuxt'), siteId)
     },
   },
