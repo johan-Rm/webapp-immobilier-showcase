@@ -2,8 +2,8 @@
 
 - Type : développement
 - Session de création et de reconstitution : 01a1c16c-2085-7141-83fa-3460f6bd4463
-- État : reconstituée localement, livraison bloquée par les contrôles
-- Branche : `demands/DEM-002`
+- État : code intégré avec DEM-003 ; récupération de la trace documentaire historique
+- Branche historique : `demands/DEM-002` ; suivi documentaire : `docs/DEM-002-cloture`
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier`
 - Base locale vérifiée et branche de retour après fusion : `develop`, `1ae0ce888dc80f04640abd47f508b6ec80fa50fb`
 
@@ -59,3 +59,17 @@ branche reconstituée. Résultats détaillés locaux :
 `/tmp/dem002-delivery-code.log`. Les limites historiques décrites dans OPS-002
 ne dispensent pas de ces contrôles de livraison. Aucun contournement, push, PR
 ou fusion ; les couches occupées par DEM-003 restent préservées.
+
+## Suivi après intégration avec DEM-003
+
+Le 2026-11-11, la [PR #2](https://github.com/johan-Rm/webapp-immobilier-showcase/pull/2)
+a intégré le code de ce premier lot avec DEM-003, par Rebase and merge, dans
+`1708493f186a8aa42d26e1c18cb80756c6ce5f7c`. Les blocages décrits ci-dessus
+concernent la tentative historique du 2026-11-10, pas le résultat intégré.
+La demande [DEM-003](DEM-003-isoler-sites-et-screens.md) conserve les décisions
+et correctifs de cette livraison directe, sans livraison séparée de DEM-002.
+
+Le seul contenu inédit de la branche historique était cette demande au commit
+`048ce55962e6d89d9a8d8e4bb1c3ee93388c2a79`. Il est récupéré par cherry-pick
+avec provenance avant suppression de la branche. Aucun code applicatif modifié.
+La session d’origine est conservée ; la reprise appartient à la même session.
