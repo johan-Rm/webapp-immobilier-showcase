@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `35d4a0636914b103b84afdf6efb01ffc0b25fea2` ; aucun fetch
-- État : validée humainement ; commit local à réaliser
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `infra/scripts/` (sondes SSR et test des piles locales), `infra/tests/test_local_ssr.py` (test fonctionnel existant à adapter), `infra/make/Makefile.dev` (commandes de contrôle), `docs/1.getting-started/setup-local.md`, `docs/2.architecture/14.site-layers.md`, cette carte
 - Accompagnements autorisés : `README.md` et `worktree/README.md` pour leurs liens et accès locaux ; `worktree/design/` du principal pour le seul dossier vide explicitement demandé
 - Dépendances de réalisation : commit OPS-008 validé `dce5e9e16c5be9d851a97e8da46da6eb01a25690` ; même branche, aucun échange de fichiers non commités
@@ -108,4 +108,5 @@ Empreinte des huit fichiers conforme au résultat présenté ; index initial vid
 
 ## Commits
 
-Aucun ; commit local seulement après validation humaine explicite de cette carte.
+Commit local après validation : `33872fe2879df87aa2dccc33dce0fbad3c43aacb`.
+Aucun push, PR ni fusion.
