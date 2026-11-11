@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : correctifs du 2026-11-11 validés par l’humain ; commit local à créer
+- État : correctifs du 2026-11-11 validés et commités localement ; à livrer
 - Chemins autorisés : Config Nuxt/TypeScript/Vitest/Tailwind/ESLint/Playwright de `webapp/`, `webapp/base/nuxt.config.ts`, `webapp/base/README.md`, scripts et workflow qualité, `sonar-project.properties` : liste exacte OPS-004 dans l’inventaire.
 - Dépendances : Base 6f4ebb114a9e856e762690b46425e11f5df65796 ; pas de dépendance de réalisation à WEB-001/002. Consommer leurs contrats de chemins confirmés ; exécuter les contrôles globaux après leurs commits.
 
@@ -164,3 +164,5 @@ Verdict humain explicite : « c’est validé ». Il couvre le correctif présen
 ses tests et ses limites documentées ci-dessus. Empreinte du lot vérifiée avant
 consignation : 55 fichiers inchangés depuis la présentation sur `d97fbda`.
 Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.
+
+Commit local du correctif validé : `aceda231cfc9a1da46f76b6801525cb0b285fe36`. Aucun push ni fusion.

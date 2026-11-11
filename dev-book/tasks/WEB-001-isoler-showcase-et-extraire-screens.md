@@ -6,7 +6,7 @@
 - Couche : web
 - Branche : layers/web
 - Worktree : worktree/web
-- État : correctifs du 2026-11-11 validés par l’humain ; commit local à créer
+- État : correctifs du 2026-11-11 validés et commités localement ; à livrer
 - Chemins autorisés : `webapp/app/`, `webapp/sites/showcase-immobilier/app/`, les README de cette cible et `webapp/sites/README.md`, sa `nuxt.config.ts`, `webapp/base/real-estate/`, `webapp/tests/layers/showcase-components.vitest.ts`.
 - Dépendances : OPS-003 source `3043960c8f6752ddfdfeae6ce114244fe64633b1` repris par `010cee5` ; autres dépendances et limite de correction dans les preuves.
 
@@ -166,3 +166,5 @@ Verdict humain explicite : « c’est validé ». Il couvre le correctif présen
 ses tests et ses limites documentées ci-dessus. Empreinte du lot vérifiée avant
 consignation : 55 fichiers inchangés depuis la présentation sur `d97fbda`.
 Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.
+
+Commit local du correctif validé : `aa3425fc4be80e6b750694066b97880a6fb637b0`. Aucun push ni fusion.

@@ -2,7 +2,7 @@
 
 - Type : consolidation
 - Session de création et de livraison : 01a1c16c-2085-7141-83fa-3460f6bd4463
-- État : livraison directe demandée le 2026-11-10
+- État : correctifs du 2026-11-11 validés et commités localement ; à livrer
 - Branche : `demands/DEM-003` ; retour prévu : `develop`
 - Source réunie validée : `layers/devops`, `f7d9e35db2ff7f345bf72ff908083ca5468b3198`
 
@@ -473,11 +473,14 @@ GitHub. Les couches Web et Devops sont conservées avec leurs environnements loc
         "webapp/sites/showcase-immobilier/app/utils/assets.ts",
         "webapp/sites/showcase-immobilier/app/utils/loadContentResource.ts",
         "webapp/sites/showcase-immobilier/nuxt.config.ts",
-        "webapp/tests/layers/showcase-components.vitest.ts"
+        "webapp/tests/layers/showcase-components.vitest.ts",
+        "webapp/sites/showcase-immobilier/tests/metadata.vitest.ts",
+        "webapp/sites/showcase-immobilier/app/pages/villa-des-alizes.vue"
       ],
       "convention": "webapp/sites/README.md#conventions-techniques",
       "controles": [
-        "webapp/tests/layers/showcase-components.vitest.ts"
+        "webapp/tests/layers/showcase-components.vitest.ts",
+        "webapp/sites/showcase-immobilier/tests/metadata.vitest.ts"
       ]
     },
     {
@@ -575,9 +578,26 @@ GitHub. Les couches Web et Devops sont conservées avec leurs environnements loc
       "controles": [
         "codebase-integrity/domaines/construction-livraison/tests/test_contributions.py"
       ]
+    },
+    {
+      "chemins": [
+        "webapp/server/api/dashboard/media/upload.post.ts",
+        "webapp/server/tests/dashboard-media-upload.vitest.ts"
+      ],
+      "convention": "codebase-integrity/README.md#contrôles-existants",
+      "controles": [
+        "webapp/server/tests/dashboard-media-upload.vitest.ts"
+      ]
     }
   ],
-  "accompagnements": [],
+  "accompagnements": [
+    {
+      "chemins": [
+        "webapp/schemas/README.md"
+      ],
+      "motif": "Documenter la génération des contrats communs lors de la préparation des types de chaque cible, sans initialisation métier cliente."
+    }
+  ],
   "sans_correction": ""
 }
 ```
@@ -601,3 +621,34 @@ La référence du cadre reste `/home/johan/www/lab/ai-development-engineering/` 
 Nuxt Builder est la référence des layers. AGENTS consigne cette distinction et
 l’exigence de validation et de traçabilité des divergences.
 Correction : [OPS-007](../tasks/OPS-007-borner-amorcage-livraison.md).
+
+## Reprise d’implémentation du 2026-11-11
+
+À la demande de poursuivre les corrections restantes, les reprises restent non
+commitées dans le principal, sur `demands/DEM-003` depuis `d97fbda` :
+[WEB-001](../tasks/WEB-001-isoler-showcase-et-extraire-screens.md) pour images,
+sections Vue et expressions frontend ; [OPS-004](../tasks/OPS-004-composer-cibles-nuxt-et-outillage.md)
+pour les contrats communs et leurs fixtures ; [BFF-001](../tasks/BFF-001-conserver-parsing-locale-upload.md)
+pour le parsing de locale d’upload. Preuves et limites dans ces cartes.
+Aucune modification du cadre Codebase Integrity, aucun commit, push ou fusion.
+
+Contrôles de reprise réussis localement : conventions, qualité et tests des deux
+cibles, builds SSR et smokes. Les preuves détaillées restent dans les cartes.
+Les 111 tests Python AIDE et les deux tests d’infrastructure réussissent. Le
+contrôle de contribution cumulé depuis `6f4ebb1` réussit également dans une copie
+Git jetable.
+Le principal reste sur `demands/DEM-003`, HEAD `d97fbda` : les corrections ne sont
+ni commitées ni publiées ; la CI distante ne porte donc pas encore ce résultat.
+La cible générée par défaut est rétablie sur Showcase. Résultat prêt pour
+vérification humaine ; les avertissements à revue manuelle ne valent pas verdict.
+
+## Validation des correctifs du 2026-11-11
+
+Verdict humain global : « c’est validé », sur le lot présenté de 55 fichiers
+depuis `d97fbda`. Les verdicts et SHA de correction sont consignés dans
+[OPS-004](../tasks/OPS-004-composer-cibles-nuxt-et-outillage.md#validation-des-correctifs-du-2026-11-11),
+[WEB-001](../tasks/WEB-001-isoler-showcase-et-extraire-screens.md#validation-des-correctifs-du-2026-11-11) et
+[BFF-001](../tasks/BFF-001-conserver-parsing-locale-upload.md#validation-des-correctifs-du-2026-11-11).
+Le contrôle complémentaire WEB-002 est également accepté. Les sections antérieures
+conservent leur état historique ; les correctifs sont désormais commités localement,
+sans push ni fusion. Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.

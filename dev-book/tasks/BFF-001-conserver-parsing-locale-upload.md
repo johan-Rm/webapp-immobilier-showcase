@@ -6,7 +6,7 @@
 - Couche : correction BFF transverse de la demande déjà réunie
 - Branche : demands/DEM-003
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
-- État : correctifs du 2026-11-11 validés par l’humain ; commit local à créer
+- État : correctifs du 2026-11-11 validés et commités localement ; à livrer
 - Chemins autorisés : `webapp/server/api/dashboard/media/upload.post.ts`, `webapp/server/tests/dashboard-media-upload.vitest.ts`, cette carte
 - Dépendances : aucune pour écrire ou tester ce correctif ; résultat global avec les autres cartes DEM-003
 
@@ -38,3 +38,5 @@ Verdict humain explicite : « c’est validé ». Il couvre le correctif présen
 ses tests et ses limites documentées ci-dessus. Empreinte du lot vérifiée avant
 consignation : 55 fichiers inchangés depuis la présentation sur `d97fbda`.
 Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.
+
+Commit local du correctif validé : `69650852fc3c2baebc14ac6ae952943bd7bed8a4`. Aucun push ni fusion.
