@@ -652,3 +652,61 @@ depuis `d97fbda`. Les verdicts et SHA de correction sont consignés dans
 Le contrôle complémentaire WEB-002 est également accepté. Les sections antérieures
 conservent leur état historique ; les correctifs sont désormais commités localement,
 sans push ni fusion. Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.
+
+## Reconstitution vérifiée le 2026-11-11
+
+Reprise de la même demande dans le principal, initialement propre, sur
+`demands/DEM-003` à `30aa7fd02f2e3baf5b7ac23ee5439b22a4806963`. Le `develop` local vérifié
+(`1ae0ce888dc80f04640abd47f508b6ec80fa50fb`) est ancêtre du résultat ; la branche existante
+est conservée conformément à la livraison directe déjà demandée. Aucun cherry-pick
+supplémentaire : le lot initial, ses verdicts et tous les correctifs validés sont présents.
+Les trailers des reprises WEB-001 et WEB-002 correspondent aux sources des cartes.
+
+Les correctifs réalisés directement sur cette branche conservent leurs SHA
+sources à l’identique : OPS-004 `aceda23`, WEB-001 `aa3425f`, BFF-001 `6965085` ;
+leur trace de validation `30aa7fd` est incluse. Les SHA complets restent dans les cartes.
+Le retour du principal après fusion distante reste `develop`. Aucune branche de
+couche déplacée, aucun push ni fusion. Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.
+
+Les contrôles applicatifs du résultat validé restent ceux des cartes ; seuls les
+contrôles documentaires, le diff et la contribution sont rejoués pour cette reprise.
+Cette trace reste non commitée pour le commit documentaire de livraison.
+
+## Tentative de livraison du 2026-11-11
+
+Fetch effectué ; cible distante vérifiée : `origin/develop`
+`d1323571dc8f8c2025f8d18f4cc794f2a33bd5f1`. PR existante :
+[PR #2](https://github.com/johan-Rm/webapp-immobilier-showcase/pull/2), ouverte,
+source distante `d97fbda`, cible `develop` ; Rebase and merge autorisé.
+
+Le contrôle local de contribution sur la plage complète `origin/develop..HEAD`
+(`30aa7fd`) échoue : « vérificateur de base absent ; amorçage requis :
+approbation explicite manquante ». Le mécanisme existant limite en outre
+l’amorçage à `c365b4a`, différent de la cible distante actuelle. Le succès depuis
+`6f4ebb1` ne vaut donc pas contrôle de cette plage complète. Aucune variable
+supprimée rétablie, aucune règle modifiée. Livraison arrêtée avant commit
+documentaire et push ; les anciens résultats CI de la PR ne portent pas les
+correctifs locaux. Les worktrees et leurs données restent intacts.
+
+## Déblocage exceptionnel autorisé
+
+Exception ponctuelle accordée par l’utilisateur le 2026-11-11 : « accordé ».
+Pour cette livraison, pour cette livraison directe
+uniquement, ne pas exiger la réussite du lanceur local sur la plage historique
+`d1323571..HEAD`, dont la base ne contient pas le vérificateur et ne correspond
+pas à sa base d’amorçage autorisée. Maintenir le contrôle des commits DEM-003
+depuis `6f4ebb1`, la revue du diff complet vers la cible distante, les verdicts
+humains acquis et tous les contrôles GitHub avant Rebase and merge. Ne modifier
+ni le lanceur, ni ses tests, ni les protections, ni les anciens commits.
+
+Comparaison avec la référence : `codebase-integrity/scripts/contribution.py` et
+`docs/git-workflow/regles-de-pr.md` dans le dépôt AIDE réservent également
+l’amorçage à leur demande et base initiales. Cette exception constitue
+une divergence explicite et bornée ; elle ne déclare pas réussi le contrôle
+indisponible et ne rétablit aucune variable d’amorçage.
+
+Livraison reprise sur cet accord explicite. Les preuves locales des cartes
+(qualité, 80/45 tests, deux builds SSR, smokes desktop/mobile et conventions)
+portent sur le contenu fonctionnel inchangé ; seules les traces documentaires
+sont complétées. PR #2 conservée vers `develop`, sans livraison distincte
+de DEM-001/002. Les contrôles distants du nouveau HEAD restent à attendre.
