@@ -2,7 +2,7 @@
 
 - Demande : DEM-004 ; type : développement
 - Brouillon de référence : `tmp/demande-vhosts-locaux.md`, relatif au dépôt principal (hors du worktree)
-- Demande définitive prévue : `dev-book/demand/DEM-004-vhosts-locaux.md`, à créer uniquement à la reconstitution
+- Demande définitive : [DEM-004](../demand/DEM-004-vhosts-locaux.md)
 - Session de création : 01a1ca55-428a-73c2-8ba4-240528dc1169
 - Couche : devops
 - Branche : layers/devops
