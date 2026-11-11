@@ -180,3 +180,31 @@ Après préparation de Showcase, `make dev-webapp-ssr BUILD=1` démarre les deux
 services et Nginx. Les domaines, l’isolation des cibles et `make dev-check-ssr`
 sont décrits dans [le guide des layers](../2.architecture/14.site-layers.md).
 Client 2 ne nécessite pas le setup des données ou les identifiants Showcase.
+
+Depuis le principal, après préparation :
+
+```bash
+make dev-webapp-ssr BUILD=1
+# Autre terminal, même dossier :
+make dev-check-ssr
+# Arrêt :
+make dev-down
+```
+
+Pour une couche, suivre les [commandes de son worktree](../../worktree/README.md).
+Les anciens noms ne sont plus des alias ; utiliser exclusivement les accès du guide
+ci-dessus. La configuration locale est indépendante des vhosts distants.
+
+Contrôle d’ensemble, lorsque les cinq piles du guide sont actives simultanément :
+
+```bash
+python3 infra/scripts/check-local-stacks.py
+python3 infra/tests/test_local_ssr.py
+```
+
+L’option `--dev-image <image-locale>` vérifie aussi les cinq ports du développement
+direct, successivement dans des copies temporaires du HEAD commité, sans secrets
+ni données utilisateur. Elle exige des ports libres et une image de développement
+locale ; aucun build ni téléchargement. Les ressources créées par ce test sont
+arrêtées ; le snapshot est supprimé en cas de succès et conservé pour diagnostic
+sinon. Les piles SSR déjà actives ne sont ni arrêtées ni modifiées par cette sonde.

@@ -136,5 +136,7 @@ export-maquette:
 .PHONY: dev-check-ssr
 
 dev-check-ssr:
-	@ssr_address="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) port nginx 80)"; \
-	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}"
+	@set -eu; \
+	ssr_address="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) port nginx 80)"; \
+	ssr_layer="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) exec -T nginx printenv AIDE_LAYER)"; \
+	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}" --layer "$${ssr_layer}"

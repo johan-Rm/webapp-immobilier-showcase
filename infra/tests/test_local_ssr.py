@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 from threading import Thread
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location('local_ssr', ROOT / 'infra/scripts/check-local-ssr.py')
@@ -38,11 +39,35 @@ class LocalSSR(unittest.TestCase):
             for volume in showcase['volumes']:
                 self.assertNotIn('client2-immobilier', volume['source'])
 
+    def test_request_does_not_follow_redirects(self):
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(302)
+                self.send_header('Location', '/must-not-be-followed')
+                self.end_headers()
+            def log_message(self, *_args):
+                pass
+        server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            status, _ = probe.request(server.server_port, probe.hosts('')[0], '/')
+            self.assertEqual(status, 302)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join()
+
     def test_probe_accepts_isolated_hosts_and_rejects_cross_site_route(self):
         class Handler(BaseHTTPRequestHandler):
             leak = False
             def do_GET(self):
-                client = self.headers.get('Host') == 'client2-immobilier.localhost'
+                host = self.headers.get('Host', '').split(':')[0]
+                if host not in probe.hosts(''):
+                    self.send_response(421)
+                    self.end_headers()
+                    return
+                client = host == probe.hosts('')[1]
                 missing = client and self.path != '/' and not self.leak
                 self.send_response(404 if missing else 200)
                 self.end_headers()
@@ -61,6 +86,54 @@ class LocalSSR(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join()
+
+
+
+class ProbesTest(unittest.TestCase):
+    def response(self, port, host, path):
+        showcase, client = probe.hosts('web')
+        host = host.split(':')[0]
+        if host == showcase:
+            return 200, 'Showcase'
+        if host == client:
+            return (200, 'Client 2 Immobilier') if path == '/' else (404, '404')
+        return 421, ''
+
+    def run_probe(self, change=None):
+        def response(port, host, path):
+            result = change(host, path) if change else None
+            return result if result is not None else self.response(port, host, path)
+        with patch.object(probe, 'request', side_effect=response):
+            probe.check(19401, 'web')
+
+    def test_valid(self):
+        self.run_probe()
+
+    def test_wrong_site(self):
+        with self.assertRaisesRegex(ValueError, 'identité SSR'):
+            self.run_probe(lambda host, path: (200, 'Showcase') if host.startswith('client2.wt-web') and path == '/' else None)
+
+    def test_redirect_is_not_success(self):
+        with self.assertRaisesRegex(ValueError, 'HTTP 302'):
+            self.run_probe(lambda host, path: (302, '') if host.startswith('showcase-immobilier.wt-web') else None)
+
+    def test_route_leak(self):
+        with self.assertRaisesRegex(ValueError, 'expose une route'):
+            self.run_probe(lambda host, path: (200, 'Showcase') if host.startswith('client2.wt-web') and path == '/themes.json' else None)
+
+    def test_old_alias_served(self):
+        with self.assertRaisesRegex(ValueError, 'Hôte non autorisé'):
+            self.run_probe(lambda host, path: (200, 'Showcase') if host == 'webapp.localhost' else None)
+
+    def test_other_stack_served(self):
+        with self.assertRaisesRegex(ValueError, 'Hôte non autorisé'):
+            self.run_probe(lambda host, path: (200, 'Showcase') if host == 'client2.wt-bff.localhost' else None)
+
+    def test_unknown_layer(self):
+        with self.assertRaisesRegex(ValueError, 'Couche locale inconnue'):
+            probe.check(8080, 'unknown')
+
+
 
 if __name__ == '__main__':
     unittest.main()
