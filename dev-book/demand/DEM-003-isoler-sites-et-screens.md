@@ -75,7 +75,6 @@ GitHub. Les couches Web et Devops sont conservées avec leurs environnements loc
   "corrections": [
     {
       "chemins": [
-        "codebase-integrity/README.md",
         "codebase-integrity/commun/validation-rules.ts",
         "codebase-integrity/domaines/architecture-dependances/regles.yaml",
         "codebase-integrity/domaines/architecture-dependances/scripts/verify-no-business-logic.ts",
@@ -563,8 +562,42 @@ GitHub. Les couches Web et Devops sont conservées avec leurs environnements loc
         "codebase-integrity/domaines/fiabilite-verifications/tests/test_frontend_paths.py",
         "codebase-integrity/domaines/construction-livraison/tests/test_layer_routing.py"
       ]
+    },
+    {
+      "chemins": [
+        ".github/workflows/ai-development-engineering.yml",
+        "AGENTS.md",
+        "codebase-integrity/README.md",
+        "codebase-integrity/domaines/construction-livraison/scripts/contribution.py",
+        "codebase-integrity/domaines/construction-livraison/tests/test_contributions.py"
+      ],
+      "convention": "codebase-integrity/README.md#contributions",
+      "controles": [
+        "codebase-integrity/domaines/construction-livraison/tests/test_contributions.py"
+      ]
     }
   ],
-  "accompagnements": []
+  "accompagnements": [],
+  "sans_correction": ""
 }
 ```
+
+## Suppression autorisée de l’amorçage CI
+
+Le 2026-11-11, l’utilisateur demande la suppression de la variable d’amorçage,
+puis autorise explicitement la suppression de l’étape CI de contrôle de
+contribution : « oui j’autorise ». Cette décision remplace l’adaptation bornée
+précédemment préparée ; celle-ci est abandonnée sans publication.
+
+La variable et l’étape CI qui en dépend sont retirées. Il n’y a aucune variable
+GitHub distante à supprimer (liste vérifiée vide). Les tests des vérificateurs,
+les contrôles documentaires et les contrôles applicatifs restent exécutés.
+Le contrôle local de contribution reste disponible, sans lecture de variable
+d’environnement ; son amorçage historique exige toujours un SHA explicitement
+fourni en argument CLI. Le contrôle de contribution n’est plus exécuté en CI :
+cette divergence avec la référence AIDE est expressément autorisée et marquée ici.
+
+La référence du cadre reste `/home/johan/www/lab/ai-development-engineering/` ;
+Nuxt Builder est la référence des layers. AGENTS consigne cette distinction et
+l’exigence de validation et de traçabilité des divergences.
+Correction : [OPS-007](../tasks/OPS-007-borner-amorcage-livraison.md).

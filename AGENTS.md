@@ -9,6 +9,7 @@ un lien plutôt qu’une copie. Ne créer du contenu que s’il apporte une info
 ## Avant d’intervenir
 
 - Respecter les instructions explicites de l’utilisateur ; ne déléguer que sur demande explicite.
+- Références : cadre AIDE dans `/home/johan/www/lab/ai-development-engineering/` ; architecture layers dans `/home/johan/www/graines-digitales/modern-web-apps/nuxt-builder/`. Toute divergence doit être explicitement validée et tracée dans la demande concernée.
 - Lire la demande, la carte et la [configuration des couches](infra/config/layers.json). Respecter worktree, branche, chemins autorisés et dépendances par commits.
 - Lire les README de la racine au dossier concerné et les seuls standards utiles de l’[architecture](docs/2.architecture/index.md). Préserver les rubriques et leur ordre ; appliquer les [conventions documentaires](docs/README.md#conventions-techniques).
 - Avant toute écriture, vérifier le chemin absolu, la branche, l’index et `git status --porcelain=v1 --untracked-files=all` dans le worktree affecté.

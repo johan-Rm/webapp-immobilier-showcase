@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Charger la règle intégrée, ou le contenu explicitement approuvé pour amorcer DEM-001."""
 import argparse
-import os
 from pathlib import Path
 import re
 import subprocess
@@ -53,7 +52,7 @@ def main(argv=None):
     parser.add_argument('--repo', type=Path, default=REPO_ROOT)
     parser.add_argument('--base', required=True)
     parser.add_argument('--head', default='HEAD')
-    parser.add_argument('--bootstrap-policy-sha', default=os.environ.get('AIDE_BOOTSTRAP_POLICY_SHA'),
+    parser.add_argument('--bootstrap-policy-sha', default=None,
                         help='commit explicitement approuvé, réservé au premier amorçage de DEM-001')
     args = parser.parse_args(argv)
     try:

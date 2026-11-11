@@ -407,14 +407,15 @@ class Contributions(unittest.TestCase):
         with patch.object(trusted, 'BOOTSTRAP_BASE', base), self.assertRaises(subprocess.CalledProcessError):
             trusted.run(self.root, base, approved, approved)
 
-    def test_bootstrap_environment_is_explicit_and_cli_can_override_it(self):
+    def test_bootstrap_approval_is_cli_only_and_explicit(self):
         base, approved = self.bootstrap_fixture()
-        with patch.object(trusted, 'BOOTSTRAP_BASE', base), patch.dict(
-                'os.environ', {'AIDE_BOOTSTRAP_POLICY_SHA': approved}):
-            self.assertEqual(trusted.main(['--repo', str(self.root), '--base', base, '--head', approved]), 0)
+        with patch.object(trusted, 'BOOTSTRAP_BASE', base):
             with contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(trusted.main(['--repo', str(self.root), '--base', base,
-                                              '--head', approved, '--bootstrap-policy-sha', 'HEAD']), 1)
+                                              '--head', approved]), 1)
+            self.assertEqual(trusted.main(['--repo', str(self.root), '--base', base,
+                                          '--head', approved, '--bootstrap-policy-sha', approved]), 0)
+
 
 
 if __name__ == '__main__':
