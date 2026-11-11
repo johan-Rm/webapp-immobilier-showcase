@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée humainement ; commit local en préparation, à livrer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `docs/3.application/dashboard-saas-contrats.md`, cette carte
 - Dépendances de réalisation : Aucune au-delà de la base locale vérifiée.
 - Commits nécessaires : SHA validés à renseigner pour chaque dépendance ci-dessus avant consommation ; aucun SHA inventé.
@@ -71,7 +71,9 @@ Cette validation n’autorise aucune modification Symfony ni implémentation d�
 
 ## Commits
 
-Commit local autorisé par le verdict ci-dessus ; SHA réel à relever après réussite.
-Indexation limitée au contrat et à cette carte ; OPS-011/012/013 préservées hors index.
+Commit local réalisé : `5eee4c05ad298775d509a1469b5642a1517699df`.
+Périmètre vérifié : contrat et cette carte uniquement ; empreinte du contrat identique au verdict.
+La présente mise à jour est limitée à la trace du SHA et de l’état réel.
+OPS-011/012/013 restent non suivies, préservées hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
