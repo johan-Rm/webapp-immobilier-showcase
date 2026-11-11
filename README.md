@@ -58,10 +58,8 @@ make dev-webapp-localhost
 make dev-webapp-ssr BUILD=1
 ```
 
-Développement : `http://localhost:3000/fr`. Vhost SSR :
-`http://showcase-immobilier.localhost:8080/fr` (également `/en` et `/es`),
-avec `webapp.localhost:8080` comme alias. Client 2 :
-`http://client2-immobilier.localhost:8080/`. Vérifier avec `make dev-check-ssr`.
+Développement : `http://localhost:3000/fr`. Les [accès SSR par pile](docs/2.architecture/14.site-layers.md#construire-et-déployer)
+servent Showcase et Client 2. Vérifier avec `make dev-check-ssr`.
 
 Le setup conserve `webapp/.env`, recopie le catalogue local et génère les contrats.
 Il refuse d'écraser du contenu sans marqueur de démonstration et ne contacte

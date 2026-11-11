@@ -48,3 +48,18 @@ en cas d’échec pour diagnostic et le supprime en cas de succès.
 Les deux sites SSR d’une couche utilisent son même port public isolé, distingués
 par les domaines du [guide des layers](../docs/2.architecture/14.site-layers.md).
 `make dev-check-ssr` découvre ce port auprès du Nginx de la pile courante.
+
+Pour le SSR, après `lane-env` et `lane-setup`, lancer depuis le worktree affecté :
+
+```bash
+make dev-webapp-ssr BUILD=1
+# Dans un autre terminal du même worktree :
+make dev-check-ssr
+# Arrêt, en conservant les données :
+make lane-down LAYER=web
+```
+
+Adapter LAYER à la couche affectée. Sans `BUILD=1`, les images existantes sont réutilisées.
+Le dossier `worktree/design` est réservé vide, sans branche, configuration de couche,
+service ni vhost. Git ne conserve pas un dossier vide : sa présence locale n’est
+pas reproduite par un clone ; le recréer vide si nécessaire.
