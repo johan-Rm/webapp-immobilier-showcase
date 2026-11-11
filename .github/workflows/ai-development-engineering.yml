@@ -10,24 +10,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Contrôler la contribution depuis la politique de base
-        env:
-          AIDE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-          AIDE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
-          AIDE_BOOTSTRAP_POLICY_SHA: ${{ vars.AIDE_BOOTSTRAP_POLICY_SHA }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          policy="$AIDE_BASE"
-          if ! git cat-file -e "$AIDE_BASE:codebase-integrity/domaines/construction-livraison/scripts/contribution.py" 2>/dev/null; then
-            if [[ ! "$AIDE_BOOTSTRAP_POLICY_SHA" =~ ^[0-9a-f]{40}$ ]]; then
-              echo 'Amorçage requis : SHA complet du contenu explicitement approuvé manquant.' >&2
-              exit 1
-            fi
-            policy="$AIDE_BOOTSTRAP_POLICY_SHA"
-          fi
-          git show "$policy:codebase-integrity/domaines/construction-livraison/scripts/contribution.py" > "$RUNNER_TEMP/aide-contribution.py"
-          python3 "$RUNNER_TEMP/aide-contribution.py" --repo "$GITHUB_WORKSPACE" --base "$AIDE_BASE" --head "$AIDE_HEAD"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.0

@@ -16,7 +16,7 @@
 - Une contribution de développement ne modifie pas `codebase-integrity/`. Les modifications des conventions et des contrôles passent par la consolidation.
 - Une consolidation déclare chaque chemin modifié, sa convention et un contrôle ajouté ou modifié ; les accompagnements sont justifiés séparément. Les demandes et cartes référencées sont les traces exemptées de cette déclaration.
 - La plage contrôlée est explicite ; les anciens commits hors plage ne sont pas contrôlés rétroactivement. Les commits de fusion sont refusés dans une contribution.
-- Le vérificateur de contribution est extrait de la base d’intégration, jamais remplacé par le candidat. L’amorçage de DEM-001 exige un SHA complet explicitement approuvé, depuis la base `c365b4a6059c915ff639ffface5fa01c29fd6b3c`.
+- Le vérificateur local de contribution est extrait de la base d’intégration, jamais remplacé par le candidat. L’amorçage local exige un SHA complet explicitement approuvé via `--bootstrap-policy-sha`, depuis la base initiale de DEM-001.
 - Ne pas modifier un contrôle pour contourner un échec. Les preuves techniques ne valent pas validation humaine.
 
 ### Worktrees et environnements
@@ -78,8 +78,9 @@ Depuis `webapp/`, exécuter aussi `bun run quality:check` et `bun run test`.
 La portée du contrôle documentaire est définie dans [docs/README.md](../docs/README.md#conventions-techniques).
 Les commandes des environnements isolés sont dans [worktree/README.md](../worktree/README.md).
 
-Pour DEM-001, l’amorçage exige `AIDE_BOOTSTRAP_POLICY_SHA` égal au SHA complet
-du contenu explicitement approuvé. Le regroupement `webapp/` déjà commité doit être
-intégré séparément à `develop` avant la première livraison du cadre. Les contrôles de
-contribution précèdent ceux de l’application en CI ; leur présence ne prouve pas
-l’activation des protections distantes. Les décisions et preuves restent dans DEM-001 et OPS-001.
+Le workflow AIDE exécute les tests TypeScript et Bun des vérificateurs puis
+`make aide-check`, sans variable d’amorçage ni étape distante de contrôle de
+contribution. Le contrôle local `make contribution-check BASE=<sha>` reste
+disponible et conserve ses restrictions. Cette divergence avec la référence AIDE
+est explicitement autorisée et tracée dans DEM-003 ; les contrôles applicatifs
+restent actifs.
