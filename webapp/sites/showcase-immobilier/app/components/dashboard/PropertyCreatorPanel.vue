@@ -620,6 +620,7 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import type {
   DashboardAccommodationPreview,
   DashboardAccommodationSavePayload,
@@ -630,6 +631,7 @@ import type {
 import { useDashboardSave } from '~/composables/dashboard/useDashboardSave'
 import { useDesignationPlaceholder } from '~/composables/dashboard/useDesignationPlaceholder'
 
+// 2. Types et constantes statiques
 type CreatorStepId =
   | 'classification'
   | 'name'
@@ -643,6 +645,7 @@ type CreatorStepId =
   | 'optional'
   | 'seo'
   | 'summary'
+
 type CreatorStepState = 'locked' | 'current' | 'completed' | 'skipped' | 'invalid'
 
 type CreatorStep = {
@@ -696,12 +699,6 @@ type CreatorDraftResponse = {
 
 defineOptions({ name: 'DashboardPropertyCreatorPanel' })
 
-const emit = defineEmits<{
-  close: []
-  'draft-created': [identifier: string]
-  created: [identifier: string]
-}>()
-
 const steps: CreatorStep[] = [
   { id: 'classification', label: 'Départ', icon: 'i-lucide-tags' },
   { id: 'name', label: 'Désignation', icon: 'i-lucide-type' },
@@ -717,6 +714,60 @@ const steps: CreatorStep[] = [
   { id: 'summary', label: 'Résumé', icon: 'i-lucide-check-circle' },
 ]
 
+type CreatorSelectKey = 'listing' | 'category' | 'place'
+
+type CreatorRevealKey =
+  | CreatorSelectKey
+  | 'nameInput'
+  | 'priceFields'
+  | 'mediaFields'
+  | 'mediaAltFields'
+  | 'detailsFields'
+  | 'descriptionFields'
+  | 'comfortFields'
+  | 'qualitiesFields'
+  | 'optionalFields'
+  | 'seoFields'
+  | 'summaryContent'
+
+type AssistantSegment = {
+  text: string
+  newLine?: boolean
+  delayBefore?: number
+  reveal?: CreatorRevealKey
+  revealDelay?: number
+  pauseAfter?: number
+}
+
+const SEGMENT_PAUSE_MS = 500
+
+const CLASSIFICATION_ACCENT_STARTS = ['tranquillement', 'le type'] as const
+
+type CreatorNumberField =
+  | 'numberOfBedrooms'
+  | 'numberOfRooms'
+  | 'numberOfBathroomsTotal'
+  | 'numberOfGarages'
+  | 'occupancy'
+  | 'yearBuilt'
+
+// 3. Props et emits
+const emit = defineEmits<{
+  close: []
+  'draft-created': [identifier: string]
+  created: [identifier: string]
+}>()
+
+// 4. Composables, stores, routeur
+const metadataStore = useMetadataStore()
+
+const { localeSetting } = useLang()
+
+const { errorMessage: saveErrorMessage, saveMultilingual } = useDashboardSave()
+
+const toast = useToast()
+
+// 5. Etat local
 const creatorDraft = reactive<CreatorDraft>({
   identifier: '',
   slug: '',
@@ -747,137 +798,66 @@ const creatorDraft = reactive<CreatorDraft>({
 })
 
 const activeStep = ref<CreatorStepId>('classification')
+
 const skippedSteps = ref<Set<CreatorStepId>>(new Set())
+
 const readyMessage = ref<string | null>(null)
+
 const isCreatingDraft = ref(false)
+
 const isFinalizing = ref(false)
+
 const isFinalized = ref(false)
+
 const stepTransitionName = ref<'creator-step-forward' | 'creator-step-backward'>(
   'creator-step-forward',
 )
+
 const displayedAssistantMessage = ref<string>('')
+
 const isTypingDone = ref<boolean>(false)
+
 const revealedSelects = reactive<Record<CreatorSelectKey, boolean>>({
   listing: false,
   category: false,
   place: false,
 })
+
 const revealedNameInput = ref(false)
+
 const revealedPriceFields = ref(false)
+
 const revealedMediaFields = ref(false)
+
 const isMediaHeadlineCollapsed = ref(false)
+
 const revealedMediaAltFields = ref(false)
+
 const revealedDetailsFields = ref(false)
+
 const revealedDescriptionFields = ref(false)
+
 const revealedComfortFields = ref(false)
+
 const revealedQualitiesFields = ref(false)
+
 const revealedOptionalFields = ref(false)
+
 const revealedSeoFields = ref(false)
+
 const revealedSummaryContent = ref(false)
+
 // Détails optionnels masqués au départ (révélés à la demande).
 const showExtraDetails = ref(false)
+
 let typingTimer: ReturnType<typeof setTimeout> | null = null
+
 // Steps dont l'effet typing a déjà joué : au retour, le texte s'affiche sans animation.
 const typedSteps = new Set<CreatorStepId>()
 
-const activeStepIndex = computed<number>(() =>
-  steps.findIndex((step) => step.id === activeStep.value),
-)
-const currentStep = computed<CreatorStep>(() => steps[activeStepIndex.value] ?? steps[0]!)
-const metadataStore = useMetadataStore()
-const { localeSetting } = useLang()
-const { errorMessage: saveErrorMessage, saveMultilingual } = useDashboardSave()
-const toast = useToast()
+// 6. Data inputs
 
-// Libellé du lieu choisi (code -> label) pour les suggestions contextuelles.
-const placeLabel = computed<string>(
-  () =>
-    metadataStore
-      .getOptionsForCodeSet('accommodation-place')
-      .find((option) => option.value === creatorDraft.place)?.label ?? '',
-)
-
-// Rotation suspendue dès qu'une désignation est saisie (placeholder alors masqué).
-const isDesignationActive = computed<boolean>(
-  () => activeStep.value === 'name' && !creatorDraft.name.trim(),
-)
-
-const { placeholder: designationPlaceholder } = useDesignationPlaceholder({
-  placeLabel,
-  active: isDesignationActive,
-})
-const isStructuredStep = computed<boolean>(
-  () =>
-    activeStep.value === 'classification' ||
-    activeStep.value === 'name' ||
-    activeStep.value === 'price' ||
-    activeStep.value === 'media' ||
-    activeStep.value === 'mediaAlt' ||
-    activeStep.value === 'details' ||
-    activeStep.value === 'description' ||
-    activeStep.value === 'comfort' ||
-    activeStep.value === 'qualities' ||
-    activeStep.value === 'optional' ||
-    activeStep.value === 'seo' ||
-    activeStep.value === 'summary',
-)
-
-const assistantMessage = computed<string>(() => {
-  const messages: Record<CreatorStepId, string> = {
-    classification:
-      'Commençons tranquillement. Choisis le type, la catégorie et le lieu. Je m’occupe de préparer la référence.',
-    name: 'Poursuivons tranquillement. Donne au bien une désignation courte. Je m’en sers comme repère et je m’occupe du SEO.',
-    price:
-      'Passons au prix. Indique le prix du bien si tu l’as. Sinon je l’affiche en « prix sur demande », sans bloquer la création.',
-    media:
-      'Occupons-nous des images. Ajoute une ou plusieurs images du bien. Je m’occupe de l’affichage et de la mise en avant de l’image principale.',
-    mediaAlt:
-      'Soignons les descriptions. Décris brièvement chaque image. Je m’en sers pour l’accessibilité et le référencement de la fiche.',
-    details:
-      'Précisons quelques détails. Renseigne au moins une surface. Je te laisse compléter le reste plus tard dans l’éditeur.',
-    description:
-      'Ajoutons une description. Décris le bien en quelques lignes. Je m’en sers pour enrichir la fiche et son référencement.',
-    comfort:
-      'Passons au confort. Sélectionne les équipements présents. Je les afficherai comme points forts de la fiche.',
-    qualities:
-      'Évaluons les qualités. Note le bien sur quelques critères. Je les mets en valeur sous forme de repères visuels.',
-    optional:
-      'Ajoutons une touche en plus. Partage le regard de l’agence sur ce bien. Je le mets en valeur sur la fiche.',
-    seo: 'Occupons-nous du référencement. Vérifie le titre et la description proposés. Je les ai préremplis depuis la désignation et la description.',
-    summary:
-      'Faisons le point ensemble. Jette un dernier coup d’œil au récapitulatif. Je m’occupe de créer le bien dès que tu valides.',
-  }
-
-  return messages[activeStep.value]
-})
-
-type CreatorSelectKey = 'listing' | 'category' | 'place'
-type CreatorRevealKey =
-  | CreatorSelectKey
-  | 'nameInput'
-  | 'priceFields'
-  | 'mediaFields'
-  | 'mediaAltFields'
-  | 'detailsFields'
-  | 'descriptionFields'
-  | 'comfortFields'
-  | 'qualitiesFields'
-  | 'optionalFields'
-  | 'seoFields'
-  | 'summaryContent'
-
-type AssistantSegment = {
-  text: string
-  newLine?: boolean
-  delayBefore?: number
-  reveal?: CreatorRevealKey
-  revealDelay?: number
-  pauseAfter?: number
-}
-
-const SEGMENT_PAUSE_MS = 500
-const CLASSIFICATION_ACCENT_STARTS = ['tranquillement', 'le type'] as const
-
+// 7. Validation et helpers purs
 const buildConversation = (stepId: CreatorStepId): AssistantSegment[] => {
   if (stepId === 'classification') {
     return [
@@ -1073,6 +1053,195 @@ const buildConversation = (stepId: CreatorStepId): AssistantSegment[] => {
   return [{ text: assistantMessage.value }]
 }
 
+// Mise en avant olive : le premier mot (le verbe) reste blanc, le reste passe en accent,
+// comme la classification.
+const splitHeadlineAccent = (line: string): { lead: string; accent: string } => {
+  const spaceIndex = line.indexOf(' ')
+  if (spaceIndex === -1) return { lead: line, accent: '' }
+  return { lead: line.slice(0, spaceIndex + 1), accent: line.slice(spaceIndex + 1) }
+}
+
+const getStepRequirement = (stepId: CreatorStepId): boolean => {
+  switch (stepId) {
+    case 'classification':
+      return hasClassification.value
+    case 'name':
+      return hasName.value
+    case 'price':
+      return hasPrice.value
+    case 'media':
+      return hasRepresentativeImage.value
+    case 'mediaAlt':
+      return hasMediaAlt.value
+    case 'details':
+      return hasSurface.value
+    case 'description':
+      return hasBody.value
+    case 'comfort':
+    case 'qualities':
+    case 'optional':
+    case 'seo':
+      return true
+    case 'summary':
+      return canFinalizeDraft.value
+  }
+}
+
+const canAccessStep = (stepId: CreatorStepId): boolean => {
+  if (stepId === 'summary') return true
+
+  const targetIndex = steps.findIndex((step) => step.id === stepId)
+  if (targetIndex <= activeStepIndex.value) return true
+
+  return steps.slice(0, targetIndex).every((step) => step.optional || getStepRequirement(step.id))
+}
+
+const getStepState = (stepId: CreatorStepId): CreatorStepState => {
+  if (stepId === activeStep.value) return 'current'
+  if (!canAccessStep(stepId)) return 'locked'
+  if (skippedSteps.value.has(stepId)) return 'skipped'
+  return getStepRequirement(stepId) ? 'completed' : 'invalid'
+}
+
+const stepProgressClass = (stepId: CreatorStepId): string => {
+  const state = getStepState(stepId)
+  if (state === 'current') return 'w-8 bg-[#6B7A4A]'
+  if (state === 'completed') return 'w-4 bg-[#6B7A4A]/60'
+  if (state === 'skipped') return 'w-4 bg-white/20'
+  if (state === 'invalid') return 'w-4 bg-white/25 hover:bg-white/35'
+  return 'w-4 cursor-not-allowed bg-white/10'
+}
+
+const formatPrice = (): string => {
+  if (creatorDraft.price === null) return 'À renseigner'
+  return `${creatorDraft.price.toLocaleString('fr-FR')} ${creatorDraft.priceCurrency || 'MAD'}`
+}
+
+// Preview minimale : non lue par la route PUT (seul le frontmatter sert au mapping),
+// mais requise par le type DashboardAccommodationSavePayload. La preview réelle est
+// renvoyée par le backend (freshAccommodation) après l'enregistrement.
+const buildCreatorPreview = (): DashboardAccommodationPreview => ({
+  identifier: creatorDraft.identifier,
+  slug: creatorDraft.slug,
+  title: creatorDraft.name,
+  description: '',
+  price: creatorDraft.price,
+  priceCurrency: creatorDraft.priceCurrency,
+  priceSpecification: creatorDraft.priceOnRequest ? 'prix-sur-demande' : '',
+  placeSlug: creatorDraft.place,
+  placeLabel: '',
+  categorySlug: creatorDraft.category,
+  categoryLabel: '',
+  listingSlug: creatorDraft.realEstateListing,
+  listingLabel: '',
+  isActive: true,
+  floorSize: creatorDraft.floorSize || null,
+  landArea: null,
+  numberOfRooms: null,
+  numberOfBedrooms: null,
+  numberOfBathroomsTotal: null,
+  primaryImageUrl: '',
+  media: [],
+})
+
+const buildSavePayload = (): DashboardAccommodationSavePayload => {
+  const frontmatter = createPayload()
+  frontmatter.isActive = true
+  if (creatorDraft.slug) frontmatter.slug = creatorDraft.slug
+  return {
+    locale: localeSetting.value,
+    fileName: '',
+    slug: creatorDraft.slug,
+    identifier: creatorDraft.identifier,
+    frontmatter,
+    body: creatorDraft.body,
+    preview: buildCreatorPreview(),
+  }
+}
+
+// SEO auto : pré-remplit titre/description depuis la désignation et le corps (modifiable).
+const buildMetaDescription = (body: string): string => {
+  const text = body.replace(/\s+/g, ' ').trim()
+  return text.length > 160 ? `${text.slice(0, 157)}…` : text
+}
+
+const normalizeAssociatedMedia = (items: CreatorMediaItem[]): CreatorMediaItem[] => {
+  if (items.length === 0) return []
+  const hasRepresentative = items.some((item) => item.representativeOfPage)
+  if (hasRepresentative) return items
+  return items.map((item, index) => ({ ...item, representativeOfPage: index === 0 }))
+}
+
+// 8. Computed UI-ready
+const activeStepIndex = computed<number>(() =>
+  steps.findIndex((step) => step.id === activeStep.value),
+)
+
+const currentStep = computed<CreatorStep>(() => steps[activeStepIndex.value] ?? steps[0]!)
+
+// Libellé du lieu choisi (code -> label) pour les suggestions contextuelles.
+const placeLabel = computed<string>(
+  () =>
+    metadataStore
+      .getOptionsForCodeSet('accommodation-place')
+      .find((option) => option.value === creatorDraft.place)?.label ?? '',
+)
+
+// Rotation suspendue dès qu'une désignation est saisie (placeholder alors masqué).
+const isDesignationActive = computed<boolean>(
+  () => activeStep.value === 'name' && !creatorDraft.name.trim(),
+)
+
+const { placeholder: designationPlaceholder } = useDesignationPlaceholder({
+  placeLabel,
+  active: isDesignationActive,
+})
+
+const isStructuredStep = computed<boolean>(
+  () =>
+    activeStep.value === 'classification' ||
+    activeStep.value === 'name' ||
+    activeStep.value === 'price' ||
+    activeStep.value === 'media' ||
+    activeStep.value === 'mediaAlt' ||
+    activeStep.value === 'details' ||
+    activeStep.value === 'description' ||
+    activeStep.value === 'comfort' ||
+    activeStep.value === 'qualities' ||
+    activeStep.value === 'optional' ||
+    activeStep.value === 'seo' ||
+    activeStep.value === 'summary',
+)
+
+const assistantMessage = computed<string>(() => {
+  const messages: Record<CreatorStepId, string> = {
+    classification:
+      'Commençons tranquillement. Choisis le type, la catégorie et le lieu. Je m’occupe de préparer la référence.',
+    name: 'Poursuivons tranquillement. Donne au bien une désignation courte. Je m’en sers comme repère et je m’occupe du SEO.',
+    price:
+      'Passons au prix. Indique le prix du bien si tu l’as. Sinon je l’affiche en « prix sur demande », sans bloquer la création.',
+    media:
+      'Occupons-nous des images. Ajoute une ou plusieurs images du bien. Je m’occupe de l’affichage et de la mise en avant de l’image principale.',
+    mediaAlt:
+      'Soignons les descriptions. Décris brièvement chaque image. Je m’en sers pour l’accessibilité et le référencement de la fiche.',
+    details:
+      'Précisons quelques détails. Renseigne au moins une surface. Je te laisse compléter le reste plus tard dans l’éditeur.',
+    description:
+      'Ajoutons une description. Décris le bien en quelques lignes. Je m’en sers pour enrichir la fiche et son référencement.',
+    comfort:
+      'Passons au confort. Sélectionne les équipements présents. Je les afficherai comme points forts de la fiche.',
+    qualities:
+      'Évaluons les qualités. Note le bien sur quelques critères. Je les mets en valeur sous forme de repères visuels.',
+    optional:
+      'Ajoutons une touche en plus. Partage le regard de l’agence sur ce bien. Je le mets en valeur sur la fiche.',
+    seo: 'Occupons-nous du référencement. Vérifie le titre et la description proposés. Je les ai préremplis depuis la désignation et la description.',
+    summary:
+      'Faisons le point ensemble. Jette un dernier coup d’œil au récapitulatif. Je m’occupe de créer le bien dès que tu valides.',
+  }
+
+  return messages[activeStep.value]
+})
+
 const hasGeneratedIdentifier = computed<boolean>(() => Boolean(creatorDraft.identifier.trim()))
 
 const classificationMessageLines = computed<string[]>(() =>
@@ -1106,14 +1275,6 @@ const structuredMessageLines = computed<string[]>(() => displayedAssistantMessag
 
 // Patron 3 temps : 2 lignes de titre (amorce + consigne) puis l'engagement en support.
 const structuredHeadlineLines = computed<string[]>(() => structuredMessageLines.value.slice(0, 2))
-
-// Mise en avant olive : le premier mot (le verbe) reste blanc, le reste passe en accent,
-// comme la classification.
-const splitHeadlineAccent = (line: string): { lead: string; accent: string } => {
-  const spaceIndex = line.indexOf(' ')
-  if (spaceIndex === -1) return { lead: line, accent: '' }
-  return { lead: line.slice(0, spaceIndex + 1), accent: line.slice(spaceIndex + 1) }
-}
 
 const structuredHeadlineParts = computed<Array<{ lead: string; accent: string }>>(() =>
   structuredHeadlineLines.value.map(splitHeadlineAccent),
@@ -1209,62 +1370,7 @@ const summaryItems = computed<Array<{ label: string; value: string }>>(() => {
   ]
 })
 
-const getStepRequirement = (stepId: CreatorStepId): boolean => {
-  switch (stepId) {
-    case 'classification':
-      return hasClassification.value
-    case 'name':
-      return hasName.value
-    case 'price':
-      return hasPrice.value
-    case 'media':
-      return hasRepresentativeImage.value
-    case 'mediaAlt':
-      return hasMediaAlt.value
-    case 'details':
-      return hasSurface.value
-    case 'description':
-      return hasBody.value
-    case 'comfort':
-    case 'qualities':
-    case 'optional':
-    case 'seo':
-      return true
-    case 'summary':
-      return canFinalizeDraft.value
-  }
-}
-
-const canAccessStep = (stepId: CreatorStepId): boolean => {
-  if (stepId === 'summary') return true
-
-  const targetIndex = steps.findIndex((step) => step.id === stepId)
-  if (targetIndex <= activeStepIndex.value) return true
-
-  return steps.slice(0, targetIndex).every((step) => step.optional || getStepRequirement(step.id))
-}
-
-const getStepState = (stepId: CreatorStepId): CreatorStepState => {
-  if (stepId === activeStep.value) return 'current'
-  if (!canAccessStep(stepId)) return 'locked'
-  if (skippedSteps.value.has(stepId)) return 'skipped'
-  return getStepRequirement(stepId) ? 'completed' : 'invalid'
-}
-
-const stepProgressClass = (stepId: CreatorStepId): string => {
-  const state = getStepState(stepId)
-  if (state === 'current') return 'w-8 bg-[#6B7A4A]'
-  if (state === 'completed') return 'w-4 bg-[#6B7A4A]/60'
-  if (state === 'skipped') return 'w-4 bg-white/20'
-  if (state === 'invalid') return 'w-4 bg-white/25 hover:bg-white/35'
-  return 'w-4 cursor-not-allowed bg-white/10'
-}
-
-const formatPrice = (): string => {
-  if (creatorDraft.price === null) return 'À renseigner'
-  return `${creatorDraft.price.toLocaleString('fr-FR')} ${creatorDraft.priceCurrency || 'MAD'}`
-}
-
+// 9. Actions et handlers
 const createDraftAccommodation = async (): Promise<boolean> => {
   if (hasGeneratedIdentifier.value) return true
 
@@ -1329,48 +1435,6 @@ const createPayload = (): DashboardEditableRecord => ({
   metaDescription: creatorDraft.metaDescription || null,
   review: creatorDraft.review || null,
 })
-
-// Preview minimale : non lue par la route PUT (seul le frontmatter sert au mapping),
-// mais requise par le type DashboardAccommodationSavePayload. La preview réelle est
-// renvoyée par le backend (freshAccommodation) après l'enregistrement.
-const buildCreatorPreview = (): DashboardAccommodationPreview => ({
-  identifier: creatorDraft.identifier,
-  slug: creatorDraft.slug,
-  title: creatorDraft.name,
-  description: '',
-  price: creatorDraft.price,
-  priceCurrency: creatorDraft.priceCurrency,
-  priceSpecification: creatorDraft.priceOnRequest ? 'prix-sur-demande' : '',
-  placeSlug: creatorDraft.place,
-  placeLabel: '',
-  categorySlug: creatorDraft.category,
-  categoryLabel: '',
-  listingSlug: creatorDraft.realEstateListing,
-  listingLabel: '',
-  isActive: true,
-  floorSize: creatorDraft.floorSize || null,
-  landArea: null,
-  numberOfRooms: null,
-  numberOfBedrooms: null,
-  numberOfBathroomsTotal: null,
-  primaryImageUrl: '',
-  media: [],
-})
-
-const buildSavePayload = (): DashboardAccommodationSavePayload => {
-  const frontmatter = createPayload()
-  frontmatter.isActive = true
-  if (creatorDraft.slug) frontmatter.slug = creatorDraft.slug
-  return {
-    locale: localeSetting.value,
-    fileName: '',
-    slug: creatorDraft.slug,
-    identifier: creatorDraft.identifier,
-    frontmatter,
-    body: creatorDraft.body,
-    preview: buildCreatorPreview(),
-  }
-}
 
 const finishToEdit = (): void => {
   emit('created', creatorDraft.identifier)
@@ -1584,12 +1648,6 @@ const renderConversationInstant = (segments: AssistantSegment[]): void => {
   isTypingDone.value = true
 }
 
-// SEO auto : pré-remplit titre/description depuis la désignation et le corps (modifiable).
-const buildMetaDescription = (body: string): string => {
-  const text = body.replace(/\s+/g, ' ').trim()
-  return text.length > 160 ? `${text.slice(0, 157)}…` : text
-}
-
 const prefillSeo = (): void => {
   if (!creatorDraft.metaTitle.trim() && creatorDraft.name.trim()) {
     creatorDraft.metaTitle = creatorDraft.name.trim()
@@ -1634,14 +1692,6 @@ const updatePrice = (event: Event): void => {
   clearReadyMessage()
 }
 
-type CreatorNumberField =
-  | 'numberOfBedrooms'
-  | 'numberOfRooms'
-  | 'numberOfBathroomsTotal'
-  | 'numberOfGarages'
-  | 'occupancy'
-  | 'yearBuilt'
-
 const updateNumberField = (field: CreatorNumberField, event: Event): void => {
   const raw = (event.target as HTMLInputElement).value
   const parsed = Number(raw)
@@ -1662,13 +1712,6 @@ const adjustPrice = (amount: number): void => {
   const currentPrice = creatorDraft.price ?? 0
   creatorDraft.price = Math.max(0, currentPrice + amount)
   clearReadyMessage()
-}
-
-const normalizeAssociatedMedia = (items: CreatorMediaItem[]): CreatorMediaItem[] => {
-  if (items.length === 0) return []
-  const hasRepresentative = items.some((item) => item.representativeOfPage)
-  if (hasRepresentative) return items
-  return items.map((item, index) => ({ ...item, representativeOfPage: index === 0 }))
 }
 
 const updateAssociatedMedia = (value: DashboardEditableValue): void => {
@@ -1698,8 +1741,12 @@ const updateAssociatedMedia = (value: DashboardEditableValue): void => {
   clearReadyMessage()
 }
 
+// 10. Watch et watchEffect
 watch(activeStep, startTyping)
 
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 onMounted(startTyping)
 
 onBeforeUnmount(stopTyping)

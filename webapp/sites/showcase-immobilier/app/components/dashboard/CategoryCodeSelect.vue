@@ -168,8 +168,12 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardCategoryCodeSelect' })
 
+// 3. Props et emits
 const props = defineProps<{
   inCodeSet: string
   modelValue: DashboardEditableValue
@@ -183,53 +187,31 @@ const emit = defineEmits<{
   'update:modelValue': [value: DashboardEditableValue]
 }>()
 
+// 4. Composables, stores, routeur
 const store = useMetadataStore()
+
 const { locale } = useI18n()
+
 const { isEnabledLocale, sourceLocale } = useProjectLocales()
 
+// 5. Etat local
 const creating = ref(false)
+
 const createError = ref<string | null>(null)
+
 const isOpen = ref(false)
+
 const search = ref('')
+
 const wrapperRef = ref<HTMLElement | null>(null)
+
 const searchInputRef = ref<HTMLInputElement | null>(null)
 
-onClickOutside(wrapperRef, () => {
-  isOpen.value = false
-})
+// 6. Data inputs
 
-const options = computed(() => store.getOptionsForCodeSet(props.inCodeSet))
-
-const singleModel = computed<string | null>(() =>
-  typeof props.modelValue === 'string' ? props.modelValue : null,
-)
-
-const multiModel = computed<string[]>(() =>
-  Array.isArray(props.modelValue)
-    ? (props.modelValue.filter((v) => typeof v === 'string') as string[])
-    : [],
-)
-
-const selectedLabel = computed<string>(
-  () => options.value.find((o) => o.value === singleModel.value)?.label ?? singleModel.value ?? '',
-)
-
+// 7. Validation et helpers purs
 const labelFor = (value: string): string =>
   options.value.find((o) => o.value === value)?.label ?? value
-
-const filteredOptions = computed(() => {
-  const q = search.value.trim().toLowerCase()
-  if (!q) return options.value
-  return options.value.filter(
-    (o) => o.label.toLowerCase().includes(q) || o.value.toLowerCase().includes(q),
-  )
-})
-
-const canCreate = computed(() => {
-  const q = search.value.trim()
-  if (!q) return false
-  return !options.value.some((o) => o.value === q || o.label === q)
-})
 
 const getCreateLocale = (): LocaleCode =>
   isEnabledLocale(locale.value) ? locale.value : sourceLocale.value
@@ -252,6 +234,38 @@ const getCreateErrorMessage = (error: unknown): string => {
   return 'Erreur lors de la création'
 }
 
+// 8. Computed UI-ready
+const options = computed(() => store.getOptionsForCodeSet(props.inCodeSet))
+
+const singleModel = computed<string | null>(() =>
+  typeof props.modelValue === 'string' ? props.modelValue : null,
+)
+
+const multiModel = computed<string[]>(() =>
+  Array.isArray(props.modelValue)
+    ? (props.modelValue.filter((v) => typeof v === 'string') as string[])
+    : [],
+)
+
+const selectedLabel = computed<string>(
+  () => options.value.find((o) => o.value === singleModel.value)?.label ?? singleModel.value ?? '',
+)
+
+const filteredOptions = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return options.value
+  return options.value.filter(
+    (o) => o.label.toLowerCase().includes(q) || o.value.toLowerCase().includes(q),
+  )
+})
+
+const canCreate = computed(() => {
+  const q = search.value.trim()
+  if (!q) return false
+  return !options.value.some((o) => o.value === q || o.label === q)
+})
+
+// 9. Actions et handlers
 const selectSingle = (value: string): void => {
   emit('update:modelValue', value === singleModel.value ? null : value)
   isOpen.value = false
@@ -322,4 +336,13 @@ const onEnterCreate = async (): Promise<void> => {
     creating.value = false
   }
 }
+
+// 10. Watch et watchEffect
+onClickOutside(wrapperRef, () => {
+  isOpen.value = false
+})
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

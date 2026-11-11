@@ -142,25 +142,37 @@ type DetailPanelExpose = {
 }
 
 const SCREEN_ID = 'screen-property-detail'
+
 const columnTemplate: ScreenColumnTemplate = 'single'
 
 // 3. Props et emits
 const props = defineProps<{ slug: string }>()
+
 const emit = defineEmits<{ 'next-screen': [] }>()
 
 // 4. Composables, stores, routeur
 const store = useAccommodationStore()
+
 const { screenStatus, setScreenMeta } = useScreenSystem()
+
+// 5. Etat local
 const detailPanel = useTemplateRef<DetailPanelExpose>('detailPanel')
 
 // 6. Data inputs
-const accommodation = computed(() => store.getAccommodationBySlug(props.slug))
-const { panelData } = usePropertyDetailPanelData(accommodation)
+
+// 7. Validation et helpers purs
 
 // 8. Computed UI-ready
+const accommodation = computed(() => store.getAccommodationBySlug(props.slug))
+
+const { panelData } = usePropertyDetailPanelData(accommodation)
+
 const screens = computed(() => deriveExceptionalScreens(accommodation.value))
+
 const summary = computed(() => deriveExceptionalSummary(accommodation.value, screens.value))
+
 const badges = computed(() => deriveExceptionalBadges(accommodation.value))
+
 const isScreenActive = computed(() => screenStatus.value.currentId === SCREEN_ID)
 
 // 4bis. Logique du rail (état + handlers), avec handoff vertical en fin de parcours.
@@ -193,6 +205,8 @@ const {
   onRequestNextScreen: () => emit('next-screen'),
 })
 
+// 9. Actions et handlers
+
 // 10. Watch et watchEffect
 watch(isInfoPanelOpen, async (isOpen) => {
   if (!isOpen) return
@@ -200,7 +214,6 @@ watch(isInfoPanelOpen, async (isOpen) => {
   detailPanel.value?.resetScrollPosition()
 })
 
-// 11. Métadonnées écran
 // Capture totale de la navigation verticale tant que le parcours tient l'interaction
 // (patron ScreenPropertyList) + logo visible sur l'imagerie sombre plein écran.
 watchEffect(() => {
@@ -211,4 +224,8 @@ watchEffect(() => {
     layout: { column: columnTemplate, contentZone: 'none', imageZone: 'background' },
   })
 })
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

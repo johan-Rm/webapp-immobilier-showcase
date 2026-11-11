@@ -104,15 +104,23 @@ type PropertyItem = {
   onSelect: () => void
 }
 
+// 3. Props et emits
+
 // 4. Composables, stores, routeur
 const { items } = useAccommodation()
+
 const localePath = useLocalePath()
+
 const { isCommandPropertyOpen, closeCommandProperty } = useDashboard()
 
 // 5. Etat local
 const query = ref('')
+
 const isMobile = ref(false)
+
 const activeIndex = ref(0)
+
+// 6. Data inputs
 
 // 7. Validation et helpers purs
 const buildPropertyItem = (accommodation: Accommodation): PropertyItem | null => {
@@ -189,6 +197,8 @@ watch(isCommandPropertyOpen, (open) => {
 watch(filteredItems, () => {
   activeIndex.value = 0
 })
+
+// 11. Metadonnees ecran ou page
 
 // 12. Lifecycle
 onMounted(() => {

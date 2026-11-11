@@ -61,10 +61,13 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import { DEFAULT_PRICE_CURRENCY } from '#shared/types/accommodation'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardOfferField' })
 
+// 3. Props et emits
 const props = defineProps<{
   modelValue: DashboardEditableValue
 }>()
@@ -73,8 +76,22 @@ const emit = defineEmits<{
   'update:modelValue': [value: DashboardEditableValue]
 }>()
 
+// 4. Composables, stores, routeur
+
+// 5. Etat local
 const isOpen = ref(false)
 
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const toNumber = (value: DashboardEditableValue | undefined): number | null => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null
+  if (typeof value !== 'string') return null
+  const parsed = Number(value.trim())
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+// 8. Computed UI-ready
 const offerObj = computed<DashboardEditableRecord>(() => {
   const v = props.modelValue
   if (v !== null && typeof v === 'object' && !Array.isArray(v)) {
@@ -82,13 +99,6 @@ const offerObj = computed<DashboardEditableRecord>(() => {
   }
   return {}
 })
-
-const toNumber = (value: DashboardEditableValue | undefined): number | null => {
-  if (typeof value === 'number') return Number.isFinite(value) ? value : null
-  if (typeof value !== 'string') return null
-  const parsed = Number(value.trim())
-  return Number.isFinite(parsed) ? parsed : null
-}
 
 const price = computed<number | null>(() => {
   return toNumber(offerObj.value.price)
@@ -115,6 +125,7 @@ const formattedPrice = computed<string>(() => {
   return `${formatted} ${priceCurrency.value}`
 })
 
+// 9. Actions et handlers
 const emitUpdate = (patch: Record<string, DashboardEditableValue>): void => {
   emit('update:modelValue', { ...offerObj.value, ...patch })
 }
@@ -136,4 +147,10 @@ const updateSpecification = (event: Event): void => {
 const updateAvailability = (event: Event): void => {
   emitUpdate({ availability: (event.target as HTMLInputElement).value })
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

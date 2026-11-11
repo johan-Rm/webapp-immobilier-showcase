@@ -260,10 +260,22 @@ const appConfig = useAppConfig()
 
 // 5. Etat local
 const isTopbarOpen = ref(false)
+
 const desktopItemEls = new Map<number, HTMLElement>()
+
 const mobileItemEls = new Map<number, HTMLElement>()
 
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+// 8. Computed UI-ready
+
 // 9. Actions et handlers
+const createProperty = (): void => {
+  emit('create')
+  isTopbarOpen.value = false
+}
+
 const setItemRef = (
   store: Map<number, HTMLElement>,
   el: Element | ComponentPublicInstance | null,
@@ -290,11 +302,10 @@ const selectItem = (index: number): void => {
   isTopbarOpen.value = false
 }
 
-const createProperty = (): void => {
-  emit('create')
-  isTopbarOpen.value = false
-}
-
 // 10. Watch et watchEffect
 watch(() => props.activeIndex, scrollActiveIntoView)
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

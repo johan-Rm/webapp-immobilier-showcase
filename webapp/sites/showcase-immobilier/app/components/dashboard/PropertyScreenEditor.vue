@@ -120,11 +120,12 @@ import type {
 
 import { getDashboardScreenMediaLimit } from '#shared/types/dashboardAccommodation'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardPropertyScreenEditor' })
 
-// 2. Types et constantes statiques
 const inputClass =
   'w-full border-b border-[#6B7A4A]/60 bg-transparent px-0 py-2 text-sm text-white/85 caret-[#6B7A4A] transition-colors outline-none placeholder:text-white/20 focus:border-[#6B7A4A]'
+
 const metaSelectUi = {
   base: 'min-w-24 rounded-none border-0 border-b border-[#6B7A4A]/60 bg-transparent px-0 text-white/75',
   value: 'text-xs',
@@ -133,15 +134,18 @@ const metaSelectUi = {
   item: 'text-xs text-white/45',
   itemActive: 'bg-[#6B7A4A]/15 text-white',
 } as const
+
 const overlayModeItems = [
   { value: 'dark', label: 'Sombre' },
   { value: 'light', label: 'Clair' },
 ]
+
 const imageOverlayItems = [
   { value: 'none', label: 'Aucun' },
   { value: 'dark', label: 'Sombre' },
   { value: 'light', label: 'Clair' },
 ]
+
 const TEMPLATES_WITH_REVERSE = [
   'SCREEN_ACCOMMODATION_SPLIT',
   'SCREEN_ACCOMMODATION_OVERLAY',
@@ -154,22 +158,38 @@ const props = defineProps<{
   /** Médias associés du bien, source de sélection des images de l'écran. */
   availableMedia: DashboardEditableValue
 }>()
+
 const emit = defineEmits<{ 'update:screen': [screen: DashboardAccommodationScreen] }>()
+
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+const inputValue = (event: Event): string => (event.target as HTMLInputElement).value
+
+const textareaValue = (event: Event): string => (event.target as HTMLTextAreaElement).value
 
 // 8. Computed UI-ready
 const showReverse = computed(() => TEMPLATES_WITH_REVERSE.includes(props.screen.additionalType))
+
 const showOverlayMode = computed(
   () => props.screen.additionalType === 'SCREEN_ACCOMMODATION_OVERLAY',
 )
+
 const mediaLimit = computed(() => getDashboardScreenMediaLimit(props.screen.additionalType))
 
 // 9. Actions et handlers
 const patch = (changes: Partial<DashboardAccommodationScreen>): void => {
   emit('update:screen', { ...props.screen, ...changes })
 }
+
 const patchMeta = (changes: Partial<DashboardScreenMeta>): void => {
   patch({ meta: { ...props.screen.meta, ...changes } })
 }
+
 const handleTemplateUpdate = (additionalType: string): void => {
   const mediaLimit = getDashboardScreenMediaLimit(additionalType)
   patch({
@@ -177,6 +197,10 @@ const handleTemplateUpdate = (additionalType: string): void => {
     associatedMedia: props.screen.associatedMedia?.slice(0, mediaLimit) ?? [],
   })
 }
-const inputValue = (event: Event): string => (event.target as HTMLInputElement).value
-const textareaValue = (event: Event): string => (event.target as HTMLTextAreaElement).value
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

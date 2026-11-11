@@ -35,11 +35,29 @@ import type { ExceptionalScreen } from '#shared/types/exceptional'
 
 import { imageOverlayClass } from './exceptional.helpers'
 
+// 2. Types et constantes statiques
+
 // 3. Props et emits
 const props = defineProps<{ screen: ExceptionalScreen; eager?: boolean; isFirst?: boolean }>()
+
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
 
 // 8. Computed UI-ready
 const displayImageOverlayClass = computed(() =>
   imageOverlayClass(props.screen, 'bg-gradient-to-t from-black/80 via-black/25 to-black/20'),
 )
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

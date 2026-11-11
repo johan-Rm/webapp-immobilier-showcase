@@ -46,8 +46,11 @@ const props = withDefaults(
 
 // 4. Composables, stores, routeur
 const { locale } = useI18n()
+
 const switchLocalePath = useSwitchLocalePath()
+
 const { appData } = useAppNavigation()
+
 const { enabledLocales } = useProjectLocales()
 
 // 5. Etat local
@@ -68,4 +71,12 @@ const navAriaLabel = computed<string>(
 const colorClass = computed<string>(() => {
   return props.variant === 'contrast' ? 'text-white' : 'text-foreground'
 })
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

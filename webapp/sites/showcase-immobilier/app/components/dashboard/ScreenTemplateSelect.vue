@@ -27,15 +27,33 @@
 // 1. Imports
 import { DASHBOARD_SCREEN_TEMPLATES } from '#shared/types/dashboardAccommodation'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardScreenTemplateSelect' })
 
 // 3. Props et emits
 defineProps<{ modelValue: string }>()
+
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 
-// 2. Types et constantes statiques
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
 const items: { value: string; label: string }[] = DASHBOARD_SCREEN_TEMPLATES.map((template) => ({
   value: template.value,
   label: template.label,
 }))
+
+// 7. Validation et helpers purs
+
+// 8. Computed UI-ready
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

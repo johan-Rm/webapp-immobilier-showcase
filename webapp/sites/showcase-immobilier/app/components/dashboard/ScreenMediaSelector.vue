@@ -59,9 +59,9 @@ import type { DashboardEditableValue } from '#shared/types/dashboardAccommodatio
 
 import { IMAGE_PRESETS } from '~/composables/useAppImage'
 
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardScreenMediaSelector' })
 
-// 2. Types et constantes statiques
 type AvailableItem = { identifier: string; url: string; caption: string }
 
 // 3. Props et emits
@@ -73,12 +73,17 @@ const props = defineProps<{
   /** Nombre maximal d'images accepté par le template d'écran courant. */
   maxSelections: number
 }>()
+
 const emit = defineEmits<{ 'update:modelValue': [value: DashboardEditableValue] }>()
 
-// 4. Composables
+// 4. Composables, stores, routeur
 const metadataStore = useMetadataStore()
 
-// 7. Helpers purs
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
@@ -86,6 +91,9 @@ const readImageId = (entry: unknown): string => {
   if (!isRecord(entry)) return ''
   return typeof entry.image === 'string' ? entry.image : ''
 }
+
+const isSelectionDisabled = (identifier: string): boolean =>
+  isSelectionLimitReached.value && !selectedIds.value.includes(identifier)
 
 // 8. Computed UI-ready
 // Identifiants des médias du bien, résolus en vignettes via le store.
@@ -107,7 +115,9 @@ const selectedIds = computed<string[]>(() =>
     .map((entry) => readImageId(entry))
     .filter((identifier) => identifier.length > 0),
 )
+
 const selectionLimit = computed<number>(() => Math.max(1, props.maxSelections))
+
 const isSelectionLimitReached = computed<boolean>(
   () => selectedIds.value.length >= selectionLimit.value,
 )
@@ -115,14 +125,14 @@ const isSelectionLimitReached = computed<boolean>(
 // 9. Actions et handlers
 // Rang d'affichage (1-indexé) d'un média dans la sélection ; 0 si non sélectionné.
 const selectionRank = (identifier: string): number => selectedIds.value.indexOf(identifier) + 1
-const isSelectionDisabled = (identifier: string): boolean =>
-  isSelectionLimitReached.value && !selectedIds.value.includes(identifier)
+
 const selectionClass = (identifier: string): string => {
   if (isSelectionDisabled(identifier)) return 'cursor-not-allowed border-white/5 opacity-20'
   return selectionRank(identifier) > 0
     ? 'border-[#6B7A4A] opacity-100'
     : 'border-white/10 opacity-60 hover:opacity-100'
 }
+
 const selectionAriaLabel = (item: AvailableItem): string => {
   const label = item.caption || item.identifier
   if (selectedIds.value.includes(item.identifier)) return `Retirer : ${label}`
@@ -137,4 +147,10 @@ const toggle = (identifier: string): void => {
     : [...current, identifier]
   emit('update:modelValue', next.map((image) => ({ image })) as unknown as DashboardEditableValue)
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

@@ -129,8 +129,10 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
 import type { MediaObject } from '@schemas/interfaces'
 
+// 2. Types et constantes statiques
 type UploadStatus = 'pending' | 'uploading' | 'done' | 'warning' | 'error'
 
 type MediaUploadResponse = MediaObject & {
@@ -146,6 +148,12 @@ type QueueItem = {
 
 defineOptions({ name: 'DashboardPropertyMediaPickerModal' })
 
+const modalUi = {
+  content: 'max-w-lg bg-[#212121] text-white ring-0 shadow-none overflow-hidden',
+  overlay: 'bg-black/90',
+}
+
+// 3. Props et emits
 const props = defineProps<{
   open: boolean
 }>()
@@ -155,26 +163,25 @@ const emit = defineEmits<{
   uploaded: [mediaObjects: MediaObject[]]
 }>()
 
+// 4. Composables, stores, routeur
 const metadataStore = useMetadataStore()
 
+const { locale } = useI18n()
+
+const { isEnabledLocale, sourceLocale } = useProjectLocales()
+
+// 5. Etat local
 const isDragging = ref(false)
+
 const isUploading = ref(false)
+
 const fileInputRef = ref<HTMLInputElement | null>(null)
+
 const queue = ref<QueueItem[]>([])
 
-const modalUi = {
-  content: 'max-w-lg bg-[#212121] text-white ring-0 shadow-none overflow-hidden',
-  overlay: 'bg-black/90',
-}
+// 6. Data inputs
 
-const pendingCount = computed<number>(
-  () => queue.value.filter((i) => i.status === 'pending').length,
-)
-const errorCount = computed<number>(() => queue.value.filter((i) => i.status === 'error').length)
-const warningCount = computed<number>(
-  () => queue.value.filter((i) => i.status === 'warning').length,
-)
-
+// 7. Validation et helpers purs
 const statusIcon = (status: UploadStatus): string => {
   if (status === 'uploading') return 'i-lucide-loader'
   if (status === 'done') return 'i-lucide-check-circle'
@@ -191,9 +198,6 @@ const statusColor = (status: UploadStatus): string => {
   return 'text-white/30'
 }
 
-const { locale } = useI18n()
-const { isEnabledLocale, sourceLocale } = useProjectLocales()
-
 const getUploadLocale = (): LocaleCode =>
   isEnabledLocale(locale.value) ? locale.value : sourceLocale.value
 
@@ -209,6 +213,18 @@ const formatSize = (bytes: number): string => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
 }
 
+// 8. Computed UI-ready
+const pendingCount = computed<number>(
+  () => queue.value.filter((i) => i.status === 'pending').length,
+)
+
+const errorCount = computed<number>(() => queue.value.filter((i) => i.status === 'error').length)
+
+const warningCount = computed<number>(
+  () => queue.value.filter((i) => i.status === 'warning').length,
+)
+
+// 9. Actions et handlers
 const addFiles = (files: FileList | File[]): void => {
   const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
   for (const file of Array.from(files)) {
@@ -282,6 +298,7 @@ const handleUpload = async (): Promise<void> => {
   }
 }
 
+// 10. Watch et watchEffect
 watch(
   () => props.open,
   (open) => {
@@ -292,4 +309,8 @@ watch(
     }
   },
 )
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

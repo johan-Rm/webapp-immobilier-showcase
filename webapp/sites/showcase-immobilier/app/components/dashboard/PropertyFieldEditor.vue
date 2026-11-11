@@ -183,6 +183,7 @@
 <script setup lang="ts">
 // 1. Imports
 
+// 2. Types et constantes statiques
 defineOptions({
   name: 'DashboardPropertyFieldEditor',
 })
@@ -206,6 +207,7 @@ const emit = defineEmits<{
 
 // 5. Etat local
 const isActive = ref(false)
+
 const inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null)
 
 // 6. Data inputs
@@ -216,10 +218,6 @@ const isScalar = (value: DashboardEditableValue): boolean =>
   typeof value === 'string' ||
   typeof value === 'number' ||
   typeof value === 'boolean'
-
-const emitUpdate = (value: DashboardEditableValue): void => {
-  emit('update:modelValue', value)
-}
 
 const toEditableValue = (value: unknown): DashboardEditableValue => {
   if (value === null) return null
@@ -240,10 +238,13 @@ const toEditableValue = (value: unknown): DashboardEditableValue => {
 
 // 8. Computed UI-ready
 const isBooleanValue = computed<boolean>(() => typeof props.modelValue === 'boolean')
+
 const isNumberValue = computed<boolean>(() => typeof props.modelValue === 'number')
+
 const isStringLikeValue = computed<boolean>(
   () => typeof props.modelValue === 'string' || props.modelValue === null,
 )
+
 const isArrayValue = computed<boolean>(() => Array.isArray(props.modelValue))
 
 const stringValue = computed<string>(() =>
@@ -290,6 +291,10 @@ const arrayTextValue = computed<string>(() =>
 const jsonTextValue = computed<string>(() => JSON.stringify(props.modelValue, null, 2))
 
 // 9. Actions et handlers
+const emitUpdate = (value: DashboardEditableValue): void => {
+  emit('update:modelValue', value)
+}
+
 const activate = async (): Promise<void> => {
   isActive.value = true
   await nextTick()

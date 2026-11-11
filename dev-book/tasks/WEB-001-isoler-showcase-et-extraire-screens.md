@@ -6,7 +6,7 @@
 - Couche : web
 - Branche : layers/web
 - Worktree : worktree/web
-- État : validée et commitée localement le 2026-11-10 ; à reconstituer
+- État : correctifs du 2026-11-11 validés par l’humain ; commit local à créer
 - Chemins autorisés : `webapp/app/`, `webapp/sites/showcase-immobilier/app/`, les README de cette cible et `webapp/sites/README.md`, sa `nuxt.config.ts`, `webapp/base/real-estate/`, `webapp/tests/layers/showcase-components.vitest.ts`.
 - Dépendances : OPS-003 source `3043960c8f6752ddfdfeae6ce114244fe64633b1` repris par `010cee5` ; autres dépendances et limite de correction dans les preuves.
 
@@ -105,3 +105,64 @@ absentes des commits et conservées dans le worktree.
 
 - Réalisation : `ac57e313712614caa07d0780d847c6ab588dc67f`.
 Aucun push, PR ni fusion.
+
+## Reprise du 2026-11-11 — images
+
+Reprise demandée via `implementer-demande DEM-003`, après la proposition de
+commencer par les images. Correction sur le principal déjà porteur de la demande,
+`demands/DEM-003`, depuis `d97fbda992a67a96abff8513e1b9de4b6b5b2be6` ;
+les worktrees de couche, leurs environnements et données restent préservés.
+Cette reprise n’altère pas le verdict du lot de migration précédent.
+
+Chemins modifiés dans `webapp/sites/showcase-immobilier/app/` :
+`components/property/ExceptionalLightbox.vue`, `composables/useAppImage.ts` et
+`pages/villa-des-alizes.vue`. Les 12 balises brutes Villa passent par AppImage
+et des presets nommés. La lightbox utilise un preset dédié avec `fit: contain`,
+qualité 85 et largeur 1200. Les classes, sources, textes et stratégies de
+chargement existants sont conservés ; les formats et sources responsives
+passent désormais par le wrapper optimisé.
+
+Le scanner s’arrête au premier `</template>` imbriqué : il ne signalait que deux
+des douze balises brutes Villa. Toutes sont corrigées sans modification du scanner.
+
+Preuves locales : `bun run check:app:images`, `bun run quality:check` et
+`bun run build` réussis ; 80 tests Showcase réussis (16 fichiers). Le serveur de vérification
+éphémère sert `/fr/villa-des-alizes` en HTTP 200 ; 21 images optimisées sont
+présentes dans le HTML SSR et une source IPX répond HTTP 200 en `image/webp`.
+Ce serveur est arrêté après vérification. Pas de validation visuelle humaine
+ni d’annonce de réussite de la CI sur ces changements non publiés.
+Logs locaux : `/tmp/dem003-reprise-quality.log`, `/tmp/dem003-reprise-tests.log`,
+`/tmp/dem003-reprise-build.log`, `/tmp/dem003-reprise-ssr-proof.json`.
+Complément demandé ensuite : réorganisation des sections dans 39 fichiers Vue,
+réécriture de la mise à jour des légendes et du tri des dates de médias. Les
+contrôles de sections et de qualité terminent désormais avec succès, sans
+modification de règle. 36 fichiers conservent exactement les mêmes déclarations
+AST ; les exceptions sont la lightbox (import du preset), l’éditeur de légendes
+et Tiptap (helper pur hoisté pour conserver l’initialisation du composable).
+Les dépendances immédiates ont été vérifiées avant réorganisation.
+
+La régression `sites/showcase-immobilier/tests/metadata.vitest.ts` vérifie le tri
+réel du store sur dates valides, invalides et antérieures à 1970, sans mutation de
+la liste reçue. Les comparaisons avant/après confirment 49 paires de dates et
+18 cas de mise à jour des légendes (`/tmp/dem003-semantic-proof.json`).
+Les neuf commandes de conventions terminent avec le code 0 ; les avertissements
+nécessitant une revue humaine restent explicitement non arbitrés par les tests.
+Les deux smokes Showcase existants passent sur desktop et mobile. Vérifications
+complémentaires : lightbox desktop ouverte, image chargée en `contain`, fermeture ;
+galerie mobile sélectionnée avec image chargée ; connexion HTTP 200 et formulaire
+visible dans les deux formats. Aucune erreur JavaScript relevée. Logs et captures
+locaux : `/tmp/dem003-final-browser-showcase-immobilier.log`,
+`/tmp/dem003-extra-browser-proof.json`, `/tmp/dem003-final-lightbox-desktop.png`,
+`/tmp/dem003-final-gallery-mobile.png`. Pas de parcours d’édition authentifié ni
+d’écriture réelle vers Symfony. Qualité, tests et build finaux :
+`/tmp/dem003-final-showcase-immobilier-{quality-check,test,build}.log`.
+Le correctif du parsing d’upload est suivi dans BFF-001, celui des contrats dans OPS-004.
+Aucune configuration de contrôle, convention ou règle Codebase Integrity modifiée.
+Aucun commit, push ou fusion à cette étape ; résultat à vérifier humainement.
+
+## Validation des correctifs du 2026-11-11
+
+Verdict humain explicite : « c’est validé ». Il couvre le correctif présenté,
+ses tests et ses limites documentées ci-dessus. Empreinte du lot vérifiée avant
+consignation : 55 fichiers inchangés depuis la présentation sur `d97fbda`.
+Session intervenante : `01a1c16c-2085-7141-83fa-3460f6bd4463`.

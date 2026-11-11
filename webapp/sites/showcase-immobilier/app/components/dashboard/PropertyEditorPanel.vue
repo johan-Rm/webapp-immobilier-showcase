@@ -175,13 +175,27 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+
+// 2. Types et constantes statiques
 type DashboardLocale = 'fr' | 'en' | 'es'
+
 type EditorSection = 'content' | 'media'
+
 type SaveStatus = 'idle' | 'saving' | 'success' | 'error'
+
 type DashboardDraft = { frontmatter: DashboardEditableRecord; body: string }
+
 type BlockMenuItem = { label: string; icon?: string; onSelect?: () => void }
+
 defineOptions({ name: 'DashboardPropertyEditorPanel' })
 
+const sectionTabs: Array<{ value: EditorSection; label: string; icon: string }> = [
+  { value: 'content', label: 'Contenu', icon: 'i-lucide-file-text' },
+  { value: 'media', label: 'Media', icon: 'i-lucide-images' },
+]
+
+// 3. Props et emits
 defineProps<{
   activeSection: EditorSection
   activeLocale: DashboardLocale
@@ -216,21 +230,33 @@ const emit = defineEmits<{
   save: []
 }>()
 
+// 4. Composables, stores, routeur
 const { enabledLocales } = useProjectLocales()
-// Onglets limites aux locales activees du projet courant.
-const localeTabs: DashboardLocale[] = enabledLocales.value.map((locale) => locale.code)
-const sectionTabs: Array<{ value: EditorSection; label: string; icon: string }> = [
-  { value: 'content', label: 'Contenu', icon: 'i-lucide-file-text' },
-  { value: 'media', label: 'Media', icon: 'i-lucide-images' },
-]
 
+// 5. Etat local
 const isEditingTitle = ref(false)
+
 const titleInputRef = ref<HTMLInputElement | null>(null)
 
+// 6. Data inputs
+// Onglets limites aux locales activees du projet courant.
+const localeTabs: DashboardLocale[] = enabledLocales.value.map((locale) => locale.code)
+
+// 7. Validation et helpers purs
+
+// 8. Computed UI-ready
+
+// 9. Actions et handlers
 const activateTitle = async (): Promise<void> => {
   isEditingTitle.value = true
   await nextTick()
   titleInputRef.value?.focus()
   titleInputRef.value?.select()
 }
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

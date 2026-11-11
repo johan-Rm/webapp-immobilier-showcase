@@ -57,9 +57,10 @@
             class="relative order-first h-[42%] md:h-full md:w-1/2"
             :class="screen.reverse ? 'md:order-2' : 'md:order-1'"
           >
-            <img
-              :src="screen.media[0]?.src"
-              :alt="screen.media[0]?.alt"
+            <AppImage
+              v-bind="IMAGE_PRESETS.fullscreenCover"
+              :src="screen.media[0]?.src ?? ''"
+              :alt="screen.media[0]?.alt ?? ''"
               class="absolute inset-0 size-full object-cover"
               :loading="index === 0 ? 'eager' : 'lazy'"
               :fetchpriority="index === 0 ? 'high' : 'auto'"
@@ -105,9 +106,10 @@
              └──────────────────────────────────────────────────────────────┘ -->
         <template v-else-if="screenLayout(screen) === 'full-overlay'">
           <!-- Zone média — image de fond plein écran. -->
-          <img
-            :src="screen.media[0]?.src"
-            :alt="screen.media[0]?.alt"
+          <AppImage
+            v-bind="IMAGE_PRESETS.fullscreenCover"
+            :src="screen.media[0]?.src ?? ''"
+            :alt="screen.media[0]?.alt ?? ''"
             class="absolute inset-0 size-full object-cover"
             :loading="index === 0 ? 'eager' : 'lazy'"
             :fetchpriority="index === 0 ? 'high' : 'auto'"
@@ -149,9 +151,10 @@
              └──────────────────────────────────────────────────────────────┘ -->
         <template v-else-if="screenLayout(screen) === 'full'">
           <!-- Zone média — image de fond + dégradé sombre pour le contraste du texte. -->
-          <img
-            :src="screen.media[0]?.src"
-            :alt="screen.media[0]?.alt"
+          <AppImage
+            v-bind="IMAGE_PRESETS.fullscreenCover"
+            :src="screen.media[0]?.src ?? ''"
+            :alt="screen.media[0]?.alt ?? ''"
             class="absolute inset-0 size-full object-cover"
             :loading="index === 0 ? 'eager' : 'lazy'"
             :fetchpriority="index === 0 ? 'high' : 'auto'"
@@ -195,9 +198,10 @@
              └──────────────────────────────────────────────────────────────┘ -->
         <template v-else-if="screenLayout(screen) === 'triptych'">
           <!-- Zone média (mobile) — visuel de couverture + voile + texte superposé. -->
-          <img
-            :src="screen.media[0]?.src"
-            :alt="screen.media[0]?.alt"
+          <AppImage
+            v-bind="IMAGE_PRESETS.fullscreenCover"
+            :src="screen.media[0]?.src ?? ''"
+            :alt="screen.media[0]?.alt ?? ''"
             class="absolute inset-0 size-full object-cover md:hidden"
             loading="lazy"
             decoding="async"
@@ -228,7 +232,8 @@
               :aria-label="`Agrandir : ${screen.media[0].alt}`"
               @click="openLightbox(screen.media, 0)"
             >
-              <img
+              <AppImage
+                v-bind="IMAGE_PRESETS.vertical3col"
                 :src="screen.media[0].src"
                 :alt="screen.media[0].alt"
                 class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -243,7 +248,8 @@
               :aria-label="`Agrandir : ${screen.media[1].alt}`"
               @click="openLightbox(screen.media, 1)"
             >
-              <img
+              <AppImage
+                v-bind="IMAGE_PRESETS.vertical3col"
                 :src="screen.media[1].src"
                 :alt="screen.media[1].alt"
                 class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -258,7 +264,8 @@
               :aria-label="`Agrandir : ${screen.media[2].alt}`"
               @click="openLightbox(screen.media, 2)"
             >
-              <img
+              <AppImage
+                v-bind="IMAGE_PRESETS.vertical3col"
                 :src="screen.media[2].src"
                 :alt="screen.media[2].alt"
                 class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -305,7 +312,8 @@
              └──────────────────────────────────────────────────────────────┘ -->
         <template v-else-if="screenLayout(screen) === 'carousel'">
           <!-- Zone média — visuel principal courant (transition d'opacité au changement). -->
-          <img
+          <AppImage
+            v-bind="IMAGE_PRESETS.fullscreenCover"
             :src="currentMedia(screen).src"
             :alt="currentMedia(screen).alt"
             class="absolute inset-0 size-full object-cover transition-[opacity] duration-300"
@@ -344,7 +352,8 @@
                 :aria-label="`Voir : ${media.alt}`"
                 @click="selectMedia(screen.id, mediaIndex)"
               >
-                <img
+                <AppImage
+                  v-bind="IMAGE_PRESETS.fullscreenCover"
                   :src="media.src"
                   :alt="media.alt"
                   class="size-full object-cover"
@@ -362,8 +371,9 @@
         <template v-else-if="screenLayout(screen) === 'duo'">
           <!-- Zone média — grille des 2 visuels (colonnes desktop / lignes mobile). -->
           <div class="absolute inset-0 grid grid-rows-2 md:grid-cols-2 md:grid-rows-1">
-            <img
+            <AppImage
               v-for="media in screen.media"
+              v-bind="IMAGE_PRESETS.fullscreenCover"
               :key="media.src"
               :src="media.src"
               :alt="media.alt"
@@ -397,7 +407,8 @@
         <div v-else class="flex h-full w-full flex-col overflow-hidden md:flex-row">
           <!-- Zone média — visuel d'ambiance (terrasse/piscine). -->
           <div class="relative h-[38%] md:h-full md:w-1/2">
-            <img
+            <AppImage
+              v-bind="IMAGE_PRESETS.fullscreenCover"
               :src="property.contactImage"
               alt="Terrasse extérieure et piscine de la villa au cœur du jardin"
               class="absolute inset-0 size-full object-cover"
@@ -522,11 +533,13 @@
           <UIcon name="i-heroicons-chevron-left" class="text-2xl" aria-hidden="true" />
         </button>
 
-        <img
+        <AppImage
+          v-bind="IMAGE_PRESETS.exceptionalLightbox"
           :src="currentLightboxMedia.src"
           :alt="currentLightboxMedia.alt"
           class="max-h-full max-w-full rounded-md object-contain shadow-2xl"
           decoding="async"
+          loading="eager"
         />
 
         <button
@@ -626,6 +639,8 @@
 <script setup lang="ts">
 // 1. Imports
 import type { ComponentPublicInstance } from 'vue'
+
+import { IMAGE_PRESETS } from '~/composables/useAppImage'
 
 // 2. Types et constantes statiques
 // Les 6 types de screens canoniques du parcours + l'écran de contact final.

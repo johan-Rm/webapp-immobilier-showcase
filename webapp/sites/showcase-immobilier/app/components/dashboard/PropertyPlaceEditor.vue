@@ -23,8 +23,12 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+
+// 2. Types et constantes statiques
 defineOptions({ name: 'DashboardPropertyPlaceEditor' })
 
+// 3. Props et emits
 const props = defineProps<{
   placeName: string
   placeText: string
@@ -37,6 +41,15 @@ const emit = defineEmits<{
   'update-place-text': [value: string]
 }>()
 
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
+
+// 8. Computed UI-ready
 const statusMessage = computed(() => {
   if (props.errorMessage) return props.errorMessage
   if (props.status === 'loading') return 'Chargement du lieu...'
@@ -51,4 +64,12 @@ const statusMessageClass = computed(() => {
   if (props.isDirty) return 'text-amber-300/80'
   return 'text-white/25'
 })
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>

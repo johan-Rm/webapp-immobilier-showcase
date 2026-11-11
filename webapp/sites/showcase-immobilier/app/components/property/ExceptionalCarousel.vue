@@ -52,16 +52,37 @@ import type { ExceptionalMedia, ExceptionalScreen } from '#shared/types/exceptio
 
 import { imageOverlayClass } from './exceptional.helpers'
 
+// 2. Types et constantes statiques
+
 // 3. Props et emits
 const props = defineProps<{ screen: ExceptionalScreen; activeMediaIndex?: number }>()
+
 const emit = defineEmits<{ 'select-media': [index: number] }>()
+
+// 4. Composables, stores, routeur
+
+// 5. Etat local
+
+// 6. Data inputs
+
+// 7. Validation et helpers purs
 
 // 8. Computed UI-ready
 const displayImageOverlayClass = computed(() =>
   imageOverlayClass(props.screen, 'bg-gradient-to-t from-black/85 via-black/35 to-black/30'),
 )
+
 const activeIndex = computed<number>(() => props.activeMediaIndex ?? 0)
+
 const currentMedia = computed<ExceptionalMedia>(
   () => props.screen.media[activeIndex.value] ?? props.screen.media[0] ?? { src: '', alt: '' },
 )
+
+// 9. Actions et handlers
+
+// 10. Watch et watchEffect
+
+// 11. Metadonnees ecran ou page
+
+// 12. Lifecycle
 </script>
