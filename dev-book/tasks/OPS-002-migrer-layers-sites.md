@@ -6,7 +6,7 @@
 - Couche : mission transverse autorisée par l’utilisateur, sans délégation
 - Branche : feat/nuxt-site-layers
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
-- État : validée et commitée localement, à livrer
+- État : code intégré avec DEM-003 le 2026-11-11
 - Chemins autorisés : webapp/, infra/docker/, docs/, README.md, .gitignore, cette carte
 - Dépendances : aucune ; base 1ae0ce888dc80f04640abd47f508b6ec80fa50fb
 
@@ -70,4 +70,4 @@ screens appartient au prochain objectif.
 ## Commits
 
 Implémentation validée : `ddab1c01092cbe9c9d8f99b72b00ee01c5e09818`.
-Aucune reconstitution, publication distante ou fusion effectuée.
+Suivi de la reconstitution et de l’intégration : [DEM-002](../demand/DEM-002-migrer-layers-sites.md#suivi-après-intégration-avec-dem-003).
