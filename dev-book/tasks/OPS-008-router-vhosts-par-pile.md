@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `35d4a0636914b103b84afdf6efb01ffc0b25fea2` ; aucun fetch
-- État : validée humainement ; commit local à réaliser
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `infra/docker/docker-compose.dev.yml`, `infra/nginx/`, `infra/make/Makefile.dev`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/` (configuration locale des hôtes uniquement), cette carte
 - Dépendances de réalisation : aucune au-delà de la base vérifiée
 - Dépendances de vérification globale : OPS-009
@@ -76,4 +76,5 @@ depuis la présentation ; index initial vide, base `35d4a06`.
 
 ## Commits
 
-Aucun ; commit local seulement après validation humaine explicite de cette carte.
+Commit local après validation : `dce5e9e16c5be9d851a97e8da46da6eb01a25690`.
+Aucun push, PR ni fusion.
