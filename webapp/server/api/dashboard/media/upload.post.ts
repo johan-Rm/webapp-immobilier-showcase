@@ -46,8 +46,11 @@ const isLocaleCode = (value: unknown): value is LocaleCode =>
 const getStringEntry = (value: FormDataEntryValue | null): string | null =>
   typeof value === 'string' ? value : null
 
-const getQueryString = (value: unknown): string | null =>
-  typeof value === 'string' ? value : Array.isArray(value) ? getQueryString(value.at(0)) : null
+const getQueryString = (value: unknown): string | null => {
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) return getQueryString(value.at(0))
+  return null
+}
 
 const createCaptionFromFilename = (filename: string): string =>
   filename
