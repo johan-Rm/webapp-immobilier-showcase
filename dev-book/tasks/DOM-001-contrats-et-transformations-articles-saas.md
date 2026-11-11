@@ -8,7 +8,7 @@
 - Branche : layers/domaine
 - Worktree : worktree/domaine
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée humainement ; commit local en préparation, à livrer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `webapp/shared/types/saas/`, `webapp/shared/schemas.ts`, `webapp/shared/saas/`, `webapp/shared/site/`, `webapp/services/saas/`, `webapp/schemas/source/dtos/symfony_api/article.yaml`, `webapp/schemas/source/webapp/article.yaml`, cette carte
 - Dépendances de réalisation : OPS-010, commit validé `5eee4c05ad298775d509a1469b5642a1517699df`, lu directement depuis Git sans copie de travail non commité
 - Commits nécessaires : OPS-010 identifié ci-dessus ; aucun commit backend consommé, types cibles isolés des DTO actuels.
@@ -95,7 +95,8 @@ La validation ne couvre ni une autre carte ni une évolution Symfony.
 
 ## Commits
 
-Commit local autorisé par le verdict ci-dessus ; SHA réel à relever après réussite.
-Indexation limitée aux neuf fichiers validés et à cette carte.
+Commit local réalisé : `8c1000ecc9996cd3632a323fd1ed49604ad4e929`.
+Périmètre vérifié : les neuf fichiers validés et cette carte uniquement.
+Complément documentaire limité à la trace du SHA et de l’état réel ; aucune modification fonctionnelle.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
