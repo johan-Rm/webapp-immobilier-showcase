@@ -84,7 +84,7 @@ services:
       args:
         GD_TARGET: showcase-immobilier
         APP_ENV: ${APP_ENV:-dev}
-        SITE_URL: ${SITE_URL:-http://showcase-immobilier.localhost:8080}
+        SITE_URL: http://showcase-immobilier.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
         SITE_NAME: ${SITE_NAME:-Mon Webapp}
         WEB_VITALS_ENABLED: ${WEB_VITALS_ENABLED:-false}
         NODE_BUILD_MEMORY_MB: ${NODE_BUILD_MEMORY_MB:-8192}
@@ -98,7 +98,8 @@ services:
       NODE_ENV: production
       SCHEMAS_PATH: /opt/app-schemas
       CONTENT_PATH: /app/content
-      PUBLIC_HOST: showcase-immobilier.localhost
+      PUBLIC_HOST: showcase-immobilier.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost
+      SITE_URL: http://showcase-immobilier.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
       PUBLIC_PORT: ${PUBLIC_PORT:-8080}
       WEB_VITALS_ENABLED: ${WEB_VITALS_ENABLED:-false}
       SYMFONY_API_URL: ${SYMFONY_API_URL:-http://host.docker.internal:18080}
@@ -131,7 +132,7 @@ services:
       args:
         GD_TARGET: client2-immobilier
         APP_ENV: dev
-        SITE_URL: http://client2-immobilier.localhost:${PUBLIC_PORT:-8080}
+        SITE_URL: http://client2.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
         SITE_NAME: Client 2 Immobilier
         NODE_BUILD_MEMORY_MB: ${NODE_BUILD_MEMORY_MB:-8192}
     working_dir: /app
@@ -140,7 +141,8 @@ services:
       NODE_ENV: production
       GD_TARGET: client2-immobilier
       SITE_NAME: Client 2 Immobilier
-      PUBLIC_HOST: client2-immobilier.localhost
+      PUBLIC_HOST: client2.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost
+      SITE_URL: http://client2.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
       PUBLIC_PORT: ${PUBLIC_PORT:-8080}
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/ || exit 1"]
@@ -151,6 +153,8 @@ services:
 
   nginx:
     image: nginx:1.27-alpine
+    environment:
+      AIDE_LAYER: ${AIDE_LAYER:-}
     depends_on:
       webapp-ssr:
         condition: service_healthy
@@ -159,5 +163,6 @@ services:
     ports:
       - "${PUBLIC_PORT:-8080}:80"
     volumes:
-      - ./infra/nginx/vhost.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./infra/nginx/vhost.conf:/opt/local-vhost.conf:ro
+      - ./infra/nginx/19-local-vhosts.sh:/docker-entrypoint.d/19-local-vhosts.sh:ro
       - ./infra/nginx/certs:/etc/nginx/certs:ro
