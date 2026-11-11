@@ -19,9 +19,12 @@ it('prépare le vrai Client 2 sans les composants, routes et initialisations Sho
   const root = mkdtempSync(join(tmpdir(), 'client2-layer-'))
   try {
     symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
-    symlinkSync(join(webapp, 'shared'), join(root, 'shared'), 'dir')
+    cpSync(join(webapp, 'shared'), join(root, 'shared'), { recursive: true })
+    cpSync(join(webapp, 'services'), join(root, 'services'), { recursive: true })
+    cpSync(join(webapp, 'schemas/source'), join(root, 'schemas/source'), { recursive: true })
     mkdirSync(join(root, 'scripts/build'), { recursive: true })
     cpSync(join(webapp, 'scripts/build/site.ts'), join(root, 'scripts/build/site.ts'))
+    cpSync(join(webapp, 'scripts/build/schema-hook.ts'), join(root, 'scripts/build/schema-hook.ts'))
     cpSync(join(webapp, 'nuxt.config.ts'), join(root, 'nuxt.config.ts'))
     cpSync(join(webapp, 'sites/client2-immobilier'), join(root, 'sites/client2-immobilier'), {
       recursive: true,
@@ -31,7 +34,12 @@ it('prépare le vrai Client 2 sans les composants, routes et initialisations Sho
       cwd: root,
       encoding: 'utf8',
       timeout: 60000,
-      env: { ...process.env, GD_TARGET: 'client2-immobilier', NUXT_TELEMETRY_DISABLED: '1' },
+      env: {
+        ...process.env,
+        GD_TARGET: 'client2-immobilier',
+        NUXT_TELEMETRY_DISABLED: '1',
+        SCHEMAS_PATH: join(root, 'schemas/source'),
+      },
     })
     expect(result.status, result.stdout + result.stderr).toBe(0)
     const components = readFileSync(join(root, '.nuxt/components.d.ts'), 'utf8')
