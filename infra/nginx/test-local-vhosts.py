@@ -28,7 +28,7 @@ with tempfile.TemporaryDirectory(prefix='dem004-config-') as tmp:
  (p/'env').write_text('SITE_URL=http://ancien.invalid\nPUBLIC_HOST=webapp.localhost\n')
  (p/'override.yml').write_text('services:\n  webapp-localhost:\n    env_file: !reset []\n  playwright:\n    env_file: !reset []\n  webapp-ssr:\n    env_file: !reset []\n')
  for layer,port,dev in [('',8080,3000),('web',19401,19301),('bff',19402,19302),('domaine',19403,19303),('devops',19404,19304)]:
-  env={**{key:value for key,value in os.environ.items() if not key.startswith('SAAS_')},'SAAS_PROJECTION_SOURCE_ORIGIN':'http://api.fixture.invalid','AIDE_LAYER':layer,'PUBLIC_PORT':str(port),'WEBAPP_DEV_PORT':str(dev)}
+  env={**{key:value for key,value in os.environ.items() if not key.startswith('SAAS_')},'SAAS_PROJECTION_PROJECT_ID':'10000000-0000-4000-8000-000000000001','SAAS_PROJECTION_SOURCE_ORIGIN':'http://api.fixture.invalid','AIDE_LAYER':layer,'PUBLIC_PORT':str(port),'WEBAPP_DEV_PORT':str(dev)}
   overlay=['-f', 'infra/docker/docker-compose.dashboard.yml','--profile','saas-projection'] if args.dashboard else []
   config=json.loads(run('docker','compose','--project-directory',str(root),'--env-file',str(p/'env'),'-f','infra/docker/docker-compose.dev.yml',*overlay,'-f',str(p/'override.yml'),'config','--format','json',env=env))['services']
   suffix='wt-'+layer if layer else 'preprod'
@@ -52,6 +52,7 @@ with tempfile.TemporaryDirectory(prefix='dem004-config-') as tmp:
    assert not worker['volumes'][0].get('read_only',False)
    assert config['client2-ssr']['volumes'][0]['source']==worker['volumes'][0]['source']
    assert config['client2-ssr']['volumes'][0]['read_only']
+   assert config['client2-ssr']['environment']['SAAS_PROJECTION_PROJECT_ID']==worker['environment']['SAAS_PROJECTION_PROJECT_ID']=='10000000-0000-4000-8000-000000000001'
    assert dashboard['volumes'][0]['target']=='/app/.data'
    assert dashboard['volumes'][0]['source'].endswith('/webapp/.data/dashboard')
    assert config['nginx']['depends_on']['dashboard-ssr']['condition']=='service_healthy'
