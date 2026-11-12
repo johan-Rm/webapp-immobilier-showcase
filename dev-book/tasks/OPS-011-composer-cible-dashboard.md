@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée et commitée localement ; à livrer ; complément implémenté, non commité, à vérifier
+- État : validée et commitée localement ; à livrer ; complément validé et commité localement, à livrer
 - Chemins autorisés : `webapp/nuxt.config.ts`, `webapp/package.json`, `webapp/bun.lock`, `webapp/tsconfig.json`, `webapp/eslint.config.ts`, `webapp/vitest.config.ts`, `webapp/playwright.config.ts`, `webapp/scripts/build/site.ts`, `webapp/scripts/build/site-targets.vitest.ts`, `webapp/scripts/build/schema-hook.ts`, `webapp/scripts/build/type-check.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : DOM-001 validée, commit `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, vérifié dans Git ; aucune dépendance de consolidation.
@@ -175,3 +175,7 @@ Validation explicite du 2026-11-12 : « validé », limitée au complément OPS-
 et à la correction documentaire WEB-005 présentés, avec leurs limites sur fixtures.
 Empreintes revérifiées identiques avant indexation ; aucune modification fonctionnelle
 depuis la restitution. OPS-013 n’est pas couverte par ce verdict.
+
+Commit local du complément validé : `6a9fbc626aa3149395a9b40e1b55a699907209a6`.
+Trace documentaire limitée au SHA et à l’état ; aucun changement fonctionnel,
+push, PR, fusion ou démarrage de l’étape suivante.
