@@ -1,0 +1,43 @@
+# Extension locale opt-in : ne modifie ni les piles existantes ni leurs données.
+services:
+  dashboard-ssr:
+    image: "${COMPOSE_PROJECT_NAME:-showcase-immobilier-dev}-dashboard-ssr"
+    build:
+      context: ./webapp
+      dockerfile: ../infra/docker/Dockerfile
+      additional_contexts:
+        schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
+      args:
+        GD_TARGET: dashboard
+        APP_ENV: dev
+        SITE_URL: http://dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
+        SITE_NAME: Administration
+        NODE_BUILD_MEMORY_MB: ${NODE_BUILD_MEMORY_MB:-8192}
+    working_dir: /app
+    init: true
+    environment:
+      NODE_ENV: production
+      GD_TARGET: dashboard
+      SITE_NAME: Administration
+      PUBLIC_HOST: dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost
+      SITE_URL: http://dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
+      PUBLIC_PORT: ${PUBLIC_PORT:-8080}
+    volumes:
+      - ./webapp/.data/dashboard:/app/.data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://127.0.0.1:3000/connexion || exit 1",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  nginx:
+    environment:
+      DASHBOARD_ENABLED: "1"
+    depends_on:
+      dashboard-ssr:
+        condition: service_healthy

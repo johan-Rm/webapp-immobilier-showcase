@@ -43,7 +43,8 @@ RUN if [ "$GD_TARGET" = "showcase-immobilier" ]; then \
       && test -d /opt/app-schemas/webapp; \
     fi
 
-RUN node ./node_modules/nuxt/bin/nuxt.mjs build
+RUN node ./node_modules/nuxt/bin/nuxt.mjs build \
+    && if [ "$GD_TARGET" = "dashboard" ]; then mv dashboard/.output .output; fi
 
 
 # Runtime minimal : le preset Nitro node-server produit un .output autonome,

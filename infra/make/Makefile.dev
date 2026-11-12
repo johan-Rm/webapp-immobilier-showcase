@@ -140,3 +140,19 @@ dev-check-ssr:
 	ssr_address="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) port nginx 80)"; \
 	ssr_layer="$$(docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) exec -T nginx printenv AIDE_LAYER)"; \
 	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}" --layer "$${ssr_layer}"
+
+# Extension SaaS locale : conserve les commandes historiques à deux sites.
+DASHBOARD_COMPOSE := docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) -f infra/docker/docker-compose.dashboard.yml
+.PHONY: dev-dashboard-ssr dev-build-dashboard-ssr dev-check-dashboard-ssr
+
+dev-dashboard-ssr: dev-env
+	$(DASHBOARD_COMPOSE) up $(if $(BUILD),--build) webapp-ssr client2-ssr dashboard-ssr nginx
+
+dev-build-dashboard-ssr:
+	$(DASHBOARD_COMPOSE) build dashboard-ssr
+
+dev-check-dashboard-ssr:
+	@set -eu; \
+	ssr_address="$$( $(DASHBOARD_COMPOSE) port nginx 80 )"; \
+	ssr_layer="$$( $(DASHBOARD_COMPOSE) exec -T nginx printenv AIDE_LAYER )"; \
+	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}" --layer "$${ssr_layer}" --dashboard
