@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée et commitée localement ; à livrer
+- État : validée et commitée localement ; à livrer ; complément implémenté, non commité, à vérifier
 - Chemins autorisés : `webapp/nuxt.config.ts`, `webapp/package.json`, `webapp/bun.lock`, `webapp/tsconfig.json`, `webapp/eslint.config.ts`, `webapp/vitest.config.ts`, `webapp/playwright.config.ts`, `webapp/scripts/build/site.ts`, `webapp/scripts/build/site-targets.vitest.ts`, `webapp/scripts/build/schema-hook.ts`, `webapp/scripts/build/type-check.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : DOM-001 validée, commit `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, vérifié dans Git ; aucune dépendance de consolidation.
@@ -99,3 +99,79 @@ Périmètre vérifié : neuf fichiers validés et cette carte uniquement.
 La présente mise à jour trace seulement le SHA et l’état réel ; OPS-012/013 restent hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
+
+## Complément fonctionnel du 2026-11-12
+
+Même session réelle de création ; reprise de DEM-005, sans consolidation.
+Base `c58af06562e3f0288c99625f5862b2ed28bf4f4d`, `layers/devops`, index vide avant écriture.
+Les changements de cette reprise sont identifiés ; aucun travail étranger consommé.
+
+Activation explicite des seuls handlers `server/api/saas` (méthode et paramètres),
+refus des liens symboliques, maintien des serveurs propres aux autres cibles.
+Le serveur historique n’est jamais activé globalement. Usage : Scripts README.
+Dépendance BFF lue au commit `1e52c1034578636c2a340d936b377d8d83132ef5`.
+
+Snapshot `/tmp/dem005-raccordements` : sources DevOps courantes et seuls amonts
+commités DOM-001, Web `2286109`, BFF `ad729e8`. Quatre tests de composition réussis
+(`GD_TARGET=dashboard node node_modules/vitest/vitest.mjs run scripts/build/site-targets.vitest.ts`),
+dont préparations/types/builds isolés des cibles ; vrai build dashboard réussi.
+Sondes du vrai SSR temporaire : connexion 200, session et worker sans droit 401,
+mutation avec origine étrangère 403, API historiques et thèmes 404. En-têtes privés
+et réponse d’erreur SaaS JSON vérifiés. Logs `/tmp/dem005-raccordements-{composition,build,http}.log`.
+Le serveur temporaire a été arrêté, sans identifiant ni appel Symfony.
+
+Le contrôle de types complet du vrai dashboard échoue dans le transport générique
+WEB-003, désormais confronté aux types de routes réels. Sa correction indépendante
+est réalisée dans la couche Web mais non commitée : pas de copie dans cette couche.
+Ce seul contrôle attend son commit avant reprise ; cette correction OPS-011 n’est
+pas présentée comme entièrement vérifiée. OPS-013 attend également ces commits.
+ESLint/Prettier ciblés et conventions : sortie 0, avertissements historiques conservés.
+
+État présenté : 4 fichiers de réalisation, plus cette carte ;
+manifestes de chemins et SHA-256 : `/tmp/dem005-ops-011-raccordement-manifest.json`.
+Empreinte triée chemin UTF-8, octet nul puis contenu, carte exclue :
+`9c5f51c967d3747631cc1c3f1bba051edd5037518aef410cafd4652c17ba78c0`.
+Aucun commit ni verdict humain créé à cette étape. Les verdicts et commits antérieurs
+restent inchangés et ne valident pas ce complément.
+
+Contrôle documentaire et cadre final : `make aide-check` depuis cette couche,
+111 tests réussis, structure et liens conformes ; `git diff --check` conforme.
+Log `/tmp/dem005-devops-raccordement-aide.log`.
+
+## Vérification du raccordement reprise le 2026-11-12
+
+Même session réelle de création. Reprise sur `layers/devops`, HEAD
+`87702aaeb0fce48c7c03ec1155919a392c81886c`, index vide ; les quatre fichiers
+applicatifs ont conservé exactement l’empreinte du complément ci-dessus.
+
+La correction WEB-003 `ba6db7dc4a73f7df780a947a80c626211482ba63` est désormais
+commitée. Le contrôle de types précédemment bloqué réussit. Snapshot indépendant
+`/tmp/dem005-ops011-final` : HEAD DevOps ci-dessus, DOM-001 `8c1000e`, Web
+`7c95cd6`, BFF `e07ff09`, et seuls les quatre fichiers de ce complément non commités.
+Aucun travail non commité d’une autre couche n’a été consommé.
+
+Contrôles finaux dans le snapshot/webapp :
+
+- `GD_TARGET=dashboard bun --no-env-file run type-check` : sortie 0.
+- Après préparation Nuxt, `GD_TARGET=dashboard node node_modules/vitest/vitest.mjs run` :
+  152 tests réussis, 15 fichiers. Inclut la composition, les builds des cibles de test,
+  la vraie layer dashboard, les contrats BFF et le projecteur.
+- ESLint ciblé avec zéro warning et Prettier sur les quatre fichiers : conformes.
+  Conventions : sortie 0, avertissements historiques de revue manuelle conservés.
+- `make aide-check` depuis DevOps : 111 tests réussis, structure et liens conformes.
+  `git diff --check` conforme. Logs `/tmp/dem005-ops011-final-{types,tests,conventions}.log`
+  et `/tmp/dem005-ops011-final-devops-aide.log`.
+
+Le premier lancement Vitest précédait la génération des fichiers Nuxt : aucun test
+n’avait été exécuté ; seul le résultat final après préparation fait preuve.
+Les sondes SSR précédentes restent applicables au même code de sélection des routes.
+Aucun nouveau code, secret ou fichier `.env` modifié pendant cette reprise des contrôles ;
+aucune API réelle contactée. Complément désormais prêt à vérifier, sans commit ni verdict.
+OPS-013 attend son commit validé avant de consommer ce raccordement.
+
+## Verdict humain — complément du raccordement
+
+Validation explicite du 2026-11-12 : « validé », limitée au complément OPS-011
+et à la correction documentaire WEB-005 présentés, avec leurs limites sur fixtures.
+Empreintes revérifiées identiques avant indexation ; aucune modification fonctionnelle
+depuis la restitution. OPS-013 n’est pas couverte par ce verdict.

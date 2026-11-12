@@ -14,7 +14,7 @@ import { dirname, join, resolve } from 'node:path'
 
 import { afterEach, expect, it } from 'vitest'
 
-import { siteTypeScriptPaths } from './site'
+import { dashboardApiHandlers, siteTypeScriptPaths } from './site'
 
 const roots: string[] = []
 afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })))
@@ -43,6 +43,14 @@ it('compose les sites et le dashboard avec des sources, types et sorties isolés
     "export default defineNuxtConfig({ srcDir: '.', components: [{path: './components', pathPrefix: true}] })",
   )
   file('base/real-estate/components/screen/Probe.vue', '<template><div>Catalogue</div></template>')
+  file(
+    'server/api/saas/auth/session.get.ts',
+    'export default defineEventHandler(() => ({authenticated:false}))',
+  )
+  file(
+    'server/api/saas/projects/[projectId]/index.get.ts',
+    "export default defineEventHandler(event => ({id: getRouterParam(event,'projectId')}))",
+  )
   file('server/api/showcase.get.ts', "export default defineEventHandler(() => 'showcase')")
   for (const id of ['showcase-immobilier', 'client2-immobilier']) {
     file(`sites/${id}/site.ts`, `export default { id: '${id}', name: '${id}' }`)
@@ -101,6 +109,7 @@ it('compose les sites et le dashboard avec des sources, types et sorties isolés
     const routes = readFileSync(join(root, buildDir, 'types/nitro-routes.d.ts'), 'utf8')
     const tsconfig = readFileSync(join(root, buildDir, 'tsconfig.json'), 'utf8')
     expect(components.includes('ScreenProbe:')).toBe(id === 'showcase-immobilier')
+    expect(routes.includes('/api/saas/auth/session')).toBe(id !== 'client2-immobilier')
     expect(routes.includes('/api/showcase')).toBe(id === 'showcase-immobilier')
     if (id !== 'dashboard') expect(tsconfig).toContain(`sites/${id}/app`)
     if (id === 'dashboard') {
@@ -200,4 +209,24 @@ it('génère les alias du dashboard sans répertoire sites/dashboard', () => {
   expect(paths['@locales/*']).toEqual(['../../dashboard/i18n/locales/*'])
   expect(JSON.stringify(paths)).not.toContain('sites/')
   expect(() => siteTypeScriptPaths('../dashboard')).toThrow()
+})
+
+it('sélectionne les routes et méthodes SaaS sans exposer les fichiers ou API voisins', () => {
+  const root = mkdtempSync(join(tmpdir(), 'dashboard-handlers-'))
+  roots.push(root)
+  mkdirSync(join(root, 'server/api/saas/projects/[projectId]'), { recursive: true })
+  writeFileSync(join(root, 'server/api/saas/projects/[projectId]/index.get.ts'), '')
+  writeFileSync(join(root, 'server/api/saas/projects/[projectId]/[articleId].put.ts'), '')
+  writeFileSync(join(root, 'server/api/saas/projects/helper.ts'), '')
+  mkdirSync(join(root, 'server/api/dashboard'))
+  writeFileSync(join(root, 'server/api/dashboard/leak.get.ts'), '')
+  expect(dashboardApiHandlers(root).map(({ route, method }) => ({ route, method }))).toEqual([
+    { route: '/api/saas/projects/:projectId', method: 'get' },
+    { route: '/api/saas/projects/:projectId/:articleId', method: 'put' },
+  ])
+  symlinkSync(
+    join(root, 'server/api/dashboard/leak.get.ts'),
+    join(root, 'server/api/saas/leak.get.ts'),
+  )
+  expect(() => dashboardApiHandlers(root)).toThrow('symbolique')
 })
