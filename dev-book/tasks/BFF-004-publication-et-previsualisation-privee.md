@@ -8,7 +8,7 @@
 - Branche : layers/bff
 - Worktree : worktree/bff
 - Base locale vérifiée : `44fd37be45cce98aedff7311d539adebbf36bac2` ; aucun fetch.
-- État : adaptateurs validés techniquement ; commit local en attente ; intégration réelle différée
+- État : adaptateurs validés techniquement et commités localement ; à livrer ; intégration réelle différée
 - Chemins autorisés : `webapp/server/api/saas/projects/`, `webapp/server/utils/saas/publication/`, `webapp/server/utils/saas/preview/`, `webapp/server/tests/saas-publication.vitest.ts`, cette carte
 - Dépendances de réalisation : BFF-003, DOM-001 ; snapshots et projection orchestrés côté Nuxt
 - Commits vérifiés : BFF-003 `88ce086914fd34efe006535a5c5f68f1c0a3d6fa`, trace `44fd37be45cce98aedff7311d539adebbf36bac2` ; DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`.
@@ -178,6 +178,8 @@ Branche `layers/bff`, HEAD de base indiqué plus haut, index vide avant prépara
 
 ## Commits
 
-Commit local autorisé par le verdict technique ci-dessus ; SHA à relever après création.
+Implémentation et verdict : `1e52c1034578636c2a340d936b377d8d83132ef5`.
+Le présent complément documentaire relève ce SHA, sans changement fonctionnel.
+Les limites indiquées plus haut restent ouvertes. Aucun push, PR ou merge effectué.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
