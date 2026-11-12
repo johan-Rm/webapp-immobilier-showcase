@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` ; aucun fetch.
-- État : service/vhost validé et commité localement ; projection implémentée, non commitée, à vérifier ; intégration réelle à vérifier dans OPS-013
+- État : service/vhost et projection validés et commités localement, à livrer ; intégration réelle à vérifier dans OPS-013
 - Chemins autorisés : `infra/docker/`, `infra/nginx/`, `infra/make/Makefile.dev`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/`, `webapp/scripts/saas/`, `webapp/scripts/content-sync.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, WEB-004 `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` pour le service ; BFF-004 `1e52c1034578636c2a340d936b377d8d83132ef5` pour export/projection
 - Commits nécessaires : commits identifiés ci-dessus ; API Symfony existante inchangée, aucun commit backend requis.
@@ -167,3 +167,7 @@ limites : fixtures seulement, lecteur public et parcours réel encore à intégr
 Les 14 fichiers applicatifs correspondent à l’empreinte ci-dessus avant indexation ;
 branche et index vérifiés. Ce verdict autorise le commit local de ce complément,
 sans valider DEM-005 entière ni les travaux fonctionnels restant ouverts.
+
+Commit local de la projection validée : `9e9be7517117eff97fbc7974e3e7a60fc13a921b`.
+Cette trace complète le verdict sans changement fonctionnel. OPS-013 reste hors index ;
+aucun push, PR, fusion ni démarrage de l’étape suivante.
