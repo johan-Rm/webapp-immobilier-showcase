@@ -3,12 +3,12 @@ import type { nativeArticleSchema } from '../utils/saas/articles/model'
 import type { AddressInfo } from 'node:net'
 import type { z } from 'zod'
 
-import { mkdtemp, rm } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-import { createApp, createRouter, toNodeListener } from 'h3'
+import { createApp, createRouter, toNodeListener, createError } from 'h3'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import login from '../api/saas/auth/login.post'
@@ -22,6 +22,8 @@ import categoryList from '../api/saas/projects/[projectId]/categories/index.get'
 import categoryCreate from '../api/saas/projects/[projectId]/categories/index.post'
 import mediaList from '../api/saas/projects/[projectId]/media/index.get'
 import mediaUpload from '../api/saas/projects/[projectId]/media/index.post'
+import * as publicationStore from '../utils/saas/publication/store'
+import { loadPublicationJournal, savePublicationJournal } from '../utils/saas/publication/store'
 
 import { saasArticleSchema } from '#shared/schemas'
 
@@ -160,7 +162,11 @@ afterAll(async () => {
     server.close((error) => (error ? reject(error) : resolve())),
   )
 })
+let publicationDirectory = ''
 beforeEach(async () => {
+  await mkdir(join(process.cwd(), '.tmp'), { recursive: true })
+  publicationDirectory = await mkdtemp(join(process.cwd(), '.tmp/saas-category-'))
+  vi.stubEnv('SAAS_PUBLICATION_DIR', publicationDirectory)
   directory = await mkdtemp(join(tmpdir(), 'saas-editor-'))
   vi.stubEnv('SAAS_ORIGIN', 'http://dashboard.test')
   vi.stubEnv('SYMFONY_API_URL', 'http://symfony.test')
@@ -339,9 +345,11 @@ beforeEach(async () => {
   upstream.mockClear()
 })
 afterEach(async () => {
+  vi.restoreAllMocks()
   vi.unstubAllGlobals()
   vi.unstubAllEnvs()
   await rm(directory, { recursive: true, force: true })
+  await rm(publicationDirectory, { recursive: true, force: true })
 })
 
 describe('BFF édition — routes H3 et API native simulée', () => {
@@ -665,4 +673,120 @@ describe('BFF édition — routes H3 et API native simulée', () => {
     articles.get(articleId)!.project = foreignProject
     expect((await call(path('/articles/' + articleId))).status).toBe(502)
   })
+})
+
+it('propage une catégorie partagée sans publier le brouillon, conserve la dépublication et reprend sans nouvelle écriture native', async () => {
+  categories.get(categoryId)!.translations.push({ locale: 'en', label: 'Travel', text: 'Travel' })
+  const journal = await loadPublicationJournal(projectId)
+  const makeJob = (id: string, locale: 'fr' | 'en', generation: number, unpublished = false) => ({
+    id,
+    owner: 'b'.repeat(64),
+    fingerprint: 'fixture',
+    command: {
+      projectId,
+      articleId,
+      locale,
+      action: unpublished ? ('unpublish' as const) : ('publish' as const),
+      expectedRevision: 'fixture',
+    },
+    generation,
+    phase: 'applied' as const,
+    snapshot: unpublished
+      ? null
+      : {
+          snapshotId: articleId,
+          revision: 'fixture',
+          publishedAt: '2026-11-12T10:00:00.000Z',
+          categoryIds: [categoryId],
+          translation: {
+            locale,
+            headline: 'Version publiée',
+            slug: 'version-publiee',
+            summary: '',
+            primaryImage: null,
+            metaTitle: 'SEO publié',
+            metaDescription: '',
+            content: { schemaVersion: 1 as const, blocks: [] },
+          },
+        },
+    previousSnapshotId: null,
+    categories: unpublished
+      ? []
+      : [{ id: categoryId, label: locale === 'en' ? 'Travel' : 'Voyage' }],
+    assets: [],
+    result: { revision: 'fixture', publishedSnapshotId: unpublished ? null : articleId },
+    error: null,
+  })
+  const fr = '1'.repeat(64),
+    en = '2'.repeat(64),
+    removed = '3'.repeat(64)
+  journal.jobs[fr] = makeJob(fr, 'fr', 1)
+  journal.jobs[en] = makeJob(en, 'en', 2)
+  journal.jobs[removed] = makeJob(removed, 'en', 3, true)
+  const pending = '4'.repeat(64)
+  journal.jobs[pending] = { ...makeJob(pending, 'fr', 4), phase: 'uncertain', result: null }
+  journal.jobs[pending]!.snapshot!.translation.headline = 'Brouillon non confirmé'
+  journal.generation = 4
+  journal.appliedGeneration = 3
+  await savePublicationJournal(journal)
+  const category = (await call(path('/categories'))).body.items.find(
+    (c: { id: string }) => c.id === categoryId,
+  )
+  const result = await call(path('/categories/' + categoryId), {
+    method: 'PUT',
+    revision: category.revision,
+    body: { labels: { fr: 'Nouvelle catégorie' } },
+  })
+  expect(result.status).toBe(200)
+  const updated = await loadPublicationJournal(projectId)
+  expect(updated.generation).toBe(5)
+  expect(updated.appliedGeneration).toBe(3)
+  expect(updated.jobs[fr]?.categories[0]?.label).toBe('Nouvelle catégorie')
+  expect(updated.jobs[fr]?.snapshot?.translation.headline).toBe('Version publiée')
+  expect(updated.jobs[fr]?.phase).toBe('queued')
+  expect(updated.jobs[pending]?.categories[0]?.label).toBe('Nouvelle catégorie')
+  expect(updated.jobs[pending]?.phase).toBe('uncertain')
+  expect(updated.jobs[pending]?.result).toBeNull()
+  expect(updated.jobs[removed]?.snapshot).toBeNull()
+  expect(updated.jobs[en]?.generation).toBe(2)
+  const writesBefore = upstream.mock.calls.filter(([, options]) => options?.method === 'PUT').length
+  const retried = await call(path('/categories/' + categoryId), {
+    method: 'PUT',
+    revision: category.revision,
+    body: { labels: { fr: 'Nouvelle catégorie' } },
+  })
+  expect(retried.status).toBe(200)
+  expect((await loadPublicationJournal(projectId)).generation).toBe(5)
+  expect(upstream.mock.calls.filter(([, options]) => options?.method === 'PUT')).toHaveLength(
+    writesBefore,
+  )
+})
+
+it('reprend une catégorie native déjà modifiée lorsque la journalisation échoue, sans réécrire Symfony', async () => {
+  const category = (await call(path('/categories'))).body.items.find(
+    (c: { id: string }) => c.id === categoryId,
+  )
+  const failed = vi
+    .spyOn(publicationStore, 'loadPublicationJournal')
+    .mockRejectedValueOnce(
+      createError({ statusCode: 503, statusMessage: 'publication_storage_unavailable' }),
+    )
+  const result = await call(path('/categories/' + categoryId), {
+    method: 'PUT',
+    revision: category.revision,
+    body: { labels: { fr: 'Étiquette confirmée' } },
+  })
+  expect(result.status).toBe(503)
+  failed.mockRestore()
+  const writes = upstream.mock.calls.filter(([, options]) => options?.method === 'PUT').length
+  const retry = await call(path('/categories/' + categoryId), {
+    method: 'PUT',
+    revision: category.revision,
+    body: { labels: { fr: 'Étiquette confirmée' } },
+  })
+  expect(retry.status).toBe(200)
+  expect(retry.body.labels.fr).toBe('Étiquette confirmée')
+  expect(upstream.mock.calls.filter(([, options]) => options?.method === 'PUT')).toHaveLength(
+    writes,
+  )
 })
