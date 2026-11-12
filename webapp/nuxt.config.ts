@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path'
 import { createJiti } from 'jiti'
 
 import { runSchemaHook } from './scripts/build/schema-hook'
-import { writeSiteTypeScriptConfig } from './scripts/build/site'
+import { dashboardApiHandlers, writeSiteTypeScriptConfig } from './scripts/build/site'
 import { resolveApplicationTarget } from './shared/site/registry'
 
 const target = resolveApplicationTarget(process.env.GD_TARGET)
@@ -61,6 +61,8 @@ export default defineNuxtConfig({
   },
   nitro: {
     alias: { '#site': join(siteRoot, 'site.ts') },
-    ...(target.kind === 'dashboard' ? { output: { dir: join(siteRoot, '.output') } } : {}),
+    ...(target.kind === 'dashboard'
+      ? { output: { dir: join(siteRoot, '.output') }, handlers: dashboardApiHandlers(__dirname) }
+      : {}),
   },
 })

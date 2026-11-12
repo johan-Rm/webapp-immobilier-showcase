@@ -25,8 +25,10 @@ La composition accepte aussi `GD_TARGET=dashboard` : la layer `dashboard/` doit 
 `dashboard/.output` restent distinctes des sites. `GD_TARGET=dashboard bun run type-check`
 sélectionne les types préparés de cette cible ; `bun run build` utilise la même variable.
 La cible se fixe à la construction, jamais selon Host. Le hook génère également le DTO Article.
-Les routes serveur historiques de Showcase ne sont pas activées pour le dashboard ; les seules
-routes SaaS à activer explicitement relèvent des cartes BFF et de la configuration de sa layer.
+Le dashboard active explicitement les seuls handlers `server/api/saas/**/*.METHOD.ts`
+avec leurs méthodes et paramètres ; ni routes historiques Showcase ni plugins serveur globaux.
+Une source SaaS absente ou symbolique fait échouer sa préparation. Les sites conservent leurs
+répertoires serveur ; ce raccordement ne dépend jamais de Host.
 
 ## Projection publiée SaaS — Client 2
 
