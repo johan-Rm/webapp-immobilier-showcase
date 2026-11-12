@@ -50,7 +50,7 @@ export const useDashboardAccess = () => {
     options: Parameters<typeof $fetch>[1] = {},
   ): Promise<T> => {
     try {
-      return await $fetch<T>(`/api/saas${path}`, { ...options, credentials: 'same-origin' })
+      return await $fetch<T, string>(`/api/saas${path}`, { ...options, credentials: 'same-origin' })
     } catch (error) {
       if ((error as { statusCode?: number }).statusCode === 401 && path !== '/auth/login') {
         reset()

@@ -18,7 +18,7 @@ it('prépare la vraie layer dashboard sans charger Showcase ni ses routes métie
   const root = mkdtempSync(join(tmpdir(), 'dashboard-layer-'))
   try {
     symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
-    for (const folder of ['shared', 'services', 'schemas/source', 'dashboard']) {
+    for (const folder of ['shared', 'services', 'schemas/source', 'dashboard', 'server']) {
       cpSync(join(webapp, folder), join(root, folder), {
         recursive: true,
         filter: (source) => !['.nuxt', '.output', 'node_modules'].includes(basename(source)),
