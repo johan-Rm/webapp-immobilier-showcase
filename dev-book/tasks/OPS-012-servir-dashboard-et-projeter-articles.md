@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` ; aucun fetch.
-- État : service/vhost et projection validés et commités localement, à livrer ; intégration réelle à vérifier dans OPS-013 ; correction implémentée, non commitée, à vérifier
+- État : service/vhost et projection validés et commités localement, à livrer ; intégration réelle à vérifier dans OPS-013 ; complément validé et commité localement, à livrer
 - Chemins autorisés : `infra/docker/`, `infra/nginx/`, `infra/make/Makefile.dev`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/`, `webapp/scripts/saas/`, `webapp/scripts/content-sync.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, WEB-004 `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` pour le service ; BFF-004 `1e52c1034578636c2a340d936b377d8d83132ef5` pour export/projection
 - Commits nécessaires : commits identifiés ci-dessus ; API Symfony existante inchangée, aucun commit backend requis.
@@ -203,3 +203,7 @@ Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléme
 WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
 correspondent aux empreintes présentées avant indexation ; aucune correction
 fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.
+
+Commit local du complément validé : `dfef16a468116ae8b1dec27d38ec643f50d66fd2`.
+Cette trace ne modifie aucune fonctionnalité ; les autres compléments restent
+hors de ce commit. Aucun push, PR, fusion ou passage automatique à l’étape suivante.
