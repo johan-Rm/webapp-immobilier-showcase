@@ -8,7 +8,7 @@
 - Branche : layers/bff
 - Worktree : worktree/bff
 - Base locale vérifiée : `d0ca9571b98e66ef6fc6218c51710696cd82ed78` ; aucun fetch.
-- État : validée et commitée localement ; reste à livrer ; correction implémentée, non commitée, à vérifier
+- État : validée et commitée localement ; reste à livrer ; complément validé et commité localement, à livrer
 - Chemins autorisés : `webapp/server/api/saas/projects/`, `webapp/server/utils/saas/articles/`, `webapp/server/utils/saas/media/`, `webapp/server/utils/saas/categories/`, `webapp/server/tests/saas-editor.vitest.ts`, cette carte
 - Dépendances de réalisation : DOM-001, BFF-002 ; API Symfony existante inchangée
 - Commits vérifiés : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929` ; BFF-002 `e9b922ac3be8d1106b812e665264e5988194f6c7`, trace `d0ca9571b98e66ef6fc6218c51710696cd82ed78`.
@@ -200,3 +200,7 @@ Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléme
 WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
 correspondent aux empreintes présentées avant indexation ; aucune correction
 fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.
+
+Commit local du complément validé : `f453e142889223a1a3d8dd4815cce17f8c11a039`.
+Cette trace ne modifie aucune fonctionnalité ; les autres compléments restent
+hors de ce commit. Aucun push, PR, fusion ou passage automatique à l’étape suivante.
