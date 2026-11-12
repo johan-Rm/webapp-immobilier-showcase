@@ -8,7 +8,7 @@
 - Branche : layers/bff
 - Worktree : worktree/bff
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : périmètre partiel validé ; commit local en attente
+- État : périmètre partiel validé et commité localement ; reste à livrer
 - Chemins autorisés : `webapp/server/api/saas/auth/`, `webapp/server/api/saas/organizations/`, `webapp/server/api/saas/projects/`, `webapp/server/utils/saas/auth/`, `webapp/server/tests/saas-auth.vitest.ts`, cette carte
 - Dépendances de réalisation : DOM-001 ; API Symfony existante inchangée, sans livraison backend
 - Commits vérifiés : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, preuve `3af26ccc0bda0781928f3ef68f8682994549c637`. API consultée en lecture seule à `9fed427658d9c0983b5982a6e6922d179a6bf4eb`.
@@ -126,6 +126,8 @@ avant préparation du commit ; cartes BFF-003/004 exclues du commit.
 
 ## Commits
 
-Commit local autorisé par le verdict partiel ci-dessus ; SHA à relever après sa création.
+Implémentation et verdict partiel : `e9b922ac3be8d1106b812e665264e5988194f6c7`.
+Le présent complément documentaire relève ce SHA ; aucun changement fonctionnel ajouté.
+Les limites indiquées plus haut restent ouvertes. Aucun push, PR ou merge effectué.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
