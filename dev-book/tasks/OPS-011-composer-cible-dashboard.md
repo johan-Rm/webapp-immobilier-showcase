@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée humainement ; commit local en préparation, à livrer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `webapp/nuxt.config.ts`, `webapp/package.json`, `webapp/bun.lock`, `webapp/tsconfig.json`, `webapp/eslint.config.ts`, `webapp/vitest.config.ts`, `webapp/playwright.config.ts`, `webapp/scripts/build/site.ts`, `webapp/scripts/build/site-targets.vitest.ts`, `webapp/scripts/build/schema-hook.ts`, `webapp/scripts/build/type-check.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : DOM-001 validée, commit `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, vérifié dans Git ; aucune dépendance de consolidation.
@@ -94,7 +94,8 @@ Aucune autre carte ni évolution Symfony n’est couverte par ce verdict.
 
 ## Commits
 
-Commit local autorisé par le verdict ci-dessus ; SHA réel à relever après réussite.
-Indexer uniquement les neuf fichiers validés et cette carte ; OPS-012/013 restent hors index.
+Commit local réalisé : `f3664dd5a92a2202a285f3e04de9ba13ebf72863`.
+Périmètre vérifié : neuf fichiers validés et cette carte uniquement.
+La présente mise à jour trace seulement le SHA et l’état réel ; OPS-012/013 restent hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
