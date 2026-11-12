@@ -8,7 +8,7 @@
 - Branche : layers/web
 - Worktree : worktree/web
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée par l’humain ; commit local à effectuer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `webapp/dashboard/`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/layers/dashboard.vitest.ts`, cette carte
 - Dépendances de réalisation : OPS-010 `5eee4c05ad298775d509a1469b5642a1517699df`, OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : commits de contrat, composition et Domaine identifiés ci-dessus ; aucun fichier non commité consommé.
@@ -91,6 +91,7 @@ Empreinte des 26 fichiers revérifiée identique avant commit ; aucune correctio
 
 ## Commits
 
-Validation acquise ; commit local autorisé et à effectuer.
+Commit d’implémentation validée : `f3398f8cc12474640737887b77e16d0ca7afe90d`.
+Complément documentaire limité à la trace du SHA et de l’état ; WEB-004/005 hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
