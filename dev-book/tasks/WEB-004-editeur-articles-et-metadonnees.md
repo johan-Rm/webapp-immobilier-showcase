@@ -8,7 +8,7 @@
 - Branche : layers/web
 - Worktree : worktree/web
 - Base locale vérifiée : `8c505c07feba753df7aff7d394e0b8f9a6d93e32` ; aucun fetch.
-- État : validée par l’humain ; commit local à effectuer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `webapp/dashboard/app/`, `webapp/dashboard/i18n/`, `webapp/tests/e2e/saas-editor.spec.ts`, adaptation du menu dans `webapp/tests/e2e/saas-access.spec.ts`, cette carte
 - Dépendances de réalisation : WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, OPS-010 `5eee4c05ad298775d509a1469b5642a1517699df`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`
 - Commits nécessaires : commits identifiés ci-dessus ; BFF-003/004 nécessaires aux preuves réelles, pas à la construction UI sur le contrat validé.
@@ -105,6 +105,7 @@ Empreinte des 16 fichiers applicatifs/tests revérifiée identique avant commit 
 
 ## Commits
 
-Validation acquise ; commit local autorisé et à effectuer.
+Commit d’implémentation validée : `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608`.
+Complément documentaire limité à la trace du SHA et de l’état ; WEB-005 préservée hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
