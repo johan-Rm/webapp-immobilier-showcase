@@ -2,25 +2,30 @@ import { fileURLToPath } from 'node:url'
 
 import { configDefaults, defineConfig } from 'vitest/config'
 
-import { resolveSiteId } from './shared/site/registry.ts'
+import { resolveApplicationTarget } from './shared/site/registry.ts'
 
 const resolvePath = (path: string): string => fileURLToPath(new URL(path, import.meta.url))
+const target = resolveApplicationTarget(process.env.GD_TARGET)
+const app = `./${target.root}/app`
 
 export default defineConfig({
   resolve: {
     alias: {
-      '#site': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/site.ts`),
+      '#site': resolvePath(`./${target.root}/site.ts`),
       '#shared': resolvePath('./shared'),
       '#shared/': `${resolvePath('./shared')}/`,
       '@schemas': resolvePath('./schemas'),
       '@schemas/': `${resolvePath('./schemas')}/`,
       '@services': resolvePath('./services'),
       '@services/': `${resolvePath('./services')}/`,
-      '@': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`),
-      '@utils': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app/utils`),
-      '@site-assets': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app/assets`),
-      '~': resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`),
-      '~/': `${resolvePath(`./sites/${resolveSiteId(process.env.GD_TARGET)}/app`)}/`,
+      '@locales': resolvePath(
+        target.kind === 'dashboard' ? './dashboard/i18n/locales' : './i18n/locales',
+      ),
+      '@': resolvePath(app),
+      '@utils': resolvePath(`${app}/utils`),
+      '@site-assets': resolvePath(`${app}/assets`),
+      '~': resolvePath(app),
+      '~/': `${resolvePath(app)}/`,
     },
   },
   test: {
@@ -31,10 +36,9 @@ export default defineConfig({
       'services/**/*.vitest.ts',
       'shared/**/*.vitest.ts',
       'tests/**/*.vitest.ts',
-      `sites/${resolveSiteId(process.env.GD_TARGET)}/**/*.vitest.ts`,
-      ...(resolveSiteId(process.env.GD_TARGET) === 'showcase-immobilier'
-        ? ['server/**/*.vitest.ts']
-        : []),
+      `${target.root}/**/*.vitest.ts`,
+      ...(target.id === 'showcase-immobilier' ? ['server/**/*.vitest.ts'] : []),
+      ...(target.kind === 'dashboard' ? ['server/tests/saas-*.vitest.ts'] : []),
     ],
   },
 })

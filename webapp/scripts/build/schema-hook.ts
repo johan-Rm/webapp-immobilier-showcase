@@ -42,7 +42,7 @@ const SCHEMAS = [
  * Le périmètre DTO est volontairement réduit : seuls les contrats utilisés
  * comme frontières de transformation sont produits avec le suffixe `Dto`.
  */
-const DTOS = ['Accommodation', 'WebPage'] as const
+const DTOS = ['Accommodation', 'WebPage', 'Article'] as const
 
 /**
  * Signature du hook Nuxt `build:before`.

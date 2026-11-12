@@ -7,10 +7,11 @@ import { createJiti } from 'jiti'
 
 import { runSchemaHook } from './scripts/build/schema-hook'
 import { writeSiteTypeScriptConfig } from './scripts/build/site'
-import { resolveSiteId } from './shared/site/registry'
+import { resolveApplicationTarget } from './shared/site/registry'
 
-const siteId = resolveSiteId(process.env.GD_TARGET)
-const siteRoot = resolve(__dirname, 'sites', siteId)
+const target = resolveApplicationTarget(process.env.GD_TARGET)
+const siteId = target.id
+const siteRoot = resolve(__dirname, target.root)
 if (!existsSync(join(siteRoot, 'nuxt.config.ts')) || !existsSync(join(siteRoot, 'site.ts'))) {
   throw new Error(`[site] Client inconnu : ${siteId}`)
 }
@@ -24,6 +25,10 @@ if (site.id !== siteId || !site.name?.trim()) {
 export default defineNuxtConfig({
   srcDir: join(siteRoot, 'app'),
   extends: [siteRoot],
+  // Dashboard build artifacts never overwrite a site's .nuxt or .output.
+  ...(target.kind === 'dashboard'
+    ? { buildDir: join(siteRoot, '.nuxt'), serverDir: join(siteRoot, 'server') }
+    : {}),
   compatibilityDate: '2025-07-15',
   ssr: true,
   devtools: { enabled: false },
@@ -37,7 +42,10 @@ export default defineNuxtConfig({
     '#site': join(siteRoot, 'site.ts'),
     '@schemas': resolve(__dirname, 'schemas'),
     '@services': resolve(__dirname, 'services'),
-    '@locales': resolve(__dirname, 'i18n/locales'),
+    '@locales':
+      target.kind === 'dashboard'
+        ? join(siteRoot, 'i18n/locales')
+        : resolve(__dirname, 'i18n/locales'),
     ...(process.env.DIGITAL_ORCHESTRATION_CORE_PATH?.trim()
       ? { '@DigitalOrchestrationCore': resolve(process.env.DIGITAL_ORCHESTRATION_CORE_PATH.trim()) }
       : {}),
@@ -45,10 +53,14 @@ export default defineNuxtConfig({
   hooks: {
     'prepare:types': async () => {
       await runSchemaHook()
-      await writeSiteTypeScriptConfig(resolve(__dirname, '.nuxt'), siteId)
+      await writeSiteTypeScriptConfig(
+        target.kind === 'dashboard' ? join(siteRoot, '.nuxt') : resolve(__dirname, '.nuxt'),
+        siteId,
+      )
     },
   },
   nitro: {
     alias: { '#site': join(siteRoot, 'site.ts') },
+    ...(target.kind === 'dashboard' ? { output: { dir: join(siteRoot, '.output') } } : {}),
   },
 })

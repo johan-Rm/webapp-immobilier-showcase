@@ -1,6 +1,8 @@
 import { cp, mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
+import { resolveApplicationTarget } from '../../shared/site/registry'
+
 /** Embarque uniquement le contenu et le thème du client construit. */
 export const packageSite = async (
   source: string,
@@ -15,24 +17,32 @@ export const packageSite = async (
 }
 
 /** Conserve la politique d'alias historique, avec la source du client actif. */
-export const siteTypeScriptPaths = (id: string): Record<string, string[]> => ({
-  '#imports': ['./imports'],
-  '#imports/*': ['./imports/*'],
-  '#components': ['./components'],
-  '@schemas/dtos': ['../schemas/dtos'],
-  '@schemas/dtos/*': ['../schemas/dtos/*'],
-  '@schemas/interfaces': ['../schemas/interfaces'],
-  '@schemas/interfaces/*': ['../schemas/interfaces/*'],
-  '~/*': [`../sites/${id}/app/*`],
-  '@/*': [`../sites/${id}/app/*`],
-  '@utils/*': [`../sites/${id}/app/utils/*`],
-  '@locales/*': ['../i18n/locales/*'],
-  '#shared': ['../shared'],
-  '#shared/*': ['../shared/*'],
-  '@schemas/*': ['../schemas/*'],
-  '@services/*': ['../services/*'],
-  '#site': ['../shared/site/definition.d.ts'],
-})
+export const siteTypeScriptPaths = (id: string): Record<string, string[]> => {
+  const target = resolveApplicationTarget(id)
+  const root = target.kind === 'dashboard' ? '../..' : '..'
+  const app = `${root}/${target.root}/app`
+  return {
+    '#imports': ['./imports'],
+    '#imports/*': ['./imports/*'],
+    '#components': ['./components'],
+    '@schemas/dtos': [`${root}/schemas/dtos`],
+    '@schemas/dtos/*': [`${root}/schemas/dtos/*`],
+    '@schemas/interfaces': [`${root}/schemas/interfaces`],
+    '@schemas/interfaces/*': [`${root}/schemas/interfaces/*`],
+    '~/*': [`${app}/*`],
+    '@/*': [`${app}/*`],
+    '@utils/*': [`${app}/utils/*`],
+    '@site-assets/*': [`${app}/assets/*`],
+    '@locales/*': [
+      target.kind === 'dashboard' ? `${root}/dashboard/i18n/locales/*` : `${root}/i18n/locales/*`,
+    ],
+    '#shared': [`${root}/shared`],
+    '#shared/*': [`${root}/shared/*`],
+    '@schemas/*': [`${root}/schemas/*`],
+    '@services/*': [`${root}/services/*`],
+    '#site': [`${root}/shared/site/definition.d.ts`],
+  }
+}
 
 export const writeSiteTypeScriptConfig = async (buildDir: string, id: string): Promise<void> => {
   await mkdir(buildDir, { recursive: true })
