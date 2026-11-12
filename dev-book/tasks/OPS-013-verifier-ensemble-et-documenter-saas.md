@@ -6,7 +6,7 @@
 - Session de création et de reprise : 01a1ca56-891a-7700-97c6-a576d3d9a615
 - Couche : devops ; branche : layers/devops ; worktree : worktree/devops
 - Base locale de reprise : `37f3bae6a09fcf98244173e4f5a2a26900b16a0c` ; aucun fetch.
-- État : validée humainement sur fixtures ; commit local à créer ; recette Symfony réelle différée sur instruction humaine
+- État : validée et commitée localement sur fixtures ; recette Symfony réelle différée sur instruction humaine
 - Chemins autorisés : `docs/2.architecture/14.site-layers.md`, `docs/3.application/dashboard-saas-contrats.md`, `docs/1.getting-started/dashboard-saas.md`, `docs/index.md`, `docs/3.application/bff-dashboard-symfony.md`, cette carte
 - Dépendances de réalisation : OPS-010, OPS-011, OPS-012, DOM-001, BFF-002, BFF-003, BFF-004, WEB-003, WEB-004, WEB-005 ; versions et compléments validés disponibles dans les HEAD ci-dessous.
 - Dépendances de vérification globale : aucune autre carte ; aucun commit Symfony attendu.
@@ -117,7 +117,8 @@ de cette trace ; aucun changement fonctionnel depuis la présentation.
 
 ## Commits
 
-Validation humaine acquise ; commit local de cette carte en cours, SHA à consigner
-après création effective. Aucun push, PR ou merge autorisé par cette validation.
+Commit local de la carte et de ses cinq documents, après validation explicite :
+`a1beeacbe7454523012d177a61f9a4525bf49079`. Cette mise à jour consigne uniquement
+le SHA effectivement créé et l’état associé. Aucun push, PR ou merge.
 Reconstitution ultérieure seulement dans le principal libre et propre, sur
 `demands/DEM-005` depuis develop local vérifié.
