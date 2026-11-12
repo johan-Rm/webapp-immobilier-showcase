@@ -4,7 +4,7 @@
 - Conventions : [dev-book](../../dev-book/README.md).
 - Session de création : 01a1ca56-891a-7700-97c6-a576d3d9a615
 - Date : 2026-11-11
-- État : reconstituée localement sur `demands/DEM-005` ; périmètres validés seulement, recette Symfony réelle différée ; messages de six commits à régulariser avant livraison
+- État : reconstituée localement sur `demands/DEM-005` ; périmètres validés seulement, recette Symfony réelle différée ; six messages régularisés sur autorisation explicite ; contrôles locaux terminés, intégration distante à effectuer
 - Confirmation humaine : « oui », après restitution du cadrage dans cette session.
 - Identifiant réservé : DEM-005 ; aucun fetch effectué pour cette attribution.
 
@@ -29,13 +29,13 @@ et sélectionner l’organisation puis le projet actif.
 Interface française sobre avec Nuxt UI, adaptée au mobile, indépendante des identités clientes.
 Conserver le menu complet ci-dessous et signaler clairement les fonctions indisponibles.
 
-| Rubrique | Entrées |
-| --- | --- |
-| Contenus | Pages, Articles, Séjours, Landing Pages, Composants du site |
-| Médiathèque | Images, Vidéos, Documents, Icônes |
-| Formulaires | Contact, Product |
-| CRM et commerce | Personnes, Commandes, Codes promo, Tarifs |
-| Administration | Administrateurs, Organisation, Réseaux sociaux |
+| Rubrique        | Entrées                                                     |
+| --------------- | ----------------------------------------------------------- |
+| Contenus        | Pages, Articles, Séjours, Landing Pages, Composants du site |
+| Médiathèque     | Images, Vidéos, Documents, Icônes                           |
+| Formulaires     | Contact, Product                                            |
+| CRM et commerce | Personnes, Commandes, Codes promo, Tarifs                   |
+| Administration  | Administrateurs, Organisation, Réseaux sociaux              |
 
 Composants du site est une entité principale : Logo, Footer, Newsletter, Séjours,
 Avis clients, Intro, Traductions. Le composant Séjours et les fiches de séjours
@@ -146,18 +146,18 @@ commit, push, PR ou livraison réalisés à cette étape.
 Les chemins PHP ci-dessous sont relatifs au backend identifié ; les preuves portent
 sur ses sources locales, pas sur une API déployée ni sur des tests exécutés.
 
-| Besoin | Source observée | Écart à traiter |
-| --- | --- | --- |
-| Articles par projet, CRUD et traductions | `src/Entity/Article.php`, `ArticleTranslation.php` | API existante ; DTO webapp obsolète à réaligner |
-| Titre, slug, corps par langue | `ArticleTranslation.php` : `headline`, `slug`, `body` | Champs existants ; valider contraintes et sérialisation |
-| Résumé, image principale, catégories, SEO, blocs | `ArticleTranslation.php` : `schemaData` JSON ; schéma webapp `article.yaml` plus large | Aucun contrat typé ni relation article explicite observés ; fixer stockage, validation et références de projet |
-| Catégories traduites | `src/Entity/CategoryCode.php` : `codeValue`, `inCodeSet`, traductions | Définir le code set article et sa relation ; calculer les usages pour l’avertissement |
-| Publication par langue et version publiée conservée | `Article.php` : un seul `ContentStatus` à la racine | Ajouter snapshots publiés et transitions par traduction |
-| Conflits concurrents | Entités Article inspectées | Pas de version optimiste observée ; ajouter précondition d’écriture et conflit exploitable |
-| Organisation et plusieurs projets | `src/Entity/Organization.php`, `Project.php`, memberships | Vérifier collections, création réservée à l’équipe et gestion des membres |
-| Accès de tous les collaborateurs à tous les projets de leur organisation | `src/Security/ProjectAccessGuard.php` | Lecture/écriture basées sur ProjectMember ; appartenance organisation seule insuffisante |
-| Invitations et mot de passe | Contrôleurs de création utilisateur/membres existants | Pas de parcours invitation trouvé dans src/config/tests ; prévoir acceptation, expiration, révocation et récupération du mot de passe |
-| Langues éditées indépendamment | `docs/04-domain-model/translations.md` | Auto-traduction et fallback existants ; ne pas publier une langue de substitution comme traduction validée |
+| Besoin                                                                   | Source observée                                                                        | Écart à traiter                                                                                                                       |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Articles par projet, CRUD et traductions                                 | `src/Entity/Article.php`, `ArticleTranslation.php`                                     | API existante ; DTO webapp obsolète à réaligner                                                                                       |
+| Titre, slug, corps par langue                                            | `ArticleTranslation.php` : `headline`, `slug`, `body`                                  | Champs existants ; valider contraintes et sérialisation                                                                               |
+| Résumé, image principale, catégories, SEO, blocs                         | `ArticleTranslation.php` : `schemaData` JSON ; schéma webapp `article.yaml` plus large | Aucun contrat typé ni relation article explicite observés ; fixer stockage, validation et références de projet                        |
+| Catégories traduites                                                     | `src/Entity/CategoryCode.php` : `codeValue`, `inCodeSet`, traductions                  | Définir le code set article et sa relation ; calculer les usages pour l’avertissement                                                 |
+| Publication par langue et version publiée conservée                      | `Article.php` : un seul `ContentStatus` à la racine                                    | Ajouter snapshots publiés et transitions par traduction                                                                               |
+| Conflits concurrents                                                     | Entités Article inspectées                                                             | Pas de version optimiste observée ; ajouter précondition d’écriture et conflit exploitable                                            |
+| Organisation et plusieurs projets                                        | `src/Entity/Organization.php`, `Project.php`, memberships                              | Vérifier collections, création réservée à l’équipe et gestion des membres                                                             |
+| Accès de tous les collaborateurs à tous les projets de leur organisation | `src/Security/ProjectAccessGuard.php`                                                  | Lecture/écriture basées sur ProjectMember ; appartenance organisation seule insuffisante                                              |
+| Invitations et mot de passe                                              | Contrôleurs de création utilisateur/membres existants                                  | Pas de parcours invitation trouvé dans src/config/tests ; prévoir acceptation, expiration, révocation et récupération du mot de passe |
+| Langues éditées indépendamment                                           | `docs/04-domain-model/translations.md`                                                 | Auto-traduction et fallback existants ; ne pas publier une langue de substitution comme traduction validée                            |
 
 #### Architecture et prérequis
 
@@ -191,6 +191,7 @@ validée avec Nuxt Builder, avec consolidation préalable des chemins et contrô
 ### Découpage DEM-005 — décisions et état réel
 
 Décisions humaines complémentaires dans la session de création :
+
 - « Oui, générer les traductions manquantes comme brouillons, sans jamais les publier automatiquement. »
 - « Confier le dashboard à la couche Web existante : valider et tracer cette divergence,
   puis prévoir une consolidation préalable pour ses chemins et contrôles. »
@@ -221,12 +222,12 @@ Aucune couche API n’est inventée dans layers.json. Ces lots sont des dépenda
 jamais sur master. Leurs cartes backend, branches/worktrees et SHA ne sont pas encore disponibles.
 OPS-010 prépare leurs contrats et leur réception ; cette carte ne réalise pas de modifications PHP.
 
-| Lot externe | Périmètre candidat, à confirmer dans le dépôt backend | Résultat et preuves requis |
-| --- | --- | --- |
-| Symfony accès | Entity Organization/Project/memberships, Security guards/resolver, State providers/processors, tests fonctionnels | Accès à tous les projets de ses organisations, multi-organisations, création organisations/projets réservée équipe ; isolation et révocation testées en API directe |
-| Symfony invitations | User, contrôleurs/DTO membres, Security, entités d’invitation, messages e-mail, migrations et tests | Invitation à usage limité/expirable, acceptation et mot de passe, membre existant, révocation, récupération mot de passe ; aucun accès par inscription libre |
-| Symfony articles | Article/Translation, CategoryCode, MediaObject, processors et serializers, migrations et schémas backend | Matrice OPS-010 persistée, blocs validés et références project-scoped, catégories/usages, médias, auto-traductions en brouillon et conflits optimistes ; tests CRUD/relations/cross-projet |
-| Symfony publication | Article/Translation et snapshots, State publication/preview/export, migrations et tests | Publier/dépublier par langue, ancienne version préservée, export uniquement publié, preview protégée, concurrence/idempotence et révocation ; pas de publication auto |
+| Lot externe         | Périmètre candidat, à confirmer dans le dépôt backend                                                             | Résultat et preuves requis                                                                                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Symfony accès       | Entity Organization/Project/memberships, Security guards/resolver, State providers/processors, tests fonctionnels | Accès à tous les projets de ses organisations, multi-organisations, création organisations/projets réservée équipe ; isolation et révocation testées en API directe                        |
+| Symfony invitations | User, contrôleurs/DTO membres, Security, entités d’invitation, messages e-mail, migrations et tests               | Invitation à usage limité/expirable, acceptation et mot de passe, membre existant, révocation, récupération mot de passe ; aucun accès par inscription libre                               |
+| Symfony articles    | Article/Translation, CategoryCode, MediaObject, processors et serializers, migrations et schémas backend          | Matrice OPS-010 persistée, blocs validés et références project-scoped, catégories/usages, médias, auto-traductions en brouillon et conflits optimistes ; tests CRUD/relations/cross-projet |
+| Symfony publication | Article/Translation et snapshots, State publication/preview/export, migrations et tests                           | Publier/dépublier par langue, ancienne version préservée, export uniquement publié, preview protégée, concurrence/idempotence et révocation ; pas de publication auto                      |
 
 Dépendances externes : articles consomme le contrat accès ; publication consomme articles ;
 invitations consomme accès. Fournir SHA et contrat observé pour chacun avant consommation.
@@ -239,19 +240,19 @@ L’analyse statique est réalisée ; aucun test backend ni appel API d’écrit
 Les liens pointent vers les fichiers actuels dans les worktrees, pas vers une demande définitive.
 Les répertoires sont relatifs à la racine du dépôt principal.
 
-| Carte | Couche | Résultat | Dépendances de réalisation sans SHA à ce stade |
-| --- | --- | --- | --- |
-| [OPS-010](../tasks/OPS-010-fixer-contrats-et-prerequis-symfony.md) | devops | Fixer les contrats SaaS et les missions backend externes | Aucune ; travail documentaire prêt |
-| [DOM-001](../tasks/DOM-001-contrats-et-transformations-articles-saas.md) | domaine | Typer les articles SaaS et leurs transformations pures | OPS-010 |
-| [OPS-011](../tasks/OPS-011-composer-cible-dashboard.md) | devops | Composer la cible dashboard indépendante | DOM-001 |
-| [BFF-002](../tasks/BFF-002-sessions-et-administration-saas.md) | bff | Sécuriser les sessions et l’administration SaaS | DOM-001 ; API existante, sans livraison backend |
-| [BFF-003](../tasks/BFF-003-edition-articles-categories-medias.md) | bff | Exposer l’édition des articles et ressources par projet | DOM-001, BFF-002 ; API existante |
-| [BFF-004](../tasks/BFF-004-publication-et-previsualisation-privee.md) | bff | Orchestrer publication et prévisualisation privées | BFF-003, DOM-001 ; orchestration Nuxt |
-| [WEB-003](../tasks/WEB-003-socle-et-acces-dashboard.md) | web | Créer le dashboard et ses parcours d’accès | OPS-010, OPS-011, DOM-001 ; BFF-002 pour vérification réelle |
-| [WEB-004](../tasks/WEB-004-editeur-articles-et-metadonnees.md) | web | Éditer les articles, blocs et métadonnées sans perdre la saisie | WEB-003, OPS-010, OPS-011, DOM-001 ; BFF-003/004 pour vérification réelle |
-| [WEB-005](../tasks/WEB-005-articles-publics-client2.md) | web | Afficher les articles publiés et leur aperçu sur Client 2 | DOM-001, OPS-012, BFF-004 |
-| [OPS-012](../tasks/OPS-012-servir-dashboard-et-projeter-articles.md) | devops | Servir la cible dashboard et synchroniser les seuls articles publiés | OPS-011, DOM-001, WEB-003/004 pour le service ; BFF-004 pour snapshots/export/projection |
-| [OPS-013](../tasks/OPS-013-verifier-ensemble-et-documenter-saas.md) | devops | Vérifier l’ensemble SaaS et documenter son usage | OPS-010, OPS-011, OPS-012, DOM-001, BFF-002, BFF-003, BFF-004, WEB-003, WEB-004, WEB-005 ; intégration avec l’API existante |
+| Carte                                                                    | Couche  | Résultat                                                             | Dépendances de réalisation sans SHA à ce stade                                                                              |
+| ------------------------------------------------------------------------ | ------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| [OPS-010](../tasks/OPS-010-fixer-contrats-et-prerequis-symfony.md)       | devops  | Fixer les contrats SaaS et les missions backend externes             | Aucune ; travail documentaire prêt                                                                                          |
+| [DOM-001](../tasks/DOM-001-contrats-et-transformations-articles-saas.md) | domaine | Typer les articles SaaS et leurs transformations pures               | OPS-010                                                                                                                     |
+| [OPS-011](../tasks/OPS-011-composer-cible-dashboard.md)                  | devops  | Composer la cible dashboard indépendante                             | DOM-001                                                                                                                     |
+| [BFF-002](../tasks/BFF-002-sessions-et-administration-saas.md)           | bff     | Sécuriser les sessions et l’administration SaaS                      | DOM-001 ; API existante, sans livraison backend                                                                             |
+| [BFF-003](../tasks/BFF-003-edition-articles-categories-medias.md)        | bff     | Exposer l’édition des articles et ressources par projet              | DOM-001, BFF-002 ; API existante                                                                                            |
+| [BFF-004](../tasks/BFF-004-publication-et-previsualisation-privee.md)    | bff     | Orchestrer publication et prévisualisation privées                   | BFF-003, DOM-001 ; orchestration Nuxt                                                                                       |
+| [WEB-003](../tasks/WEB-003-socle-et-acces-dashboard.md)                  | web     | Créer le dashboard et ses parcours d’accès                           | OPS-010, OPS-011, DOM-001 ; BFF-002 pour vérification réelle                                                                |
+| [WEB-004](../tasks/WEB-004-editeur-articles-et-metadonnees.md)           | web     | Éditer les articles, blocs et métadonnées sans perdre la saisie      | WEB-003, OPS-010, OPS-011, DOM-001 ; BFF-003/004 pour vérification réelle                                                   |
+| [WEB-005](../tasks/WEB-005-articles-publics-client2.md)                  | web     | Afficher les articles publiés et leur aperçu sur Client 2            | DOM-001, OPS-012, BFF-004                                                                                                   |
+| [OPS-012](../tasks/OPS-012-servir-dashboard-et-projeter-articles.md)     | devops  | Servir la cible dashboard et synchroniser les seuls articles publiés | OPS-011, DOM-001, WEB-003/004 pour le service ; BFF-004 pour snapshots/export/projection                                    |
+| [OPS-013](../tasks/OPS-013-verifier-ensemble-et-documenter-saas.md)      | devops  | Vérifier l’ensemble SaaS et documenter son usage                     | OPS-010, OPS-011, OPS-012, DOM-001, BFF-002, BFF-003, BFF-004, WEB-003, WEB-004, WEB-005 ; intégration avec l’API existante |
 
 Couverture des critères du besoin : 1 → BFF-002/WEB-003 ; 2 → contrats Symfony,
 BFF-002/003/004 et OPS-013 ; 3 → WEB-003 ; 4–6 → DOM-001/BFF-003/WEB-004 ;
@@ -507,16 +508,16 @@ Les chemins API ci-dessous sont relatifs à ce dépôt ; documentation propriét
 `docs/03-api-contracts/translations.md`, `docs/04-domain-model/translations.md`,
 `docs/06-security/authentication.md` et `authorization.md`.
 
-| Sujet | Existant vérifié | Conséquence pour DEM-005 |
-| --- | --- | --- |
-| Connexion et renouvellement | `/api/auth/login`, `/api/auth/refresh` | Réaliser les sessions BFF sur ces routes ; aucun nouvel endpoint Symfony requis |
-| Organisations/projets | Collections et créations existantes ; providers filtrés par appartenance ; rôles plateforme/organisation/projet | Construire les sélecteurs et adapter les droits réels ; lister un projet n’accorde pas automatiquement l’accès à ses contenus |
-| Membres | POST organisation crée/associe un utilisateur ; POST projet associe un utilisateur déjà membre de l’organisation | Provisionner les memberships avec ces routes et les droits de l’acteur, plutôt qu’attendre un nouveau modèle SaaS |
-| Articles | `Article.php` expose CRUD, GET/PUT item `/translations`, POST collection `/translations` ; article = `headline`, `body`, `slug`, `schemaData`, statut racine | Raccorder liste, lecture et sauvegarde maintenant ; mapper le DTO SaaS vers le payload réel |
-| Métadonnées et blocs | `ArticleTranslation.schemaData` est un JSON localisé lisible/inscriptible | Définir un namespace applicatif validé et préserver les clés existantes ; ce stockage natif peut porter SEO, références et structure, sans nouvelles colonnes |
-| Traductions | Les routes bulk appliquent les saisies puis complètent les champs manquants ; Article auto-traduit `headline` et `body` uniquement | Consommer `translations[]` sans fallback et conserver les brouillons ; les textes dans `schemaData` ne sont pas automatiquement traduits |
-| Catégories et médias | CRUD/catalogues projet, création multilingue et upload déjà présents | Réutiliser les relais et projections ; valider explicitement les références du JSON article dans le projet |
-| Publication et rendu public | L’ancien BFF écrit déjà une projection locale après sauvegarde | Réaliser les snapshots par langue, la publication explicite et la projection dans Nuxt ; ne plus attendre un endpoint d’export Symfony inexistant |
+| Sujet                       | Existant vérifié                                                                                                                                             | Conséquence pour DEM-005                                                                                                                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Connexion et renouvellement | `/api/auth/login`, `/api/auth/refresh`                                                                                                                       | Réaliser les sessions BFF sur ces routes ; aucun nouvel endpoint Symfony requis                                                                               |
+| Organisations/projets       | Collections et créations existantes ; providers filtrés par appartenance ; rôles plateforme/organisation/projet                                              | Construire les sélecteurs et adapter les droits réels ; lister un projet n’accorde pas automatiquement l’accès à ses contenus                                 |
+| Membres                     | POST organisation crée/associe un utilisateur ; POST projet associe un utilisateur déjà membre de l’organisation                                             | Provisionner les memberships avec ces routes et les droits de l’acteur, plutôt qu’attendre un nouveau modèle SaaS                                             |
+| Articles                    | `Article.php` expose CRUD, GET/PUT item `/translations`, POST collection `/translations` ; article = `headline`, `body`, `slug`, `schemaData`, statut racine | Raccorder liste, lecture et sauvegarde maintenant ; mapper le DTO SaaS vers le payload réel                                                                   |
+| Métadonnées et blocs        | `ArticleTranslation.schemaData` est un JSON localisé lisible/inscriptible                                                                                    | Définir un namespace applicatif validé et préserver les clés existantes ; ce stockage natif peut porter SEO, références et structure, sans nouvelles colonnes |
+| Traductions                 | Les routes bulk appliquent les saisies puis complètent les champs manquants ; Article auto-traduit `headline` et `body` uniquement                           | Consommer `translations[]` sans fallback et conserver les brouillons ; les textes dans `schemaData` ne sont pas automatiquement traduits                      |
+| Catégories et médias        | CRUD/catalogues projet, création multilingue et upload déjà présents                                                                                         | Réutiliser les relais et projections ; valider explicitement les références du JSON article dans le projet                                                    |
+| Publication et rendu public | L’ancien BFF écrit déjà une projection locale après sauvegarde                                                                                               | Réaliser les snapshots par langue, la publication explicite et la projection dans Nuxt ; ne plus attendre un endpoint d’export Symfony inexistant             |
 
 Précisions de mapping à respecter : les champs localisés sont dans `translations[]` sur les
 routes bulk ; le `PUT .../{id}/translations` traite ces traductions, pas arbitrairement tous
@@ -689,6 +690,7 @@ ni aucun commit lancé ici ; DEM-005 reste en cours.
 
 Validation explicite : « validé », limitée à WEB-003, OPS-012 et BFF-003 et à leurs
 preuves sur fixtures. Empreintes revérifiées identiques avant indexation.
+
 - WEB-003 : `ba6db7dc4a73f7df780a947a80c626211482ba63`.
 - OPS-012 : `dfef16a468116ae8b1dec27d38ec643f50d66fd2`.
 - BFF-003 : `f453e142889223a1a3d8dd4815cce17f8c11a039`.
@@ -720,7 +722,6 @@ OPS-013 dispose désormais de ses raccordements commités ; sa vérification glo
 reste à réaliser. Sa carte est préservée hors index. Aucun push, fusion ou démarrage
 automatique d’une autre étape ; DEM-005 reste en cours.
 
-
 ## Reprise OPS-013 — 2026-11-12
 
 Même session réelle. L’utilisateur confirme l’absence d’environnement Symfony isolé
@@ -732,7 +733,6 @@ non commitée, à vérifier. Résultats, essais initiaux, reprises et limites da
 DEM-005 reste en cours ; recette native réelle et écarts fonctionnels du contrat
 ne sont pas déclarés reçus. Aucun commit, push, PR ou fusion de cette étape.
 
-
 ## Verdict OPS-013 — 2026-11-12
 
 Même session réelle. Verdict humain : « validé », pour la documentation et les
@@ -743,7 +743,6 @@ est validée et commitée localement dans ce périmètre. La recette Symfony ré
 différée ; aucun changement de backend, push, PR, fusion ou reconstitution.
 DEM-005 reste à reconstituer/livrer selon les étapes explicitement demandées ; les
 limites fonctionnelles du contrat ne sont pas déclarées résolues par ce verdict.
-
 
 ## Reconstitution du 2026-11-12
 
@@ -766,42 +765,42 @@ restent non commités pour la trace documentaire de livraison. Aucun push, PR ou
 
 ### Provenance des commits
 
-| Source validée | Commit obtenu | Carte ou trace |
-| --- | --- | --- |
-| `5eee4c05ad298775d509a1469b5642a1517699df` | `297e287e9978953be283fe293897276596b34bc9` | docs(OPS-010): definir le contrat du dashboard SaaS |
-| `136146ec5a6e252cab51cd3ea8dcd377e936904e` | `b127beb60f1124034d2117ab54a311480e33d760` | docs(OPS-010): tracer le commit valide |
-| `8c1000ecc9996cd3632a323fd1ed49604ad4e929` | `feb5bff0575f9b35263e1245ca35db2da671ef88` | feat(DOM-001): typer et valider les articles SaaS |
-| `3af26ccc0bda0781928f3ef68f8682994549c637` | `ea5ccc7eeedc9393db7a83420d3951e27dd96fc8` | docs(DOM-001): tracer le commit valide |
-| `f3664dd5a92a2202a285f3e04de9ba13ebf72863` | `7310a02fdf6610655ed761478637207edac2a8ff` | feat(OPS-011): composer la cible dashboard independante |
-| `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` | `c868cba820d02adb23f936c45e1b7650f16e4b7b` | docs(OPS-011): tracer le commit valide |
-| `f3398f8cc12474640737887b77e16d0ca7afe90d` | `e82c78bd8953b2060def38ff3546e29e01d72726` | feat(WEB-003): creer le socle et les acces du dashboard SaaS |
-| `8c505c07feba753df7aff7d394e0b8f9a6d93e32` | `be24d8e9b8bdea32767e36da2712993b1a1a292a` | docs(WEB-003): tracer le commit valide |
-| `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` | `5145d9d32fc9ba6e3f1ca6eb6fa704f10149e8c8` | feat(WEB-004): ajouter l editeur articles et metadonnees |
-| `ce1bc495a962f5eb7093a2c0bbd1a191c29871ab` | `d5db1316defe3860c6e937cc7a113627460271bf` | docs(WEB-004): tracer le commit valide |
-| `6a0885beb5bcd275834d9c383c296161d57696d9` | `619c474d37a6651f0ae75e4f7d96c4f494d2db49` | feat(OPS-012): servir le dashboard sur un domaine local dedie |
-| `911dbf09d70e79f978ca7194f6f46f74b461d3b5` | `982b8a6d79834276754b7f278f9715ef31426033` | docs(OPS-012): tracer la validation partielle du service |
-| `e9b922ac3be8d1106b812e665264e5988194f6c7` | `f621594f910ec0e8e6941ac7c79df0c8b3ea8b72` | feat(BFF-002): sécuriser les sessions et accès SaaS natifs |
-| `d0ca9571b98e66ef6fc6218c51710696cd82ed78` | `8ec346e2998a1e96336cbeeeb6bb9530ca6cebcb` | docs(DEM-005): tracer le commit partiel validé de BFF-002 |
-| `88ce086914fd34efe006535a5c5f68f1c0a3d6fa` | `528cb5c6745eaf8382b5ee943f925dfd7bd2128c` | feat(BFF-003): raccorder articles catégories et médias à Symfony |
-| `44fd37be45cce98aedff7311d539adebbf36bac2` | `27d18c0f1798c2c73923d267bf4d402772d0650e` | docs(DEM-005): tracer le commit validé de BFF-003 |
-| `1e52c1034578636c2a340d936b377d8d83132ef5` | `bdd85e78528cfe6aa92f33a2ed4a197d027d2b99` | feat(BFF-004): orchestrer publication durable et aperçu privé |
-| `ad729e86184c3a782e36545d02dc269b8defebd6` | `97395fffcd6b3e42510f3bf25ef88a12d79324ca` | docs(DEM-005): tracer le commit validé de BFF-004 |
-| `9e9be7517117eff97fbc7974e3e7a60fc13a921b` | `1899f0da4699cd83f0ea2726e1fccb714417b02e` | feat(OPS-012): projeter les articles publiés de Client 2 |
-| `c58af06562e3f0288c99625f5862b2ed28bf4f4d` | `f330109396bf91069594a78c81703599150dfff0` | docs(DEM-005): tracer le commit de projection OPS-012 |
-| `a8cf67e7e9b2612929ad372cce060662dacca922` | `1b97e7c464fad3f6664cd1e98221dcbee99418d6` | feat(WEB-005): afficher les articles et leur aperçu sur Client 2 |
-| `2286109212a2f1dbf01323155f0f23ebb8a37789` | `2f3065d7529d2a89fea8777e045718c0e5b71067` | docs(DEM-005): tracer le commit validé WEB-005 |
-| `dfef16a468116ae8b1dec27d38ec643f50d66fd2` | `b623c76788e8b81de66c89e29436cf1058b4f603` | fix(OPS-012): transmettre le projet au lecteur Client 2 |
-| `ba6db7dc4a73f7df780a947a80c626211482ba63` | `ba2d4ede52c2a05bec7ad4d497f8a2d10212f364` | fix(WEB-003): typer le transport SaaS face aux routes Nitro |
-| `f453e142889223a1a3d8dd4815cce17f8c11a039` | `62ced104dd000c50eeaf8b2ff9059a41c970f20e` | fix(BFF-003): propager les catégories aux versions publiées |
-| `87702aaeb0fce48c7c03ec1155919a392c81886c` | `3a340114c39d64a4fa4a80dbaf39305fc03dd268` | docs(DEM-005): tracer le complément validé OPS-012 |
-| `7c95cd612c81cac4f3ff2490dbd4963ab74f5470` | `97483cdb576ec5ef9ac637499d0a5fdc424df8b2` | docs(DEM-005): tracer le complément validé WEB-003 |
-| `e07ff09a55ddd6cb7f28d7decedf40ba9198e414` | `7867c6e698ea70b48cbc7bf7eefa10df845957e1` | docs(DEM-005): tracer le complément validé BFF-003 |
-| `6a9fbc626aa3149395a9b40e1b55a699907209a6` | `5ca5d79e612b5e1ed439bc16311abb959d53318d` | fix(OPS-011): activer les seuls handlers SaaS du dashboard |
-| `284692102cc3af49cd0363309399c819629548ca` | `74bd61920d6b0d7464c7222ad1c1031b959b7610` | docs(WEB-005): actualiser le raccordement Compose du projet |
-| `37f3bae6a09fcf98244173e4f5a2a26900b16a0c` | `87a95ab7542f6d2685220113c05ef79503630795` | docs(DEM-005): tracer le complément validé OPS-011 |
-| `84675cda41964147f0a3422ea64c1725bad0ffc1` | `00fa0112e0379a868db4ef7b8ab6a0634f662592` | docs(DEM-005): tracer le complément validé WEB-005 |
-| `a1beeacbe7454523012d177a61f9a4525bf49079` | `911810c58ac2a6ad61e44ea56a9de6b7c564fcf0` | docs(OPS-013): vérifier le SaaS sur fixtures et documenter son usage |
-| `5ba9c1041e180fd7a7d6be52107b83b91c4f1546` | `4586d4269c3d918ebadb6a0f97db2b259d7d4a8c` | docs(DEM-005): tracer le commit validé OPS-013 |
+| Source validée                             | Cherry-pick initial                        | Après correction des messages              | Carte ou trace                                                       |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | -------------------------------------------------------------------- |
+| `5eee4c05ad298775d509a1469b5642a1517699df` | `297e287e9978953be283fe293897276596b34bc9` | `297e287e9978953be283fe293897276596b34bc9` | docs(OPS-010): definir le contrat du dashboard SaaS                  |
+| `136146ec5a6e252cab51cd3ea8dcd377e936904e` | `b127beb60f1124034d2117ab54a311480e33d760` | `b127beb60f1124034d2117ab54a311480e33d760` | docs(OPS-010): tracer le commit valide                               |
+| `8c1000ecc9996cd3632a323fd1ed49604ad4e929` | `feb5bff0575f9b35263e1245ca35db2da671ef88` | `feb5bff0575f9b35263e1245ca35db2da671ef88` | feat(DOM-001): typer et valider les articles SaaS                    |
+| `3af26ccc0bda0781928f3ef68f8682994549c637` | `ea5ccc7eeedc9393db7a83420d3951e27dd96fc8` | `ea5ccc7eeedc9393db7a83420d3951e27dd96fc8` | docs(DOM-001): tracer le commit valide                               |
+| `f3664dd5a92a2202a285f3e04de9ba13ebf72863` | `7310a02fdf6610655ed761478637207edac2a8ff` | `7310a02fdf6610655ed761478637207edac2a8ff` | feat(OPS-011): composer la cible dashboard independante              |
+| `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` | `c868cba820d02adb23f936c45e1b7650f16e4b7b` | `c868cba820d02adb23f936c45e1b7650f16e4b7b` | docs(OPS-011): tracer le commit valide                               |
+| `f3398f8cc12474640737887b77e16d0ca7afe90d` | `e82c78bd8953b2060def38ff3546e29e01d72726` | `f2c353adaf1af2c7f47282a0c3605174e4c2f9b7` | feat(WEB-003): creer le socle et les acces du dashboard SaaS         |
+| `8c505c07feba753df7aff7d394e0b8f9a6d93e32` | `be24d8e9b8bdea32767e36da2712993b1a1a292a` | `7752fa99a07173f38a5fadc29f0d71cc76db5318` | docs(WEB-003): tracer le commit valide                               |
+| `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` | `5145d9d32fc9ba6e3f1ca6eb6fa704f10149e8c8` | `025cee45fe65e2b197e75b7872eba21d604eca4f` | feat(WEB-004): ajouter l editeur articles et metadonnees             |
+| `ce1bc495a962f5eb7093a2c0bbd1a191c29871ab` | `d5db1316defe3860c6e937cc7a113627460271bf` | `8db139ec62a98faa9d698ad5cfb99f64198665e5` | docs(WEB-004): tracer le commit valide                               |
+| `6a0885beb5bcd275834d9c383c296161d57696d9` | `619c474d37a6651f0ae75e4f7d96c4f494d2db49` | `9c899d85f6d95368cea6258fdcaa4f757bae9503` | feat(OPS-012): servir le dashboard sur un domaine local dedie        |
+| `911dbf09d70e79f978ca7194f6f46f74b461d3b5` | `982b8a6d79834276754b7f278f9715ef31426033` | `6fb6357be96abb21c768c48271a4810984ab1cc5` | docs(OPS-012): tracer la validation partielle du service             |
+| `e9b922ac3be8d1106b812e665264e5988194f6c7` | `f621594f910ec0e8e6941ac7c79df0c8b3ea8b72` | `a81341801555ea58ac71a7b2792090229dd36075` | feat(BFF-002): sécuriser les sessions et accès SaaS natifs           |
+| `d0ca9571b98e66ef6fc6218c51710696cd82ed78` | `8ec346e2998a1e96336cbeeeb6bb9530ca6cebcb` | `eec6cb3fdace789cc1478c1a32c173d7ae89f7bf` | docs(DEM-005): tracer le commit partiel validé de BFF-002            |
+| `88ce086914fd34efe006535a5c5f68f1c0a3d6fa` | `528cb5c6745eaf8382b5ee943f925dfd7bd2128c` | `42e0151a6c4fbeef297328899b29d70e2b5822d2` | feat(BFF-003): raccorder articles catégories et médias à Symfony     |
+| `44fd37be45cce98aedff7311d539adebbf36bac2` | `27d18c0f1798c2c73923d267bf4d402772d0650e` | `58eecf620d701dfb1ba223f03e61784737eb6609` | docs(DEM-005): tracer le commit validé de BFF-003                    |
+| `1e52c1034578636c2a340d936b377d8d83132ef5` | `bdd85e78528cfe6aa92f33a2ed4a197d027d2b99` | `cd3e10ab746e1ba8699d896f3ef882521c832fa7` | feat(BFF-004): orchestrer publication durable et aperçu privé        |
+| `ad729e86184c3a782e36545d02dc269b8defebd6` | `97395fffcd6b3e42510f3bf25ef88a12d79324ca` | `d33da8df280b92e707e6d5dc202e99c986eaf148` | docs(DEM-005): tracer le commit validé de BFF-004                    |
+| `9e9be7517117eff97fbc7974e3e7a60fc13a921b` | `1899f0da4699cd83f0ea2726e1fccb714417b02e` | `d96f1789a85d685aa949c048e77827e814868d66` | feat(OPS-012): projeter les articles publiés de Client 2             |
+| `c58af06562e3f0288c99625f5862b2ed28bf4f4d` | `f330109396bf91069594a78c81703599150dfff0` | `51ebc689ee87c7627c755c3ecda6ebc40750ded7` | docs(DEM-005): tracer le commit de projection OPS-012                |
+| `a8cf67e7e9b2612929ad372cce060662dacca922` | `1b97e7c464fad3f6664cd1e98221dcbee99418d6` | `57c170622ec6b69a23c2009bbe3ab5d01eb571c7` | feat(WEB-005): afficher les articles et leur aperçu sur Client 2     |
+| `2286109212a2f1dbf01323155f0f23ebb8a37789` | `2f3065d7529d2a89fea8777e045718c0e5b71067` | `f937423d530b9d0a53423423043d786b3528415d` | docs(DEM-005): tracer le commit validé WEB-005                       |
+| `dfef16a468116ae8b1dec27d38ec643f50d66fd2` | `b623c76788e8b81de66c89e29436cf1058b4f603` | `499eea31d4a6801bd10ffab343c35ee779659439` | fix(OPS-012): transmettre le projet au lecteur Client 2              |
+| `ba6db7dc4a73f7df780a947a80c626211482ba63` | `ba2d4ede52c2a05bec7ad4d497f8a2d10212f364` | `5506765174e13fd71733a1b4e3dde535f50887ad` | fix(WEB-003): typer le transport SaaS face aux routes Nitro          |
+| `f453e142889223a1a3d8dd4815cce17f8c11a039` | `62ced104dd000c50eeaf8b2ff9059a41c970f20e` | `e7accdec57fd5e185e88745b9912e03a800bcdb8` | fix(BFF-003): propager les catégories aux versions publiées          |
+| `87702aaeb0fce48c7c03ec1155919a392c81886c` | `3a340114c39d64a4fa4a80dbaf39305fc03dd268` | `2f2aebb5cb72c69f492d34738760184a30431f43` | docs(DEM-005): tracer le complément validé OPS-012                   |
+| `7c95cd612c81cac4f3ff2490dbd4963ab74f5470` | `97483cdb576ec5ef9ac637499d0a5fdc424df8b2` | `683a81902516c91a2f5c9bcd39f3e8dbacb9d874` | docs(DEM-005): tracer le complément validé WEB-003                   |
+| `e07ff09a55ddd6cb7f28d7decedf40ba9198e414` | `7867c6e698ea70b48cbc7bf7eefa10df845957e1` | `d23c216908d8a59c46472fbb47e5516ac86e33ed` | docs(DEM-005): tracer le complément validé BFF-003                   |
+| `6a9fbc626aa3149395a9b40e1b55a699907209a6` | `5ca5d79e612b5e1ed439bc16311abb959d53318d` | `7a22b174dc29706a49e5311507cb380aa2bfb7e7` | fix(OPS-011): activer les seuls handlers SaaS du dashboard           |
+| `284692102cc3af49cd0363309399c819629548ca` | `74bd61920d6b0d7464c7222ad1c1031b959b7610` | `4d43a9ae8e683c1d5dc7246f2070b3177c556c8d` | docs(WEB-005): actualiser le raccordement Compose du projet          |
+| `37f3bae6a09fcf98244173e4f5a2a26900b16a0c` | `87a95ab7542f6d2685220113c05ef79503630795` | `e74c99cb2569811ddd39668b6c33028558b07b68` | docs(DEM-005): tracer le complément validé OPS-011                   |
+| `84675cda41964147f0a3422ea64c1725bad0ffc1` | `00fa0112e0379a868db4ef7b8ab6a0634f662592` | `92ee36ae5914f081da0ab80f273f0ccc1495783b` | docs(DEM-005): tracer le complément validé WEB-005                   |
+| `a1beeacbe7454523012d177a61f9a4525bf49079` | `911810c58ac2a6ad61e44ea56a9de6b7c564fcf0` | `f4423ddc4867144d688dbc8250ace80bda229ed6` | docs(OPS-013): vérifier le SaaS sur fixtures et documenter son usage |
+| `5ba9c1041e180fd7a7d6be52107b83b91c4f1546` | `4586d4269c3d918ebadb6a0f97db2b259d7d4a8c` | `c4d35c1cbea66a99c4adc2b20dc10c644fc648b1` | docs(DEM-005): tracer le commit validé OPS-013                       |
 
 ### Contrôles de reconstitution
 
@@ -817,8 +816,8 @@ restent non commités pour la trace documentaire de livraison. Aucun push, PR ou
   références documentaires absentes dans HEAD à cette étape. Six messages sources
   présentent aussi un écart indépendant : absence de `Demande : DEM-005`.
 
-| Source concernée | Commit obtenu |
-| --- | --- |
+| Source concernée                           | Commit obtenu                              |
+| ------------------------------------------ | ------------------------------------------ |
 | `f3398f8cc12474640737887b77e16d0ca7afe90d` | `e82c78bd8953b2060def38ff3546e29e01d72726` |
 | `8c505c07feba753df7aff7d394e0b8f9a6d93e32` | `be24d8e9b8bdea32767e36da2712993b1a1a292a` |
 | `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` | `5145d9d32fc9ba6e3f1ca6eb6fa704f10149e8c8` |
@@ -833,7 +832,6 @@ exige un arbitrage sur les commits reconstitués avant livraison ; elle n’est 
 réalisée par déduction. L’invocation de reconstitution n’est pas une autorisation
 de livraison. Journaux locaux : `/tmp/dem005-reconstitution-{aide,commits}.log`.
 État final des commits réunis : `4586d4269c3d918ebadb6a0f97db2b259d7d4a8c`.
-
 
 ## Préparation de livraison du 2026-11-12
 
@@ -856,3 +854,58 @@ Le présent commit documentaire doit rendre les références de demande contrôl
 dans HEAD. Les six messages historiques incomplets restent à traiter sans affaiblir
 les contrôles ni modifier les branches de couche. Aucun push ou PR avant résultat
 conforme du contrôle de contribution.
+
+### Régularisation autorisée et contrôles de livraison
+
+L’humain répond **« oui autorisé »** le 2026-11-12 à la proposition d’ajouter
+`Demande : DEM-005` dans les six messages, uniquement sur la branche locale
+`demands/DEM-005`. Les six messages ont été corrigés par rebase interactif ;
+aucune branche de couche modifiée, aucun push forcé. Les 35 patches et l’arbre final
+sont strictement identiques avant/après. La table de provenance ci-dessus comprend
+les SHA obtenus après cette correction. Le commit documentaire initial
+`74bc3cc7c8be80f3047a001faa0b9bda7c0602a7` devient
+`8833d36e2f6d3a6a4d7e98abcd8f72ab4cfa52a1`.
+
+`make contribution-check BASE=5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` :
+conforme sur les 35 commits corrigés ; l’écart de messages recensé plus haut est résolu.
+`make aide-check` : réussi, 111 tests. Tests Codebase Integrity TypeScript : 9/9
+après relance hors sandbox (Git jetable initialement interdit par EPERM) ; Bun :
+40/40. Conventions applicatives : code 0, avertissements de revue manuelle conservés.
+
+Le lint passe. `quality:check` s’interrompt au formatage global : EACCES en parcourant
+les sessions Docker privées de `.data/dashboard/saas-sessions`. Aucune permission
+ni règle modifiée. Vérification équivalente du code : Prettier `--check --ignore-unknown`
+sur les 909 fichiers suivis/non ignorés découverts par Git dans webapp et Codebase
+Integrity, code 0. Les données privées ignorées restent exclues de cette lecture.
+Les contrôles de types et tests applicatifs sont poursuivis séparément ci-dessous.
+
+### Résultats locaux avant PR
+
+Sources contrôlées sur `demands/DEM-005`, HEAD applicatif
+`8833d36e2f6d3a6a4d7e98abcd8f72ab4cfa52a1` ; seuls les présents ajouts documentaires
+suivent ces contrôles. Journaux préfixés `/tmp/dem005-delivery-` :
+
+| Contrôle                                                             | Résultat                                                                           |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `vitest run --maxWorkers=1`                                          | 22 fichiers, 187/187 (`tests.log`)                                                 |
+| Client 2 `vitest run sites/client2-immobilier/server --maxWorkers=1` | 11/11 (`client2-tests.log`)                                                        |
+| `bun --no-env-file run type-check`, successif pour les trois cibles  | Trois codes 0 (`types.log`, `client2-immobilier-types.log`, `dashboard-types.log`) |
+| Dashboard Playwright bureau/mobile, BFF simulé                       | 28/28 (`dashboard-browser.log`)                                                    |
+| Client 2 smoke Playwright bureau/mobile                              | 2/2 (`client2-immobilier-browser.log`)                                             |
+| Showcase smoke Playwright bureau/mobile                              | 2/2 (`showcase-immobilier-browser.log`)                                            |
+| `make dev-check-dashboard-ssr`, pile active                          | Trois domaines/routes/refus vérifiés, code 0 (`ssr.log`)                           |
+| Tests Python infrastructure                                          | 10/10 après autorisation des sockets locales (`infra-tests-recheck.log`)           |
+
+Playwright utilise les builds déjà démarrés, sources applicatives inchangées,
+rapports CLI dans des dossiers `/tmp/dem005-delivery-<cible>-browser` dédiés ; les
+anciens rapports Docker sont protégés en écriture et restent intacts. Les tests
+articles publics complets et la chaîne projecteur/preview restent prouvés sur
+fixtures dans OPS-013 ; le smoke Client 2 de cette reprise ne les remplace pas.
+Les builds des trois cibles d’OPS-013 restent équivalents aux sources réunies,
+sans nouvelle modification fonctionnelle.
+
+GitHub : authentification et dépôt vérifiés via gh après indisponibilité des appels
+du connecteur ; Rebase and merge autorisé, aucun ruleset ni protection de branche
+observé, aucune PR DEM-005 préexistante. Les contrôles distants seront attendus avant
+fusion, sans contournement. Couches libres, propres et non publiées vérifiées ;
+leur réalignement exige encore la preuve d’intégration distante.
