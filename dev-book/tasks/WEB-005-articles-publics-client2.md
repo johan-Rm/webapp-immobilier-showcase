@@ -8,7 +8,7 @@
 - Branche : layers/web
 - Worktree : worktree/web
 - Base locale vérifiée : `ce1bc495a962f5eb7093a2c0bbd1a191c29871ab` ; aucun fetch.
-- État : implémentée, non commitée, à vérifier
+- État : validée et commitée localement, à livrer ; intégration réelle à vérifier dans OPS-013
 - Chemins autorisés : `webapp/sites/client2-immobilier/`, `webapp/tests/e2e/client2-articles.spec.ts`, `webapp/tests/layers/client2.vitest.ts`, cette carte
 - Dépendances de réalisation : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, OPS-012 `9e9be7517117eff97fbc7974e3e7a60fc13a921b`, BFF-004 `1e52c1034578636c2a340d936b377d8d83132ef5`
 - Commits nécessaires : dépendances validées ci-dessus ; consommées uniquement par leurs sources commitées dans le snapshot de contrôle.
@@ -96,6 +96,7 @@ fonctionnel depuis la restitution. Ce verdict ne valide pas DEM-005 entière.
 
 ## Commits
 
-Aucun commit de carte. Validation humaine explicite requise à l’étape dédiée.
+Commit local d’implémentation et de verdict : `a8cf67e7e9b2612929ad372cce060662dacca922`.
+Cette trace complète le SHA sans changement fonctionnel ; aucun push, PR ou fusion.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
