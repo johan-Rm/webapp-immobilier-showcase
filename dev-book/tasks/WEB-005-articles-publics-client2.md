@@ -100,3 +100,27 @@ Commit local d’implémentation et de verdict : `a8cf67e7e9b2612929ad372cce0606
 Cette trace complète le SHA sans changement fonctionnel ; aucun push, PR ou fusion.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
+
+## Mise à jour documentaire du 2026-11-12
+
+Même session réelle de création ; couche Web, base
+`7c95cd612c81cac4f3ff2490dbd4963ab74f5470`, index vide avant écriture.
+La phrase annonçant la transmission Compose de l’UUID comme future est corrigée :
+ce raccordement est désormais livré localement par OPS-012
+`dfef16a468116ae8b1dec27d38ec643f50d66fd2`. Aucun changement fonctionnel.
+Un seul fichier de réalisation : `webapp/sites/client2-immobilier/README.md`.
+Empreinte chemin UTF-8, octet nul, contenu : `550f25ab21cd30d9689792c4944236b208abcad796878855eb1933d9afe5d545` ; manifeste
+`/tmp/dem005-web005-doc-manifest.json`. Correction implémentée, non commitée,
+à vérifier ; les validations antérieures restent acquises pour leur périmètre.
+
+Preuves documentaires : Prettier ciblé conforme, `make aide-check` depuis Web
+(111 tests, structure et liens conformes), `git diff --check` conforme.
+Log `/tmp/dem005-ops011-final-web-aide.log`. Aucun test applicatif ajouté pour
+ce changement documentaire sans effet sur le runtime.
+
+## Verdict humain — complément du raccordement
+
+Validation explicite du 2026-11-12 : « validé », limitée au complément OPS-011
+et à la correction documentaire WEB-005 présentés, avec leurs limites sur fixtures.
+Empreintes revérifiées identiques avant indexation ; aucune modification fonctionnelle
+depuis la restitution. OPS-013 n’est pas couverte par ce verdict.

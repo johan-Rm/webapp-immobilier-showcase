@@ -19,8 +19,8 @@ restent accessibles aux requêtes engagées, conformément au contrat du project
 Configuration privée du SSR : `SAAS_PROJECTION_PROJECT_ID` (UUID du pilote),
 `SAAS_PROJECTION_ROOT` (défaut `.data/saas-projection`, dans la racine d’exécution),
 `SAAS_PREVIEW_SECRET` (au moins 32 caractères, partagé avec le BFF). Aucun identifiant
-Symfony n’est nécessaire. L’intégration Compose doit encore transmettre l’UUID à
-Client 2 ; en son absence, le lecteur échoue avec HTTP 503. Aucun secret n’entre
+Symfony n’est nécessaire. L’extension Compose transmet explicitement l’UUID à
+Client 2 ; en l’absence de cet UUID, le lecteur échoue avec HTTP 503. Aucun secret n’entre
 dans la configuration publique.
 
 `POST /api/saas-preview` reçoit le payload et le Bearer privés du BFF. Projet,
