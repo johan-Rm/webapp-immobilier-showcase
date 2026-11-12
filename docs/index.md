@@ -33,3 +33,8 @@ Cette documentation complete les README locaux et centralise les conventions tra
 - `6.schemas-and-data` : schemas, generation et contrats
 - `7.server` : architecture serveur et conventions API
 - `8.seo` : conventions SEO transverses
+
+## Dashboard SaaS
+
+- [Utilisation et exploitation](1.getting-started/dashboard-saas.md)
+- [Contrat et limites](3.application/dashboard-saas-contrats.md)
