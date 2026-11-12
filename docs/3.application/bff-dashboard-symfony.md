@@ -8,6 +8,10 @@
 `server/api/dashboard/` expose les routes BFF protegees par session dashboard. Ce document
 est le proprietaire de leur contrat d'integration avec Symfony ; `server/README.md` y renvoie.
 
+Le présent contrat reste celui du dashboard immobilier Showcase. Le nouveau
+dashboard multi-projet suit le [contrat SaaS](dashboard-saas-contrats.md), avec ses
+propres sessions, snapshots et projection ; ne pas confondre les deux stockages.
+
 ## Modele d'ecriture et de lecture
 
 - Symfony est le **modele d'ecriture durable**.
