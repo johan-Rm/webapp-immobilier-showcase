@@ -124,3 +124,7 @@ Validation explicite du 2026-11-12 : « validé », limitée au complément OPS-
 et à la correction documentaire WEB-005 présentés, avec leurs limites sur fixtures.
 Empreintes revérifiées identiques avant indexation ; aucune modification fonctionnelle
 depuis la restitution. OPS-013 n’est pas couverte par ce verdict.
+
+Commit local du complément validé : `284692102cc3af49cd0363309399c819629548ca`.
+Trace documentaire limitée au SHA et à l’état ; aucun changement fonctionnel,
+push, PR, fusion ou démarrage de l’étape suivante.
