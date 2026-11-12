@@ -8,4 +8,15 @@ case "${AIDE_LAYER:-}" in
 esac
 export SHOWCASE_HOST="showcase-immobilier.${suffix}.localhost"
 export CLIENT2_HOST="client2.${suffix}.localhost"
-envsubst '${SHOWCASE_HOST} ${CLIENT2_HOST}' < /opt/local-vhost.conf > /etc/nginx/conf.d/default.conf
+# L’extension Compose active ce seul hôte ; aucun domaine fourni depuis le navigateur.
+export DASHBOARD_HOST=''
+export DASHBOARD_UPSTREAM=''
+case "${DASHBOARD_ENABLED:-0}" in
+  0) ;;
+  1)
+    DASHBOARD_HOST="dashboard.${suffix}.localhost"
+    DASHBOARD_UPSTREAM="${DASHBOARD_HOST} dashboard-ssr:3000;"
+    export DASHBOARD_HOST DASHBOARD_UPSTREAM ;;
+  *) echo "Activation dashboard invalide" >&2; exit 1 ;;
+esac
+envsubst '${SHOWCASE_HOST} ${CLIENT2_HOST} ${DASHBOARD_HOST} ${DASHBOARD_UPSTREAM}' < /opt/local-vhost.conf > /etc/nginx/conf.d/default.conf
