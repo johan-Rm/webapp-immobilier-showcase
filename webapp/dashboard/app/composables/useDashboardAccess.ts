@@ -33,6 +33,10 @@ export const useDashboardAccess = () => {
     })),
     projectItems: state.value.projects.map((item) => ({ label: item.name, value: item.id })),
   }))
+  const unsaved = useState('saas.unsaved', () => false)
+  const busy = useState('saas.busy', () => false)
+  const confirmDiscard = () =>
+    !busy.value && (!unsaved.value || window.confirm(t('editor.discard')))
   const reset = () => {
     state.value.sequence++
     state.value.user = null
@@ -68,6 +72,7 @@ export const useDashboardAccess = () => {
     return items
   }
   const selectOrganization = async (id: string) => {
+    if (id === state.value.organizationId || !confirmDiscard()) return
     if (!state.value.organizations.some((item) => item.id === id)) return
     const sequence = ++state.value.sequence
     state.value.organizationId = id
@@ -98,6 +103,7 @@ export const useDashboardAccess = () => {
       const id =
         state.value.organizations.find((item) => item.id === state.value.organizationId)?.id ??
         state.value.organizations[0]?.id
+      state.value.organizationId = ''
       if (id) await selectOrganization(id)
       return true
     } catch {
@@ -113,8 +119,10 @@ export const useDashboardAccess = () => {
     }
   }
   const logout = async () => {
+    if (!confirmDiscard()) return
     try {
       await request('/auth/logout', { method: 'POST' })
+      unsaved.value = false
       reset()
       await navigateTo('/connexion')
     } catch {
@@ -122,6 +130,7 @@ export const useDashboardAccess = () => {
     }
   }
   const selectProject = (id: string) => {
+    if (id === state.value.projectId || !confirmDiscard()) return
     if (state.value.projects.some((item) => item.id === id)) state.value.projectId = id
   }
   return {

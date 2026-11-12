@@ -10,8 +10,13 @@ export const useDashboardMenu = () => {
     label: group.label,
     items: group.items.map((key) => ({
       label: t(`menu.${key}`),
-      to: ['administrators', 'organization'].includes(key) ? '/administration' : undefined,
-      available: ['administrators', 'organization'].includes(key),
+      to:
+        key === 'articles'
+          ? '/articles'
+          : ['administrators', 'organization'].includes(key)
+            ? '/administration'
+            : undefined,
+      available: ['articles', 'administrators', 'organization'].includes(key),
     })),
   }))
   return { groups }
