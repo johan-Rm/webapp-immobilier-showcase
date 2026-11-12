@@ -8,10 +8,10 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` ; aucun fetch.
-- État : service/vhost validé et commité localement, à livrer ; carte incomplète, export/projection non réalisés
+- État : service/vhost validé et commité localement ; projection implémentée, non commitée, à vérifier ; intégration réelle à vérifier dans OPS-013
 - Chemins autorisés : `infra/docker/`, `infra/nginx/`, `infra/make/Makefile.dev`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/`, `webapp/scripts/saas/`, `webapp/scripts/content-sync.ts`, `webapp/scripts/README.md`, cette carte
-- Dépendances de réalisation : OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, WEB-004 `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` pour le service ; Symfony publication pour export/projection
-- Commits nécessaires : commits identifiés ci-dessus pour servir le dashboard ; aucun SHA backend disponible.
+- Dépendances de réalisation : OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, WEB-004 `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` pour le service ; BFF-004 `1e52c1034578636c2a340d936b377d8d83132ef5` pour export/projection
+- Commits nécessaires : commits identifiés ci-dessus ; API Symfony existante inchangée, aucun commit backend requis.
 - Dépendances de vérification globale : OPS-013
 
 ## Résultat et critères
@@ -105,3 +105,65 @@ Complément documentaire limité à la trace du SHA et de l’état ; OPS-013 pr
 Ce commit ne termine pas OPS-012 : export, projection et synchronisation restent non réalisés.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
+
+## Reprise projection du 2026-11-12
+
+Même session de création ; base `911dbf09d70e79f978ca7194f6f46f74b461d3b5`,
+branche `layers/devops`, index vide. La dépendance backend ancienne est remplacée
+par le contrat BFF-004 commité ci-dessus, conformément à l’arbitrage API inchangée.
+Les limites des paragraphes historiques restent celles de la première livraison.
+
+Projection atomique des seules versions publiées, index FR/EN/ES, médias vérifiés,
+dépublication par omission, reprise idempotente et accusés authentifiés réalisés.
+Le worker est optionnel, avec volume isolé accessible en lecture seule par Client 2 ;
+préparation explicite des chemins, refus des liens symboliques et aucune création
+Docker implicite. Usage et contrat consommable par WEB-005 :
+[Scripts README](../../webapp/scripts/README.md#projection-publiée-saas--client-2).
+
+État soumis : cinq fichiers suivis de réalisation modifiés et neuf nouveaux
+fichiers de réalisation ; cette carte est également modifiée. Les 14 fichiers
+applicatifs sont listés dans `/tmp/dem005-ops012-projection-manifest.json` ;
+empreinte (même calcul que précédemment) : `8bd473f511d6365315c1b17dc184a287f0c4c62d35649769a5264e1463c231d4`.
+OPS-013 préexistante reste non suivie, préservée hors de cette réalisation.
+
+Contrôles terminés :
+
+- Snapshot `/tmp/dem005-ops012-integration` : base DevOps ci-dessus, contrats/services
+  DOM-001, dashboard et tests WEB-004/trace `ce1bc495a962f5eb7093a2c0bbd1a191c29871ab`,
+  serveur BFF-004/trace `ad729e86184c3a782e36545d02dc269b8defebd6`, puis scripts de cette carte.
+  `GD_TARGET=dashboard node node_modules/vitest/vitest.mjs run` : 149 tests, 15 fichiers,
+  dont les 19 nouveaux tests du projecteur ; sortie 0. Log `/tmp/dem005-ops012-vitest.log`.
+- Même snapshot : `GD_TARGET=dashboard bun --no-env-file run type-check`, sortie 0.
+  Contrôle TypeScript strict des scripts et schémas également réussi dans
+  `/tmp/dem005-ops012-projection`. ESLint et Prettier ciblés : conformes.
+- `docker buildx build --load --progress=plain -f infra/docker/Dockerfile.projector
+  -t dem005-ops012-projector:local webapp` depuis ce dernier snapshot : sortie 0.
+  `PYTHONDONTWRITEBYTECODE=1 python3 infra/scripts/test-saas-projector.py` : worker réel,
+  HTTP authentifié et disque temporaire ; dry-run sans écriture, absence de secret
+  sur les images, empreintes, reprise après média invalide, idempotence, dépublication
+  partielle/totale et conservation de l’ancienne release conformes.
+- `python3 infra/nginx/test-local-vhosts.py --dashboard` : cinq compositions et syntaxes
+  Nginx conformes ; worker optionnel, volumes et secrets explicitement contrôlés.
+  `python3 -B -m unittest discover -s infra/tests -p test_local_ssr.py` : 10 tests réussis.
+- `make aide-check` : 111 tests réussis, structure et liens conformes.
+  `bun run check:conventions` dans le snapshot, avec `AIDE_GIT_ROOT` pointant DevOps :
+  sortie 0, avertissements existants de revue manuelle conservés ; aucune règle changée.
+  Syntaxe Python, expansion Make et `git diff --check` : conformes.
+
+Limites : fixtures locales seulement ; aucun appel au vrai Symfony, aucune donnée
+ou pile utilisateur modifiée, aucun `.env` écrit, aucun commit créé. Le premier essai
+global utilisait un snapshot partiel sans alias adéquats ; la preuve finale ci-dessus
+vient d’un assemblage complet des sources commitées. L’ancien test interdisant toute
+variable Symfony au dashboard vérifie maintenant la seule origine API explicitement
+fournie et continue de refuser les identifiants hérités ; Codebase Integrity inchangé.
+Le lecteur public/renderer WEB-005 attend le commit validé de cette interface.
+L’activation des handlers SaaS et la propagation des catégories restent des travaux
+fonctionnels ouverts ; aucun parcours réel complet ni verdict humain déduit des tests.
+
+## Verdict humain — projection
+
+Validation explicite du 2026-11-12 : « validé », sur la projection présentée et ses
+limites : fixtures seulement, lecteur public et parcours réel encore à intégrer.
+Les 14 fichiers applicatifs correspondent à l’empreinte ci-dessus avant indexation ;
+branche et index vérifiés. Ce verdict autorise le commit local de ce complément,
+sans valider DEM-005 entière ni les travaux fonctionnels restant ouverts.

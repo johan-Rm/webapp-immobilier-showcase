@@ -28,8 +28,8 @@ with tempfile.TemporaryDirectory(prefix='dem004-config-') as tmp:
  (p/'env').write_text('SITE_URL=http://ancien.invalid\nPUBLIC_HOST=webapp.localhost\n')
  (p/'override.yml').write_text('services:\n  webapp-localhost:\n    env_file: !reset []\n  playwright:\n    env_file: !reset []\n  webapp-ssr:\n    env_file: !reset []\n')
  for layer,port,dev in [('',8080,3000),('web',19401,19301),('bff',19402,19302),('domaine',19403,19303),('devops',19404,19304)]:
-  env={**os.environ,'AIDE_LAYER':layer,'PUBLIC_PORT':str(port),'WEBAPP_DEV_PORT':str(dev)}
-  overlay=['-f', 'infra/docker/docker-compose.dashboard.yml'] if args.dashboard else []
+  env={**{key:value for key,value in os.environ.items() if not key.startswith('SAAS_')},'SAAS_PROJECTION_SOURCE_ORIGIN':'http://api.fixture.invalid','AIDE_LAYER':layer,'PUBLIC_PORT':str(port),'WEBAPP_DEV_PORT':str(dev)}
+  overlay=['-f', 'infra/docker/docker-compose.dashboard.yml','--profile','saas-projection'] if args.dashboard else []
   config=json.loads(run('docker','compose','--project-directory',str(root),'--env-file',str(p/'env'),'-f','infra/docker/docker-compose.dev.yml',*overlay,'-f',str(p/'override.yml'),'config','--format','json',env=env))['services']
   suffix='wt-'+layer if layer else 'preprod'
   for service,site in [('webapp-ssr','showcase-immobilier'),('client2-ssr','client2')]+([('dashboard-ssr','dashboard')] if args.dashboard else []):
@@ -41,7 +41,17 @@ with tempfile.TemporaryDirectory(prefix='dem004-config-') as tmp:
    dashboard=config['dashboard-ssr']
    assert dashboard['build']['args']['GD_TARGET']=='dashboard'
    assert not dashboard.get('env_file')
-   assert not any('SYMFONY' in key for key in dashboard['environment'])
+   assert {key for key in dashboard['environment'] if 'SYMFONY' in key} == {'SYMFONY_API_URL'}
+   assert dashboard['environment']['SYMFONY_API_URL'] == 'http://api.fixture.invalid'
+   worker=config['saas-projector']
+   assert worker['profiles']==['saas-projection'] and worker['read_only']
+   assert not worker.get('env_file')
+   assert not any('SYMFONY' in key for key in worker['environment'])
+   assert worker['volumes'][0]['target']=='/app/.data/saas-projection'
+   assert worker['volumes'][0]['source'].endswith('/webapp/.data/saas-projection')
+   assert not worker['volumes'][0].get('read_only',False)
+   assert config['client2-ssr']['volumes'][0]['source']==worker['volumes'][0]['source']
+   assert config['client2-ssr']['volumes'][0]['read_only']
    assert dashboard['volumes'][0]['target']=='/app/.data'
    assert dashboard['volumes'][0]['source'].endswith('/webapp/.data/dashboard')
    assert config['nginx']['depends_on']['dashboard-ssr']['condition']=='service_healthy'

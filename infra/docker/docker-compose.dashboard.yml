@@ -22,6 +22,14 @@ services:
       PUBLIC_HOST: dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost
       SITE_URL: http://dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
       PUBLIC_PORT: ${PUBLIC_PORT:-8080}
+      SYMFONY_API_URL: ${SAAS_PROJECTION_SOURCE_ORIGIN:-}
+      SAAS_PLATFORM_ADMIN_EMAILS: ${SAAS_PLATFORM_ADMIN_EMAILS:-}
+      SAAS_PUBLICATION_PROJECTS: ${SAAS_PUBLICATION_PROJECTS:-}
+      SAAS_PROJECTION_SECRET: ${SAAS_PROJECTION_SECRET:-}
+      SAAS_PREVIEW_SECRET: ${SAAS_PREVIEW_SECRET:-}
+      SAAS_CLIENT2_PREVIEW_ORIGIN: http://client2-ssr:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./webapp/.data/dashboard:/app/.data
     healthcheck:
@@ -34,6 +42,48 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+
+  client2-ssr:
+    environment:
+      SAAS_PROJECTION_ROOT: /app/.data/saas-projection
+      SAAS_PREVIEW_SECRET: ${SAAS_PREVIEW_SECRET:-}
+    volumes:
+      - type: bind
+        source: ./webapp/.data/saas-projection
+        target: /app/.data/saas-projection
+        read_only: true
+        bind:
+          create_host_path: false
+
+  saas-projector:
+    profiles: [saas-projection]
+    image: "${COMPOSE_PROJECT_NAME:-showcase-immobilier-dev}-saas-projector"
+    build:
+      context: ./webapp
+      dockerfile: ../infra/docker/Dockerfile.projector
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    working_dir: /app
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      SAAS_PROJECTION_PROJECT_ID: ${SAAS_PROJECTION_PROJECT_ID:-}
+      SAAS_PROJECTION_SECRET: ${SAAS_PROJECTION_SECRET:-}
+      SAAS_PROJECTION_SOURCE_ORIGIN: ${SAAS_PROJECTION_SOURCE_ORIGIN:-}
+      SAAS_DASHBOARD_URL: http://dashboard-ssr:3000
+      SAAS_DASHBOARD_ORIGIN: http://dashboard.${AIDE_LAYER:+wt-}${AIDE_LAYER:-preprod}.localhost:${PUBLIC_PORT:-8080}
+    volumes:
+      - type: bind
+        source: ./webapp/.data/saas-projection
+        target: /app/.data/saas-projection
+        bind:
+          create_host_path: false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      dashboard-ssr:
+        condition: service_healthy
 
   nginx:
     environment:
