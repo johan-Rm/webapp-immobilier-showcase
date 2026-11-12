@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 
+import { getHeader } from 'h3'
 import { z } from 'zod'
 
 import { requireEditorProject } from '../articles/context'
@@ -20,6 +21,7 @@ import { saasEndpoint, saasFailure } from '../auth/runtime'
 import { authorizedSaasRequest } from '../auth/session'
 
 import { readEditorCategory, mapEditorCategory } from './catalog'
+import { refreshPublishedCategory } from './publication'
 
 const labelsSchema = z
   .object({
@@ -45,30 +47,43 @@ export const saasCategorySave = (event: H3Event) =>
       )
     )
       return saasFailure(400, 'locale_mismatch')
-    return editorLock(`${projectId}/categories/${id ?? 'create'}`, async () => {
-      const previous = id ? await readEditorCategory(event, projectId, id) : null
-      if (previous) requireEditorRevision(event, mapEditorCategory(previous).revision)
-      if (!id && !labels[project.sourceLocale]) return saasFailure(422, 'source_label_required')
-      const translations = Object.entries(labels).map(([locale, value]) => ({
-        locale,
-        ...(!id ? { label: value } : {}),
-        text: value,
-      }))
-      const raw = await authorizedSaasRequest(
-        event,
-        `/api/projects/${projectId}/category-codes/${id ? id + '/translations' : 'translations'}?locale=${project.sourceLocale}`,
-        {
-          method: id ? 'PUT' : 'POST',
-          body: { ...(!id ? { inCodeSet: 'article-category' } : {}), translations },
-        },
-      )
-      const result = nativeParse(z.object({ id: z.uuid() }), raw)
-      if (id && result.id !== id) return saasFailure(502, 'upstream_invalid')
-      const saved = mapEditorCategory(await readEditorCategory(event, projectId, result.id))
-      for (const [locale, label] of Object.entries(labels))
-        if (saved.labels[locale] !== label) return saasFailure(502, 'persistence_mismatch')
-      return saved
-    })
+    return editorLock(`${projectId}/categories/${id ?? 'create'}`, () =>
+      editorLock(`publication/${projectId}`, async () => {
+        const previous = id ? await readEditorCategory(event, projectId, id) : null
+        if (previous) {
+          if (!getHeader(event, 'if-match')) return saasFailure(428, 'revision_required')
+          const existing = mapEditorCategory(previous)
+          if (
+            Object.entries(labels).every(([locale, label]) => existing.labels[locale] === label)
+          ) {
+            await refreshPublishedCategory(projectId, existing)
+            return existing
+          }
+          requireEditorRevision(event, existing.revision)
+        }
+        if (!id && !labels[project.sourceLocale]) return saasFailure(422, 'source_label_required')
+        const translations = Object.entries(labels).map(([locale, value]) => ({
+          locale,
+          ...(!id ? { label: value } : {}),
+          text: value,
+        }))
+        const raw = await authorizedSaasRequest(
+          event,
+          `/api/projects/${projectId}/category-codes/${id ? id + '/translations' : 'translations'}?locale=${project.sourceLocale}`,
+          {
+            method: id ? 'PUT' : 'POST',
+            body: { ...(!id ? { inCodeSet: 'article-category' } : {}), translations },
+          },
+        )
+        const result = nativeParse(z.object({ id: z.uuid() }), raw)
+        if (id && result.id !== id) return saasFailure(502, 'upstream_invalid')
+        const saved = mapEditorCategory(await readEditorCategory(event, projectId, result.id))
+        for (const [locale, label] of Object.entries(labels))
+          if (saved.labels[locale] !== label) return saasFailure(502, 'persistence_mismatch')
+        if (id) await refreshPublishedCategory(projectId, saved)
+        return saved
+      }),
+    )
   })
 export const saasCategoryUsages = (event: H3Event) =>
   saasEndpoint(event, async () => {

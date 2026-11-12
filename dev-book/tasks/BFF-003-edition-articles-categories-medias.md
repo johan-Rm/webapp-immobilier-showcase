@@ -8,7 +8,7 @@
 - Branche : layers/bff
 - Worktree : worktree/bff
 - Base locale vérifiée : `d0ca9571b98e66ef6fc6218c51710696cd82ed78` ; aucun fetch.
-- État : validée et commitée localement ; reste à livrer
+- État : validée et commitée localement ; reste à livrer ; correction implémentée, non commitée, à vérifier
 - Chemins autorisés : `webapp/server/api/saas/projects/`, `webapp/server/utils/saas/articles/`, `webapp/server/utils/saas/media/`, `webapp/server/utils/saas/categories/`, `webapp/server/tests/saas-editor.vitest.ts`, cette carte
 - Dépendances de réalisation : DOM-001, BFF-002 ; API Symfony existante inchangée
 - Commits vérifiés : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929` ; BFF-002 `e9b922ac3be8d1106b812e665264e5988194f6c7`, trace `d0ca9571b98e66ef6fc6218c51710696cd82ed78`.
@@ -152,3 +152,51 @@ Le présent complément documentaire relève ce SHA, sans changement fonctionnel
 Les limites indiquées plus haut restent ouvertes. Aucun push, PR ou merge effectué.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
+
+## Complément fonctionnel du 2026-11-12
+
+Même session réelle de création ; reprise de DEM-005, sans consolidation.
+Base `ad729e86184c3a782e36545d02dc269b8defebd6`, `layers/bff`, index vide avant écriture.
+Les changements de cette reprise sont identifiés ; aucun travail étranger consommé.
+
+Après relecture native autorisée d’une catégorie modifiée, ses libellés sont mis à
+jour dans les seules publications actives et commandes incertaines du même projet.
+Les publications actives reçoivent une nouvelle génération de projection ; aucun
+texte de brouillon ni traduction dépubliée n’est activé. Le verrou projet sérialise
+la modification avec publier/dépublier. Le changement de catégorie garde la même
+réponse API ; la projection reste asynchrone via le worker existant.
+
+Une reprise portant exactement les libellés déjà persistés réconcilie la file sans
+nouvelle écriture native, même avec l’ancienne révision, mais exige toujours If-Match.
+Une demande différente conserve le refus de conflit. En cas d’échec après écriture
+native et avant journalisation, la réponse échoue ; la reprise autorisée identique
+répare la projection. Pas de promesse de transaction atomique entre les deux stockages.
+Dépendance du complément : journal BFF-004 déjà commité `1e52c1034578636c2a340d936b377d8d83132ef5`.
+
+Snapshot indépendant `/tmp/dem005-categories` : seuls amonts committés et ces trois
+fichiers BFF. `GD_TARGET=dashboard node node_modules/vitest/vitest.mjs run
+server/tests/saas-auth.vitest.ts server/tests/saas-editor.vitest.ts
+server/tests/saas-publication.vitest.ts` : 48 tests réussis, dont 17 édition.
+Couvre propagation, conservation du texte publié, dépublication, commandes incertaines,
+reprise sans écriture native après échec de journalisation et idempotence du replay.
+Types dashboard, ESLint/Prettier ciblés et conventions : sortie 0 ; avertissements
+historiques conservés. Logs `/tmp/dem005-categories-{tests,types,conventions}.log`.
+API native simulée uniquement ; aucun appel Symfony réel, aucune donnée utilisateur.
+
+État présenté : 3 fichiers de réalisation, plus cette carte ;
+manifestes de chemins et SHA-256 : `/tmp/dem005-bff-003-raccordement-manifest.json`.
+Empreinte triée chemin UTF-8, octet nul puis contenu, carte exclue :
+`624c5b23d11cd27852670a904c9405a926b89facb77ce69c54bd8261267c2aaf`.
+Aucun commit ni verdict humain créé à cette étape. Les verdicts et commits antérieurs
+restent inchangés et ne valident pas ce complément.
+
+Contrôle documentaire et cadre final : `make aide-check` depuis cette couche,
+111 tests réussis, structure et liens conformes ; `git diff --check` conforme.
+Log `/tmp/dem005-bff-raccordement-aide.log`.
+
+## Verdict humain — complément fonctionnel
+
+Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléments
+WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
+correspondent aux empreintes présentées avant indexation ; aucune correction
+fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.
