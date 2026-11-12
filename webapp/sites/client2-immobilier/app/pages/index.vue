@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>{{ $t('title') }}</h1>
+    <nav aria-label="Articles"><NuxtLink to="/fr/articles">Articles</NuxtLink></nav>
   </main>
 </template>
 

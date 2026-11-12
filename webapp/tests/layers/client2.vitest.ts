@@ -23,6 +23,7 @@ it('prépare le vrai Client 2 sans les composants, routes et initialisations Sho
     cpSync(join(webapp, 'services'), join(root, 'services'), { recursive: true })
     cpSync(join(webapp, 'schemas/source'), join(root, 'schemas/source'), { recursive: true })
     mkdirSync(join(root, 'scripts/build'), { recursive: true })
+    cpSync(join(webapp, 'scripts/saas'), join(root, 'scripts/saas'), { recursive: true })
     cpSync(join(webapp, 'scripts/build/site.ts'), join(root, 'scripts/build/site.ts'))
     cpSync(join(webapp, 'scripts/build/schema-hook.ts'), join(root, 'scripts/build/schema-hook.ts'))
     cpSync(join(webapp, 'nuxt.config.ts'), join(root, 'nuxt.config.ts'))
@@ -45,6 +46,9 @@ it('prépare le vrai Client 2 sans les composants, routes et initialisations Sho
     const components = readFileSync(join(root, '.nuxt/components.d.ts'), 'utf8')
     const imports = readFileSync(join(root, '.nuxt/imports.d.ts'), 'utf8')
     const routes = readFileSync(join(root, '.nuxt/types/nitro-routes.d.ts'), 'utf8')
+    expect(routes).toContain('/api/articles/:locale/:slug')
+    expect(routes).toContain('/api/saas-preview')
+    expect(routes).not.toContain('/api/saas/projects')
     const runtime = readFileSync(join(root, '.nuxt/types/runtime-config.d.ts'), 'utf8')
     for (const content of [components, imports, routes, runtime]) {
       expect(content).not.toContain('sites/showcase-immobilier')
