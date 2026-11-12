@@ -105,16 +105,10 @@ test('connexion, menu complet, choix du contexte et déconnexion sans contenu Sh
   await page.screenshot({ path: test.info().outputPath('dashboard.png') })
   const menu = page.getByRole('button', { name: 'Ouvrir le menu' })
   if (await menu.isVisible()) await menu.click()
-  for (const name of [
-    'Pages',
-    'Articles',
-    'Séjours',
-    'Landing Pages',
-    'Composants du site',
-    'Tarifs',
-  ]) {
+  for (const name of ['Pages', 'Séjours', 'Landing Pages', 'Composants du site', 'Tarifs']) {
     await expect(page.getByRole('button', { name: `${name} Bientôt`, exact: true })).toBeDisabled()
   }
+  await expect(page.getByRole('link', { name: 'Articles', exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Catégories', exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Connexion', exact: true })).toBeVisible()
