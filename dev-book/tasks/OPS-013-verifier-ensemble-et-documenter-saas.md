@@ -1,8 +1,7 @@
 # OPS-013 — Vérifier l’ensemble SaaS et documenter son usage
 
 - Demande : DEM-005 ; type : développement
-- Brouillon de référence : `tmp/demande-dashboard-saas.md`, relatif au dépôt principal, hors du worktree ; ne pas le copier.
-- Demande définitive prévue : `dev-book/demand/DEM-005-dashboard-saas.md`, créée seulement à la reconstitution ; fichier actuellement absent, lien à ajouter alors.
+- Document de référence : [DEM-005](../demand/DEM-005-dashboard-saas.md).
 - Session de création et de reprise : 01a1ca56-891a-7700-97c6-a576d3d9a615
 - Couche : devops ; branche : layers/devops ; worktree : worktree/devops
 - Base locale de reprise : `37f3bae6a09fcf98244173e4f5a2a26900b16a0c` ; aucun fetch.

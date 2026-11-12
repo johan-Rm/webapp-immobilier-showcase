@@ -1,8 +1,7 @@
 # OPS-010 — Fixer les contrats SaaS et les missions backend externes
 
 - Demande : DEM-005 ; type : développement
-- Brouillon de référence : `tmp/demande-dashboard-saas.md`, relatif au dépôt principal, hors du worktree ; ne pas le copier.
-- Demande définitive prévue : `dev-book/demand/DEM-005-dashboard-saas.md`, créée seulement à la reconstitution ; fichier actuellement absent, lien à ajouter alors.
+- Document de référence : [DEM-005](../demand/DEM-005-dashboard-saas.md).
 - Session de création : 01a1ca56-891a-7700-97c6-a576d3d9a615
 - Couche : devops
 - Branche : layers/devops
