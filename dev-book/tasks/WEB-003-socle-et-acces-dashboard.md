@@ -8,7 +8,7 @@
 - Branche : layers/web
 - Worktree : worktree/web
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée et commitée localement ; à livrer
+- État : validée et commitée localement ; à livrer ; correction implémentée, non commitée, à vérifier
 - Chemins autorisés : `webapp/dashboard/`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/layers/dashboard.vitest.ts`, cette carte
 - Dépendances de réalisation : OPS-010 `5eee4c05ad298775d509a1469b5642a1517699df`, OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : commits de contrat, composition et Domaine identifiés ci-dessus ; aucun fichier non commité consommé.
@@ -95,3 +95,42 @@ Commit d’implémentation validée : `f3398f8cc12474640737887b77e16d0ca7afe90d`
 Complément documentaire limité à la trace du SHA et de l’état ; WEB-004/005 hors index.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
+
+## Complément fonctionnel du 2026-11-12
+
+Même session réelle de création ; reprise de DEM-005, sans consolidation.
+Base `2286109212a2f1dbf01323155f0f23ebb8a37789`, `layers/web`, index vide avant écriture.
+Les changements de cette reprise sont identifiés ; aucun travail étranger consommé.
+
+Le transport d’URL dynamique précise son paramètre de requête `$fetch<T, string>`
+pour conserver le type de réponse générique quand Nitro connaît les routes réelles.
+Aucun changement de requête, authentification ou comportement HTTP. Le fixture de
+layer copie maintenant le serveur BFF commité pour permettre les contrôles futurs
+du sélectionneur sans masquer les routes historiques à exclure.
+
+Snapshot indépendant `/tmp/dem005-acces-types`, uniquement amonts committés et ces
+deux fichiers Web. Une déclaration Nitro de fixture pointe sur le handler session
+BFF commité, sans consommer le sélectionneur DevOps non commité : contrôle de types
+dashboard réussi (`GD_TARGET=dashboard bun --no-env-file run type-check`). Cette
+configuration de fixture est ensuite remplacée par la configuration DevOps commitée
+pour `vitest run tests/layers/dashboard.vitest.ts` : test réussi avec vrai build du
+dashboard. ESLint ciblé sans warning. Logs `/tmp/dem005-acces-{types,tests}.log`.
+Le contrôle d’ensemble d’OPS-011 doit reprendre depuis ce correctif commité.
+
+État présenté : 2 fichiers de réalisation, plus cette carte ;
+manifestes de chemins et SHA-256 : `/tmp/dem005-web-003-raccordement-manifest.json`.
+Empreinte triée chemin UTF-8, octet nul puis contenu, carte exclue :
+`0fcf828ebe7b93791a5ced066aaf9f4a12361b4dd911daad471d09fd2d0845e4`.
+Aucun commit ni verdict humain créé à cette étape. Les verdicts et commits antérieurs
+restent inchangés et ne valident pas ce complément.
+
+Contrôle documentaire et cadre final : `make aide-check` depuis cette couche,
+111 tests réussis, structure et liens conformes ; `git diff --check` conforme.
+Log `/tmp/dem005-web-raccordement-aide.log`.
+
+## Verdict humain — complément fonctionnel
+
+Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléments
+WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
+correspondent aux empreintes présentées avant indexation ; aucune correction
+fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.
