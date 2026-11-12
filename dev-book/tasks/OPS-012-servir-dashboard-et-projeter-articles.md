@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd` ; aucun fetch.
-- État : service/vhost et projection validés et commités localement, à livrer ; intégration réelle à vérifier dans OPS-013
+- État : service/vhost et projection validés et commités localement, à livrer ; intégration réelle à vérifier dans OPS-013 ; correction implémentée, non commitée, à vérifier
 - Chemins autorisés : `infra/docker/`, `infra/nginx/`, `infra/make/Makefile.dev`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/`, `webapp/scripts/saas/`, `webapp/scripts/content-sync.ts`, `webapp/scripts/README.md`, cette carte
 - Dépendances de réalisation : OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`, WEB-003 `f3398f8cc12474640737887b77e16d0ca7afe90d`, WEB-004 `c276814c2a95fec82c9f9f586cbd7e7c7dd9a608` pour le service ; BFF-004 `1e52c1034578636c2a340d936b377d8d83132ef5` pour export/projection
 - Commits nécessaires : commits identifiés ci-dessus ; API Symfony existante inchangée, aucun commit backend requis.
@@ -171,3 +171,35 @@ sans valider DEM-005 entière ni les travaux fonctionnels restant ouverts.
 Commit local de la projection validée : `9e9be7517117eff97fbc7974e3e7a60fc13a921b`.
 Cette trace complète le verdict sans changement fonctionnel. OPS-013 reste hors index ;
 aucun push, PR, fusion ni démarrage de l’étape suivante.
+
+## Complément fonctionnel du 2026-11-12
+
+Même session réelle de création ; reprise de DEM-005, sans consolidation.
+Base `c58af06562e3f0288c99625f5862b2ed28bf4f4d`, `layers/devops`, index vide avant écriture.
+Les changements de cette reprise sont identifiés ; aucun travail étranger consommé.
+
+Le SSR Client 2 reçoit maintenant explicitement le même `SAAS_PROJECTION_PROJECT_ID`
+que le worker. Le contrat consommateur a été vérifié au commit WEB-005
+`a8cf67e7e9b2612929ad372cce060662dacca922`. Aucun secret nouveau ni `.env` copié.
+
+`python3 infra/nginx/test-local-vhosts.py --dashboard` : cinq compositions et cinq
+syntaxes Nginx réussies, identité du projet identique entre lecteur et worker,
+volumes toujours isolés et Client 2 en lecture seule. Log
+`/tmp/dem005-raccordements-compose.log`. Aucun service utilisateur démarré.
+Le parcours complet avec le dashboard attend les autres raccordements committés.
+
+État présenté : 2 fichiers de réalisation, plus cette carte ;
+manifestes de chemins et SHA-256 : `/tmp/dem005-ops-012-raccordement-manifest.json`.
+Empreinte triée chemin UTF-8, octet nul puis contenu, carte exclue :
+`7ce25a92b6f0e14810adcd673f4efd627ab2b224d1b84a09896a818c8b1a799f`.
+Aucun commit ni verdict humain créé à cette étape. Les verdicts et commits antérieurs
+restent inchangés et ne valident pas ce complément.
+
+Contrôles communs de couche : voir le complément [OPS-011](OPS-011-composer-cible-dashboard.md#complément-fonctionnel-du-2026-11-12).
+
+## Verdict humain — complément fonctionnel
+
+Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléments
+WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
+correspondent aux empreintes présentées avant indexation ; aucune correction
+fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.

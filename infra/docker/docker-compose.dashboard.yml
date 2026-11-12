@@ -45,6 +45,7 @@ services:
 
   client2-ssr:
     environment:
+      SAAS_PROJECTION_PROJECT_ID: ${SAAS_PROJECTION_PROJECT_ID:-}
       SAAS_PROJECTION_ROOT: /app/.data/saas-projection
       SAAS_PREVIEW_SECRET: ${SAAS_PREVIEW_SECRET:-}
     volumes:
