@@ -8,7 +8,7 @@
 - Branche : layers/web
 - Worktree : worktree/web
 - Base locale vérifiée : `5dc9fe796cb24a4bc5d604835c4092e8a309e6dd` ; aucun fetch.
-- État : validée et commitée localement ; à livrer ; correction implémentée, non commitée, à vérifier
+- État : validée et commitée localement ; à livrer ; complément validé et commité localement, à livrer
 - Chemins autorisés : `webapp/dashboard/`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/layers/dashboard.vitest.ts`, cette carte
 - Dépendances de réalisation : OPS-010 `5eee4c05ad298775d509a1469b5642a1517699df`, OPS-011 `f3664dd5a92a2202a285f3e04de9ba13ebf72863`, DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929`
 - Commits nécessaires : commits de contrat, composition et Domaine identifiés ci-dessus ; aucun fichier non commité consommé.
@@ -134,3 +134,7 @@ Validation explicite du 2026-11-12 : « validé », couvrant les seuls compléme
 WEB-003, OPS-012 et BFF-003 présentés et leurs limites sur fixtures. Les fichiers
 correspondent aux empreintes présentées avant indexation ; aucune correction
 fonctionnelle depuis la restitution. OPS-011 et OPS-013 sont hors de ce verdict.
+
+Commit local du complément validé : `ba6db7dc4a73f7df780a947a80c626211482ba63`.
+Cette trace ne modifie aucune fonctionnalité ; les autres compléments restent
+hors de ce commit. Aucun push, PR, fusion ou passage automatique à l’étape suivante.
