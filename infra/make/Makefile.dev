@@ -146,6 +146,7 @@ DASHBOARD_COMPOSE := docker compose --project-directory . --env-file webapp/.env
 .PHONY: dev-dashboard-ssr dev-build-dashboard-ssr dev-check-dashboard-ssr
 
 dev-dashboard-ssr: dev-env
+	python3 infra/scripts/saas_projection_path.py
 	$(DASHBOARD_COMPOSE) up $(if $(BUILD),--build) webapp-ssr client2-ssr dashboard-ssr nginx
 
 dev-build-dashboard-ssr:
@@ -156,3 +157,23 @@ dev-check-dashboard-ssr:
 	ssr_address="$$( $(DASHBOARD_COMPOSE) port nginx 80 )"; \
 	ssr_layer="$$( $(DASHBOARD_COMPOSE) exec -T nginx printenv AIDE_LAYER )"; \
 	python3 infra/scripts/check-local-ssr.py --port "$${ssr_address##*:}" --layer "$${ssr_layer}" --dashboard
+
+.PHONY: dev-saas-project-prepare dev-build-saas-projector dev-saas-project-dry dev-saas-project dev-saas-project-watch
+
+dev-saas-project-prepare:
+	python3 infra/scripts/saas_projection_path.py --prepare
+
+dev-build-saas-projector:
+	$(DASHBOARD_COMPOSE) build saas-projector
+
+# Le dry-run natif ne crée aucun dossier ; aucun service n’est démarré.
+dev-saas-project-dry:
+	cd webapp && bun --no-env-file scripts/saas/project.ts --dry-run
+
+dev-saas-project:
+	python3 infra/scripts/saas_projection_path.py
+	$(DASHBOARD_COMPOSE) run --rm --no-deps saas-projector bun --no-env-file scripts/saas/project.ts --once
+
+dev-saas-project-watch:
+	python3 infra/scripts/saas_projection_path.py
+	$(DASHBOARD_COMPOSE) run --rm --no-deps saas-projector bun --no-env-file scripts/saas/project.ts --watch

@@ -31,6 +31,7 @@ reconstruit pas les images fournies.
 
 L’extension `infra/docker/docker-compose.dashboard.yml` active le service et le domaine
 `dashboard.<suffixe>.localhost` sur le même port public, avec ses données séparées.
+Préparer le volume publié selon le [guide du projecteur](../../webapp/scripts/README.md#projection-publiée-saas--client-2).
 Depuis la racine : `make dev-dashboard-ssr BUILD=1`, puis
 `make dev-check-dashboard-ssr`. Dans une couche, utiliser son `.env` et son port isolés.
 Les commandes historiques gardent leurs deux sites ; aucun `.env` n’est réécrit par l’extension.
