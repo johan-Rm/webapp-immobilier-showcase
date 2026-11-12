@@ -8,7 +8,7 @@
 - Branche : layers/bff
 - Worktree : worktree/bff
 - Base locale vérifiée : `d0ca9571b98e66ef6fc6218c51710696cd82ed78` ; aucun fetch.
-- État : validée ; commit local en attente
+- État : validée et commitée localement ; reste à livrer
 - Chemins autorisés : `webapp/server/api/saas/projects/`, `webapp/server/utils/saas/articles/`, `webapp/server/utils/saas/media/`, `webapp/server/utils/saas/categories/`, `webapp/server/tests/saas-editor.vitest.ts`, cette carte
 - Dépendances de réalisation : DOM-001, BFF-002 ; API Symfony existante inchangée
 - Commits vérifiés : DOM-001 `8c1000ecc9996cd3632a323fd1ed49604ad4e929` ; BFF-002 `e9b922ac3be8d1106b812e665264e5988194f6c7`, trace `d0ca9571b98e66ef6fc6218c51710696cd82ed78`.
@@ -147,6 +147,8 @@ La carte BFF-004 reste exclue du commit.
 
 ## Commits
 
-Commit local autorisé par le verdict ci-dessus ; SHA à relever après sa création.
+Implémentation et verdict : `88ce086914fd34efe006535a5c5f68f1c0a3d6fa`.
+Le présent complément documentaire relève ce SHA, sans changement fonctionnel.
+Les limites indiquées plus haut restent ouvertes. Aucun push, PR ou merge effectué.
 La réunion globale est prévue dans le principal libre et propre, branche `demands/DEM-005`
 créée seulement à la reconstitution depuis develop local vérifié.
