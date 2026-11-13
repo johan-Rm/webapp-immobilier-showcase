@@ -3,7 +3,7 @@ export LAYER BASE HEAD IMAGE
 export AIDE_REPO := $(CURDIR)
 
 # Un seul verbe et au plus un argument positionnel ; aucune règle attrape-tout.
-aide_actions := $(filter lane-up lane-down lane-logs lane-rebuild demands tasks,$(MAKECMDGOALS))
+aide_actions := $(filter lane-up lane-down lane-logs lane-rebuild lane-status demands tasks,$(MAKECMDGOALS))
 ifneq ($(strip $(aide_actions)),)
 ifneq ($(words $(aide_actions)),1)
 $(error Choisir une seule commande de lane ou de consultation)
@@ -16,7 +16,7 @@ ifneq ($(strip $(aide_operand)),)
 ifneq ($(strip $(LAYER)),)
 $(error Ne pas combiner argument positionnel et LAYER)
 endif
-ifneq ($(filter lane-up lane-down lane-logs lane-rebuild,$(aide_actions)),)
+ifneq ($(filter lane-up lane-down lane-logs lane-rebuild lane-status,$(aide_actions)),)
 aide_layers := $(shell python3 -c 'import json; print(" ".join(json.load(open("infra/config/layers.json"))["layers"]))')
 ifeq ($(filter $(aide_layers),$(aide_operand)),)
 $(error Couche inconnue ; consulter infra/config/layers.json)
@@ -64,12 +64,15 @@ lane-up:
 lane-down:
 	@python3 -B infra/scripts/lanes.py down
 
-.PHONY: lane-logs lane-rebuild demands tasks
+.PHONY: lane-logs lane-rebuild lane-status demands tasks
 lane-logs:
 	@python3 -B infra/scripts/lanes.py logs
 
 lane-rebuild:
 	@python3 -B infra/scripts/lanes.py rebuild
+
+lane-status:
+	@python3 -B infra/scripts/lanes.py status
 
 demands:
 	@python3 -B infra/scripts/demand_status.py demands
