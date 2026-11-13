@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -5,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test'
 
 import {
+  applyTemporaryException,
   checkFile,
   extractScriptBlock,
   findViolations,
@@ -211,5 +213,53 @@ describe('checkFile', () => {
 
   test('retourne [] si le fichier est illisible', () => {
     expect(checkFile('/nonexistent/File.vue')).toHaveLength(0)
+  })
+})
+
+describe('exception temporaire Dashboard DEM-007', () => {
+  const content = '<script setup lang="ts">\n// 1. Imports\n</script>'
+  const entry = {
+    path: 'dashboard/app/components/Probe.vue',
+    sha256: createHash('sha256').update(content).digest('hex'),
+    missing: Array.from({ length: 11 }, (_, i) => i + 2),
+    demande: 'DEM-007',
+  }
+  const inspect = (text = content, path = entry.path, entries = [entry]) => {
+    const file = write(path, text)
+    return applyTemporaryException(file, text, checkFile(file), entries, TMP)
+  }
+  test('seul le contenu exact et son constat sont tolérés', () => {
+    expect(inspect()).toEqual({ violations: [], tolerated: true })
+  })
+  test('contenu modifié, chemin voisin et sections différentes restent bloquants', () => {
+    for (const result of [
+      inspect(content + '\n'),
+      inspect(content, 'dashboard/app/pages/New.vue'),
+      inspect(content, entry.path, [{ ...entry, missing: [2] }]),
+      inspect(content, entry.path, [{ ...entry, demande: 'DEM-008' }]),
+    ]) {
+      expect(result.tolerated).toBe(false)
+      expect(result.violations.some((violation) => violation.rule === 1)).toBe(true)
+    }
+  })
+  test('un fichier corrigé sort de la tolérance', () => {
+    expect(inspect('<script setup lang="ts">' + ALL_SECTIONS + '</script>')).toEqual({
+      violations: [],
+      tolerated: false,
+    })
+  })
+  test('une référence exacte ne masque jamais le mauvais ordre', () => {
+    const text = '<script setup lang="ts">\n// 2. Types\n// 1. Imports\n</script>'
+    const file = write(entry.path, text)
+    const entries = [
+      {
+        ...entry,
+        sha256: createHash('sha256').update(text).digest('hex'),
+        missing: Array.from({ length: 10 }, (_, i) => i + 3),
+      },
+    ]
+    const result = applyTemporaryException(file, text, checkFile(file), entries, TMP)
+    expect(result.tolerated).toBe(true)
+    expect(result.violations.map((violation) => violation.rule)).toEqual([2])
   })
 })

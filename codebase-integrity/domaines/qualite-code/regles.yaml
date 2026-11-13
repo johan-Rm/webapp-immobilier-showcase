@@ -6,6 +6,80 @@ rules:
     sectionCount: 12
     sectionPattern: "^\\s*\\/\\/\\s*(\\d+)\\.\\s"
 
+    temporaryExceptions:
+      - path: dashboard/app/components/dashboard/AccessForm.vue
+        sha256: 138b3395f8e9de0fe94bd92ece977b4cc5fdcf4b68a46ca932790ffdc4f0b8cb
+        missing: [1, 2, 5, 6, 7, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/Administration.vue
+        sha256: a93873ec86a4b0c35fe5368cceb19f2b2c1773ea5948a74ac220e0fadb4580a3
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ArticleActions.vue
+        sha256: bd25d0259168c36415bf8d8d0ef274cab9697878d4b3d3681976df17ced5147b
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ArticleBlocks.vue
+        sha256: d79ce645654670d3e98206594b02b9037818c5afacce07b2a772bd95bb6e7189
+        missing: [1, 3, 5, 6, 7, 8, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ArticleFields.vue
+        sha256: 43e19bff5d07150eaaa78f156c35f9621ea12ba6328f8032460c821369f7c9b2
+        missing: [1, 2, 3, 5, 6, 7, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ArticleList.vue
+        sha256: 1f9bc15e7593177b10a5b8f428ed5b0a8b2fc34739e528b2fbe3d32e51821682
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ArticleResources.vue
+        sha256: 7343985f539d447999f4eae47247455578b767592d07ce251a5e338074e86ebc
+        missing: [1, 2, 3, 5, 6, 7, 8, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/Articles.vue
+        sha256: 15b8c24f1ae1afd7419ef6cb50bb3239cefda940b5ce1848ebca0c4aa858a941
+        missing: [1, 2, 3, 5, 6, 7, 8, 11]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/ContextPicker.vue
+        sha256: 75408234e3c2073d1bdf47694ee52a8837af15ef286af2d3f26e507562996c2f
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/Navigation.vue
+        sha256: e385dc19ec5f430593c0e7b1eac9b23979853b8d53f2067aa6e610dfd094d847
+        missing: [1, 2, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/Overview.vue
+        sha256: 309cbfc540275a68d795a1ead2e8ecfdd67748bb8fdff913065f79faf6d3970d
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/components/dashboard/RichText.vue
+        sha256: 8224fa1b06966e431d401cad7f9d7f5dc15761cb257859d96ed04dc056d1f06f
+        missing: [2, 6, 8, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/layouts/auth.vue
+        sha256: 54e7cae2a3f56bea56651d595b19d75deb21f8cf3071bb85f94a6717585c30fd
+        missing: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/layouts/default.vue
+        sha256: 5cd2244b2c793cab8524fcb02280ba3afb893913ce319a7b773f4eba0749054f
+        missing: [1, 2, 3, 6, 7, 8, 9, 10, 11, 12]
+        demande: DEM-007
+      - path: dashboard/app/pages/[access].vue
+        sha256: c6c753ab648a8ca58fe3cb9587ca0646a94cbc668dc7c5c0dad6f58ef540bfe1
+        missing: [1, 3, 5, 6, 7, 9, 10, 12]
+        demande: DEM-007
+      - path: dashboard/app/pages/administration.vue
+        sha256: d19a585327e70812e9b88a1963ac09090b5578a35887d009ebd55a734cee0789
+        missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
+        demande: DEM-007
+      - path: dashboard/app/pages/articles.vue
+        sha256: 807556bc98c395d37d5370c733df9e8e901ce55037db9758a73c6795ee180e50
+        missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
+        demande: DEM-007
+      - path: dashboard/app/pages/index.vue
+        sha256: 8c20720476511b239f2a07fc95c09e012275aa3714df7195c9a6f14d5e6ce2db
+        missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
+        demande: DEM-007
+
   - name: app-no-commented-code
     requiresManualReview: true
     severity: warning

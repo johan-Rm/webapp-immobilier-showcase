@@ -17,3 +17,16 @@ de Symfony. La sécurité réelle reste une responsabilité du BFF et de l’API
 Textes dans `i18n/locales/fr.json`, état et appels dans les composables ; les composants
 présentent les données. Les rubriques non réalisées restent affichées et indisponibles.
 Les preuves de raccordement réel aux accès attendent BFF-002 et OPS-013.
+
+Les contrôles frontend découvrent cette application via Git, même quand une autre
+cible est active. Les alias de types restent locaux à `dashboard/app/`.
+L'exception temporaire DEM-007 ne couvre que les sections manquantes (règle 1)
+des 18 contenus référencés dans les `temporaryExceptions` des
+[règles](../../codebase-integrity/domaines/qualite-code/regles.yaml).
+Chemin, SHA-256 et liste des sections doivent correspondre exactement ; chaque
+usage est affiché. Un contenu modifié ou un nouveau fichier reste contrôlé, et
+l'ordre des sections comme toutes les autres règles restent actifs. Un fichier
+corrigé ne consomme plus l'exception ; aucune extension automatique n'est autorisée.
+Le [guide](../../docs/2.architecture/6.script-setup-standard.md) permet l'omission
+de blocs inutiles tandis que le contrôle exige douze sections : cette divergence
+reste à arbitrer globalement ; cette tolérance locale ne la tranche pas.

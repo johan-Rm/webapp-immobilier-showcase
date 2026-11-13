@@ -100,6 +100,7 @@ export function loadValidationRule<T extends ValidationRuleBase & Record<string,
 export function frontendRelativePath(file: string, root = ROOT): string | null {
   const path = relative(root, file).replaceAll('\\', '/')
   if (path.startsWith('app/')) return path.slice(4)
+  if (path.startsWith('dashboard/app/')) return path.slice('dashboard/app/'.length)
   const site = path.match(/^sites\/[^/]+\/app\/(.+)$/)
   if (site) return site[1]!
   if (path.startsWith('base/real-estate/')) return path.slice('base/real-estate/'.length)
@@ -118,6 +119,7 @@ export function frontendAppRoot(file: string, root = ROOT): string | null {
   const site = path.match(/^sites\/[^/]+\/app(?:\/|$)/)
   if (site) return join(root, site[0])
   if (path.startsWith('app/')) return join(root, 'app')
+  if (path.startsWith('dashboard/app/')) return join(root, 'dashboard/app')
   return null
 }
 

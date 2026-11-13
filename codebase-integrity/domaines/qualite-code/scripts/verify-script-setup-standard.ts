@@ -26,6 +26,7 @@
  * Mode : erreur bloquante (exit 1)
  */
 
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 
@@ -36,7 +37,15 @@ import {
   loadValidationRule,
 } from '../../../commun/validation-rules'
 
+export type TemporaryException = {
+  path: string
+  sha256: string
+  missing: number[]
+  demande: string
+}
+
 type ScriptSetupRule = {
+  temporaryExceptions?: TemporaryException[]
   sectionCount?: number
   sectionPattern?: string
 }
@@ -146,6 +155,35 @@ export function checkFile(file: FilePath): Violation[] {
   return findViolations(sections, block.lineOffset, file)
 }
 
+export function applyTemporaryException(
+  file: string,
+  content: string,
+  violations: Violation[],
+  entries: TemporaryException[] = RULE.temporaryExceptions ?? [],
+  root = ROOT,
+): { violations: Violation[]; tolerated: boolean } {
+  const path = relative(root, file).replaceAll('\\', '/')
+  const block = extractScriptBlock(content)
+  if (!block || !violations.some((violation) => violation.rule === 1))
+    return { violations, tolerated: false }
+  const sections = scanSections(block.text)
+  const missing = Array.from({ length: SECTION_COUNT }, (_, i) => i + 1).filter(
+    (number) => !sections.has(number),
+  )
+  const digest = createHash('sha256').update(content).digest('hex')
+  const exact = entries.some(
+    (entry) =>
+      entry.demande === 'DEM-007' &&
+      entry.path === path &&
+      entry.sha256 === digest &&
+      JSON.stringify(entry.missing) === JSON.stringify(missing),
+  )
+  return {
+    violations: exact ? violations.filter((violation) => violation.rule !== 1) : violations,
+    tolerated: exact,
+  }
+}
+
 function rel(file: FilePath): string {
   return relative(ROOT, file)
 }
@@ -167,7 +205,12 @@ function report(violations: Violation[]): void {
 
 if (import.meta.main) {
   const files = collectVueFiles()
-  const violations = files.flatMap(checkFile)
+  const violations = files.flatMap((file) => {
+    const result = applyTemporaryException(file, readFileSync(file, 'utf-8'), checkFile(file))
+    if (result.tolerated)
+      process.stdout.write(`Exception temporaire DEM-007 (règle 1 uniquement) : ${rel(file)}\n`)
+    return result.violations
+  })
   report(violations)
   process.exit(violations.length > 0 ? 1 : 0)
 }
