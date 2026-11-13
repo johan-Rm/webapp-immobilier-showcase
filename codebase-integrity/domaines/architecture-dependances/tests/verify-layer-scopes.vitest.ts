@@ -32,6 +32,7 @@ describe('couverture frontend indépendante de la cible active', () => {
     const root = '/fixture/webapp'
     for (const path of [
       'app/',
+      'dashboard/app/',
       'sites/showcase-immobilier/app/',
       'sites/client2-immobilier/app/',
       'base/real-estate/',
@@ -53,12 +54,14 @@ describe('couverture frontend indépendante de la cible active', () => {
   it('limite précisément l’exception au wrapper à la racine des applications', () => {
     for (const path of [
       'app/components/AppImage.vue',
+      'dashboard/app/components/AppImage.vue',
       'sites/client2-immobilier/app/components/AppImage.vue',
     ]) {
       expect(isImageWrapper(join('/fixture', path), '/fixture')).toBe(true)
     }
     for (const path of [
       'app/pages/AppImage.vue',
+      'dashboard/app/components/fake/AppImage.vue',
       'app/components/fake/AppImage.vue',
       'base/real-estate/components/AppImage.vue',
     ]) {
@@ -80,6 +83,14 @@ describe('couverture frontend indépendante de la cible active', () => {
     }
   })
 
+  it('résout les alias Dashboard sans viser Showcase', () => {
+    const { app, file } = project()
+    const definition = file('dashboard/app/utils/contract.ts', 'export type Contract = string')
+    const consumer = file('dashboard/app/components/Probe.vue', '')
+    for (const alias of ['~/utils/contract', '@/utils/contract', '@utils/contract'])
+      expect(resolveImportPath(alias, consumer, app)).toBe(definition)
+  })
+
   it('résout les alias du catalogue dans son unique application consommatrice', () => {
     const { app, file } = project()
     const definition = file(
@@ -94,6 +105,7 @@ describe('couverture frontend indépendante de la cible active', () => {
     const { root, app, file } = project()
     const paths = [
       'app/components/Probe.vue',
+      'dashboard/app/components/Probe.vue',
       'sites/showcase-immobilier/app/pages/Probe.vue',
       'sites/client2-immobilier/app/components/Probe.vue',
       'base/real-estate/components/screen/Probe.vue',

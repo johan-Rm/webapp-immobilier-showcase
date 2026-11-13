@@ -59,7 +59,7 @@
           "etat": "implémenté",
           "mode": "automatique",
           "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-script-setup-standard.ts",
-          "limite": "Vérification limitée au périmètre du script ; aucun résultat de passage n’est enregistré dans ce registre."
+          "limite": "Périmètre frontend incluant Dashboard. Exception temporaire DEM-007 bornée aux sections manquantes de 18 contenus exacts (règles YAML), rapportée à chaque usage ; ordre et autres règles actifs. Divergence sur les blocs inutiles encore à arbitrer."
         }
       ]
     },
