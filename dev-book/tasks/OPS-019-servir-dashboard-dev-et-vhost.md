@@ -9,7 +9,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `669db107aaf2eb9728a8faf68c018b4b238887a1` ; aucun fetch.
-- État : validée humainement ; commit local en cours, à livrer
+- État : validée et commitée localement, à livrer
 - Chemins autorisés : `infra/docker/docker-compose.dashboard-dev.yml`, `infra/nginx/dashboard-dev.conf.template`, `infra/nginx/README.md`, `infra/scripts/lanes.py`, `infra/tests/test_lanes.py`, `infra/tests/test_dashboard_lane.py`, `codebase-integrity/domaines/construction-livraison/scripts/environment.py`, `codebase-integrity/domaines/construction-livraison/tests/test_environment.py`, `codebase-integrity/conventions.json`, `worktree/README.md`, `docs/2.architecture/14.site-layers.md`, cette carte.
 - Dépendance consommée : OPS-018 `28b798f3e1b94d3940fd5b623261778e388d100d`, trace `669db10` ; présents dans HEAD.
 - Vérification globale : OPS-020 pour les preuves runtime ; OPS-021 pour la couverture frontend finale.
@@ -77,6 +77,7 @@ de `infra/tests/test_dashboard_lane.py` ; aucune instruction de test modifiée.
 
 ## Commits
 
-Aucun commit. Après validation humaine, tracer les SHA réels. Reconstitution prévue
+Commit d’implémentation validée : `0fa9f63244386ee2a39ac13a69037fba30770477`.
+Cette trace documentaire est consignée séparément. Reconstitution prévue
 dans le principal libre et propre, `demands/DEM-007` depuis develop vérifié, sans
 copie de réunion ; retour sur develop après intégration distante.
