@@ -3,10 +3,10 @@ export LAYER BASE HEAD IMAGE
 export AIDE_REPO := $(CURDIR)
 
 # Un seul verbe et au plus un argument positionnel ; aucune règle attrape-tout.
-aide_actions := $(filter lane-up lane-down lane-logs lane-rebuild,$(MAKECMDGOALS))
+aide_actions := $(filter lane-up lane-down lane-logs lane-rebuild demands tasks,$(MAKECMDGOALS))
 ifneq ($(strip $(aide_actions)),)
 ifneq ($(words $(aide_actions)),1)
-$(error Choisir une seule commande de lane)
+$(error Choisir une seule commande de lane ou de consultation)
 endif
 aide_operand := $(filter-out $(aide_actions),$(MAKECMDGOALS))
 ifneq ($(filter-out 0 1,$(words $(aide_operand))),)
@@ -21,6 +21,18 @@ aide_layers := $(shell python3 -c 'import json; print(" ".join(json.load(open("i
 ifeq ($(filter $(aide_layers),$(aide_operand)),)
 $(error Couche inconnue ; consulter infra/config/layers.json)
 endif
+else ifeq ($(aide_actions),tasks)
+aide_number := $(patsubst DEM-%,%,$(aide_operand))
+aide_nondigits := $(subst 9,,$(subst 8,,$(subst 7,,$(subst 6,,$(subst 5,,$(subst 4,,$(subst 3,,$(subst 2,,$(subst 1,,$(subst 0,,$(aide_number)))))))))))
+ifneq ($(aide_nondigits),)
+$(error Identifiant de demande invalide ; exemple : DEM-005)
+endif
+ifeq ($(filter DEM-%,$(aide_operand)),)
+$(error Demande attendue : make tasks DEM-005)
+endif
+endif
+ifeq ($(aide_actions),demands)
+$(error make demands ne prend pas d'argument)
 endif
 .PHONY: $(aide_operand)
 $(aide_operand):
@@ -52,12 +64,18 @@ lane-up:
 lane-down:
 	@python3 -B infra/scripts/lanes.py down
 
-.PHONY: lane-logs lane-rebuild
+.PHONY: lane-logs lane-rebuild demands tasks
 lane-logs:
 	@python3 -B infra/scripts/lanes.py logs
 
 lane-rebuild:
 	@python3 -B infra/scripts/lanes.py rebuild
+
+demands:
+	@python3 -B infra/scripts/demand_status.py demands
+
+tasks:
+	@python3 -B infra/scripts/demand_status.py tasks
 
 aide-check:
 	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py

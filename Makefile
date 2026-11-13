@@ -23,6 +23,8 @@ help:
 	@printf "  lane-down COUCHE           Arrêter sa pile, conserver les données\n"
 	@printf "  lane-logs COUCHE           Suivre les logs de sa pile\n"
 	@printf "  lane-rebuild COUCHE        Reconstruire puis relancer\n"
+	@printf "  demands                    Demandes locales non livrées ou état incertain\n"
+	@printf "  tasks [DEM-NNN]            Cartes en cours ou détail d’une demande\n"
 	@printf "  quality-check               Lint + Format + Type Check\n"
 	@printf "  quality-lint-check          ESLint\n"
 	@printf "  quality-lint-fix            ESLint Fix\n"
