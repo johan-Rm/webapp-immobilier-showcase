@@ -9,7 +9,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `71efe4950c25246bacce5583e16f64063a6dfc77` ; aucun fetch.
-- État : validée humainement ; commit local en cours, à livrer
+- État : validée et commitée localement, à livrer
 - Chemins autorisés : `codebase-integrity/commun/validation-rules.ts`, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, `codebase-integrity/domaines/architecture-dependances/tests/verify-layer-scopes.vitest.ts`, `codebase-integrity/domaines/architecture-dependances/scripts/verify-types-placement.ts`, `codebase-integrity/domaines/qualite-code/regles.yaml`, `codebase-integrity/domaines/qualite-code/scripts/verify-script-setup-standard.ts`, `codebase-integrity/domaines/qualite-code/tests/verify-script-setup-standard.test.ts`, `webapp/dashboard/README.md`, cette carte.
 - Dépendances de réalisation : aucune dépendance de code initiale ; ordre humain après OPS-020, sans en faire une dépendance inverse.
 - Vérification globale : Les preuves finales de cette carte ne valent pas validation humaine.
@@ -89,6 +89,7 @@ aucun changement fonctionnel supplémentaire.
 
 ## Commits
 
-Aucun commit. Après validation humaine, tracer les SHA réels. Reconstitution prévue
+Commit d’implémentation validée : `7c5a6108d06e02aff76edfb2803b50e097749855`.
+Cette trace documentaire est consignée séparément. Reconstitution prévue
 dans le principal libre et propre, `demands/DEM-007` depuis develop vérifié, sans
 copie de réunion ; retour sur develop après intégration distante.
