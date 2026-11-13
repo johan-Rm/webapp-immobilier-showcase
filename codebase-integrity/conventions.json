@@ -254,7 +254,7 @@
           "etat": "implémenté",
           "mode": "automatique",
           "fichier": "codebase-integrity/domaines/construction-livraison/scripts/environment.py",
-          "limite": "Validation des chemins, identités et ports ; la preuve de fonctionnement reste check_runtime.py, sans isolation de Symfony."
+          "limite": "Validation des chemins, identités et ports, y compris caches et sessions Dashboard ; les preuves HMR et navigateur restent à établir dans OPS-020, sans isolation de Symfony."
         },
         {
           "id": "worktree-creation",

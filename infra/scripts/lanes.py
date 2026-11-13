@@ -45,13 +45,27 @@ def run(action, layer, cwd=None, build=False):
         raise ValueError('Environnement absent ou incohérent ; conservé. Vérifier avec make -C '
                          + shlex.quote(str(tree)) + ' lane-check LAYER=' + layer
                          + ' ; préparer avec la même commande lane-env au lieu de lane-check.') from None
+    settings = json.loads((tree / 'infra/config/layers.json').read_text())['layers'][layer]
+    compose_file = settings.get('devComposeFile', 'infra/docker/docker-compose.dev.yml')
+    services = settings.get('devServices', ['webapp-localhost'])
+    if not isinstance(compose_file, str):
+        raise ValueError('Composition de développement invalide')
+    relative = Path(compose_file)
+    if relative.is_absolute() or '..' in relative.parts or not compose_file.startswith('infra/docker/'):
+        raise ValueError('Composition de développement invalide')
+    if (tree / relative).is_symlink() or not (tree / relative).is_file():
+        raise ValueError('Composition de développement absente ou symbolique')
+    if not isinstance(services, list) or not services or any(
+            not isinstance(service, str) or not re.fullmatch(r'[a-z][a-z0-9-]*', service)
+            for service in services):
+        raise ValueError('Services de développement invalides')
     # Le nom validé du .env prime sur un éventuel COMPOSE_PROJECT_NAME hérité du shell.
     compose = ['docker', 'compose', '--project-name', values['COMPOSE_PROJECT_NAME'],
                '--project-directory', '.', '--env-file', 'webapp/.env',
-               '-f', 'infra/docker/docker-compose.dev.yml']
+               '-f', compose_file]
     commands = {
-        'up': ['up', '-d', *(['--build'] if build else []), 'webapp-localhost'],
-        'rebuild': ['up', '-d', '--build', '--force-recreate', 'webapp-localhost'],
+        'up': ['up', '-d', *(['--build'] if build else []), *services],
+        'rebuild': ['up', '-d', '--build', '--force-recreate', *services],
         'down': ['down'],
         'logs': ['logs', '-f', '--tail', '200'],
     }

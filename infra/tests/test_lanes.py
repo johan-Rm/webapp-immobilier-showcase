@@ -31,6 +31,8 @@ class Lanes(unittest.TestCase):
         for relative in ['Makefile', 'infra/make/Makefile.ai-development-engineering',
                          'infra/make/Makefile.dev', 'infra/make/Makefile.preprod',
                          'infra/make/Makefile.prod', 'infra/config/layers.json',
+                         'infra/docker/docker-compose.dev.yml',
+                         'infra/docker/docker-compose.dashboard-dev.yml',
                          'webapp/.env.example']:
             target = self.root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -67,6 +69,43 @@ class Lanes(unittest.TestCase):
         self.assertIn('--force-recreate', calls[2][0])
         self.assertNotIn('--volumes', calls[3][0])
         self.assertEqual((self.tree / 'webapp/.env').read_bytes(), before)
+
+    def test_dashboard_actions_select_dedicated_composition_and_two_services(self):
+        tree = self.root / 'worktree/dashboard'
+        self.git('worktree', 'add', '-qb', 'layers/dashboard', str(tree))
+        validator = ROOT / 'codebase-integrity/domaines/construction-livraison/scripts/environment.py'
+        subprocess.run(['python3', '-B', str(validator), 'prepare', '--layer', 'dashboard'],
+                       cwd=tree, check=True, capture_output=True)
+        real_run = subprocess.run
+        calls = []
+        def execute(argv, **kwargs):
+            if argv[0] == 'docker':
+                calls.append(argv)
+                return subprocess.CompletedProcess(argv, 0)
+            return real_run(argv, **kwargs)
+        with patch.object(lanes.subprocess, 'run', side_effect=execute):
+            for action in ('up', 'rebuild', 'logs', 'down'):
+                self.assertEqual(lanes.run(action, 'dashboard', self.root), 0)
+        for command in calls:
+            self.assertEqual(command[command.index('-f') + 1],
+                             'infra/docker/docker-compose.dashboard-dev.yml')
+        for command in calls[:2]:
+            self.assertEqual(command[-2:], ['webapp-localhost', 'nginx'])
+        self.assertNotIn('--volumes', calls[-1])
+        self.assertEqual(self.make('lane-up', 'dashboard').returncode, 0)
+
+    def test_invalid_runtime_configuration_is_refused(self):
+        path = self.tree / 'infra/config/layers.json'
+        original = json.loads(path.read_text())
+        for change in ({'devComposeFile': '../foreign.yml'},
+                       {'devComposeFile': None},
+                       {'devComposeFile': 'infra/docker/absent.yml'},
+                       {'devServices': []}, {'devServices': ['--build']}):
+            config = json.loads(json.dumps(original))
+            config['layers']['web'].update(change)
+            path.write_text(json.dumps(config))
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                lanes.run('up', 'web', self.root)
 
     def test_missing_environment_does_not_start_or_create(self):
         (self.tree / 'webapp/.env').unlink()

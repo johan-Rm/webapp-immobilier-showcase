@@ -69,6 +69,16 @@ def inside(tree, relative):
     return path
 
 
+def dashboard_destinations(tree, layer):
+    if layer != 'dashboard':
+        return []
+    return [inside(tree, path) for path in (
+        'webapp/dashboard', 'webapp/dashboard/.nuxt', 'webapp/dashboard/.output',
+        'webapp/.data/dashboard', 'webapp/.data/dashboard/saas-sessions',
+        'webapp/.data/dashboard/saas-publication',
+        'webapp/.tmp/dashboard-cache')]
+
+
 def validate(cwd, layer):
     tree, identity, port, public_port = config(cwd, layer)
     env_path = inside(tree, 'webapp/.env')
@@ -86,6 +96,7 @@ def validate(cwd, layer):
     for relative in ['webapp/.nuxt', 'webapp/.output', 'webapp/.data', 'webapp/.tmp',
                      'webapp/node_modules', 'webapp/schemas/dtos', 'webapp/schemas/interfaces']:
         inside(tree, relative)
+    dashboard_destinations(tree, layer)
     # La source locale des schémas est montée sans écriture dans Compose.
     schema_source = values.get('SCHEMAS_PATH') or './webapp/schemas/source'
     inside(tree, schema_source)
@@ -98,6 +109,9 @@ def prepare_directories(tree, values):
         ('CONTENT_HOST_DIR', './webapp/content'),
         ('DATA_HOST_DIR', './webapp/.data'))]
     destinations.append(inside(tree, 'webapp/.tmp/playwright'))
+    destinations.extend(dashboard_destinations(tree, values.get('AIDE_LAYER')))
+    if values.get('AIDE_LAYER') == 'dashboard':
+        destinations.extend(inside(tree, path) for path in ('webapp/.nuxt', 'webapp/.output'))
     for path in destinations:
         path.mkdir(parents=True, exist_ok=True)
         if not os.access(path, os.W_OK):
@@ -132,9 +146,10 @@ def prepare(cwd, layer):
             template = pattern.sub(lambda _: key + '=' + value, template)
         else:
             template += '\n' + key + '=' + value + '\n'
+    dashboard_destinations(tree, layer)
     # Refuser les destinations dangereuses avant toute création de fichier.
     for relative in ['webapp/content', 'webapp/public/images', 'webapp/.data',
-                     'webapp/.nuxt', 'webapp/.tmp', 'webapp/node_modules']:
+                     'webapp/.nuxt', 'webapp/.output', 'webapp/.tmp', 'webapp/node_modules']:
         inside(tree, relative)
     with open(env_path, 'x', opener=lambda path, flags: os.open(path, flags, 0o600)) as handle:
         handle.write(template)

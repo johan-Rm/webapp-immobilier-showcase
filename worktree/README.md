@@ -110,6 +110,16 @@ Dashboard possède désormais son périmètre frontend et ses tests dédiés dan
 configuration ; l’affectation temporaire à Web de DEM-005 prend fin sans modifier
 les cartes historiques. Son worktree sera créé après validation des cartes de
 configuration et de services de DEM-007. `devComposeFile` et `devServices` déclarent
-sa composition de développement ; leur prise en charge reste à réaliser dans OPS-019.
+sa composition de développement, utilisée par `lane-up`, `lane-rebuild`,
+`lane-down` et `lane-logs`.
 Sans ces champs, les commandes conservent `infra/docker/docker-compose.dev.yml`
 et le service `webapp-localhost`.
+
+La composition Dashboard démarre uniquement Nuxt et Nginx ; sa configuration de
+proxy relaie les WebSockets, conserve le Host et refuse les autres hôtes (421).
+Les URL sont dans le [guide des sites](../docs/2.architecture/14.site-layers.md#construire-et-déployer).
+Les sorties `dashboard/.nuxt`, `dashboard/.output`, les caches et sessions locaux
+sont vérifiés contre les liens symboliques avant préparation ou démarrage.
+`lane-env LAYER=dashboard` prépare ces destinations et conserve tout `.env` existant.
+La preuve du rechargement dans le navigateur et le provisionnement effectif restent
+portés par OPS-020 ; cette configuration seule ne les prouve pas.
