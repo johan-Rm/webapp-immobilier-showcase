@@ -9,7 +9,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `d612567da5d7e225ace79b73eaf34c87e82a7c3b` ; aucun fetch.
-- État : validée humainement ; commit local en cours, à livrer
+- État : validée et commitée localement, à livrer
 - Chemins autorisés : `infra/config/layers.json`, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, `codebase-integrity/domaines/construction-livraison/scripts/check_commits.py`, `codebase-integrity/domaines/construction-livraison/tests/test_commits.py`, `codebase-integrity/domaines/construction-livraison/tests/test_layer_routing.py`, `codebase-integrity/domaines/construction-livraison/tests/test_worktrees.py`, `codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py`, `worktree/README.md`, cette carte.
 - Dépendances de réalisation : aucune ; base DEM-006 livrée d612567da5d7e225ace79b73eaf34c87e82a7c3b.
 - Vérification globale : OPS-020 pour les preuves runtime ; OPS-021 pour la couverture frontend finale.
@@ -47,8 +47,8 @@ destination occupée. Les restrictions du scope DEM restent testées.
 `git diff --check` réussi ; titres des deux README inchangés par rapport à HEAD.
 Le diff présenté porte sur les neuf fichiers suivis de cette carte ;
 `codebase-integrity/conventions.json` ne nécessite aucune modification.
-Cette carte est nouvelle et non suivie ; les trois autres cartes préparées
-restent conservées. Aucun verdict humain ni commit créé.
+Lors de la présentation, cette carte était nouvelle et non suivie ; les trois
+autres cartes préparées restent conservées hors du commit OPS-018.
 
 Les corrections et accompagnements sont déclarés dans le brouillon, sans recopier
 la déclaration dans chaque carte. Réconcilier ses chemins exacts avec le diff final ;
@@ -63,6 +63,7 @@ identité revérifiée avant ajout de cette trace. Aucun changement fonctionnel 
 
 ## Commits
 
-Aucun commit. Après validation humaine, tracer les SHA réels. Reconstitution prévue
+Commit d’implémentation validée : `28b798f3e1b94d3940fd5b623261778e388d100d`.
+Cette trace documentaire est consignée séparément. Reconstitution prévue
 dans le principal libre et propre, `demands/DEM-007` depuis develop vérifié, sans
 copie de réunion ; retour sur develop après intégration distante.
