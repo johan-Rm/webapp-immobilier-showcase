@@ -19,6 +19,7 @@ help:
 
 	@printf "🔧 Commandes communes\n\n"
 	@printf "  Cadre AIDE : AGENTS.md et skills AIDE\n"
+	@printf "  lane-status [COUCHE]       État local Git, Docker et missions\n"
 	@printf "  lane-up COUCHE             Démarrer une lane en développement\n"
 	@printf "  lane-down COUCHE           Arrêter sa pile, conserver les données\n"
 	@printf "  lane-logs COUCHE           Suivre les logs de sa pile\n"

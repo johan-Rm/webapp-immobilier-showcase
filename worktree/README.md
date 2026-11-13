@@ -14,6 +14,8 @@ Le routage des missions est défini dans [AGENTS.md](../AGENTS.md#conventions-de
 Depuis la racine, sans changer de dossier :
 
 ```bash
+make lane-status
+make lane-status web
 make lane-up web
 make lane-logs web
 make lane-rebuild web
@@ -40,6 +42,16 @@ la demande de la vue courante malgré les anciens états « à livrer » ; le fi
 `tasks DEM-NNN` permet aussi de consulter une demande déjà livrée. Sans preuve de
 clôture reconnue, la demande reste affichée avec son état déclaré, à examiner.
 Ces vues ne modifient aucun état et n’effectuent aucun fetch.
+
+`lane-status` affiche toutes les couches déclarées ou celle passée en argument :
+branche et HEAD, changements indexés/non indexés/non suivis, conteneurs Compose et
+cartes des demandes sans clôture reconnue. Les chemins sources et contradictions
+restent visibles. Sans carte identifiée, la disponibilité reste inconnue.
+Cette lecture fonctionne sans `.env` ; elle ne crée rien et n’effectue aucun fetch.
+Les projets Docker attendus sont calculés selon l’identité isolée du dépôt et de
+la couche. Un conteneur arrêté reste visible ; un projet absent et un daemon
+inaccessible sont distingués. Les conteneurs portant un nom de projet personnalisé
+hors de cette convention ne sont pas attribués automatiquement à une couche.
 
 Depuis le worktree affecté :
 
