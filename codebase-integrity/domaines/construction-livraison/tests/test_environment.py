@@ -68,6 +68,35 @@ class Environments(unittest.TestCase):
         for key in ['CONTENT_HOST_DIR', 'MEDIA_HOST_DIR', 'DATA_HOST_DIR']:
             self.assertNotEqual((first / one[key]).resolve(), (second / two[key]).resolve())
 
+    def test_dashboard_preparation_and_rerun_preserve_env(self):
+        lane = self.lane('dashboard')
+        path, created = env.prepare(lane, 'dashboard')
+        self.assertTrue(created)
+        original = path.read_bytes()
+        for destination in env.dashboard_destinations(lane, 'dashboard'):
+            self.assertTrue(destination.is_dir())
+        self.assertEqual(env.read_values(path)['WEBAPP_DEV_PORT'], '19305')
+        self.assertEqual(env.read_values(path)['PUBLIC_PORT'], '19405')
+        self.assertEqual(env.prepare(lane, 'dashboard'), (path, False))
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_dashboard_symlinks_refused_before_env_creation_and_on_validation(self):
+        lane = self.lane('dashboard')
+        target = lane / 'webapp/dashboard'
+        target.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            env.prepare(lane, 'dashboard')
+        self.assertFalse((lane / 'webapp/.env').exists())
+        target.unlink()
+        path, _ = env.prepare(lane, 'dashboard')
+        before = path.read_bytes()
+        sessions = lane / 'webapp/.data/dashboard/saas-sessions'
+        sessions.rmdir()
+        sessions.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            env.validate(lane, 'dashboard')
+        self.assertEqual(path.read_bytes(), before)
+
     def test_wrong_branch_preserves_principal_env(self):
         before = (self.root / 'webapp/.env').read_text()
         with self.assertRaisesRegex(ValueError, 'Branche'):

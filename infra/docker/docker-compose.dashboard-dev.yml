@@ -1,0 +1,70 @@
+services:
+  webapp-localhost:
+    build:
+      context: ./webapp
+      dockerfile: ../infra/docker/Dockerfile.dev
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    working_dir: /app
+    init: true
+    command: bun run dev -- --host 0.0.0.0 --port 3000
+    volumes:
+      - ./webapp/base:/app/base:ro
+      - ./webapp/sites:/app/sites
+      - ./webapp/server:/app/server
+      - ./webapp/shared:/app/shared
+      - ./webapp/services:/app/services
+      - ./webapp/nuxt.config.ts:/app/nuxt.config.ts
+      - ./webapp/tsconfig.json:/app/tsconfig.json:ro
+      - ./webapp/vitest.config.ts:/app/vitest.config.ts:ro
+      - ./webapp/tailwind.config.ts:/app/tailwind.config.ts:ro
+      - ./webapp/package.json:/app/package.json:ro
+      - ./webapp/eslint.config.ts:/app/eslint.config.ts:ro
+      - ./webapp/prettier.config.cjs:/app/prettier.config.cjs:ro
+      - ./codebase-integrity:/codebase-integrity:ro
+      - ./webapp/schemas:/app/schemas
+      - ./webapp/content:/app/content
+      - ./webapp/.data/dashboard:/app/.data
+      - ./webapp/dashboard:/app/dashboard
+      - ./webapp/.nuxt:/app/.nuxt
+      - ./webapp/.output:/app/.output
+      - ./webapp/.tmp/dashboard-cache:/app/node_modules/.cache
+      - ./webapp/public:/app/public
+      - ./webapp/scripts:/app/scripts
+      # Setup reads the existing host config; it must not create a container-only .env.
+      - ./webapp/.env:/app/.env:ro
+      - ./webapp/fixtures:/app/fixtures:ro
+      - ${SCHEMAS_PATH:-./webapp/schemas/source}:/opt/app-schemas:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${WEBAPP_DEV_PORT:-19305}:3000"
+    env_file:
+      - ./webapp/.env
+    environment:
+      GD_TARGET: dashboard
+      SAAS_SESSION_DIR: /app/.data/saas-sessions
+      SAAS_PUBLICATION_DIR: /app/.data/saas-publication
+      NODE_ENV: development
+      AIDE_WEBAPP_ROOT: /app
+      NODE_PATH: /app/node_modules
+      SCHEMAS_PATH: /opt/app-schemas
+      CONTENT_PATH: /app/content
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/connexion || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+
+  nginx:
+    image: nginx:1.27-alpine
+    environment:
+      NGINX_ENVSUBST_FILTER: ^DASHBOARD_HOST
+      DASHBOARD_HOST: dashboard.wt-dashboard.localhost
+    depends_on:
+      webapp-localhost:
+        condition: service_healthy
+    ports:
+      - "${PUBLIC_PORT:-19405}:80"
+    volumes:
+      - ./infra/nginx/dashboard-dev.conf.template:/etc/nginx/templates/default.conf.template:ro

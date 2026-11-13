@@ -43,3 +43,10 @@ Ajouter les trois options `--showcase-image`, `--client2-image`, `--dashboard-im
 le smoke HTTP isolé avec images locales. L’activation invalide est refusée avant démarrage.
 Ce service expose l’interface disponible ; les endpoints SaaS et la synchronisation des
 articles restent des dépendances distinctes, sans succès de connexion simulé.
+
+La composition de développement de la lane Dashboard utilise exclusivement
+`dashboard-dev.conf.template`, rendu par l'entrée standard de l'image Nginx.
+Seul `DASHBOARD_HOST` est substitué : les variables proxy et WebSocket restent
+intactes. Aucun cache immutable n'est ajouté aux ressources Nuxt ; les autres
+hôtes reçoivent 421. Les conventions et commandes restent dans le
+[guide des worktrees](../../worktree/README.md).
