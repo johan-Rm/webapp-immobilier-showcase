@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `3be9412613e4e75ea37748338547321d36563557` ; aucun fetch.
-- État : validée par l’humain ; commit local à créer ; aucune dépendance à DEM-007
+- État : validée et commitée localement ; à livrer ; aucune dépendance à DEM-007
 - Chemins autorisés : `worktree/README.md`, `dev-book/README.md`, cette carte
 - Dépendances de réalisation : OPS-014 `cf6da0f5bb84420f15a3bad3818c8dbf49448704`, OPS-015 `e5c1144e7580c8d79b92bd912d4d02d1f1618738`, OPS-016 `ca556a0f27d88bf930542ae1c8fb6e2c5de6cc80` ; traces `8eb206a` et `b9bb4fd`, présentes dans HEAD.
 - Dépendances de vérification globale : Aucune autre ; cette carte réunit les preuves globales.
@@ -91,6 +91,7 @@ seule la présente trace de verdict est ajoutée. Les limites présentées sont 
 
 ## Commits
 
-Aucun commit. Seule une validation humaine explicite autorise les commits de carte.
+Commit local de la carte validée : `f4f676e9daa2c30235c3f4b9798af87c1b3638fd`.
+Complément documentaire limité à cette trace du SHA et de l’état réel.
 La branche `demands/DEM-006` sera créée à la reconstitution depuis develop vérifié,
 dans le principal libre et propre ; retour sur develop après fusion distante.
