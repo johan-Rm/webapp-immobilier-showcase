@@ -323,3 +323,11 @@ plage depuis la cible distante vérifiée après ce commit.
 Résultat de la relance qualité isolée : réussi (lint, formatage et type-check),
 code 0 ; journal `/tmp/dem006-delivery-quality-isolated.log`. Les données locales
 inaccessibles n’ont été ni parcourues par cette relance ni modifiées.
+
+
+Contrôle de contribution après matérialisation : réussi sur la plage complète
+`3be9412613e4e75ea37748338547321d36563557..01ea06d`, huit commits, avec le
+vérificateur extrait de la base d’intégration ; aucun amorçage ni exception.
+Journal `/tmp/dem006-delivery-contribution.log`. Les quatre cartes sont validées,
+les contrôles locaux requis sont réussis ; les contrôles GitHub du HEAD publié
+restent à attendre avant Rebase and merge.
