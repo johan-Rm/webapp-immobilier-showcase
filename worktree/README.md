@@ -18,6 +18,9 @@ make lane-up web
 make lane-logs web
 make lane-rebuild web
 make lane-down web
+make demands
+make tasks
+make tasks DEM-006
 ```
 
 Les commandes de services ciblent le worktree Git enregistré de la couche déclarée
@@ -28,6 +31,15 @@ Un environnement absent ou incohérent provoque un diagnostic avec la préparati
 acceptés ; ne pas combiner l’argument positionnel avec `LAYER`. Les anciennes formes
 `make lane-up LAYER=web` et les appels depuis le worktree restent utilisables.
 L’arrêt conserve les données ; les logs suivent toute la pile jusqu’à Ctrl+C.
+
+`demands` et `tasks` lisent le tmp du principal, les demandes versionnées et les
+cartes de tous les worktrees locaux, y compris les cartes non commitées. Les copies
+équivalentes sont regroupées avec leurs chemins sources. Les états partiels,
+contradictions et sources manquantes restent visibles. Une clôture explicite exclut
+la demande de la vue courante malgré les anciens états « à livrer » ; le filtre
+`tasks DEM-NNN` permet aussi de consulter une demande déjà livrée. Sans preuve de
+clôture reconnue, la demande reste affichée avec son état déclaré, à examiner.
+Ces vues ne modifient aucun état et n’effectuent aucun fetch.
 
 Depuis le worktree affecté :
 
