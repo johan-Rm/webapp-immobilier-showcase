@@ -121,5 +121,10 @@ Les URL sont dans le [guide des sites](../docs/2.architecture/14.site-layers.md#
 Les sorties `dashboard/.nuxt`, `dashboard/.output`, les caches et sessions locaux
 sont vérifiés contre les liens symboliques avant préparation ou démarrage.
 `lane-env LAYER=dashboard` prépare ces destinations et conserve tout `.env` existant.
-La preuve du rechargement dans le navigateur et le provisionnement effectif restent
-portés par OPS-020 ; cette configuration seule ne les prouve pas.
+Le provisionnement et la preuve navigateur sont consignés dans OPS-020.
+Le smoke reproductible utilise un commit validé, deux images locales, Playwright
+et Chromium installés : `python3 infra/scripts/check-dashboard-lane.py --help`.
+Il vérifie les deux accès HMR, la conservation du formulaire, les conteneurs,
+l’isolation Web/Dashboard et les commandes, puis nettoie ses seules ressources.
+Le worktree réel Dashboard reste arrêté après contrôle, avec son environnement
+et ses données conservés ; les tests n’affectent aucune mission frontend.
