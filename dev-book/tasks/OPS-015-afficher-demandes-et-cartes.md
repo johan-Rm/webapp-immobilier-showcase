@@ -8,7 +8,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `3be9412613e4e75ea37748338547321d36563557` ; aucun fetch.
-- État : validée par l’humain ; commit local à créer
+- État : validée et commitée localement ; à livrer
 - Chemins autorisés : `Makefile`, `infra/make/Makefile.ai-development-engineering`, `infra/scripts/demand_status.py`, `infra/tests/test_demand_status.py`, `worktree/README.md`, cette carte
 - Dépendances de réalisation : aucune.
 - Dépendances de vérification globale : OPS-017 ; DEM-007 pour la preuve Dashboard.
@@ -81,6 +81,7 @@ la présentation. Les limites présentées restent applicables.
 
 ## Commits
 
-Aucun commit. Seule une validation humaine explicite autorise les commits de carte.
+Commit local de la carte validée : `e5c1144e7580c8d79b92bd912d4d02d1f1618738`.
+Trace documentaire du SHA ajoutée après création ; aucun changement fonctionnel.
 La branche `demands/DEM-006` sera créée à la reconstitution depuis develop vérifié,
 dans le principal libre et propre ; retour sur develop après fusion distante.
