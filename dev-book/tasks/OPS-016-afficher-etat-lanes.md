@@ -2,7 +2,7 @@
 
 - Demande : DEM-006 ; type : développement
 - Brouillon de référence : `tmp/demande-commandes-lanes.md`, relatif au principal ; ne pas copier.
-- Demande définitive prévue : `dev-book/demand/DEM-006-commandes-lanes.md`, créée à la reconstitution ; actuellement absente.
+- Référence définitive : [DEM-006](../demand/DEM-006-commandes-lanes.md) ; matérialisée à la reconstitution du 2026-11-13.
 - Session de création : 01a1ce6e-0fd8-7b72-9e6b-c6926289c5fa
 - Couche : devops
 - Branche : layers/devops
