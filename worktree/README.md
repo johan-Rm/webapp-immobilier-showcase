@@ -11,6 +11,24 @@ Le créateur ne lance pas de services et ne copie aucun secret. Une relance réu
 
 Le routage des missions est défini dans [AGENTS.md](../AGENTS.md#conventions-de-workflow).
 
+Depuis la racine, sans changer de dossier :
+
+```bash
+make lane-up web
+make lane-logs web
+make lane-rebuild web
+make lane-down web
+```
+
+Les commandes de services ciblent le worktree Git enregistré de la couche déclarée
+(`web`, `bff`, `domaine`, `devops` selon la configuration actuelle). `up` démarre le
+serveur avec rechargement automatique ; `rebuild` reconstruit et recrée ce service.
+Un environnement absent ou incohérent provoque un diagnostic avec la préparation
+à lancer : aucune création automatique. Une seule action et un seul argument sont
+acceptés ; ne pas combiner l’argument positionnel avec `LAYER`. Les anciennes formes
+`make lane-up LAYER=web` et les appels depuis le worktree restent utilisables.
+L’arrêt conserve les données ; les logs suivent toute la pile jusqu’à Ctrl+C.
+
 Depuis le worktree affecté :
 
 ```bash
