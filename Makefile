@@ -19,6 +19,10 @@ help:
 
 	@printf "🔧 Commandes communes\n\n"
 	@printf "  Cadre AIDE : AGENTS.md et skills AIDE\n"
+	@printf "  lane-up COUCHE             Démarrer une lane en développement\n"
+	@printf "  lane-down COUCHE           Arrêter sa pile, conserver les données\n"
+	@printf "  lane-logs COUCHE           Suivre les logs de sa pile\n"
+	@printf "  lane-rebuild COUCHE        Reconstruire puis relancer\n"
 	@printf "  quality-check               Lint + Format + Type Check\n"
 	@printf "  quality-lint-check          ESLint\n"
 	@printf "  quality-lint-fix            ESLint Fix\n"

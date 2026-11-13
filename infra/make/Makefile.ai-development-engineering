@@ -1,6 +1,33 @@
 # Commandes du cadre ; aucun service ni worktree créé implicitement.
 export LAYER BASE HEAD IMAGE
 export AIDE_REPO := $(CURDIR)
+
+# Un seul verbe et au plus un argument positionnel ; aucune règle attrape-tout.
+aide_actions := $(filter lane-up lane-down lane-logs lane-rebuild,$(MAKECMDGOALS))
+ifneq ($(strip $(aide_actions)),)
+ifneq ($(words $(aide_actions)),1)
+$(error Choisir une seule commande de lane)
+endif
+aide_operand := $(filter-out $(aide_actions),$(MAKECMDGOALS))
+ifneq ($(filter-out 0 1,$(words $(aide_operand))),)
+$(error Une seule couche ou demande est permise)
+endif
+ifneq ($(strip $(aide_operand)),)
+ifneq ($(strip $(LAYER)),)
+$(error Ne pas combiner argument positionnel et LAYER)
+endif
+ifneq ($(filter lane-up lane-down lane-logs lane-rebuild,$(aide_actions)),)
+aide_layers := $(shell python3 -c 'import json; print(" ".join(json.load(open("infra/config/layers.json"))["layers"]))')
+ifeq ($(filter $(aide_layers),$(aide_operand)),)
+$(error Couche inconnue ; consulter infra/config/layers.json)
+endif
+endif
+.PHONY: $(aide_operand)
+$(aide_operand):
+	@:
+endif
+export AIDE_OPERAND := $(aide_operand)
+endif
 .PHONY: worktree-add worktree-list lane-env lane-check lane-setup lane-up lane-down aide-check contribution-check
 
 worktree-add:
@@ -19,11 +46,18 @@ lane-check:
 lane-setup: lane-check
 	$(DOCKER_RUN) bun run setup:local
 
-lane-up: lane-check
-	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) up -d $(if $(BUILD),--build) webapp-localhost
+lane-up:
+	@python3 -B infra/scripts/lanes.py up
 
-lane-down: lane-check
-	docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) down
+lane-down:
+	@python3 -B infra/scripts/lanes.py down
+
+.PHONY: lane-logs lane-rebuild
+lane-logs:
+	@python3 -B infra/scripts/lanes.py logs
+
+lane-rebuild:
+	@python3 -B infra/scripts/lanes.py rebuild
 
 aide-check:
 	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py
