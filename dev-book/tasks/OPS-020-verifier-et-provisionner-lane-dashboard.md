@@ -9,7 +9,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - Base locale vérifiée : `71efe4950c25246bacce5583e16f64063a6dfc77` ; aucun fetch.
-- État : validée humainement ; commit local en cours, à livrer
+- État : validée et commitée localement, à livrer
 - Chemins autorisés : `infra/scripts/check-dashboard-lane.py`, `infra/tests/test_dashboard_lane.py`, `infra/tests/test_lanes.py`, `worktree/README.md`, `docs/2.architecture/14.site-layers.md`, cette carte.
 - Dépendances consommées : OPS-018 `28b798f`, OPS-019 `0fa9f63` et leurs traces, réunies dans HEAD `71efe4950c25246bacce5583e16f64063a6dfc77`.
 - Vérification globale : Les preuves finales de cette carte ne valent pas validation humaine.
@@ -83,6 +83,7 @@ aucun changement fonctionnel supplémentaire.
 
 ## Commits
 
-Aucun commit. Après validation humaine, tracer les SHA réels. Reconstitution prévue
+Commit d’implémentation validée : `4bada169e5c7736adcebd8bf5a28a9cc80feeed8`.
+Cette trace documentaire est consignée séparément. Reconstitution prévue
 dans le principal libre et propre, `demands/DEM-007` depuis develop vérifié, sans
 copie de réunion ; retour sur develop après intégration distante.
