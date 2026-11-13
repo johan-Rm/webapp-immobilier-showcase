@@ -31,6 +31,13 @@ class MessagesTest(unittest.TestCase):
         self.assertEqual(commits.message_fields('docs(DEM-024): consigner les contrôles'), ('DEM-024', 'DEM-024'))
         self.assertEqual(commits.message_fields(MESSAGE.replace('075', '1075')), ('OPS-1075', 'DEM-024'))
 
+    def test_dashboard_scope_and_unknown_prefix(self):
+        self.assertEqual(commits.message_fields(MESSAGE.replace('OPS-075', 'DASH-001')),
+                         ('DASH-001', 'DEM-024'))
+        for scope in ('DASH-01', 'DASHBOARD-001', 'UNKNOWN-001'):
+            with self.subTest(scope=scope), self.assertRaises(ValueError):
+                commits.message_fields(MESSAGE.replace('OPS-075', scope))
+
     def test_invalid_titles_and_references(self):
         for message in (
             '', 'wip', MESSAGE.replace('feat(', 'merge('), MESSAGE.replace('OPS-075', 'devops'),
@@ -105,6 +112,14 @@ class RangeTest(unittest.TestCase):
         self.write('dev-book/demand/DEM-024-doublon.md', '# Doublon')
         self.commit(MESSAGE)
         self.assertTrue(self.check()[0])
+
+    def test_dashboard_card_reference_is_required(self):
+        message = MESSAGE.replace('OPS-075', 'DASH-001')
+        self.commit(message)
+        self.assertTrue(self.check()[0])
+        self.write('dev-book/tasks/DASH-001-exemple.md', '# Carte\n- Demande : DEM-024\n')
+        self.commit(message)
+        self.assertEqual(self.check()[0], [])
 
     def test_missing_card_and_conflicting_parent(self):
         self.assertRaises(ValueError, commits.references, self.root, self.head,

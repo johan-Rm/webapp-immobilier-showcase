@@ -5,7 +5,7 @@
   "layers": {
     "web": {
       "branch": "layers/web",
-      "role": "Interface publique et dashboard, contenus et parcours",
+      "role": "Interface publique, contenus et parcours",
       "id": 1,
       "prefix": "WEB",
       "paths": [
@@ -42,6 +42,23 @@
         "docs/",
         "dev-book/",
         "webapp/scripts/"
+      ]
+    },
+    "dashboard": {
+      "branch": "layers/dashboard",
+      "role": "Frontend et tests dédiés du dashboard",
+      "id": 5,
+      "prefix": "DASH",
+      "paths": [
+        "webapp/dashboard/",
+        "webapp/tests/e2e/saas-access.spec.ts",
+        "webapp/tests/e2e/saas-editor.spec.ts",
+        "webapp/tests/layers/dashboard.vitest.ts"
+      ],
+      "devComposeFile": "infra/docker/docker-compose.dashboard-dev.yml",
+      "devServices": [
+        "webapp-localhost",
+        "nginx"
       ]
     }
   },

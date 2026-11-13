@@ -17,7 +17,7 @@ import sys
 
 ROOT = REPO_ROOT
 TYPES = 'feat|fix|docs|refactor|test|perf|build|ci|style|chore'
-IDENTIFIER = r'(?:BFF|WEB|DOM|OPS|DEM)-[0-9]{3,}'
+IDENTIFIER = r'(?:BFF|WEB|DOM|OPS|DASH|DEM)-[0-9]{3,}'
 TITLE = re.compile(rf'({TYPES})\(({IDENTIFIER})\): (\S(?:.*\S)?)')
 DEMAND = re.compile(r'Demande : (DEM-[0-9]{3,})')
 

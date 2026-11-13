@@ -32,7 +32,7 @@ class Worktrees(unittest.TestCase):
         self.git('config', 'user.email', 'test@example.invalid')
         (self.root / 'infra/config').mkdir(parents=True)
         (self.root / 'infra/config/layers.json').write_text(json.dumps({'layers': {
-            'api': {'branch': 'layers/api'}, 'web': {'branch': 'layers/web'}}}))
+            'dashboard': {'branch': 'layers/dashboard'}, 'api': {'branch': 'layers/api'}, 'web': {'branch': 'layers/web'}}}))
         (self.root / '.gitignore').write_text('/worktree/*\n!/worktree/README.md\n')
         (self.root / 'reference').write_text('base connue')
         self.git('add', 'infra/config/layers.json', '.gitignore', 'reference')
@@ -55,6 +55,29 @@ class Worktrees(unittest.TestCase):
         self.assertEqual((path / '.env').read_text(), 'LOCAL=conserver')
         self.assertEqual((path / 'reference').read_text(), 'travail en cours')
         self.assertEqual(self.git('status', '--porcelain'), '')
+
+    def test_dashboard_creation_is_idempotent(self):
+        path, created = self.add('dashboard')
+        self.assertTrue(created)
+        self.assertEqual(path, self.root / 'worktree/dashboard')
+        self.assertEqual(wt.git(path, 'branch', '--show-current'), 'layers/dashboard')
+        self.assertEqual(self.add('dashboard'), (path, False))
+
+    def test_dashboard_rejects_incomplete_base_and_occupied_destination(self):
+        config = self.root / 'infra/config/layers.json'
+        settings = json.loads(config.read_text())
+        settings['requireBasePaths'] = ['missing.json']
+        config.write_text(json.dumps(settings))
+        with self.assertRaisesRegex(ValueError, 'Base incomplète'):
+            self.add('dashboard')
+        settings.pop('requireBasePaths')
+        config.write_text(json.dumps(settings))
+        destination = self.root / 'worktree/dashboard'
+        destination.mkdir(parents=True)
+        (destination / 'keep').write_text('conserver')
+        with self.assertRaises(ValueError):
+            self.add('dashboard')
+        self.assertEqual((destination / 'keep').read_text(), 'conserver')
 
     def test_branch_already_checked_out_at_main_root(self):
         self.git('switch', '-c', 'layers/api')

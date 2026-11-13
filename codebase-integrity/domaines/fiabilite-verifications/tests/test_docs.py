@@ -8,6 +8,9 @@ _sys.path.insert(0, str(_common))
 from bootstrap import REPO_ROOT, configure_imports
 configure_imports()
 
+import io
+from contextlib import redirect_stdout, redirect_stderr
+from unittest.mock import patch
 import importlib.util
 from pathlib import Path
 import tempfile
@@ -35,6 +38,18 @@ class DocumentsTest(unittest.TestCase):
 
     def check(self):
         return docs.check(self.root, self.paths)
+
+    def test_dashboard_cards_are_discovered_by_cli(self):
+        self.write('docs/README.md', '# Documentation')
+        card = self.write('dev-book/tasks/DASH-001-exemple.md',
+                          '# Carte\n[Documentation](../../docs/README.md#documentation)')
+        listing = b'docs/README.md\0dev-book/tasks/DASH-001-exemple.md\0'
+        with patch.object(docs, 'REPO_ROOT', self.root), \
+             patch.object(docs.subprocess, 'check_output', return_value=listing), \
+             redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            self.assertEqual(docs.main(), 0)
+            card.write_text('# Carte\n[Cassé](absent.md)')
+            self.assertEqual(docs.main(), 1)
 
     def test_compliant_document_and_navigation(self):
         self.write('docs/sujet.md', '# Sujet\n\n> Résumé.\n\n## Détails\nExplication.\n')

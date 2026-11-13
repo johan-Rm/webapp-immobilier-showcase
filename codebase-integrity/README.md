@@ -21,7 +21,7 @@
 
 ### Worktrees et environnements
 
-- Les couches sont déclarées dans `infra/config/layers.json` ; leurs identifiants restent stables.
+- Les couches et leurs préfixes de cartes, dont `DASH` pour Dashboard, sont déclarés dans [la configuration](../infra/config/layers.json) ; leurs identifiants restent stables. Le routage retient le chemin correspondant le plus long : les tests dédiés exacts priment sur le dossier général de Web.
 - Un seul écrivain par couche ; les affectations se vérifient dans les cartes, pas seulement avec Git.
 - Créer les worktrees sur affectation, depuis une base explicite. Aucun fetch, service ou copie de secrets lors de la création.
 - Réutiliser la branche déjà sortie ; refuser les destinations étrangères, liens symboliques et chemins non enregistrés avant toute écriture.
