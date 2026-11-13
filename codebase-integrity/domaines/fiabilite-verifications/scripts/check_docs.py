@@ -234,7 +234,7 @@ def main():
             'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
             'worktree/README.md', 'dev-book/README.md') or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
-             re.match(r'(DEM|OPS|WEB|BFF|DOM)-[0-9]+-', p.name))]
+             re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)
     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f'Contrôle documentaire impossible : {exc}', file=sys.stderr)

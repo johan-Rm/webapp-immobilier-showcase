@@ -26,7 +26,7 @@ make tasks DEM-006
 ```
 
 Les commandes de services ciblent le worktree Git enregistré de la couche déclarée
-(`web`, `bff`, `domaine`, `devops` selon la configuration actuelle). `up` démarre le
+selon [la configuration des couches](../infra/config/layers.json). `up` démarre le
 serveur avec rechargement automatique ; `rebuild` reconstruit et recrée ce service.
 Un environnement absent ou incohérent provoque un diagnostic avec la préparation
 à lancer : aucune création automatique. Une seule action et un seul argument sont
@@ -68,7 +68,7 @@ sans copier les identifiants du principal. Il crée les dossiers locaux avant Do
 une relance conserve les fichiers. `lane-setup` prépare explicitement la démonstration.
 
 Les identifiants de `infra/config/layers.json` donnent les ports de développement
-19301–19304 et SSR 19401–19404. Le nom Compose associe projet, empreinte du dépôt
+19301–19305 et publics 19401–19405. Le nom Compose associe projet, empreinte du dépôt
 principal et couche. Les deux modes d’une couche partagent ses données ; les couches
 ont des contenus, médias, données et rapports distincts. Les schémas source sont
 montés en lecture seule. Ne pas partager les dossiers générés ou les données en écriture.
@@ -105,3 +105,11 @@ Adapter LAYER à la couche affectée. Sans `BUILD=1`, les images existantes sont
 Le dossier `worktree/design` est réservé vide, sans branche, configuration de couche,
 service ni vhost. Git ne conserve pas un dossier vide : sa présence locale n’est
 pas reproduite par un clone ; le recréer vide si nécessaire.
+
+Dashboard possède désormais son périmètre frontend et ses tests dédiés dans la
+configuration ; l’affectation temporaire à Web de DEM-005 prend fin sans modifier
+les cartes historiques. Son worktree sera créé après validation des cartes de
+configuration et de services de DEM-007. `devComposeFile` et `devServices` déclarent
+sa composition de développement ; leur prise en charge reste à réaliser dans OPS-019.
+Sans ces champs, les commandes conservent `infra/docker/docker-compose.dev.yml`
+et le service `webapp-localhost`.

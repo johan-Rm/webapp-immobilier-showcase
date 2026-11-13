@@ -21,3 +21,25 @@ class LayerRouting(unittest.TestCase):
             self.assertEqual(owner(path), 'devops')
         self.assertEqual(owner('webapp/server/api/probe.ts'), 'bff')
         self.assertEqual(owner('webapp/shared/types/site.ts'), 'domaine')
+
+        for path in ['webapp/dashboard/app/pages/index.vue',
+                     'webapp/tests/e2e/saas-access.spec.ts',
+                     'webapp/tests/e2e/saas-editor.spec.ts',
+                     'webapp/tests/layers/dashboard.vitest.ts']:
+            self.assertEqual(owner(path), 'dashboard')
+        self.assertEqual(owner('webapp/tests/e2e/other.spec.ts'), 'web')
+
+    def test_stable_identifiers_and_dashboard_runtime_declaration(self):
+        layers = json.loads((ROOT / 'infra/config/layers.json').read_text())['layers']
+        for name, number, prefix in [('web', 1, 'WEB'), ('bff', 2, 'BFF'),
+                                      ('domaine', 3, 'DOM'), ('devops', 4, 'OPS'),
+                                      ('dashboard', 5, 'DASH')]:
+            self.assertEqual(layers[name]['id'], number)
+            self.assertEqual(layers[name]['prefix'], prefix)
+            self.assertEqual(layers[name]['branch'], 'layers/' + name)
+        self.assertEqual(layers['dashboard']['devComposeFile'],
+                         'infra/docker/docker-compose.dashboard-dev.yml')
+        self.assertEqual(layers['dashboard']['devServices'], ['webapp-localhost', 'nginx'])
+        for name in ('web', 'bff', 'domaine', 'devops'):
+            self.assertNotIn('devComposeFile', layers[name])
+            self.assertNotIn('devServices', layers[name])
