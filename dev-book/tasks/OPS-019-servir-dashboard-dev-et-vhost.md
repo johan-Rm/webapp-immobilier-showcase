@@ -90,4 +90,5 @@ d’appel, sans changer les assertions ni le comportement de l’application.
 Patch d’une ligne présenté et validé explicitement (« validé ») dans la session
 d’origine. Configuration testée dans une fixture temporaire depuis racine et
 webapp/ : succès dans les deux cas ; smoke Docker optionnel ignoré.
-La correction reprend OPS-019 ; son nouveau commit est à tracer après création.
+Commit de correction validée : `297f10950166cf4c3efccee514c48ac5cd1c402b`.
+La correspondance avec la branche de livraison est tracée dans la demande.
