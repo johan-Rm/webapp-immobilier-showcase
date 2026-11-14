@@ -62,5 +62,6 @@ const themeItems = computed(() => [
 // 9. Actions et handlers
 // 10. Watch et watchEffect
 // 11. Métadonnées écran ou page
+useHead({ bodyAttrs: { class: 'dashboard-flat' } })
 // 12. Lifecycle
 </script>

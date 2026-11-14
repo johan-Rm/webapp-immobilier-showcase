@@ -30,9 +30,12 @@ Automatique suit le système, avec repli clair. Il s’applique à tout l’espa
 Les tokens sémantiques couvrent aussi le mode sombre et les états des composants Nuxt UI.
 Les couleurs de statut restent distinctes, avec des messages textuels. Hors des blocs
 colorés, les actions principales emploient un olive foncé sur clair pour préserver le contraste.
-Les sections utilisent `DashboardPanel` : fond neutre sans bordure, pictogramme Lucide
+Les sections utilisent `DashboardPanel` : fond neutre sans bordure, pictogramme Lucide sur fond teinté
 et accents locaux, légère teinte au survol. Les icônes utilisées sont embarquées au build,
 sans chargement externe. Les tokens et traitements de contraste restent dans le thème local.
+Le layout connecté applique le style sans bordures aux champs, boutons, séparations et
+panneaux, y compris leurs fenêtres et menus. Les fonds distinguent les champs ;
+le focus clavier conserve son contour visible. Le layout d’authentification reste distinct.
 
 Les contrôles frontend découvrent cette application via Git, même quand une autre
 cible est active. Les alias de types restent locaux à `dashboard/app/`.

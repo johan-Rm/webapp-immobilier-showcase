@@ -10,7 +10,7 @@
 - Worktree : worktree/dashboard.
 - Base locale vérifiée : `8349181d21dab60bb7f4a659c02790f74ee56a1c`, commune à develop et Dashboard ; aucun fetch.
 - État : implémentée et commitée, à vérifier.
-- Chemins autorisés : `webapp/dashboard/README.md`, `webapp/dashboard/nuxt.config.ts`, `webapp/dashboard/app/components/dashboard/`, `webapp/dashboard/app/assets/css/main.css`, `webapp/dashboard/app/app.config.ts`, `webapp/dashboard/i18n/locales/fr.json`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/e2e/saas-editor.spec.ts`, cette carte.
+- Chemins autorisés : `webapp/dashboard/app/layouts/default.vue`, `webapp/dashboard/README.md`, `webapp/dashboard/nuxt.config.ts`, `webapp/dashboard/app/components/dashboard/`, `webapp/dashboard/app/assets/css/main.css`, `webapp/dashboard/app/app.config.ts`, `webapp/dashboard/i18n/locales/fr.json`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/e2e/saas-editor.spec.ts`, cette carte.
 - Dépendance de réalisation : base DEM-008 ci-dessus disponible ; périmètre et associations confirmés.
 - Dépendance de vérification globale : résultat de DASH-003 pour vérifier le changement de mode avec les blocs ; aucune dépendance de réalisation entre ces cartes.
 
@@ -33,7 +33,7 @@ La palette est un choix disponible, sans obligation de consommer ses onze couleu
 
 Centraliser les accents dans le thème local ; éviter toute modification globale des UCard
 qui toucherait les écrans exclus. Pas de bordure ni ring décoratif sur les blocs concernés ;
-préserver les contours utiles des champs et le focus clavier.
+retirer aussi les contours des champs, tout en préservant le focus clavier (retouche humaine).
 Le survol ne modifie que la teinte du fond : aucune translation, aucun curseur trompeur.
 Mesurer les contrastes sur clair/sombre et au survol ; les couleurs pastel brutes peuvent
 être insuffisantes sur fond clair. Le traitement a été explicitement confirmé pendant
@@ -57,8 +57,8 @@ Implémentation le 2026-11-14, session de création, après le commit DASH-003
 Composant commun DashboardPanel, tokens locaux exacts de la palette, neuf associations
 validées, pictogrammes Lucide et actions pastel à texte sombre. Application aux blocs
 Accueil, Administration, liste/édition des articles, sous-blocs de contenu et ressources.
-Les champs et le focus gardent leurs contours utiles ; les actions d’erreur/avertissement
-conservent leur sémantique. Aucun déplacement au survol ni clic ajouté aux blocs informatifs.
+Dans la version initiale, les champs gardaient leurs contours utiles ; la retouche
+ci-dessous les retire. Les actions d’erreur/avertissement conservent leur sémantique. Aucun déplacement au survol ni clic ajouté aux blocs informatifs.
 Les sections Vue requises sont complétées dans les seuls composants touchés ; aucun contrôle
 ni exception modifié. Le README conserve ses rubriques et décrit la portée locale du thème.
 
@@ -93,6 +93,35 @@ Captures ordinateur clair/sombre et mobile examinées ; l’appréciation humain
 Fixtures BFF : preuve de l’interface, pas de Symfony réel. Aucun déploiement ni image Docker
 reconstruite ; source SVG et infrastructure DEM-008 inchangées. Le serveur de développement
 19305 est préservé ; seul le SSR temporaire 29305 a servi aux vérifications.
+
+Reprise corrective demandée explicitement via implementer-demande : suppression des
+bordures décoratives et des contours des champs dans tout l’espace connecté, focus
+clavier conservé. Cette instruction étend le périmètre initial ; aucune nouvelle carte
+ni nouvelle dépendance nécessaire. Les preuves initiales ci-dessus restent historiques.
+Base corrective : `b72f84f9838e2150483726f3221430a46875fcf8`, même session.
+Retouche complémentaire demandée sur capture : le badge reprend une teinte de sa couleur
+(17 % de l’accent sur fond sombre), sans changer la couleur du pictogramme.
+Style attaché au body par le layout connecté via useHead, donc appliqué aussi aux portails
+Nuxt UI et retiré à la déconnexion. Suppression des bordures et ombres décoratives ; fonds
+neutres des champs, règle de focus existante conservée avec une spécificité adaptée.
+Aucun changement des données, des parcours ou des couleurs validées.
+Contrôles de qualité, conventions et build SSR réussis ; 119 tests du cadre réussis.
+Journaux de reprise : `/tmp/dem009-flat-{quality,conventions,build,aide,browser,ssr}.log`.
+Les captures sans-bordures-focus clair/sombre ont été examinées ; appréciation humaine attendue.
+La passe complète de reprise a donné 72 réussites sur 74 : les deux nouveaux tests mobiles
+enchaînaient la fermeture du sélecteur et l’ouverture du menu avant restauration du focus.
+Le test attend désormais explicitement la fermeture et la restitution du focus ; aucune
+attente fixe ni hausse de délai. Après cette correction et la retouche du badge :
+`LD_LIBRARY_PATH=/tmp/ops020-browser-deps/root/usr/lib/x86_64-linux-gnu GD_TARGET=dashboard PLAYWRIGHT_BASE_URL=http://127.0.0.1:29305 bun run test:e2e -- saas-access.spec.ts saas-editor.spec.ts --grep 'sans bordures|blocs|thème mémorisé' --workers=2`
+→ 18 tests ciblés réussis, y compris les deux cas mobiles, le contraste réel des badges,
+les parcours d’édition, la mémorisation du thème et la suppression du style à la déconnexion.
+La couleur de fond du badge est aussi contrôlée, et plus seulement celle du pictogramme.
+Minimum théorique sur les onze couleurs avec fond teinté : 3,84:1 pour l’icône ; les
+mesures navigateur des blocs vérifiés dépassent 3:1, les textes d’action dépassent 4,5:1.
+Les parcours indépendants déjà réussis ne sont pas relancés après cette retouche ciblée.
+Preuve finale : `/tmp/dem009-flat-browser-final.log` ; serveur temporaire dans
+`/tmp/dem009-flat-ssr-final.log`. Aucune validation humaine du résultat supposée.
+
 
 ## Verdict humain
 
