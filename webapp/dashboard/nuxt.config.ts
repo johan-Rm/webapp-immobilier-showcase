@@ -10,7 +10,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   ui: { fonts: false, colorMode: true },
   colorMode: { preference: 'system', fallback: 'light' },
-  icon: { serverBundle: { collections: ['lucide'] } },
+  icon: {
+    provider: 'none',
+    serverBundle: false,
+    fallbackToApi: false,
+    clientBundle: { scan: { globInclude: [resolve(__dirname, 'app/**/*.vue')] } },
+  },
   i18n: {
     defaultLocale: 'fr',
     strategy: 'no_prefix',

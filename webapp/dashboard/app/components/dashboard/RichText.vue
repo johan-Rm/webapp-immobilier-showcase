@@ -2,33 +2,39 @@
   <div class="space-y-3">
     <div class="flex flex-wrap gap-2" role="toolbar" :aria-label="t('editor.formatting')">
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.bold')"
         :aria-pressed="editor?.isActive('bold')"
         variant="outline"
         @click="editor?.chain().focus().toggleBold().run()"
       />
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.italic')"
         :aria-pressed="editor?.isActive('italic')"
         variant="outline"
         @click="editor?.chain().focus().toggleItalic().run()"
       />
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.heading')"
         variant="outline"
         @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
       />
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.bullets')"
         variant="outline"
         @click="editor?.chain().focus().toggleBulletList().run()"
       />
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.numbered')"
         variant="outline"
         @click="editor?.chain().focus().toggleOrderedList().run()"
       />
       <UButton
+        class="dashboard-panel-action"
         :label="t('editor.unlink')"
         variant="outline"
         @click="editor?.chain().focus().unsetLink().run()"
@@ -36,7 +42,12 @@
     </div>
     <div class="flex flex-wrap gap-2">
       <UInput v-model="href" :aria-label="t('editor.linkUrl')" />
-      <UButton :label="t('editor.link')" variant="outline" @click="setLink" />
+      <UButton
+        class="dashboard-panel-action"
+        :label="t('editor.link')"
+        variant="outline"
+        @click="setLink"
+      />
     </div>
     <EditorContent
       :editor="editor"
@@ -53,6 +64,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { EditorContent, useEditor } from '@tiptap/vue-3'
 
 import { isEditorialLink } from '#shared/saas/links'
+// 2. Types et constantes statiques
 // 3. Model
 const props = defineProps<{ disabled?: boolean }>()
 const model = defineModel<RichTextDocument>({ required: true })
@@ -60,6 +72,7 @@ const model = defineModel<RichTextDocument>({ required: true })
 const { t } = useI18n()
 // 5. State
 const href = ref('')
+// 6. Data inputs
 // 7. Boundary adapter: retain only the contracted JSON nodes and attributes.
 const documentValue = (node: JSONContent): RichTextDocument => {
   const clean = (value: JSONContent): object => {
@@ -111,6 +124,7 @@ const editor = useEditor({
     model.value = documentValue(instance.getJSON())
   },
 })
+// 8. Computed UI-ready
 // 9. Handlers
 const setLink = () => {
   if (isEditorialLink(href.value)) editor.value?.chain().focus().setLink({ href: href.value }).run()
@@ -131,4 +145,6 @@ watch(
   },
   { deep: true },
 )
+// 11. Métadonnées écran ou page
+// 12. Lifecycle
 </script>

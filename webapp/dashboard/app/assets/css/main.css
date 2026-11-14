@@ -145,3 +145,67 @@ h1 {
   background: var(--ui-bg-inverted);
   color: var(--ui-text-inverted);
 }
+
+/* DEM-009: exact supplied accents, scoped to connected dashboard panels. */
+:root {
+  --dashboard-loblolly: #c7cdce;
+  --dashboard-fountain-blue: #55b8c6;
+  --dashboard-copperfield: #dc8260;
+  --dashboard-cotton-candy: #f8b3c9;
+  --dashboard-carnation: #f25558;
+  --dashboard-yellow-orange: #f5ac3f;
+  --dashboard-tulip-tree: #e8b52d;
+  --dashboard-dalmasca: #decb58;
+  --dashboard-olive-green: #b2b760;
+  --dashboard-picton-blue: #6ab3e4;
+  --dashboard-lavender: #c08dd9;
+}
+
+.dashboard-panel[data-panel='context'] {
+  --panel-accent: var(--dashboard-fountain-blue);
+}
+.dashboard-panel[data-panel='project'] {
+  --panel-accent: var(--dashboard-olive-green);
+}
+.dashboard-panel[data-panel='organization'] {
+  --panel-accent: var(--dashboard-copperfield);
+}
+.dashboard-panel[data-panel='newProject'] {
+  --panel-accent: var(--dashboard-picton-blue);
+}
+.dashboard-panel[data-panel='members'] {
+  --panel-accent: var(--dashboard-lavender);
+}
+.dashboard-panel[data-panel='articles'] {
+  --panel-accent: var(--dashboard-yellow-orange);
+}
+.dashboard-panel[data-panel='fields'] {
+  --panel-accent: var(--dashboard-loblolly);
+}
+.dashboard-panel[data-panel='content'] {
+  --panel-accent: var(--dashboard-dalmasca);
+}
+.dashboard-panel[data-panel='resources'] {
+  --panel-accent: var(--dashboard-cotton-candy);
+}
+
+.dashboard-panel {
+  background: var(--ui-bg);
+  border: 0;
+  box-shadow: none;
+  transition: background-color 180ms ease;
+}
+
+.dashboard-panel:hover {
+  background: color-mix(in srgb, var(--panel-accent) 10%, var(--ui-bg));
+}
+
+.dashboard-panel-icon {
+  color: var(--panel-accent);
+  background: #212121;
+}
+
+.dashboard-panel .dashboard-panel-action {
+  color: #212121;
+  background: var(--panel-accent);
+}

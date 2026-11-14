@@ -7,14 +7,11 @@
         <p class="text-muted mt-3">{{ t('home.description') }}</p>
       </header>
       <UAlert v-if="state.error" color="warning" :title="state.error" role="alert" />
-      <UCard v-if="state.user">
-        <DashboardContextPicker />
-      </UCard>
-      <UCard v-if="context.project">
-        <p class="text-muted text-sm">{{ t('home.activeProject') }}</p>
+      <DashboardContextPicker v-if="state.user" />
+      <DashboardPanel v-if="context.project" kind="project" :title="t('home.activeProject')">
         <h2 class="mt-2 text-xl font-semibold">{{ context.project.name }}</h2>
         <p class="text-muted mt-3 text-sm">{{ t('home.availability') }}</p>
-      </UCard>
+      </DashboardPanel>
       <UAlert
         v-else-if="state.user && !state.loading"
         icon="i-lucide-folder-open"
@@ -26,7 +23,18 @@
 </template>
 
 <script setup lang="ts">
+// 1. Imports
+// 2. Types et constantes statiques
+// 3. Props et emits
 // 4. Composables
 const { t } = useI18n()
 const { state, context } = useDashboardAccess()
+// 5. État local
+// 6. Data inputs
+// 7. Validation et helpers purs
+// 8. Computed UI-ready
+// 9. Actions et handlers
+// 10. Watch et watchEffect
+// 11. Métadonnées écran ou page
+// 12. Lifecycle
 </script>
