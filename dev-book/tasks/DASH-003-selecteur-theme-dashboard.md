@@ -9,7 +9,7 @@
 - Branche : layers/dashboard.
 - Worktree : worktree/dashboard.
 - Base locale vérifiée : `8349181d21dab60bb7f4a659c02790f74ee56a1c`, commune à develop et Dashboard ; aucun fetch.
-- État : implémentée et commitée, à vérifier.
+- État : validée par l’humain.
 - Chemins autorisés : `webapp/dashboard/app/layouts/default.vue`, `webapp/dashboard/app/components/dashboard/`, `webapp/dashboard/app/composables/`, `webapp/dashboard/app/assets/css/main.css`, `webapp/dashboard/i18n/locales/fr.json`, `webapp/dashboard/nuxt.config.ts`, `webapp/dashboard/README.md`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/e2e/saas-editor.spec.ts`, cette carte.
 - Dépendance de réalisation : base DEM-008 ci-dessus, disponible ; aucune dépendance à DASH-002.
 - Dépendance de vérification globale : DASH-002 pour les captures et contrastes des blocs dans les modes.
@@ -72,7 +72,12 @@ captures avec les blocs sont prévus après DASH-002. Aucun verdict humain antic
 
 ## Verdict humain
 
-Aucun verdict d’implémentation ; le cadrage du besoin est confirmé dans le brouillon.
+Le 2026-11-14, session `01a1d94b-2ea6-7270-a3b3-407d88574000` :
+« c'est génial, c'est validé », après présentation du résultat complet de DEM-009,
+y compris la suppression élargie des bordures et les badges teintés.
+Validation globale couvrant cette carte et les SHA `7e2759f55f9cb1cd34b0f5dac054a05daf63acbf`.
+Les preuves et limites techniques ci-dessus restent applicables ; aucun déploiement
+ni validation du backend réel déduits de ce verdict.
 
 ## Commits
 
