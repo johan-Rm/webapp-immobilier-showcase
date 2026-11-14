@@ -8,7 +8,7 @@
 - Couche : dashboard
 - Branche : layers/dashboard
 - Worktree : worktree/dashboard
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain ; réserve de livraison suivie dans OPS-022
 - Chemins autorisés : `webapp/dashboard/`, `webapp/tests/e2e/saas-access.spec.ts`, `webapp/tests/e2e/saas-editor.spec.ts`, `webapp/tests/layers/dashboard.vitest.ts`, cette carte.
 - Dépendances de réalisation : OPS-022 `76f283ad89914030550544ef597bd96cca9f4223`, intégré par cherry-pick `c23aaab` dans cette session, sans verdict humain anticipé ; base locale `f5349944afeef829f3c9851b4cd591e9cff05249`.
 
@@ -121,8 +121,12 @@ pour la vérification humaine ; aucun déploiement ni service de production modi
 
 ## Verdict humain
 
-Non sollicité à cette étape ; cadrage confirmé distinct de la validation du rendu.
+Le 2026-11-14, dans la session de création : « c’est validé », après présentation
+de DEM-008 complète, du rendu, des parcours, des preuves et de la réserve suivie
+dans OPS-022. Verdict associé à l’implémentation `fab0986167e4214e9ac2062cd57fca5bf5b42082`
+et au HEAD présenté `618d2921e9633909ac16bd06d178694f43aa6937`, sans diff supplémentaire.
+La validation visuelle humaine du critère 6 est acquise ; la réserve ne disparaît pas.
 
 ## Commits
 
-Un commit local initial pour cette tâche, sur autorisation humaine ; SHA réel relevé dans le brouillon après création. Aucun verdict humain déduit du commit.
+Un commit local initial pour cette tâche, sur autorisation humaine ; SHA réel relevé dans le brouillon après création. Le verdict explicite est consigné ci-dessus ; aucun commit technique recréé.
