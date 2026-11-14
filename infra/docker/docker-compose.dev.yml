@@ -81,6 +81,7 @@ services:
       dockerfile: ../infra/docker/Dockerfile
       additional_contexts:
         schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
+        design: ./resources/design
       args:
         GD_TARGET: showcase-immobilier
         APP_ENV: ${APP_ENV:-dev}
@@ -129,6 +130,7 @@ services:
       dockerfile: ../infra/docker/Dockerfile
       additional_contexts:
         schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
+        design: ./resources/design
       args:
         GD_TARGET: client2-immobilier
         APP_ENV: dev
