@@ -4,7 +4,7 @@
 - Conventions : [dev-book](../README.md).
 - Session de création : 01a1d8d6-52a5-7cd0-90c8-633d9849b8b2
 - Date : 2026-11-14
-- État : reconstituée localement ; validée avec réserve Docker SSR à corriger avant livraison.
+- État : livraison bloquée par le build Docker SSR ; validation humaine avec réserve conservée.
 - Confirmation humaine : « confirmé », après restitution du cadrage dans cette session.
 - Identifiant réservé : DEM-008 ; maximum DEM-007 observé dans les références Git locales, brouillons et demandes des worktrees, sans fetch.
 
@@ -134,3 +134,27 @@ commit du document définitif, avant PR ; aucun résultat n’est anticipé ici.
 La réserve Docker SSR et les smokes clients d’ensemble restent à traiter avant
 livraison selon les cartes. Les originaux temporaires ont été remis ; aucune
 copie de sauvegarde supplémentaire laissée dans tmp.
+
+
+Tentative de livraison du 2026-11-14 : cible distante `origin/develop` vérifiée
+par fetch au SHA `f5349944afeef829f3c9851b4cd591e9cff05249`, inchangée.
+Les traces de reconstitution ont été commitées dans
+`bc1fc3933d24aa3495ff74ac1c0894aa5a4a3c33`. Arbres des couches propres lors
+de l’inventaire ; aucune branche de couche déplacée.
+`make aide-check` : 119 tests réussis ; contrôle de contribution conforme sur
+les six commits présentés par rapport à la cible distante vérifiée.
+
+Le build Docker SSR a été réellement exécuté avec le Dockerfile et le contexte
+`webapp/`, le contexte additionnel `schemas`, `GD_TARGET=dashboard` et une image
+de vérification locale dédiée. Échec confirmé : `[UNRESOLVED_IMPORT]` sur
+`../../../../../resources/design/Picto-fond-noir-1000x1000.svg?url` depuis
+`Brand.vue`. La ressource du dépôt est hors du contexte de construction et
+n’est pas fournie à cette étape. Le montage de développement ne corrige donc
+pas la construction SSR. Preuve : `/tmp/dem008-delivery-docker-build.log`.
+Les contrôles réussis sont dans `/tmp/dem008-delivery-aide.log` et
+`/tmp/dem008-delivery-contribution.log`.
+
+La réserve est bloquante : reprise d’OPS-022 à l’implémentation pour le packaging,
+puis vérification humaine de la correction, avant reprise de la livraison.
+Aucune modification fonctionnelle effectuée à l’étape 06, aucun push, PR,
+merge ou réalignement. Les services locaux existants restent intacts.
