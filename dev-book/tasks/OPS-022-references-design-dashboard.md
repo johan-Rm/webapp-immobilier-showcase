@@ -9,7 +9,7 @@
 - Branche : layers/devops
 - Worktree : worktree/devops
 - État : implémentée et commitée, à vérifier
-- Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, cette carte.
+- Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, `infra/docker/docker-compose.dashboard-dev.yml`, cette carte.
 - Dépendances de réalisation : aucune ; base locale `f5349944afeef829f3c9851b4cd591e9cff05249`.
 
 ## Résultat et critères
@@ -83,3 +83,17 @@ les skills installés `implementer-demande`, `verifier-arbitrer-demande` et les 
 globales sont mis à jour séparément à leurs emplacements existants, autorisés par
 « oui et modifie le skill aussi ». Validation structurelle des deux skills réussie.
 Cette instruction remplace l’attente de validation intermédiaire inscrite initialement.
+
+
+Correction de démarrage signalée par l’humain après DEM-008 : le serveur SSR de
+vérification laissé sur 19305 bloquait Docker ; processus identifié par son PID,
+sa commande et son worktree, puis arrêté sans toucher aux autres services.
+Le lancement a ensuite révélé un import SVG absent du conteneur : ajout du seul
+pictogramme source en montage lecture seule à `/resources/design/`, chemin utilisé
+par le composant compilé depuis `/app/dashboard/`. Aucun duplicata du fichier,
+changement de port, secret ou donnée. Correction de réalisation OPS-022, sans
+modifier une convention ni un contrôle. Le build Docker SSR distinct reste à
+vérifier lors du contrôle global ; les preuves SSR précédentes portaient sur Node.
+Validation de la configuration Compose et contrôle documentaire avant commit ;
+reprise du commit dans Dashboard pour le contrôle réel des deux accès, résultat
+consigné dans le brouillon principal après exécution.
