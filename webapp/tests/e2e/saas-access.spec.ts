@@ -506,6 +506,10 @@ for (const colorScheme of ['light', 'dark'] as const) {
       })) {
         const block = page.locator(`[data-panel="${kind}"]`)
         await expect(block.locator('.dashboard-panel-icon')).toHaveCSS('color', color)
+        await expect(block.locator('.dashboard-panel-icon')).not.toHaveCSS(
+          'background-color',
+          'rgb(33, 33, 33)',
+        )
         await expect(block.locator('.dashboard-panel-icon > span')).toHaveCSS('mask-image', /url/)
         await expect(block).toHaveCSS('box-shadow', 'none')
         await expect(block).toHaveCSS('border-top-width', '0px')
@@ -552,6 +556,59 @@ for (const colorScheme of ['light', 'dark'] as const) {
         contentType: 'application/json',
       })
       await page.screenshot({ path: test.info().outputPath('blocs-administration.png') })
+    })
+  })
+}
+
+for (const colorScheme of ['light', 'dark'] as const) {
+  test.describe(`sans bordures ${colorScheme}`, () => {
+    test.use({ colorScheme })
+    test('champs, séparations et menus sans contours, focus clavier conservé', async ({ page }) => {
+      await installBff(page, { platformAdmin: true, memberAdmin: true, unavailable: false })
+      await login(page)
+      await expect(page.locator('body')).toHaveClass(/dashboard-flat/)
+      await administration(page)
+      const field = page.getByLabel('Nom de l’organisation', { exact: true })
+      await field.scrollIntoViewIfNeeded()
+      await field.focus()
+      await expect(field).toHaveCSS('border-top-width', '0px')
+      await expect(field).toHaveCSS('box-shadow', 'none')
+      await expect(field).toHaveCSS('outline-style', 'solid')
+      await expect(field).toHaveCSS('outline-width', '2px')
+      await field.fill('Organisation sans bordure')
+      const visibleBorders = await page.locator('body *').evaluateAll((elements) =>
+        elements
+          .filter((element) => {
+            const style = getComputedStyle(element)
+            return (
+              element.getClientRects().length &&
+              ['Top', 'Right', 'Bottom', 'Left'].some(
+                (side) =>
+                  parseFloat(style.getPropertyValue(`border-${side.toLowerCase()}-width`)) > 0,
+              )
+            )
+          })
+          .map((element) => element.tagName + '.' + element.className),
+      )
+      expect(visibleBorders).toEqual([])
+      await page.screenshot({ path: test.info().outputPath('sans-bordures-focus.png') })
+      const theme = page.getByRole('combobox', { name: 'Thème de l’interface' })
+      await theme.click()
+      await expect(page.getByRole('listbox')).toBeVisible()
+      await expect(page.getByRole('listbox')).toHaveCSS('box-shadow', 'none')
+      await expect(page.getByRole('listbox')).toHaveCSS('border-top-width', '0px')
+      await page.keyboard.press('Escape')
+      await expect(page.getByRole('listbox')).not.toBeVisible()
+      await expect(theme).toBeFocused()
+      await expect(field).toHaveValue('Organisation sans bordure')
+      const menu = page.getByRole('button', { name: 'Ouvrir le menu' })
+      if (await menu.isVisible()) {
+        await menu.click()
+        await expect(page.getByRole('dialog')).toBeVisible()
+      }
+      await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click()
+      await expect(page.getByRole('heading', { name: 'Connexion', exact: true })).toBeVisible()
+      await expect(page.locator('body')).not.toHaveClass(/dashboard-flat/)
     })
   })
 }

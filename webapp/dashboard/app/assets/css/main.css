@@ -136,7 +136,8 @@ h1 {
 }
 
 /* Interactive focus remains visible on both page and raised surfaces. */
-:focus-visible {
+:focus-visible,
+.dashboard-flat :focus-visible {
   outline: 2px solid var(--ui-primary);
   outline-offset: 3px;
 }
@@ -202,10 +203,22 @@ h1 {
 
 .dashboard-panel-icon {
   color: var(--panel-accent);
-  background: #212121;
+  background: color-mix(in srgb, var(--panel-accent) 17%, #212121);
 }
 
 .dashboard-panel .dashboard-panel-action {
   color: #212121;
   background: var(--panel-accent);
+}
+
+/* Connected layout only, including Nuxt UI portals; authentication stays unchanged. */
+.dashboard-flat *,
+.dashboard-flat ::before,
+.dashboard-flat ::after {
+  border-width: 0;
+  box-shadow: none;
+}
+
+.dashboard-flat :where(input, textarea, button[role='combobox'], [contenteditable='true']) {
+  background-color: var(--ui-bg-elevated);
 }
