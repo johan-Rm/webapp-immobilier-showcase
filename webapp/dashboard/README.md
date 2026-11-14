@@ -18,6 +18,17 @@ Textes dans `i18n/locales/fr.json`, état et appels dans les composables ; les c
 présentent les données. Les rubriques non réalisées restent affichées et indisponibles.
 Les preuves de raccordement réel aux accès attendent BFF-002 et OPS-013.
 
+Le thème local (`app/assets/css/main.css`, `app/app.config.ts`) applique la
+[charte Graines Digitales](<../../resources/design/Brand Guidelines - Graines Digitales (standalone).html>)
+sans modifier les thèmes clients. `DashboardBrand` importe directement le pictogramme
+source, sans copie du SVG. Rationale pour les titres et Inter pour les textes sont
+hébergées dans `app/assets/fonts/`, avec leurs licences OFL ; elles proviennent de
+[Google Fonts](https://github.com/google/fonts/tree/main/ofl).
+Le mode suit la préférence système, avec repli clair ; aucun sélecteur supplémentaire.
+Les tokens sémantiques couvrent aussi le mode sombre et les états des composants Nuxt UI.
+Les couleurs de statut restent distinctes, avec des messages textuels ; les actions
+principales emploient un olive foncé sur clair pour préserver le contraste.
+
 Les contrôles frontend découvrent cette application via Git, même quand une autre
 cible est active. Les alias de types restent locaux à `dashboard/app/`.
 L'exception temporaire DEM-007 ne couvre que les sections manquantes (règle 1)

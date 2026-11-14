@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "Administration"
+    "name": "Administration",
+    "brand": "Graines Digitales"
   },
   "menu": {
     "open": "Ouvrir le menu",

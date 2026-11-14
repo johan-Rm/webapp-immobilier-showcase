@@ -1,13 +1,9 @@
 <template>
   <nav class="flex h-full min-h-0 flex-col" :aria-label="t('menu.navigation')">
     <div class="border-default border-b p-5">
-      <UButton
-        to="/"
-        icon="i-lucide-panels-top-left"
-        variant="link"
-        :label="t('app.name')"
-        @click="emit('navigate')"
-      />
+      <UButton to="/" variant="link" @click="emit('navigate')">
+        <DashboardBrand />
+      </UButton>
     </div>
     <div class="min-h-0 flex-1 space-y-6 overflow-y-auto p-4">
       <section v-for="group in groups" :key="group.label">
@@ -43,10 +39,22 @@
 </template>
 
 <script setup lang="ts">
-// 3. Événements
+// 1. Imports
+// 2. Types et constantes statiques
+// 3. Props et emits
 const emit = defineEmits<{ navigate: [] }>()
-// 4. Composables
+
+// 4. Composables, stores, routeur
 const { t } = useI18n()
 const { groups } = useDashboardMenu()
 const { state, actions } = useDashboardAccess()
+
+// 5. État local
+// 6. Data inputs
+// 7. Validation et helpers purs
+// 8. Computed UI-ready
+// 9. Actions et handlers
+// 10. Watch et watchEffect
+// 11. Métadonnées écran ou page
+// 12. Lifecycle
 </script>
