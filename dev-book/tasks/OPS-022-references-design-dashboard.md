@@ -2,7 +2,7 @@
 
 - Demande : DEM-008 — développement
 - Brouillon de référence : `tmp/demande-design-dashboard.md`, relatif au dépôt principal ; lecture depuis le principal, aucune copie dans la couche.
-- Demande définitive prévue : `dev-book/demand/DEM-008-design-dashboard.md`, absente à cette étape ; lien à établir à la reconstitution.
+- Demande définitive : [DEM-008](../demand/DEM-008-design-dashboard.md).
 - Session de création : 01a1d8d6-52a5-7cd0-90c8-633d9849b8b2
 - Date : 2026-11-14
 - Couche : devops
