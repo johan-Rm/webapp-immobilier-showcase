@@ -15,8 +15,11 @@ import { expect, it } from 'vitest'
 
 it('prépare la vraie layer dashboard sans charger Showcase ni ses routes métier', () => {
   const webapp = resolve(import.meta.dirname, '../..')
-  const root = mkdtempSync(join(tmpdir(), 'dashboard-layer-'))
+  const workspace = mkdtempSync(join(tmpdir(), 'dashboard-layer-'))
+  const root = join(workspace, 'webapp')
+  mkdirSync(root)
   try {
+    cpSync(resolve(webapp, '../resources'), join(workspace, 'resources'), { recursive: true })
     symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
     for (const folder of ['shared', 'services', 'schemas/source', 'dashboard', 'server']) {
       cpSync(join(webapp, folder), join(root, folder), {
@@ -72,6 +75,6 @@ it('prépare la vraie layer dashboard sans charger Showcase ni ses routes métie
     expect(build.error, build.stderr).toBeUndefined()
     expect(build.status, build.stdout + build.stderr).toBe(0)
   } finally {
-    rmSync(root, { recursive: true, force: true })
+    rmSync(workspace, { recursive: true, force: true })
   }
 }, 180000)

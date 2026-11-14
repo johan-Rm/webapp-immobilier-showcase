@@ -8,7 +8,8 @@ export default defineNuxtConfig({
   srcDir: './app',
   modules: ['@nuxt/ui', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
-  ui: { fonts: false, colorMode: false },
+  ui: { fonts: false, colorMode: true },
+  colorMode: { preference: 'system', fallback: 'light' },
   icon: { serverBundle: { collections: ['lucide'] } },
   i18n: {
     defaultLocale: 'fr',
