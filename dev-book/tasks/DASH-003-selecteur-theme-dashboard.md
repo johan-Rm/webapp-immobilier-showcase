@@ -2,7 +2,7 @@
 
 - Demande : DEM-009 — développement.
 - Brouillon : `tmp/demande-blocs-colores-theme-dashboard.md`, relatif au principal ; aucune copie dans la couche.
-- Demande définitive prévue : `dev-book/demand/DEM-009-blocs-colores-theme-dashboard.md`, à créer seulement à la reconstitution.
+- Demande définitive : [DEM-009](../demand/DEM-009-blocs-colores-theme-dashboard.md).
 - Session de création : 01a1d94b-2ea6-7270-a3b3-407d88574000.
 - Date : 2026-11-14.
 - Couche : dashboard.
