@@ -377,3 +377,53 @@ for (const colorScheme of ['light', 'dark'] as const) {
     })
   })
 }
+
+for (const colorScheme of ['light', 'dark'] as const) {
+  test.describe(`blocs éditeur ${colorScheme}`, () => {
+    test.use({ colorScheme })
+    test('identité des sections Articles, champs, contenu et médias', async ({ page }) => {
+      await setup(page)
+      await expect(page.locator('.dashboard-panel-icon > span').first()).toHaveCSS(
+        'mask-image',
+        /url/,
+      )
+      await expect(page.locator('[data-panel="articles"]').first()).toBeVisible()
+      await expect(page.locator('[data-panel="articles"] .dashboard-panel-icon').first()).toHaveCSS(
+        'color',
+        'rgb(245, 172, 63)',
+      )
+      await page.screenshot({ path: test.info().outputPath('blocs-articles.png') })
+      await open(page)
+      await expect(page.locator('[data-panel="fields"] .dashboard-panel-icon')).toHaveCSS(
+        'color',
+        'rgb(199, 205, 206)',
+      )
+      await expect(page.locator('[data-panel="content"] .dashboard-panel-icon')).toHaveCSS(
+        'color',
+        'rgb(222, 203, 88)',
+      )
+      await expect(page.locator('[data-panel="fields"]')).toHaveCSS('box-shadow', 'none')
+      await expect(page.locator('[data-panel="content"]')).toHaveCSS('border-top-width', '0px')
+      await expect(page.getByRole('combobox', { name: 'Thème de l’interface' })).toBeVisible()
+      await expect(page.locator('[data-panel="content"] .dashboard-panel-icon > span')).toHaveCSS(
+        'mask-image',
+        /url/,
+      )
+      await page.screenshot({ path: test.info().outputPath('blocs-edition.png') })
+      await page.getByRole('button', { name: 'Choisir l’image principale' }).click()
+      await expect(page.locator('[data-panel="resources"] .dashboard-panel-icon')).toHaveCSS(
+        'color',
+        'rgb(248, 179, 201)',
+      )
+      await expect(page.locator('[data-panel="resources"] .dashboard-panel-icon > span')).toHaveCSS(
+        'mask-image',
+        /url/,
+      )
+      await page.screenshot({ path: test.info().outputPath('blocs-medias.png') })
+      await closeResources(page)
+      await expect(page.getByLabel('Titre de l’article', { exact: true })).toHaveValue(
+        'Article initial',
+      )
+    })
+  })
+}

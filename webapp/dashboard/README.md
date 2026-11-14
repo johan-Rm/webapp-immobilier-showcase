@@ -28,8 +28,11 @@ Le sélecteur de l’en-tête connecté propose Clair, Sombre et Automatique (pa
 Le choix est mémorisé dans ce navigateur par le color mode Nuxt UI existant ;
 Automatique suit le système, avec repli clair. Il s’applique à tout l’espace connecté.
 Les tokens sémantiques couvrent aussi le mode sombre et les états des composants Nuxt UI.
-Les couleurs de statut restent distinctes, avec des messages textuels ; les actions
-principales emploient un olive foncé sur clair pour préserver le contraste.
+Les couleurs de statut restent distinctes, avec des messages textuels. Hors des blocs
+colorés, les actions principales emploient un olive foncé sur clair pour préserver le contraste.
+Les sections utilisent `DashboardPanel` : fond neutre sans bordure, pictogramme Lucide
+et accents locaux, légère teinte au survol. Les icônes utilisées sont embarquées au build,
+sans chargement externe. Les tokens et traitements de contraste restent dans le thème local.
 
 Les contrôles frontend découvrent cette application via Git, même quand une autre
 cible est active. Les alias de types restent locaux à `dashboard/app/`.

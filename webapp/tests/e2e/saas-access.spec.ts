@@ -464,3 +464,94 @@ test('thème mémorisé, automatique réactif et sélecteur utilisable au clavie
   await page.screenshot({ path: test.info().outputPath('theme-selector.png') })
   expect(errors).toEqual([])
 })
+
+for (const colorScheme of ['light', 'dark'] as const) {
+  test.describe(`blocs ${colorScheme}`, () => {
+    test.use({ colorScheme })
+    test('couleurs exactes, contraste, blocs flat et survol sans déplacement', async ({ page }) => {
+      await installBff(page, { platformAdmin: true, memberAdmin: true, unavailable: false })
+      await login(page)
+      await expect(page.locator('.dashboard-panel-icon > span').first()).toHaveCSS(
+        'mask-image',
+        /url/,
+      )
+      const panel = page.locator('[data-panel="project"]')
+      await panel.scrollIntoViewIfNeeded()
+      await page.mouse.move(0, 0)
+      await expect(panel).toHaveCSS('border-top-width', '0px')
+      await expect(panel).toHaveCSS('box-shadow', 'none')
+      await expect(panel).toHaveCSS('transform', 'none')
+      expect(await panel.evaluate((element) => getComputedStyle(element).cursor)).not.toBe(
+        'pointer',
+      )
+      await expect(panel.locator('.dashboard-panel-icon')).toHaveCSS('color', 'rgb(178, 183, 96)')
+      const before = await panel.boundingBox()
+      const background = await panel.evaluate(
+        (element) => getComputedStyle(element).backgroundColor,
+      )
+      await page.screenshot({ path: test.info().outputPath('blocs-repos.png') })
+      await panel.hover()
+      await expect
+        .poll(() => panel.evaluate((element) => getComputedStyle(element).backgroundColor))
+        .not.toBe(background)
+      await expect(panel).toHaveCSS('transform', 'none')
+      expect(await panel.boundingBox()).toEqual(before)
+      await page.screenshot({ path: test.info().outputPath('blocs-survol.png') })
+      await administration(page)
+      for (const [kind, color] of Object.entries({
+        context: 'rgb(85, 184, 198)',
+        organization: 'rgb(220, 130, 96)',
+        newProject: 'rgb(106, 179, 228)',
+        members: 'rgb(192, 141, 217)',
+      })) {
+        const block = page.locator(`[data-panel="${kind}"]`)
+        await expect(block.locator('.dashboard-panel-icon')).toHaveCSS('color', color)
+        await expect(block.locator('.dashboard-panel-icon > span')).toHaveCSS('mask-image', /url/)
+        await expect(block).toHaveCSS('box-shadow', 'none')
+        await expect(block).toHaveCSS('border-top-width', '0px')
+      }
+      const contrasts = await page.locator('.dashboard-panel').evaluateAll((panels) => {
+        const context = document.createElement('canvas').getContext('2d')!
+        const luminance = (color: string) => {
+          context.clearRect(0, 0, 1, 1)
+          context.fillStyle = color
+          context.fillRect(0, 0, 1, 1)
+          return [...context.getImageData(0, 0, 1, 1).data]
+            .slice(0, 3)
+            .map((v) => v / 255)
+            .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
+            .reduce((sum, v, i) => sum + v * [0.2126, 0.7152, 0.0722][i]!, 0)
+        }
+        const ratio = (a: string, b: string) => {
+          const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+          return (hi! + 0.05) / (lo! + 0.05)
+        }
+        return panels.map((panel) => {
+          const icon = getComputedStyle(panel.querySelector('.dashboard-panel-icon')!)
+          const action = panel.querySelector('.dashboard-panel-action')
+          const root = getComputedStyle(panel)
+          return {
+            kind: panel.getAttribute('data-panel'),
+            icon: ratio(icon.color, icon.backgroundColor),
+            text: ratio(root.color, root.backgroundColor),
+            action: action
+              ? ratio(getComputedStyle(action).color, getComputedStyle(action).backgroundColor)
+              : null,
+          }
+        })
+      })
+      for (const item of contrasts) {
+        expect(item.icon, `${item.kind} icon`).toBeGreaterThanOrEqual(3)
+        expect(item.text, `${item.kind} text`).toBeGreaterThanOrEqual(4.5)
+        if (item.action !== null)
+          expect(item.action, `${item.kind} action`).toBeGreaterThanOrEqual(4.5)
+      }
+      const evidence = test.info()
+      await evidence.attach('contrastes-blocs', {
+        body: JSON.stringify(contrasts, null, 2),
+        contentType: 'application/json',
+      })
+      await page.screenshot({ path: test.info().outputPath('blocs-administration.png') })
+    })
+  })
+}

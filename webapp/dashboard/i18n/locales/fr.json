@@ -35,7 +35,8 @@
     "organization": "Organisation",
     "project": "Projet / site",
     "chooseOrganization": "Choisir une organisation",
-    "chooseProject": "Choisir un projet"
+    "chooseProject": "Choisir un projet",
+    "title": "Organisation et projet"
   },
   "home": {
     "eyebrow": "Votre espace de travail",
@@ -174,7 +175,10 @@
     "projection_failed": "Échec de synchronisation : la version précédente peut rester visible. Réessayez la commande.",
     "language_fr": "Français",
     "language_en": "English",
-    "language_es": "Español"
+    "language_es": "Español",
+    "fields": "Informations de l’article",
+    "actions": "Actions de publication",
+    "articleList": "Liste des articles"
   },
   "theme": {
     "label": "Thème de l’interface",
