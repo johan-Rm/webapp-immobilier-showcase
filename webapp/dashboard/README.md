@@ -24,7 +24,9 @@ sans modifier les thèmes clients. `DashboardBrand` importe directement le picto
 source, sans copie du SVG. Rationale pour les titres et Inter pour les textes sont
 hébergées dans `app/assets/fonts/`, avec leurs licences OFL ; elles proviennent de
 [Google Fonts](https://github.com/google/fonts/tree/main/ofl).
-Le mode suit la préférence système, avec repli clair ; aucun sélecteur supplémentaire.
+Le sélecteur de l’en-tête connecté propose Clair, Sombre et Automatique (par défaut).
+Le choix est mémorisé dans ce navigateur par le color mode Nuxt UI existant ;
+Automatique suit le système, avec repli clair. Il s’applique à tout l’espace connecté.
 Les tokens sémantiques couvrent aussi le mode sombre et les états des composants Nuxt UI.
 Les couleurs de statut restent distinctes, avec des messages textuels ; les actions
 principales emploient un olive foncé sur clair pour préserver le contraste.
