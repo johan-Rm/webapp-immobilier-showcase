@@ -384,3 +384,18 @@ DEM-006 livrée. Les anciens tips seront conservés dans le brouillon pour le su
 Workflows AIDE, conventions et qualité actifs ; SonarQube désactivé manuellement
 sur le dépôt, donc aucune réussite Sonar revendiquée. Les contrôles de livraison
 sont en cours ; la PR et les nouveaux SHA seront tracés après vérification.
+
+## Correction CI validée du 2026-11-14
+
+Échec identifié sur le job Client 2 de la PR #7 : le test Compose utilisait un
+chemin relatif depuis webapp/. La correction présentée ajoute uniquement cwd=ROOT
+à son subprocess ; validation humaine explicite « validé ». Aucun comportement
+applicatif ni assertion modifié. Preuves et verdict dans OPS-019.
+
+| Source validée | Commit obtenu |
+| --- | --- |
+| `297f10950166cf4c3efccee514c48ac5cd1c402b` | `84552e5483c52fc6914c3495bfe492f2f3dc26c4` |
+| `e7508ec831d9fa3f6ae680516f5c9e950d65b03f` | `93958a49d46043926b2136e6102e9dc9da1f7390` |
+
+La PR conserve sa branche et sa cible ; ses contrôles doivent repasser sur le
+nouveau HEAD avant toute fusion. La déclaration couvre déjà le fichier de test.
