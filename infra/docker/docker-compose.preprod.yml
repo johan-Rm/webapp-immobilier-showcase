@@ -30,6 +30,7 @@ services:
       dockerfile: ../infra/docker/Dockerfile
       additional_contexts:
         schemas: ${SCHEMAS_PATH:-./webapp/schemas/source}
+        design: ./resources/design
       args:
         GD_TARGET: ${GD_TARGET:-showcase-immobilier}
         APP_ENV: ${APP_ENV:-production}

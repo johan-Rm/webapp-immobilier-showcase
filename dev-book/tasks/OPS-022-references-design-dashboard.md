@@ -8,8 +8,8 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : validée par l’humain ; réserve Docker SSR à corriger avant livraison
-- Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, `infra/docker/docker-compose.dashboard-dev.yml`, cette carte.
+- État : correction Docker SSR implémentée ; nouvelle vérification humaine attendue
+- Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, `infra/docker/docker-compose.dashboard-dev.yml`, `infra/docker/Dockerfile`, les Compose SSR dashboard/dev/preprod/prod, `docs/2.architecture/14.site-layers.md`, cette carte.
 - Dépendances de réalisation : aucune ; base locale `f5349944afeef829f3c9851b4cd591e9cff05249`.
 
 ## Résultat et critères
@@ -30,7 +30,8 @@ Ne pas modifier la configuration des couches.
    ne pas déduire une autorisation de la seule présence du fichier. Le remplacement
    Newsreader est déjà autorisé par le cadrage. Résultat de l’inventaire ci-dessous.
 
-Exclusions : thème applicatif, code, infrastructure, contrôles et conventions globales.
+Exclusions : thème applicatif, code métier, contrôles et conventions globales.
+L’infrastructure Docker nécessaire au pictogramme est incluse par les reprises autorisées.
 Documentation durable : uniquement le guide existant ci-dessus ; les décisions produit
 restent dans le brouillon. Ces ressources sont la référence documentaire unique ; les
 actifs nécessaires au navigateur seront dérivés par DASH-001, avec leur provenance.
@@ -106,3 +107,39 @@ vérifier lors du contrôle global ; les preuves SSR précédentes portaient sur
 Validation de la configuration Compose et contrôle documentaire avant commit ;
 reprise du commit dans Dashboard pour le contrôle réel des deux accès, résultat
 consigné dans le brouillon principal après exécution.
+
+
+Reprise autorisée par « oui » pour la réserve SSR : contexte BuildKit `design`
+ajouté aux cinq constructions Compose utilisant le Dockerfile commun ; montage
+en lecture seule pendant la compilation, sans copie de la charte HTML au runtime.
+Les contextes des applications clientes restent `webapp/`. La nouvelle correction reste à soumettre au verdict humain.
+
+
+Preuves de la correction SSR du 2026-11-14, même session :
+
+- Build réel réussi : `docker buildx build --load --progress=plain
+  --build-context schemas=webapp/schemas/source --build-context design=resources/design
+  --build-arg GD_TARGET=dashboard --build-arg NODE_BUILD_MEMORY_MB=8192
+  -f worktree/devops/infra/docker/Dockerfile
+  -t dem008-dashboard-verification:local webapp`, depuis le principal.
+  Application et ressources : branche reconstituée `abdb1d1` ; Dockerfile :
+  correction locale OPS-022 de cette même session, sans transfert entre agents.
+  Image produite : `sha256:8586400180df9e0f78554cb44f8de2c8e15b0299c9e30794e17d37e11041a806`.
+- Conteneur temporaire lancé avec la commande par défaut sur un port attribué
+  automatiquement. Chromium, clair et sombre : connexion HTTP 200, SVG compilé
+  HTTP 200 et image décodée, Rationale et Inter chargées, aucune erreur JavaScript
+  ni alerte d’hydratation. Aucun test de connexion utilisateur dans cette reprise.
+- Image finale : pictogramme sous `.output/public/_nuxt/` ; aucun dossier
+  `/resources/design`, aucun fichier de charte HTML standalone dans `/app`.
+- Les quatre configurations Compose passent `config --no-env-resolution` ;
+  Dashboard est combiné avec son fichier de base dev. Les contextes `design`
+  et `schemas` sont présents pour les cinq constructions SSR. Les fichiers
+  secrets de préproduction et production ne sont ni créés ni chargés.
+- `make aide-check` : 119 tests réussis ; `git diff --check` réussi.
+  Les rubriques existantes du guide sont conservées. Aucun contrôle affaibli.
+- Journaux locaux : `/tmp/dem008-ssr-correction.log`,
+  `/tmp/dem008-ssr-browser.log`, `/tmp/dem008-ssr-aide.log`.
+
+Limite : pas de reconstruction des images clientes ni de déploiement ; leurs
+configurations de construction sont vérifiées. Les services de développement
+existants sont préservés. Aucun nouveau verdict humain, push ou PR à ce stade.
