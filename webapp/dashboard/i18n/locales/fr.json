@@ -175,5 +175,11 @@
     "language_fr": "Français",
     "language_en": "English",
     "language_es": "Español"
+  },
+  "theme": {
+    "label": "Thème de l’interface",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Automatique"
   }
 }
