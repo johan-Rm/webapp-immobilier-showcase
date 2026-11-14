@@ -4,7 +4,7 @@
 - Conventions : [dev-book](../README.md).
 - Session de création : 01a1d8d6-52a5-7cd0-90c8-633d9849b8b2
 - Date : 2026-11-14
-- État : livraison bloquée par le build Docker SSR ; validation humaine avec réserve conservée.
+- État : reconstituée après correction validée ; réserve Docker SSR levée, prête pour livraison.
 - Confirmation humaine : « confirmé », après restitution du cadrage dans cette session.
 - Identifiant réservé : DEM-008 ; maximum DEM-007 observé dans les références Git locales, brouillons et demandes des worktrees, sans fetch.
 
@@ -158,3 +158,25 @@ La réserve est bloquante : reprise d’OPS-022 à l’implémentation pour le p
 puis vérification humaine de la correction, avant reprise de la livraison.
 Aucune modification fonctionnelle effectuée à l’étape 06, aucun push, PR,
 merge ou réalignement. Les services locaux existants restent intacts.
+
+
+Reprise de reconstitution du 2026-11-14, même session : correction Docker SSR
+acceptée par le verdict humain « validé », réserve levée. Les preuves et le
+verdict détaillés font référence dans [OPS-022](../tasks/OPS-022-references-design-dashboard.md).
+Les traces de blocage précédentes restent historiques.
+
+| SHA source validé | SHA obtenu (`cherry-pick -x`) |
+| --- | --- |
+| `25ca1ddc18e055860f92b786bb8cf3be96efd779` | `d2e47d5db016d0a39889c9e3f610adc2fbdf2f6c` |
+| `cedf2737c5cecc5a952e851a9d5c88eaae2897a8` | `be844137df147ff3c4b2cb0a756e45c0671c7085` |
+
+Reprise dans le principal propre sur la branche existante `demands/DEM-008`,
+sans déplacer les couches ni réappliquer les cinq commits déjà réunis.
+Aucun push, PR, fusion ni déploiement dans cette étape.
+
+Contrôles de cette reprise : les deux patches et provenances sont identiques
+aux sources validées ; `make aide-check` réussit (119 tests),
+`make contribution-check BASE=origin/develop HEAD=HEAD` est conforme (9 commits),
+et `git diff --check` réussit. Seule cette trace documentaire reste non commitée
+pour le commit de livraison autorisé à l’étape 06. Les tests du build Docker
+ne sont pas répétés : même contenu applicatif et Dockerfile que la preuve validée.
