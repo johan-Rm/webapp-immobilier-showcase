@@ -24,7 +24,7 @@ class DashboardComposition(unittest.TestCase):
                 '--env-file', str(directory / 'env'), '-f',
                 'infra/docker/docker-compose.dashboard-dev.yml', '-f',
                 str(directory / 'override.yml'), 'config', '--format', 'json'],
-                env=environment, text=True)
+                cwd=ROOT, env=environment, text=True)
         services = json.loads(result)['services']
         self.assertEqual(set(services), {'nginx', 'webapp-localhost'})
         app = services['webapp-localhost']

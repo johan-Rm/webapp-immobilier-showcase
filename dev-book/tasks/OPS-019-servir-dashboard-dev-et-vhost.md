@@ -81,3 +81,13 @@ Commit d’implémentation validée : `0fa9f63244386ee2a39ac13a69037fba30770477`
 Cette trace documentaire est consignée séparément. Reconstitution prévue
 dans le principal libre et propre, `demands/DEM-007` depuis develop vérifié, sans
 copie de réunion ; retour sur develop après intégration distante.
+
+## Correction CI validée du 2026-11-14
+
+Le runner lance les tests depuis webapp/ : le chemin Compose relatif était donc
+incorrect. Ajouter cwd=ROOT au subprocess du test le rend indépendant du dossier
+d’appel, sans changer les assertions ni le comportement de l’application.
+Patch d’une ligne présenté et validé explicitement (« validé ») dans la session
+d’origine. Configuration testée dans une fixture temporaire depuis racine et
+webapp/ : succès dans les deux cas ; smoke Docker optionnel ignoré.
+La correction reprend OPS-019 ; son nouveau commit est à tracer après création.
