@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain ; réserve Docker SSR à corriger avant livraison
 - Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, `infra/docker/docker-compose.dashboard-dev.yml`, cette carte.
 - Dépendances de réalisation : aucune ; base locale `f5349944afeef829f3c9851b4cd591e9cff05249`.
 
@@ -70,11 +70,20 @@ DEM-007 est explicitement clôturée dans son brouillon. Docker inaccessible lor
 
 ## Verdict humain
 
-Non sollicité à cette étape.
+Le 2026-11-14, dans la session de création : « c’est validé », après présentation
+conjointe d’OPS-022 et DASH-001, des preuves et de la réserve Docker SSR.
+Verdict associé au HEAD DevOps `fba869c236a78eda4df5f0c9fb45863f98c5d3b5`
+(commits OPS-022 initial `76f283a` et correctif `fba869c`), sans diff supplémentaire.
+
+Réserve présentée et conservée : rendre le pictogramme source disponible pendant
+la construction de l’image Docker SSR ; le montage actuel couvre la lane de
+développement seulement. Correction à réaliser à l’étape 03 puis à vérifier,
+avant livraison. La validation n’est ni une levée de cette réserve ni une preuve
+d’un build Docker SSR réussi.
 
 ## Commits
 
-Commit local de cette tâche autorisé par la correction explicite du workflow dans cette session ; SHA réel consigné dans le brouillon après création. Aucun verdict humain sur le résultat.
+Commit local de cette tâche autorisé par la correction explicite du workflow dans cette session ; SHA réel consigné dans le brouillon après création. Verdict humain désormais consigné ci-dessus ; les commits techniques restent inchangés.
 
 
 Correction du workflow sur instruction humaine : un commit par tâche dans cette session,
