@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : correction Docker SSR implémentée ; nouvelle vérification humaine attendue
+- État : validée par l’humain ; réserve Docker SSR levée
 - Chemins autorisés : les deux fichiers déjà fournis sous `resources/design/`, `docs/4.design-system/2.themes-et-palettes.md`, `AGENTS.md`, `infra/docker/docker-compose.dashboard-dev.yml`, `infra/docker/Dockerfile`, les Compose SSR dashboard/dev/preprod/prod, `docs/2.architecture/14.site-layers.md`, cette carte.
 - Dépendances de réalisation : aucune ; base locale `f5349944afeef829f3c9851b4cd591e9cff05249`.
 
@@ -143,3 +143,13 @@ Preuves de la correction SSR du 2026-11-14, même session :
 Limite : pas de reconstruction des images clientes ni de déploiement ; leurs
 configurations de construction sont vérifiées. Les services de développement
 existants sont préservés. Aucun nouveau verdict humain, push ou PR à ce stade.
+
+
+Vérification humaine de la correction, le 2026-11-14, même session de création :
+« validé », en réponse à la présentation du commit
+`25ca1ddc18e055860f92b786bb8cf3be96efd779` et à la question explicite de levée
+de la réserve Docker SSR. Correction acceptée et réserve levée. La validation
+antérieure de DASH-001 reste acquise ; aucune modification applicative supplémentaire.
+La limite présentée demeure : configurations clientes vérifiées, images clientes
+non reconstruites, aucun déploiement. Reconstitution de ce correctif et livraison
+restent à effectuer aux étapes correspondantes.
