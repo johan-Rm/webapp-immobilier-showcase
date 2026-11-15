@@ -1,5 +1,5 @@
 <template>
-  <UPage class="pages-dashboard h-full w-full">
+  <UPage data-page="dashboard-index" class="pages-dashboard h-full w-full">
     <DashboardPropertyWorkspace
       v-if="accommodationsData"
       :data="accommodationsData"
@@ -11,6 +11,7 @@
 
     <UPageSection
       v-else
+      data-section="upage-section-1"
       class="bg-background text-foreground flex h-dvh w-screen items-center justify-center px-6"
     >
       <div class="max-w-xl text-center">

@@ -1,17 +1,29 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage
+    ref="pageRef"
+    data-page="properties-real-estate-listing-accommodation-category-index"
+    :ui="screenUi.page"
+  >
     <!-- Liste de catégorie : les filtres viennent des paramètres dynamiques de route. -->
-    <UPageSection data-screen="screen-property-list" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="property-list"
+      data-screen="screen-property-list"
+      :ui="screenUi.pageSection"
+    >
       <ScreenPropertyList :total-count="accommodations.length" />
     </UPageSection>
 
     <!-- Relance immobilière standard pour maintenir l'exploration après la liste filtrée. -->
-    <UPageSection data-screen="screen-real-estate-three-col-properties" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="real-estate-three-col-properties"
+      data-screen="screen-real-estate-three-col-properties"
+      :ui="screenUi.pageSection"
+    >
       <LazyScreenRealEstateThreeColProperties />
     </UPageSection>
 
     <!-- Footer commun avec les informations de contact et de confiance. -->
-    <UPageSection data-screen="screen-footer" :ui="screenUi.pageSection">
+    <UPageSection data-section="footer" data-screen="screen-footer" :ui="screenUi.pageSection">
       <LazyScreenFooter />
     </UPageSection>
   </UPage>

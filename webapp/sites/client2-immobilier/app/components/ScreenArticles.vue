@@ -1,5 +1,5 @@
 <template>
-  <section class="article-screen">
+  <section data-component="screen-articles" class="article-screen">
     <div class="article-shell">
       <nav aria-label="Navigation">
         <NuxtLink to="/">Client 2 Immobilier</NuxtLink

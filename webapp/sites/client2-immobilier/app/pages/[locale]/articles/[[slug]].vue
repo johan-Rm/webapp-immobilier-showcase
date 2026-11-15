@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="editorial"
+  <NuxtLayout data-page="locale-articles-slug" name="editorial"
     ><ScreenArticles
       class="h-full w-full"
       :locale="locale"

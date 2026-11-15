@@ -1,8 +1,10 @@
 <template>
-  <main>
+  <NuxtLayout data-page="index" name="editorial" plain>
     <h1>{{ $t('title') }}</h1>
-    <nav aria-label="Articles"><NuxtLink to="/fr/articles">Articles</NuxtLink></nav>
-  </main>
+    <nav data-section="articles" aria-label="Articles">
+      <NuxtLink to="/fr/articles">Articles</NuxtLink>
+    </nav>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">

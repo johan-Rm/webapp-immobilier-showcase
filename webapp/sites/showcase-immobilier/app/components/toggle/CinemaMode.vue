@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center" :class="gapClass">
+  <div data-component="toggle-cinema-mode" class="flex flex-col items-center" :class="gapClass">
     <div
       class="border-border/20 bg-surface/20 pointer-events-auto inline-flex gap-1 rounded-[18px] border p-1 backdrop-blur"
       role="group"

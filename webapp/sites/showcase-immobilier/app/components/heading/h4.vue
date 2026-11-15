@@ -1,5 +1,6 @@
 <template>
   <h4
+    data-component="heading-h4"
     class="heading-h4 leading-tight tracking-[0.01em]"
     :class="[{ 'text-white': !props.colorClass }, props.colorClass, sizeClass, textAlignClass]"
   >

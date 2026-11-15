@@ -1,9 +1,10 @@
 <template>
   <div
+    data-page="dashboard-login"
     class="pages-dashboard-login flex h-dvh w-screen items-center justify-center bg-[#212121] px-6"
   >
     <div class="w-full max-w-sm">
-      <section class="flex flex-col gap-16 text-center">
+      <section data-section="connexion" class="flex flex-col gap-16 text-center">
         <div class="space-y-4">
           <div class="flex items-center justify-center gap-2">
             <LogoShowcaseMark class="h-5 w-auto shrink-0 text-[#6B7A4A]" aria-hidden="true" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-background/15 mx-auto h-1.5 w-full">
+  <div data-component="progress-bar" class="bg-background/15 mx-auto h-1.5 w-full">
     <div
       class="bg-background/90 h-full origin-left"
       :style="{ transform: `scaleX(${progress})` }"

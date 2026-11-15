@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="gallery h-full w-full">
+  <div ref="containerRef" data-component="gallery-images" class="gallery h-full w-full">
     <div class="gallery__grid">
       <div
         v-for="item in props.items"

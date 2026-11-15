@@ -9,6 +9,8 @@
   -->
   <div
     ref="rootRef"
+    data-component="screen-property-exceptional"
+    data-section="screen-property-exceptional"
     class="bg-background font-body relative h-dvh min-h-screen w-full overflow-hidden"
   >
     <h1 class="sr-only">{{ summary.name }} — {{ summary.location }}</h1>

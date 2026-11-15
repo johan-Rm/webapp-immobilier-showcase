@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapperClass">
+  <div data-component="dashboard-sidebar-filters" :class="wrapperClass">
     <!-- Recherche -->
     <div class="py-2.5">
       <input

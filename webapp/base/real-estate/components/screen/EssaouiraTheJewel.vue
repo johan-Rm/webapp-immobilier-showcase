@@ -1,5 +1,10 @@
 <template>
-  <div class="screen-essaouira-the-jewel bg-background text-foreground" :class="rootGridClass">
+  <div
+    data-component="screen-essaouira-the-jewel"
+    data-section="screen-essaouira-the-jewel"
+    class="screen-essaouira-the-jewel bg-background text-foreground"
+    :class="rootGridClass"
+  >
     <div class="relative px-4 pt-24 pb-16 sm:pb-20 2xl:px-8 2xl:pt-64" :class="contentColumnClass">
       <LazyHeadingH2Screen :to="jewelPageLink">
         {{ sectionTitle }}

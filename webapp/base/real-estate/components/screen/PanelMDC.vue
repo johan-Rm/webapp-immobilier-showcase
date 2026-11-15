@@ -1,5 +1,7 @@
 <template>
   <div
+    data-component="screen-panel-mdc"
+    data-section="screen-panel-mdc"
     class="screen-panel-mdc bg-background text-foreground grid"
     :class="[
       screenColumnTemplate[columnTemplate].value,

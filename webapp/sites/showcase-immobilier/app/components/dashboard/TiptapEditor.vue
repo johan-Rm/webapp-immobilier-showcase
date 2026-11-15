@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col overflow-hidden rounded border border-white/10">
+  <div
+    data-component="dashboard-tiptap-editor"
+    class="flex flex-col overflow-hidden rounded border border-white/10"
+  >
     <div
       v-if="editor"
       class="flex flex-wrap items-center gap-0.5 border-b border-white/10 px-2 py-1.5"

@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-background relative flex h-full w-full min-w-0 flex-col pt-0">
+  <div
+    data-component="property-detail-panel"
+    class="bg-background relative flex h-full w-full min-w-0 flex-col pt-0"
+  >
     <div ref="scrollContainer" class="min-h-0 flex-1 overflow-y-auto py-4">
       <div class="space-y-6 pb-10 lg:space-y-8">
         <header class="space-y-4 pt-4">

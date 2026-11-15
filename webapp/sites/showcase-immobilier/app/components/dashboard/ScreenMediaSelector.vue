@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div data-component="dashboard-screen-media-selector" class="flex flex-col gap-2">
     <!-- Aucune image associée au bien : on renvoie vers le bloc Médias associés. -->
     <p v-if="availableItems.length === 0" class="py-3 text-center text-xs text-white/25">
       Ajoutez d'abord des images dans « Médias associés ».

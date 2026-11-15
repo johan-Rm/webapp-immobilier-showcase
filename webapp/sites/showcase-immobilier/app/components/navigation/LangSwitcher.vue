@@ -1,5 +1,9 @@
 <template>
-  <nav :aria-label="navAriaLabel" class="flex items-center">
+  <nav
+    data-component="navigation-lang-switcher"
+    :aria-label="navAriaLabel"
+    class="flex items-center"
+  >
     <ul class="flex items-center gap-2">
       <li v-for="loc in availableLocales" :key="loc.code">
         <NuxtLink

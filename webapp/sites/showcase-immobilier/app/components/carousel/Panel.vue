@@ -1,5 +1,8 @@
 <template>
-  <div class="panel-dual-carousel relative h-full min-h-0 w-full min-w-0 overflow-hidden">
+  <div
+    data-component="carousel-panel"
+    class="panel-dual-carousel relative h-full min-h-0 w-full min-w-0 overflow-hidden"
+  >
     <div
       class="panel-dual-carousel__track h-full w-full transition-transform duration-700 ease-out"
       :style="trackStyle"

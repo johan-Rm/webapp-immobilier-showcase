@@ -1,17 +1,25 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage ref="pageRef" data-page="page" :ui="screenUi.page">
     <!-- Screen éditorial générique : le slug validé pilote le contenu MDC affiché. -->
-    <UPageSection data-screen="screen-panel-mdc" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="panel-mdc"
+      data-screen="screen-panel-mdc"
+      :ui="screenUi.pageSection"
+    >
       <ScreenPanelMDC :web-page-slug="slug" />
     </UPageSection>
 
     <!-- Relance immobilière commune aux pages éditoriales avant la sortie de page. -->
-    <UPageSection data-screen="screen-real-estate-three-col-properties" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="real-estate-three-col-properties"
+      data-screen="screen-real-estate-three-col-properties"
+      :ui="screenUi.pageSection"
+    >
       <LazyScreenRealEstateThreeColProperties />
     </UPageSection>
 
     <!-- Footer commun pour conserver les points de contact et de confiance. -->
-    <UPageSection data-screen="screen-footer" :ui="screenUi.pageSection">
+    <UPageSection data-section="footer" data-screen="screen-footer" :ui="screenUi.pageSection">
       <LazyScreenFooter />
     </UPageSection>
   </UPage>

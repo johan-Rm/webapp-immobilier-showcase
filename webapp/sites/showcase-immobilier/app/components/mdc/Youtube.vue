@@ -1,5 +1,5 @@
 <template>
-  <section class="px-6 md:px-12 md:py-14">
+  <section data-component="mdc-youtube" class="px-6 md:px-12 md:py-14">
     <div class="mx-auto w-full max-w-3xl space-y-4">
       <p
         v-if="props.designation"

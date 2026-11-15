@@ -1,5 +1,9 @@
 <template>
-  <div class="screen-real-estate-three-col-properties bg-background relative h-full w-full">
+  <div
+    data-component="screen-real-estate-three-col-properties"
+    data-section="screen-real-estate-three-col-properties"
+    class="screen-real-estate-three-col-properties bg-background relative h-full w-full"
+  >
     <div class="relative z-10 flex h-full w-full flex-col">
       <LazyHeadingH2Screen :to="sectionLink">
         {{ sectionTitle }}

@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="dashboard-property-field-editor"
     class="dashboard-property-field-editor ml-0.5 border-b border-white/5 py-1.5 pr-1 transition-colors"
     :class="[
       isNumberValue || props.half ? 'col-span-1' : 'col-span-2',

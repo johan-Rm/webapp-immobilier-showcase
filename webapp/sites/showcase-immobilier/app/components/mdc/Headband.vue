@@ -1,5 +1,5 @@
 <template>
-  <section class="px-6">
+  <section data-component="mdc-headband" class="px-6">
     <div class="mx-auto flex w-full max-w-3xl flex-col gap-4">
       <p
         v-if="props.designation"

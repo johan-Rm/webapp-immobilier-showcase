@@ -17,6 +17,9 @@ test('home page renders without critical browser errors', async ({ page }) => {
   expect(response?.ok()).toBe(true)
   await expect(page.locator('body')).toBeVisible()
   await expect(page.locator('[data-screen]').first()).toBeVisible()
+  await expect(page.getByRole('main')).toHaveCount(1)
+  await expect(page.locator('[data-page="index"]')).toBeVisible()
+  await expect(page.locator('[data-layout="default"]')).toBeAttached()
 
   try {
     await page.waitForLoadState('networkidle', { timeout: 10_000 })

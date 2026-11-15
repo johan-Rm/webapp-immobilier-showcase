@@ -1,7 +1,7 @@
 <template>
   <!-- SCREEN_04 — Split 50/50 : moitié image + moitié panneau texte sur fond `background`.
        `screen.reverse` permute les deux moitiés sur desktop. Mobile : image en haut (42%). -->
-  <div class="flex h-full w-full flex-col md:flex-row">
+  <div data-component="property-exceptional-split" class="flex h-full w-full flex-col md:flex-row">
     <div
       class="relative order-first h-[42%] md:h-full md:w-1/2"
       :class="screen.reverse ? 'md:order-2' : 'md:order-1'"

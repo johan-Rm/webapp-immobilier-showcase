@@ -1,5 +1,5 @@
 <template>
-  <div ref="rootElement" :class="rootClass">
+  <div ref="rootElement" data-component="navigation-social-network" :class="rootClass">
     <nav
       v-if="shouldRenderDesktopList"
       class="flex flex-col items-center gap-3 2xl:gap-4"

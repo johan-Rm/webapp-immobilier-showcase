@@ -1,5 +1,8 @@
 <template>
-  <section class="pages-dashboard-property-workspace h-dvh w-screen overflow-hidden">
+  <section
+    data-component="dashboard-property-workspace"
+    class="pages-dashboard-property-workspace h-dvh w-screen overflow-hidden"
+  >
     <!-- Colonnes : contenu + sidebar -->
     <div class="flex h-full">
       <!-- Zone de contenu principale avec image en fond -->

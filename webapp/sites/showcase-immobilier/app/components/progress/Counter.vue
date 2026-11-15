@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="progress-counter"
     class="pointer-events-none font-mono text-sm font-semibold text-white 2xl:text-4xl"
     aria-label="Position dans la progression"
   >

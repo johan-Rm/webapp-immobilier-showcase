@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="dashboard-category-code-select"
     class="ml-0.5 border-b border-l-2 border-white/5 border-l-transparent py-1.5 pr-1"
     :class="[multiple ? 'relative col-span-2' : 'relative col-span-1']"
   >

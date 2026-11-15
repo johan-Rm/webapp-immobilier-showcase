@@ -1,5 +1,6 @@
 <template>
   <article
+    data-component="panel-three-cols"
     :aria-labelledby="panel.headingId"
     role="group"
     class="screen-real-estate-three-col-properties__panel relative isolate flex h-full min-h-[70vh] justify-center overflow-hidden"

@@ -1,6 +1,11 @@
 <template>
   <!-- Navigation des actions rapides -->
-  <nav aria-label="Actions rapides" class="flex h-full items-center" :class="navClass">
+  <nav
+    data-component="navigation-quick-actions"
+    aria-label="Actions rapides"
+    class="flex h-full items-center"
+    :class="navClass"
+  >
     <ul class="flex" :class="listClass">
       <li
         v-for="item in visibleQuickActions"

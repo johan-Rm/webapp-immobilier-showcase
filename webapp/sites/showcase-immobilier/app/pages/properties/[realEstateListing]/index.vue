@@ -1,10 +1,14 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage ref="pageRef" data-page="properties-real-estate-listing-index" :ui="screenUi.page">
     <!-- Titre accessible issu de la page éditoriale de listing immobilier. -->
     <h1 v-if="accessibleTitle" class="sr-only">{{ accessibleTitle }}</h1>
 
     <!-- Liste filtrée par type de bien : le screen reçoit des données prêtes pour l'affichage. -->
-    <UPageSection data-screen="screen-property-list" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="property-list"
+      data-screen="screen-property-list"
+      :ui="screenUi.pageSection"
+    >
       <ScreenPropertyList
         :items-list="propertyItemsList"
         :total-count="accommodations.length"
@@ -14,12 +18,16 @@
     </UPageSection>
 
     <!-- Relance vers les biens mis en avant pour éviter une impasse si la liste est courte. -->
-    <UPageSection data-screen="screen-real-estate-three-col-properties" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="real-estate-three-col-properties"
+      data-screen="screen-real-estate-three-col-properties"
+      :ui="screenUi.pageSection"
+    >
       <LazyScreenRealEstateThreeColProperties />
     </UPageSection>
 
     <!-- Sortie de page commune : navigation, contact et signaux de confiance. -->
-    <UPageSection data-screen="screen-footer" :ui="screenUi.pageSection">
+    <UPageSection data-section="footer" data-screen="screen-footer" :ui="screenUi.pageSection">
       <LazyScreenFooter />
     </UPageSection>
   </UPage>

@@ -1,5 +1,8 @@
 <template>
-  <div class="markdown-panel-mdc relative h-full min-h-0 w-full flex-1">
+  <div
+    data-component="markdown-panel-mdc"
+    class="markdown-panel-mdc relative h-full min-h-0 w-full flex-1"
+  >
     <div
       ref="panelRef"
       class="markdown-panel h-full min-h-0 w-full py-4"

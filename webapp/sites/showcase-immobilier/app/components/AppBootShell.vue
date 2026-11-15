@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="app-boot-shell"
     class="bg-background fixed inset-0 flex w-screen items-center justify-center text-center transition-opacity duration-500 ease-out"
     :class="isLandingShellVisible ? 'z-100 opacity-100' : 'pointer-events-none z-100 opacity-0'"
     role="status"

@@ -1,6 +1,7 @@
 <template>
   <div
     :ref="setLinePropertyRef"
+    data-component="line-property"
     class="absolute inset-0 flex h-full w-max overflow-hidden"
     role="group"
     aria-label="Horizontal accommodations"

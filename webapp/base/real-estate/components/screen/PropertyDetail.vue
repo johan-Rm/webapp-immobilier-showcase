@@ -1,5 +1,9 @@
 <template>
-  <section class="screen-property-detail relative h-dvh min-h-screen w-full overflow-hidden">
+  <section
+    data-component="screen-property-detail"
+    data-section="screen-property-detail"
+    class="screen-property-detail relative h-dvh min-h-screen w-full overflow-hidden"
+  >
     <PropertyDetailDrawer
       :open="isDetailScreenActive && isAsideOpen"
       content-class="w-[38%] max-w-xl"
