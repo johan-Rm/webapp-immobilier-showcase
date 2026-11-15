@@ -102,3 +102,12 @@ La mesure de mutation porte sur une **fonction pure et ses tests directs**, dans
 - Présenter les mutants détectés, survivants et non couverts, ainsi que les erreurs et la durée.
 - Conserver le **score informatif** tant qu’aucun budget n’a été choisi après revue humaine.
 - Arrêter les seuls processus possédés et préserver les sources.
+
+### Charge locale bornée
+
+Les mesures de charge utilisent une **origine de boucle locale explicite** et des fixtures isolées, sans écriture sur un backend réel.
+
+- Refuser les redirections, origines étrangères et contenus inattendus.
+- Borner utilisateurs, itérations, durée et processus ; arrêter les seuls conteneurs possédés.
+- Bloquer les erreurs fonctionnelles et d’exécution ; présenter les latences et le matériel sans engagement de capacité de production.
+- Choisir les budgets de latence seulement après examen humain des mesures.

@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : prête à reprendre selon l’ordre des commits amont ; pas de verdict humain implicite.
+- État : implémentée et commitée, à vérifier.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-023, BFF-005 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -40,3 +40,11 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 ## Commits
 
 Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche terminée puis la poursuite des dépendances, avant vérification humaine globale. Les SHA réels sont consignés dans le récapitulatif du brouillon. Aucun push, PR ou fusion.
+
+## Mesure locale
+
+Dépendances BFF-005 et OPS-023 commitées et intégrées. Réutilisation du lanceur de processus possédés d’OPS-027 (905049e) pour les délais et interruptions. Treize tests réussis : origine externe, identifiants, chemin ambigu, profil inconnu, résumé vide, redirection et mauvaise page ; schéma exact du résumé k6 1.6.1 éprouvé.
+
+Image k6 verrouillée par version et empreinte ; profils smoke (1 utilisateur, 3 itérations par route) et mesure (3 utilisateurs, 30 itérations), durée maximale 20 secondes et plafond de processus 30 secondes. Aucun budget de latence adopté. Réponses 500 et contenu inattendu sont refusés par les vérifications fonctionnelles ; les redirections ne sont pas suivies.
+
+Mesures réelles sur le build Dashboard reconstruit : SSR connexion et vrai BFF sans session, avec refus 401 attendu ; profils smoke et mesure réussis. Le backend est une fixture HTTP locale hors routes produit ; aucun appel Symfony. Rapports k6 et matériel dans `webapp/.tmp/quality/load/`. Les autres parcours BFF authentifiés restent couverts par les tests H3 et navigateur, pas par cette mesure de charge initiale.
