@@ -16,7 +16,7 @@ import check_registry as registry
 class FrontendPaths(unittest.TestCase):
     def test_registry_moves_the_source_without_dropping_conventions(self):
         data = json.loads((REPO_ROOT / 'codebase-integrity/conventions.json').read_text())
-        app = [item for item in data['conventions'] if item['source'].startswith('webapp/sites/showcase-immobilier/app/README.md#')]
+        app = [item for item in data['conventions'] if item['source'].startswith('webapp/base/')]
         self.assertGreater(len(app), 5)
         self.assertFalse(any(item['source'].startswith('webapp/app/') for item in data['conventions']))
 
@@ -26,8 +26,8 @@ class FrontendPaths(unittest.TestCase):
         data['conventions'] = [item]
         with tempfile.TemporaryDirectory(prefix='frontend-reference-') as directory:
             root = Path(directory)
-            content = '# Application\n\n## Conventions techniques\n\n### Sur-vérification des variables\n\nRègle témoin.\n'
-            for name in ['webapp/app/README.md', item['source'].split('#')[0]]:
+            content = '# Application\n\n## Conventions techniques\n\n### Vérifications des valeurs\n\nRègle témoin.\n'
+            for name in ['webapp/sites/showcase-immobilier/app/README.md', item['source'].split('#')[0]]:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(content)

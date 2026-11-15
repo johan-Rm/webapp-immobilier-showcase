@@ -3,25 +3,27 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:python": "python3 commun/test_domains.py",
-    "test:typescript": "vitest run",
-    "test:bun": "bun test domaines/architecture-dependances/tests/verify-types-placement.test.ts domaines/qualite-code/tests/verify-script-setup-standard.test.ts",
+    "test:python": "python3 -B commun/run_check_output.py tests-python -- python3 commun/test_domains.py",
+    "test:typescript": "python3 -B commun/run_check_output.py tests-typescript -- node node_modules/vitest/vitest.mjs run",
+    "test:bun": "python3 -B commun/run_check_output.py tests-bun -- bun test domaines/architecture-dependances/tests/verify-types-placement.test.ts domaines/qualite-code/tests/verify-script-setup-standard.test.ts",
     "test": "bun run test:python && bun run test:typescript && bun run test:bun",
-    "check:app:types": "bun domaines/architecture-dependances/scripts/verify-types-placement.ts",
-    "check:app:images": "bun domaines/interface-internationalisation/scripts/verify-app-image.ts",
-    "check:app:components:no-business-logic": "bun domaines/architecture-dependances/scripts/verify-no-business-logic.ts",
-    "check:app:script-setup-standard": "bun domaines/qualite-code/scripts/verify-script-setup-standard.ts",
-    "check:app:soc": "bun domaines/architecture-dependances/scripts/verify-soc-components.ts",
-    "check:app:code-quality": "bun domaines/qualite-code/scripts/verify-code-quality.ts",
+    "check:app:types": "python3 -B commun/run_check_output.py types -- bun domaines/architecture-dependances/scripts/verify-types-placement.ts",
+    "check:app:images": "python3 -B commun/run_check_output.py images -- bun domaines/interface-internationalisation/scripts/verify-app-image.ts",
+    "check:app:components:no-business-logic": "python3 -B commun/run_check_output.py business -- bun domaines/architecture-dependances/scripts/verify-no-business-logic.ts",
+    "check:app:script-setup-standard": "python3 -B commun/run_check_output.py script -- bun domaines/qualite-code/scripts/verify-script-setup-standard.ts",
+    "check:app:soc": "python3 -B commun/run_check_output.py soc -- bun domaines/architecture-dependances/scripts/verify-soc-components.ts",
+    "check:app:code-quality": "python3 -B commun/run_check_output.py quality -- bun domaines/qualite-code/scripts/verify-code-quality.ts",
     "check:app:solid": "bun domaines/qualite-code/scripts/verify-solid.ts",
-    "check:app:guards": "bun domaines/qualite-code/scripts/verify-no-redundant-guards.ts",
-    "check:services:no-framework-imports": "bun domaines/architecture-dependances/scripts/verify-no-framework-imports.ts",
-    "check:conventions": "bun run check:app:types && bun run check:app:images && bun run check:app:components:no-business-logic && bun run check:app:script-setup-standard && bun run check:app:soc && bun run check:app:code-quality && bun run check:app:solid && bun run check:app:guards && bun run check:services:no-framework-imports",
-    "lint": "bun commun/lint.ts"
+    "check:app:guards": "python3 -B commun/run_check_output.py guards -- bun domaines/qualite-code/scripts/verify-no-redundant-guards.ts",
+    "check:services:no-framework-imports": "python3 -B commun/run_check_output.py services -- bun domaines/architecture-dependances/scripts/verify-no-framework-imports.ts",
+    "check:conventions": "bun run check:frontend:policy && bun run check:app:types && bun run check:app:images && bun run check:app:components:no-business-logic && bun run check:app:script-setup-standard && bun run check:app:soc && bun run check:app:code-quality && bun run check:app:solid && bun run check:app:guards && bun run check:services:no-framework-imports",
+    "lint": "python3 -B commun/run_check_output.py lint -- bun commun/lint.ts",
+    "check:frontend:policy": "bun domaines/qualite-code/scripts/verify-frontend-conventions.ts"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "8.67.0",
-    "yaml": "2.9.0",
-    "vitest": "4.1.10"
+    "@vue/compiler-sfc": "3.5.41",
+    "vitest": "4.1.10",
+    "yaml": "2.9.0"
   }
 }
