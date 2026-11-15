@@ -21,7 +21,7 @@ restent dans le [guide du projecteur](../../webapp/scripts/README.md#projection-
 et le [README Client 2](../../webapp/sites/client2-immobilier/README.md).
 
 Préparer le volume avec `make dev-saas-project-prepare`, puis construire/lancer
-explicitement la [pile dashboard](../../infra/nginx/README.md). Les commandes
+explicitement la [pile dashboard](../nginx-local.md). Les commandes
 historiques à deux sites restent disponibles. Le worker est optionnel : le lancer
 séparément après configuration, sinon les publications peuvent rester en attente.
 Le dry-run valide sans écrire de projection, télécharger d’image ou accuser la file.

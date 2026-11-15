@@ -40,7 +40,7 @@ class DocumentsTest(unittest.TestCase):
         return docs.check(self.root, self.paths)
 
     def test_dashboard_cards_are_discovered_by_cli(self):
-        self.write('docs/README.md', '# Documentation')
+        self.write('docs/README.md', '# Documentation\n\n## Rôle et responsabilités\n\n- Expliquer.\n\n## Conventions techniques\n\n### Sources\n\nUne référence par règle.\n')
         card = self.write('dev-book/tasks/DASH-001-exemple.md',
                           '# Carte\n[Documentation](../../docs/README.md#documentation)')
         listing = b'docs/README.md\0dev-book/tasks/DASH-001-exemple.md\0'

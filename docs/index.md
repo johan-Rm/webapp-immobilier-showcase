@@ -25,6 +25,18 @@ Cette documentation complete les README locaux et centralise les conventions tra
 
 ## Sections disponibles
 
+- [Contrôles frontend AST](controle-conventions-frontend.md) : erreurs, warnings et limites de l’analyse.
+
+- [Nginx local](nginx-local.md) : piles serveur, Dashboard et vérifications isolées.
+
+- [Vérifier les traces du dev-book](verifier-traces-devbook.md) : base Git, métadonnées et références des verdicts.
+
+- [Exécuter les contrôles](executer-controles.md) : commandes, prérequis, rapports et conteneur de test.
+
+- [Périmètre des contrôles frontend](perimetre-controles-frontend.md) : découverte des fichiers, exception image et alias.
+
+- [Contrôle local des contributions](controle-contributions.md) : commande et amorçage initial.
+
 - `1.getting-started` : demarrage et structure du projet
 - `2.architecture` : architecture globale et invariants structurels
 - `3.application` : conventions applicatives Nuxt
