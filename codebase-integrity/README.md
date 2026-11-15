@@ -84,3 +84,12 @@ Les dépendances du **produit et de l’outillage**, y compris celles de dévelo
 - Borner toute exception à un **paquet et un avis précis**, avec justification et échéance valide ; refuser les exceptions expirées.
 - Signaler les **paquets non analysés** et refuser une analyse incomplète, un inventaire absent ou une réponse inexploitable.
 - Conserver les empreintes des inventaires et les résultats sans secrets ; ne pas corriger les dépendances automatiquement.
+
+### Graphe des dépendances des services
+
+Le graphe contrôle l’**indépendance des services vis-à-vis des frameworks**, selon la règle déjà déclarée, sans ajouter d’interdiction générale de cycles ou de dépendances entre couches.
+
+- Inclure les **imports explicites et les imports de types**, avec résolution des alias partagés connus.
+- Afficher les **modules, dépendances et imports non résolus** ; refuser un graphe vide ou une analyse interrompue.
+- Conserver le vérificateur historique tant que sa migration n’est pas éprouvée sur le périmètre déclaré.
+- Distinguer les imports explicites des **auto-imports et des templates**, que ce graphe ne couvre pas.

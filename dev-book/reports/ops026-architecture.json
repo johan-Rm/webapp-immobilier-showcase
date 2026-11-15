@@ -1,0 +1,19 @@
+{
+  "dependencyCruiser": "18.7.2",
+  "entryModules": 18,
+  "modules": 67,
+  "dependencies": 126,
+  "unresolved": [
+    {
+      "from": "services/infra/resolver/site.vitest.ts",
+      "module": "#site"
+    },
+    {
+      "from": "server/utils/site.ts",
+      "module": "#site"
+    }
+  ],
+  "violations": [],
+  "graphSha256": "407e8422a8ea41ebaf000105813b3e7c1f661d6156b3c19b7acce56f50b2aeed",
+  "historicalCheck": "aucune violation, conservé ; parité exhaustive non déclarée"
+}
