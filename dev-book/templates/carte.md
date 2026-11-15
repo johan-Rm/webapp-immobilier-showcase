@@ -19,7 +19,9 @@
 
 ## Verdict humain
 
-<Ne renseigner un verdict que lorsqu’il a été exprimé.>
+Aucun verdict humain.
+
+<Après un verdict explicite, remplacer cette mention par un bloc verdict-json avec decision, portee et contenu ; aucune validation préremplie.>
 
 ## Commits
 

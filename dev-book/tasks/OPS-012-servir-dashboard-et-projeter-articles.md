@@ -45,7 +45,7 @@ domaine `dashboard.<suffixe>.localhost` sur le port public de la pile et donnée
 Les commandes historiques conservent leurs deux sites. La sortie `dashboard/.output`
 est normalisée vers `.output` uniquement dans le stage Docker. Activation Nginx limitée
 à un booléen validé et à un hôte dérivé de la couche, sans substitution des variables Nginx.
-Commandes et usage : [README Nginx](../../infra/nginx/README.md), source unique de cette partie.
+Commandes et usage : [Documentation Nginx](../../docs/nginx-local.md), source unique de cette partie.
 
 État présenté : HEAD `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd`, `layers/devops`, index vide.
 Sept fichiers suivis modifiés : `infra/docker/Dockerfile`, `infra/make/Makefile.dev`,
@@ -92,6 +92,17 @@ BFF-004 ; OPS-013 attend les intégrations. Aucune consolidation ou modification
 aucun commit ni verdict humain produit à cette étape.
 
 ## Verdict humain
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "Validation explicite historique du 2026-11-12, limitée au service et vhost ; export, projection et synchronisation exclus de ce premier verdict.",
+  "contenu": {
+    "type": "git",
+    "valeur": "6a0885beb5bcd275834d9c383c296161d57696d9"
+  }
+}
+```
 
 Validation humaine explicite du 2026-11-12 : « validé », limitée à la partie service/vhost présentée.
 Empreinte des huit fichiers revérifiée identique avant commit ; aucune correction fonctionnelle.
