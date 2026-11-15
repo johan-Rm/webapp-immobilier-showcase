@@ -6,4 +6,4 @@ root = Path(__file__).resolve().parents[1]
 suite = unittest.TestSuite()
 for directory in sorted((root / 'domaines').glob('*/tests')):
     suite.addTests(unittest.defaultTestLoader.discover(str(directory), pattern='test_*.py', top_level_dir=str(directory)))
-raise SystemExit(0 if unittest.TextTestRunner(verbosity=1).run(suite).wasSuccessful() else 1)
+raise SystemExit(0 if unittest.TextTestRunner(verbosity=1, buffer=True).run(suite).wasSuccessful() else 1)

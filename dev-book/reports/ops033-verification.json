@@ -1,0 +1,28 @@
+{
+  "carte": "OPS-033",
+  "base": "7344a3b48ce344aa943e646ede31051e02fc630b",
+  "fichiers": [
+    {
+      "chemin": "codebase-integrity/commun/run_aide_checks.py",
+      "sha256": "e78e8a7982349d8204d118b561ce3c724fe4bae3f70f1b85f9b14199348e2f5e"
+    },
+    {
+      "chemin": "codebase-integrity/commun/test_domains.py",
+      "sha256": "83315d961601b9768ca1d2e4d2c15ac159c6bfe9b0fbb8adf43cbcbbf5ececf9"
+    },
+    {
+      "chemin": "codebase-integrity/domaines/fiabilite-verifications/tests/test_aide_runner.py",
+      "sha256": "a88a9169d116f7273a9b4f5db1fc8e01745c0ee50b1003f12b8900fc0ae8fcd6"
+    },
+    {
+      "chemin": "infra/make/Makefile.ai-development-engineering",
+      "sha256": "0c805e921955c1799f97e130b489a915e3a4c43a3b3b42996f71a7f8c7d7dc47"
+    }
+  ],
+  "preuves": [
+    "Cinq tests de présentation réussis",
+    "La commande réelle continue après échec documentaire et retourne un statut non nul",
+    "NO_COLOR et redirection sans ANSI, journaux complets sans couleur"
+  ],
+  "validation": "Tout est validé, 2026-11-15 ; carte de présentation uniquement, sans validation des écarts documentaires"
+}
