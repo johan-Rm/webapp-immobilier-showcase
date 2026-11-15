@@ -75,3 +75,12 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 - Permettre de consulter la sélection de tests et les commandes **sans les exécuter ni divulguer l’environnement privé**.
 - Exiger une **adresse de test explicite** et un serveur de test préparé pour les vérifications navigateur ; ne démarrer aucune pile utilisateur ni API distante implicitement.
 - Utiliser des **environnements de contrôle jetables**, sans injection implicite de secrets, et reconstruire les images après modification des sources.
+
+### Audit des dépendances
+
+Les dépendances du **produit et de l’outillage**, y compris celles de développement, font l’objet d’un audit des avis de sécurité connus.
+
+- Bloquer les avis **high et critical** non exemptés ; les niveaux inférieurs restent informatifs.
+- Borner toute exception à un **paquet et un avis précis**, avec justification et échéance valide ; refuser les exceptions expirées.
+- Signaler les **paquets non analysés** et refuser une analyse incomplète, un inventaire absent ou une réponse inexploitable.
+- Conserver les empreintes des inventaires et les résultats sans secrets ; ne pas corriger les dépendances automatiquement.
