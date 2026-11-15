@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : prête à reprendre selon l’ordre des commits amont ; pas de verdict humain implicite.
+- État : implémentée et commitée, à vérifier.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-023, DOM-002 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -39,3 +39,23 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 ## Commits
 
 Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche terminée puis la poursuite des dépendances, avant vérification humaine globale. Les SHA réels sont consignés dans le récapitulatif du brouillon. Aucun push, PR ou fusion.
+
+## Résultat mesuré
+
+Dépendances disponibles : OPS-023 et DOM-002 intégrées par commits, sans copie de travail non commité. Stryker 10.1.1 et Vitest mesurent uniquement le module pur de liens dans un répertoire temporaire ; sources vérifiées identiques avant/après. Neuf tests du lanceur réussis, dont rapport vide/incomplet, erreur initiale et arrêt sur délai ; lint, formatage et TypeScript strict réussis. Score initial informatif, aucun budget adopté.
+
+```json
+{
+  "detected": 47,
+  "survived": 5,
+  "uncovered": 0,
+  "total": 52,
+  "excluded": 0,
+  "score": 90.38461538461539,
+  "informativeScore": true,
+  "durationMs": 13010,
+  "sourceSha256": "49dd21b9e1b9371186246d752d9662d67f41298ea81c6b48910b908fe517550a"
+}
+```
+
+Mutation connue détectée dans le rapport réel : `BlockStatement`, remplacement `{}`, statut Killed. Les cinq survivants restent à examiner humainement. Rapports JSON/HTML et détail des survivants : `webapp/.tmp/quality/mutation/`. Source conservée, répertoire temporaire supprimé, aucun processus de mesure laissé actif.
