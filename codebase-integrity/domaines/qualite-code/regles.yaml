@@ -36,7 +36,7 @@ rules:
         missing: [1, 2, 3, 5, 6, 7, 8, 10, 11, 12]
         demande: DEM-007
       - path: dashboard/app/components/dashboard/Articles.vue
-        sha256: 15b8c24f1ae1afd7419ef6cb50bb3239cefda940b5ce1848ebca0c4aa858a941
+        sha256: e54fbd36bcd8f19b925227c99a216f67161708315b8acd18a6d9eb02add060e6
         missing: [1, 2, 3, 5, 6, 7, 8, 11]
         demande: DEM-007
       - path: dashboard/app/components/dashboard/ContextPicker.vue
@@ -64,19 +64,19 @@ rules:
         missing: [1, 2, 3, 6, 7, 8, 9, 10, 11, 12]
         demande: DEM-007
       - path: dashboard/app/pages/[access].vue
-        sha256: c6c753ab648a8ca58fe3cb9587ca0646a94cbc668dc7c5c0dad6f58ef540bfe1
+        sha256: 8dfe7590176fbe68a3ae8016d9aa6658233c36810b4b260cab811a76314f4bd6
         missing: [1, 3, 5, 6, 7, 9, 10, 12]
         demande: DEM-007
       - path: dashboard/app/pages/administration.vue
-        sha256: d19a585327e70812e9b88a1963ac09090b5578a35887d009ebd55a734cee0789
+        sha256: ad1204b02af3fc877ba365530871aa51a3fe831b1a430d20eb8c803751ad8455
         missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
         demande: DEM-007
       - path: dashboard/app/pages/articles.vue
-        sha256: 807556bc98c395d37d5370c733df9e8e901ce55037db9758a73c6795ee180e50
+        sha256: c73944e451f9eac165404ff4c9d9096101d58938035c008314309469b7a1f327
         missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
         demande: DEM-007
       - path: dashboard/app/pages/index.vue
-        sha256: 8c20720476511b239f2a07fc95c09e012275aa3714df7195c9a6f14d5e6ce2db
+        sha256: 8fe458e19074c81065a1275682c9fe23095cbed378755ffc0d6423b06cab54a2
         missing: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
         demande: DEM-007
 
