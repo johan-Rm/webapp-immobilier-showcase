@@ -2,11 +2,11 @@
 
 ## Rôle et responsabilités
 
-Une Nuxt Layer par client : identité, contenus, médias, thèmes et surcharges UI.
-Chaque client possède son application. Showcase seul charge actuellement les
-screens immobiliers et son dashboard ; Client 2 reste une page SSR minimale.
+- Isoler l’identité, les contenus, médias, thèmes et surcharges de chaque client.
+- Fournir une application Nuxt par site avec des responsabilités **claires et concises**.
 
 ## Conventions techniques
 
-La sélection, le déploiement et l’ajout d’un client sont décrits dans
-[le guide des layers](../../docs/2.architecture/14.site-layers.md).
+### Isolation des clients
+
+Chaque client utilise sa propre layer et son application. Le catalogue immobilier est étendu explicitement ; une cible ne charge pas implicitement les pages ou initialisations d’une autre cible.
