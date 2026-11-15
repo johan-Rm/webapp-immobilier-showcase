@@ -29,3 +29,16 @@ services:
       - /app/.tmp/quality
     # Le code exécuté est celui de l’image reconstruite, pas un montage modifiable.
     # Aucun .env n’est injecté et aucun service utilisateur n’est démarré.
+
+  load:
+    profiles: [quality]
+    image: grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1
+    network_mode: host
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    environment:
+      QUALITY_BASE_URL: ${QUALITY_BASE_URL:?Origine locale de test requise}
+      QUALITY_ROUTE: ${QUALITY_ROUTE:?Route et contenu attendus requis}
+      QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
+    volumes:
+      - ./webapp/scripts/quality/load:/scripts:ro
+    command: [run, /scripts/scenarios.js]
