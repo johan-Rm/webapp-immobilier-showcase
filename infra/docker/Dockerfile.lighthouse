@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e
+RUN npm install --global lighthouse@13.0.1
+ENV CHROME_PATH=/ms-playwright/chromium-1234/chrome-linux64/chrome
+ENV HOME=/tmp
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+WORKDIR /app
+# Le lanceur sélectionne le Chromium livré dans cette image à empreinte fixe.
+ENTRYPOINT ["lighthouse"]
