@@ -1,20 +1,24 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage ref="pageRef" data-page="contact" :ui="screenUi.page">
     <!-- Titre réservé aux lecteurs d'écran et au SEO : le screen contact porte le titre visuel. -->
     <h1 v-if="accessibleTitle" class="sr-only">{{ accessibleTitle }}</h1>
 
     <!-- Écran principal de conversion : rendu immédiat pour garder le parcours de contact direct. -->
-    <UPageSection data-screen="screen-contact" :ui="screenUi.pageSection">
+    <UPageSection data-section="contact" data-screen="screen-contact" :ui="screenUi.pageSection">
       <ScreenContact />
     </UPageSection>
 
     <!-- Relance éditoriale avant le footer pour maintenir une sortie orientée exploration. -->
-    <UPageSection data-screen="screen-real-estate-three-col-properties" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="real-estate-three-col-properties"
+      data-screen="screen-real-estate-three-col-properties"
+      :ui="screenUi.pageSection"
+    >
       <LazyScreenRealEstateThreeColProperties />
     </UPageSection>
 
     <!-- Point de sortie commun : navigation, contact et informations de confiance. -->
-    <UPageSection data-screen="screen-footer" :ui="screenUi.pageSection">
+    <UPageSection data-section="footer" data-screen="screen-footer" :ui="screenUi.pageSection">
       <LazyScreenFooter />
     </UPageSection>
   </UPage>

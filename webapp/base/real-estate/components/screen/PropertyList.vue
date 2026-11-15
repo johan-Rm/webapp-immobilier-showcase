@@ -1,6 +1,8 @@
 <template>
   <section
     ref="stageRef"
+    data-component="screen-property-list"
+    data-section="screen-property-list"
     class="screen-property-list bg-background relative h-full w-full overflow-hidden overscroll-none"
   >
     <h2 class="sr-only">

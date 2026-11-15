@@ -1,5 +1,8 @@
 <template>
-  <div class="mx-auto w-full max-w-[75%] rounded-3xl px-6 py-8 md:px-10">
+  <div
+    data-component="blockquote-default"
+    class="mx-auto w-full max-w-[75%] rounded-3xl px-6 py-8 md:px-10"
+  >
     <div class="text-foreground/80 mx-auto flex items-center justify-center p-4" aria-hidden="true">
       <UIcon name="i-lucide-quote" class="text-[clamp(3.5rem,5vw,4.75rem)]" />
     </div>

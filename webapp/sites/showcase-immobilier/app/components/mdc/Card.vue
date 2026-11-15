@@ -1,5 +1,5 @@
 <template>
-  <section class="px-6">
+  <section data-component="mdc-card" class="px-6">
     <div
       class="border-foreground/10 bg-foreground/5 mx-auto w-full max-w-3xl rounded-2xl border p-6 md:p-8"
     >

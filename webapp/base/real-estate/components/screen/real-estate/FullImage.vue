@@ -1,5 +1,10 @@
 <template>
-  <div class="screen-real-estate-full-image relative" :class="screenColumnTemplate[column].value">
+  <div
+    data-component="screen-real-estate-full-image"
+    data-section="screen-real-estate-full-image"
+    class="screen-real-estate-full-image relative"
+    :class="screenColumnTemplate[column].value"
+  >
     <AppImage
       v-if="hasBackgroundImage && !usePortraitHeroImage"
       :src="bgImageUrl"

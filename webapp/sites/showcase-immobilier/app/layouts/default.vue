@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-dvh w-screen overflow-hidden">
+  <div data-layout="default" class="relative h-dvh w-screen overflow-hidden">
     <div v-if="!isFramedLanding" class="absolute inset-x-0 top-0 z-50">
       <div
         class="grid min-h-24 grid-cols-2 px-4 pt-6 lg:min-h-32 2xl:min-h-48 2xl:pt-10 2xl:pl-16"
@@ -16,7 +16,7 @@
     <div v-if="!isFramedLanding" class="absolute right-4 bottom-4 z-50">
       <LazyNavigationSocialNetwork />
     </div>
-    <UMain class="h-full w-full">
+    <UMain data-section="contenu" class="h-full w-full">
       <slot />
     </UMain>
     <LazyUdrawerDesignSystem />

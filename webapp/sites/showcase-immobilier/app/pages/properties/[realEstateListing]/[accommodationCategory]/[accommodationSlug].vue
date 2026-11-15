@@ -1,19 +1,31 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage
+    ref="pageRef"
+    data-page="properties-real-estate-listing-accommodation-category-accommodation-slug"
+    :ui="screenUi.page"
+  >
     <!-- Détail du bien : parcours immersif si le bien définit des screens (hasPart), sinon la
          fiche détail classique. Le slug route pilote le chargement. -->
-    <UPageSection data-screen="screen-property-detail" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="property-detail"
+      data-screen="screen-property-detail"
+      :ui="screenUi.pageSection"
+    >
       <ScreenPropertyExceptional v-if="isExceptional" :slug="slug" @next-screen="next" />
       <ScreenPropertyDetail v-else :slug="slug" />
     </UPageSection>
 
     <!-- Relance immobilière après le détail pour prolonger l'exploration. -->
-    <UPageSection data-screen="screen-real-estate-three-col-properties" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="real-estate-three-col-properties"
+      data-screen="screen-real-estate-three-col-properties"
+      :ui="screenUi.pageSection"
+    >
       <LazyScreenRealEstateThreeColProperties />
     </UPageSection>
 
     <!-- Footer commun avec contact, navigation et informations de confiance. -->
-    <UPageSection data-screen="screen-footer" :ui="screenUi.pageSection">
+    <UPageSection data-section="footer" data-screen="screen-footer" :ui="screenUi.pageSection">
       <LazyScreenFooter />
     </UPageSection>
   </UPage>

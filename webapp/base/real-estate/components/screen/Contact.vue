@@ -1,5 +1,7 @@
 <template>
   <section
+    data-component="screen-contact"
+    data-section="screen-contact"
     class="screen-contact bg-background relative h-dvh min-h-svh w-full overflow-hidden text-white"
   >
     <AppImage

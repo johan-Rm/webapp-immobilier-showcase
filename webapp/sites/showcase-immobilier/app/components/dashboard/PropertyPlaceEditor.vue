@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4 px-1 py-2">
+  <div data-component="dashboard-property-place-editor" class="space-y-4 px-1 py-2">
     <div class="border-b border-white/5 pb-3">
       <p class="mb-1 text-[0.65rem] font-semibold tracking-widest text-white/20">Nom du lieu</p>
       <p class="text-sm font-semibold" style="color: #6b7a4a">{{ placeName || '—' }}</p>

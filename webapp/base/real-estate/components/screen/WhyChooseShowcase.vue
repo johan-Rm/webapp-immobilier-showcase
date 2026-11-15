@@ -1,5 +1,10 @@
 <template>
-  <div class="screen-why-choose-showcase bg-background text-foreground" :class="rootGridClass">
+  <div
+    data-component="screen-why-choose-showcase"
+    data-section="screen-why-choose-showcase"
+    class="screen-why-choose-showcase bg-background text-foreground"
+    :class="rootGridClass"
+  >
     <div :class="contentColumnClass">
       <div class="relative h-full min-h-0 w-full min-w-0 px-4 pt-20 pb-10 2xl:pt-32 2xl:pb-20">
         <div :class="contentBodyClass">

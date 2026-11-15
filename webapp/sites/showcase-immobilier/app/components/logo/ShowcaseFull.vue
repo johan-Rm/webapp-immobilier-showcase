@@ -2,6 +2,7 @@
   <!-- Logo cliquable vers l’accueil -->
   <a
     v-show="effectiveVisible"
+    data-component="logo-showcase-full"
     :href="homePath"
     class="inline-flex items-center justify-center"
     :aria-label="logoAriaLabel"

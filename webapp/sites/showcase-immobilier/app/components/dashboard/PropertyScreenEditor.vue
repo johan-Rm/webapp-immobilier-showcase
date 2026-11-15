@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4 pt-1 pb-3">
+  <div data-component="dashboard-property-screen-editor" class="flex flex-col gap-4 pt-1 pb-3">
     <!-- Template (partagé entre langues) -->
     <label class="flex flex-col gap-1.5">
       <span class="text-[0.55rem] font-semibold tracking-widest uppercase" style="color: #6b7a4a">

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-0 flex-1 flex-col">
+  <div data-component="dashboard-property-editor-panel" class="flex min-h-0 flex-1 flex-col">
     <div class="h-0.5 w-full shrink-0 bg-[#6B7A4A]" />
 
     <UTabs

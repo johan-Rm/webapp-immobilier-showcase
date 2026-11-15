@@ -1,5 +1,8 @@
 <template>
-  <blockquote :class="['inline-flex max-w-full items-center gap-3', textSizeClass[props.textSize]]">
+  <blockquote
+    data-component="blockquote-oneline"
+    :class="['inline-flex max-w-full items-center gap-3', textSizeClass[props.textSize]]"
+  >
     <UIcon
       :name="props.iconName"
       class="text-foreground/80 mx-auto text-[clamp(1.75rem,2.5vw,3.75rem)]"

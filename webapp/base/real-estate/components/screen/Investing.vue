@@ -1,5 +1,7 @@
 <template>
   <div
+    data-component="screen-investing"
+    data-section="screen-investing"
     class="screen-invest bg-background text-foreground relative h-full"
     :class="screenColumnTemplate[column].value"
   >

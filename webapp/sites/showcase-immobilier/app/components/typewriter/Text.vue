@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span data-component="typewriter-text">
     {{ text }}
     <span v-if="caret" class="ml-1 inline-block animate-pulse">|</span>
   </span>

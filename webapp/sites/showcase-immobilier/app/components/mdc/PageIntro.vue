@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto w-full max-w-3xl px-6">
+  <section data-component="mdc-page-intro" class="mx-auto w-full max-w-3xl px-6">
     <div
       class="text-foreground/80 text-base leading-relaxed md:text-lg [&_p]:mt-4 [&_p:first-child]:mt-0"
     >

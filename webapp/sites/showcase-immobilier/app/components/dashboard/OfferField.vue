@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="dashboard-offer-field"
     class="col-span-1 ml-0.5 border-b border-l-2 border-white/5 py-1.5 pr-1 transition-colors"
     :class="isOpen ? 'border-l-[#6B7A4A] bg-white/2.5' : 'border-l-transparent hover:bg-white/2.5'"
   >

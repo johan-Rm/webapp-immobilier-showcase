@@ -18,7 +18,10 @@
       RÉGION F · Panneau d'infos       — drawer gauche : détails du bien + accès au contact
     Les régions B→F sont des surcouches `fixed`/`absolute` : elles vivent hors du flux du rail.
   -->
-  <div class="bg-background font-body relative h-dvh w-full overflow-hidden">
+  <div
+    data-page="villa-des-alizes-mobile"
+    class="bg-background font-body relative h-dvh w-full overflow-hidden"
+  >
     <h1 class="sr-only">{{ property.name }} — {{ property.location }}</h1>
 
     <!-- ╔══════════════════════════════════════════════════════════════════╗
@@ -31,6 +34,7 @@
          `overscroll-x-contain` : en mobile, empêche le swipe horizontal en
          butée de bord de déclencher le geste « retour » du navigateur (iOS Safari). -->
     <div
+      data-section="parcours"
       ref="scrollerRef"
       class="flex h-full w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       :style="readingModeScrollerStyle"
@@ -609,6 +613,7 @@
     >
       <aside
         v-if="isDetailPanelOpen"
+        data-section="informations-bien"
         class="bg-background text-foreground fixed inset-y-0 left-0 z-[71] flex h-dvh w-[min(88vw,24rem)] flex-col overflow-y-auto px-6 py-8 shadow-2xl md:px-8 md:py-10"
         role="dialog"
         aria-modal="true"

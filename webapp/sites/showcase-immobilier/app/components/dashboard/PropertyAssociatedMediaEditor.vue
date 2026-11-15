@@ -1,5 +1,8 @@
 <template>
-  <div :class="fullWidthItems ? 'w-full' : ''">
+  <div
+    data-component="dashboard-property-associated-media-editor"
+    :class="fullWidthItems ? 'w-full' : ''"
+  >
     <!-- Liste des images associées -->
     <div v-if="resolvedItems.length" class="mb-3">
       <div

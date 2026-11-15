@@ -1,7 +1,13 @@
 <template>
   <!-- Mini-wireframe du template d'écran. `currentColor` → se thème selon l'état (sélection).
        Aplats = zones image (opacité basse), traits = zones texte (opacité plus marquée). -->
-  <svg viewBox="0 0 60 40" class="h-full w-full" fill="none" aria-hidden="true">
+  <svg
+    data-component="dashboard-screen-template-skeleton"
+    viewBox="0 0 60 40"
+    class="h-full w-full"
+    fill="none"
+    aria-hidden="true"
+  >
     <!-- FULL — 1 image plein cadre + texte bas-gauche -->
     <template v-if="template === 'SCREEN_ACCOMMODATION_FULL'">
       <rect width="60" height="40" rx="2" fill="currentColor" opacity="0.16" />

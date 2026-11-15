@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center" :class="gapClass">
+  <div data-component="toggle-view-mode-list" class="flex flex-col items-center" :class="gapClass">
     <div
       class="border-border/25 bg-surface/25 pointer-events-auto inline-flex gap-1 rounded-[18px] border p-1 backdrop-blur"
       role="group"

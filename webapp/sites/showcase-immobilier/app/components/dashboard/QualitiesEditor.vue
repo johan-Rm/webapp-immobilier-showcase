@@ -1,5 +1,8 @@
 <template>
-  <div class="col-span-2 ml-0.5 border-l-2 border-l-transparent py-1.5 pr-1">
+  <div
+    data-component="dashboard-qualities-editor"
+    class="col-span-2 ml-0.5 border-l-2 border-l-transparent py-1.5 pr-1"
+  >
     <div v-for="(quality, index) in qualities" :key="index" class="mb-3 last:mb-0">
       <div class="mb-1.5 flex items-center gap-2">
         <input

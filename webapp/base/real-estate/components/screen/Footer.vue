@@ -4,7 +4,12 @@
     Pleine hauteur, découpe mobile 65/35
     puis une ligne dès md.
   -->
-  <footer class="screen-footer bg-background text-foreground" :class="rootGridClass">
+  <footer
+    data-component="screen-footer"
+    data-section="screen-footer"
+    class="screen-footer bg-background text-foreground"
+    :class="rootGridClass"
+  >
     <!--
         Zone de contenu à gauche.
         Structure en colonne, sur toute

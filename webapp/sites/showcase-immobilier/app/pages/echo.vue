@@ -1,7 +1,7 @@
 <template>
-  <section class="pages-echo space-y-6">
+  <section data-page="echo" data-section="demonstration" class="pages-echo space-y-6">
     <!-- Page de démonstration technique : garde le contexte lisible sans dépendre du layout screen. -->
-    <header class="space-y-2">
+    <header data-section="presentation" class="space-y-2">
       <h1 class="text-3xl font-bold text-gray-900">Echo (Zod + types partagés)</h1>
       <p class="text-gray-600">
         Démo FEAT-009 : schéma Zod partagé, types dérivés, validation côté composable et endpoint.

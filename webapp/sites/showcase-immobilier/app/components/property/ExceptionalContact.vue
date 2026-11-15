@@ -1,7 +1,10 @@
 <template>
   <!-- Écran final — Footer / Contact. Formulaire rattaché au bien via `propertyReference`.
        Visuel d'ambiance affiché à partir de md seulement (masqué en mobile : formulaire plein écran). -->
-  <div class="flex h-full w-full flex-col overflow-hidden md:flex-row">
+  <div
+    data-component="property-exceptional-contact"
+    class="flex h-full w-full flex-col overflow-hidden md:flex-row"
+  >
     <div class="relative hidden md:block md:h-full md:w-1/2">
       <AppImage
         :src="contactImage"

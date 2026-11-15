@@ -1,5 +1,10 @@
 <template>
-  <div class="inline-flex items-center justify-center" role="img" :aria-label="logoAriaLabel">
+  <div
+    data-component="logo-showcase-picto"
+    class="inline-flex items-center justify-center"
+    role="img"
+    :aria-label="logoAriaLabel"
+  >
     <LogoPictoSvg
       class="w-auto shrink-0 object-contain"
       :class="[{ 'logo-showcase-picto--mono': props.mono }, props.colorClass, sizeClass]"

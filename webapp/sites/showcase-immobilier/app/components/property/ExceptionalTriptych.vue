@@ -2,7 +2,10 @@
   <!-- SCREEN_01 — Triptyque (3 visuels) + texte. Composition éditoriale de 3 visuels superposés,
        chacun cliquable (→ lightbox). Desktop : texte et triptyque côte à côte. Mobile : empilés.
        `reverse` permute les deux blocs sur desktop. -->
-  <div class="flex h-full w-full flex-col justify-center px-6 pt-28 pb-24 md:block md:p-0">
+  <div
+    data-component="property-exceptional-triptych"
+    class="flex h-full w-full flex-col justify-center px-6 pt-28 pb-24 md:block md:p-0"
+  >
     <div
       class="text-foreground md:absolute md:top-1/2 md:z-10 md:max-w-sm md:-translate-y-1/2"
       :class="screen.reverse ? 'md:right-12 md:text-right lg:right-20' : 'md:left-12 lg:left-20'"

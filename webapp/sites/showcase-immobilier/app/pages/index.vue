@@ -1,10 +1,14 @@
 <template>
-  <UPage ref="pageRef" :ui="screenUi.page">
+  <UPage ref="pageRef" data-page="index" :ui="screenUi.page">
     <!-- Titre réservé aux lecteurs d'écran et au SEO : la landing garde son rendu visuel immersif. -->
     <h1 v-if="accessibleTitle" class="sr-only">{{ accessibleTitle }}</h1>
 
     <!-- Premier écran critique : rendu immédiat pour préserver la perception de vitesse. -->
-    <UPageSection :data-screen="SCREEN_IDS.landing" :ui="screenUi.pageSection">
+    <UPageSection
+      data-section="landing"
+      :data-screen="SCREEN_IDS.landing"
+      :ui="screenUi.pageSection"
+    >
       <component
         :is="activeLandingScreen.component"
         :data="landingScreenData"
@@ -15,6 +19,7 @@
     <!-- Sections secondaires montées après préparation du runtime pour alléger l'hydratation initiale. -->
     <UPageSection
       v-if="shouldRenderDeferredScreens"
+      data-section="why-choose-showcase"
       :data-screen="SCREEN_IDS.whyChooseShowcase"
       :ui="screenUi.pageSection"
     >
@@ -24,6 +29,7 @@
     <!-- Section éditoriale desktop uniquement : son format visuel est moins adapté aux petits écrans. -->
     <UPageSection
       v-if="shouldRenderDeferredScreens && !isPhoneDevice"
+      data-section="essaouira-the-jewel"
       :data-screen="SCREEN_IDS.essaouiraTheJewel"
       :ui="screenUi.pageSection"
     >
@@ -32,6 +38,7 @@
 
     <UPageSection
       v-if="shouldRenderDeferredScreens"
+      data-section="invest"
       :data-screen="SCREEN_IDS.invest"
       :ui="screenUi.pageSection"
     >
@@ -41,6 +48,7 @@
     <!-- Expérience synchronisée desktop : évite de charger une interaction dense sur mobile. -->
     <UPageSection
       v-if="shouldRenderDeferredScreens && !isPhoneDevice"
+      data-section="panel-scroll-dual-synced"
       :data-screen="SCREEN_IDS.panelScrollDualSynced"
       :ui="screenUi.pageSection"
     >
@@ -50,6 +58,7 @@
     <!-- Respiration éditoriale conservée hors mobile pour maintenir un parcours compact sur téléphone. -->
     <UPageSection
       v-if="shouldRenderDeferredScreens && !isPhoneDevice"
+      data-section="blockquote"
       :data-screen="SCREEN_IDS.blockquote"
       :ui="screenUi.pageSection"
     >
@@ -58,6 +67,7 @@
 
     <UPageSection
       v-if="shouldRenderDeferredScreens"
+      data-section="real-estate-three-col-properties"
       :data-screen="SCREEN_IDS.realEstateThreeColProperties"
       :ui="screenUi.pageSection"
     >
@@ -67,6 +77,7 @@
     <!-- Point de sortie de la page : contact, navigation et informations de confiance. -->
     <UPageSection
       v-if="shouldRenderDeferredScreens"
+      data-section="footer"
       :data-screen="SCREEN_IDS.footer"
       :ui="screenUi.pageSection"
     >

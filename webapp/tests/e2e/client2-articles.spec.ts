@@ -107,6 +107,9 @@ test.describe('articles Client 2 sur projection isolée', () => {
     try {
       await publish(['fr', 'en'], 1)
       expect((await page.goto('/fr/articles'))?.status()).toBe(200)
+      await expect(page.getByRole('main')).toHaveCount(1)
+      await expect(page.locator('[data-page="locale-articles-slug"]')).toBeVisible()
+      await expect(page.locator('[data-layout="editorial"]')).toBeVisible()
       await page.getByRole('link', { name: 'Article publié', exact: true }).click()
       await expect(page.getByRole('heading', { name: 'Article publié', exact: true })).toBeVisible()
       await expect(page).toHaveTitle('Titre SEO publié')

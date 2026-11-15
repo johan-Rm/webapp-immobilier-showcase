@@ -1,5 +1,7 @@
 <template>
   <div
+    data-component="screen-blockquote"
+    data-section="screen-blockquote"
     class="screen-blockquote bg-background text-foreground relative h-full w-full overflow-hidden"
   >
     <div

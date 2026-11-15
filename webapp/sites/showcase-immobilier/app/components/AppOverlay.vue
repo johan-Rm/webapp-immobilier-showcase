@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="app-overlay"
     class="absolute inset-0 bg-black"
     :style="{ opacity: normalizedOpacity }"
     aria-hidden="true"

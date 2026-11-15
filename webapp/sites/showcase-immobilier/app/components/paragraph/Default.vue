@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="paragraph-default"
     class="flex min-h-0 flex-col space-y-2 leading-[1.5] lg:space-y-3 lg:leading-[1.55] 2xl:leading-relaxed"
   >
     <p

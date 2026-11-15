@@ -1,5 +1,6 @@
 <template>
   <div
+    data-component="panel-active-content"
     class="grid h-full w-full max-w-none grid-rows-[auto_minmax(0,1fr)] gap-4 overflow-hidden"
     :class="contentTopPaddingClass"
   >

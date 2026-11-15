@@ -2,6 +2,7 @@
   <!-- RÉGION C — Synthèse fixe : carte d'identité du bien (nom + prix + badges), ancrée en bas
        à gauche, indépendante du rail. Déclencheur du panneau d'informations (drawer). -->
   <button
+    data-component="property-exceptional-summary"
     type="button"
     class="group fixed right-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-4 z-50 flex max-w-[calc(100vw-2rem)] cursor-pointer flex-col gap-1.5 overflow-hidden rounded-md text-left text-xs text-white transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:right-auto md:left-6 md:flex-row md:items-center md:gap-2"
     aria-label="Voir les informations du bien"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-full flex-col">
+  <div data-component="dashboard-property-content-editor" class="flex min-h-full flex-col">
     <div
       v-for="block in displayedBlocks"
       :key="block.id"

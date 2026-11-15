@@ -1,5 +1,6 @@
 <template>
   <section
+    data-component="hello-world"
     class="flex min-h-40 flex-col items-center justify-center gap-6 rounded-3xl border border-black/10 bg-white/80 px-6 py-10 text-center shadow-sm backdrop-blur-sm"
     aria-labelledby="hello-world-title"
   >

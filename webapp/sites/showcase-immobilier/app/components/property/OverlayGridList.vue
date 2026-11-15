@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay-grid">
+  <div data-component="property-overlay-grid-list" class="overlay-grid">
     <div class="relative">
       <span class="rail left-0"></span>
     </div>

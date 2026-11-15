@@ -1,5 +1,9 @@
 <template>
-  <div class="screen-footer bg-background text-foreground relative h-full w-full overflow-hidden">
+  <div
+    data-component="screen-footer2"
+    data-section="screen-footer2"
+    class="screen-footer bg-background text-foreground relative h-full w-full overflow-hidden"
+  >
     <AppImage
       :src="backgroundImage.url"
       :alt="backgroundImage.alt"

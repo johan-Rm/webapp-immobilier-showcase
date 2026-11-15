@@ -1,5 +1,7 @@
 <template>
   <div
+    data-component="screen-real-estate-rounded"
+    data-section="screen-real-estate-rounded"
     class="screen-real-estate-rounded bg-background relative flex flex-col justify-end px-[1mm] pb-[1mm]"
     :class="screenColumnTemplate[column].value"
   >

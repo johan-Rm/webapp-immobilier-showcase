@@ -4,6 +4,8 @@
     Pleine hauteur et pleine largeur.
   -->
   <div
+    data-component="screen-real-estate-split"
+    data-section="screen-real-estate-split"
     class="screen-real-estate-split bg-background text-foreground grid h-full w-full"
     :class="screenColumnTemplate[columnTemplate].value"
   >

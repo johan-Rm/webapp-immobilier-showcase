@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2">
+  <div data-component="dashboard-property-screens-editor" class="flex flex-col gap-2">
     <!-- Liste ordonnée des screens (cartes repliables) -->
     <div
       v-for="(screen, index) in parsedScreens"

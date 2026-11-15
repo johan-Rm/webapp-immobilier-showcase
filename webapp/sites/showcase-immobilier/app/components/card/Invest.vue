@@ -1,5 +1,5 @@
 <template>
-  <div class="card-invest w-full">
+  <div data-component="card-invest" class="card-invest w-full">
     <div
       class="relative overflow-hidden rounded-4xl bg-linear-to-br from-black/70 via-black/60 to-black/45 p-4 py-6 md:p-6 md:py-10 2xl:p-12 2xl:py-16"
     >
