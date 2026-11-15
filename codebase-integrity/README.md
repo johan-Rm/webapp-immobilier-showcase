@@ -111,3 +111,12 @@ Les mesures de charge utilisent une **origine de boucle locale explicite** et de
 - Borner utilisateurs, itérations, durée et processus ; arrêter les seuls conteneurs possédés.
 - Bloquer les erreurs fonctionnelles et d’exécution ; présenter les latences et le matériel sans engagement de capacité de production.
 - Choisir les budgets de latence seulement après examen humain des mesures.
+
+### Mesures Lighthouse
+
+Les audits portent sur les **vraies pages SSR de test**, avec contrôle de l’URL finale et du contenu réellement rendu. Les pages privées utilisent des sessions fictives isolées.
+
+- Verrouiller les versions du navigateur et de Lighthouse ; refuser toute erreur d’exécution, catégorie ou mesure absente.
+- Réaliser trois observations par route et profil, conserver les rapports bruts et présenter les médianes avec les conditions de mesure.
+- Conserver les **scores informatifs** jusqu’au choix explicite de budgets par l’humain.
+- Préserver les rapports et arrêter uniquement les processus possédés.

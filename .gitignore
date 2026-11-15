@@ -74,3 +74,7 @@ webapp/sites/*/content/*/metadata/category-code.yaml
 webapp/sites/*/content/*/metadata/media-object.yaml
 
 /tmp/
+
+# Sources des contrôles Lighthouse ; seuls les rapports restent ignorés.
+!webapp/scripts/quality/lighthouse.ts
+!webapp/scripts/quality/lighthouse.vitest.ts
