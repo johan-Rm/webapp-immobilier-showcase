@@ -31,3 +31,5 @@ Aucun verdict sur l’implémentation ou le contenu des nouveaux README. L’org
 Commit local distinct créé à l’implémentation ; SHA réel dans le récapitulatif du brouillon. Aucun push, PR ou fusion.
 
 Reprise du workflow le 2026-11-15 : commits techniques autorisés avant vérification humaine globale ; cette carte préparée est rattachée à sa couche, sans duplication ni transfert de code applicatif non commité. Les états et consignes antérieurs décrivent l’ancien workflow.
+
+Complément du 2026-11-15 : suppression des README profonds de contenus, fixtures et médias selon la règle confirmée ; leurs explications sont transférées dans le guide documentaire DevOps à partir des sources déjà commitées. La convention durable de préparation non destructive des démonstrations est regroupée au README des sites. Aucun contenu de démonstration, média ni code supprimé.
