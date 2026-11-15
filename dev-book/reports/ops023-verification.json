@@ -1,0 +1,48 @@
+{
+  "carte": "OPS-023",
+  "base": "ca571d60c39b8b5932d74cd43dcbe4131c47c578",
+  "validation": "Validation humaine explicite : tout est validé ; périmètre OPS-023 présenté, travaux incomplets exclus.",
+  "fichiers": [
+    {
+      "chemin": "webapp/package.json",
+      "sha256": "96445b30a843a9dbc86d97ac2379e82d88057ddd722f30a8197639f686e8887e"
+    },
+    {
+      "chemin": "webapp/bun.lock",
+      "sha256": "d817e30ac52f8b037b92dfa0b9caf2ae205aa11d2fd24c267afc7eb755f837d6"
+    },
+    {
+      "chemin": "webapp/vitest.config.ts",
+      "sha256": "546481070110a1f049d887920ec798aec4dc26bb0c70899d04f1b14d870b1193"
+    },
+    {
+      "chemin": "webapp/playwright.config.ts",
+      "sha256": "1ec5b04e6a3d6a80d94960ec07939f2dc1986e0a708a504d5033e97c20b81723"
+    },
+    {
+      "chemin": "webapp/scripts/quality/run.ts",
+      "sha256": "3df093d28ca6e73bcb971f58d1e48a0c243be34690edc134899a9ff9f1c381ba"
+    },
+    {
+      "chemin": "webapp/scripts/quality/run.vitest.ts",
+      "sha256": "2be0cbc3a9982cf7372041eacf3f861c711aae081c08077d6b6e4398478e2583"
+    },
+    {
+      "chemin": "infra/docker/docker-compose.quality.yml",
+      "sha256": "fe008d2f2bf3bb2dd6e86e8892ca8ddd2d284d0b3fc993984f1b18ec85b6c78b"
+    },
+    {
+      "chemin": "infra/make/Makefile.dev",
+      "sha256": "4436afef05602ded620ce993aa35169d19167edf0381be8f980a7d5b8fd12cf0"
+    },
+    {
+      "chemin": "codebase-integrity/README.md",
+      "sha256": "e8b217a81ff6e48a5f13782472005e6a4516b664ced7e6fc77c9070cb054e4d1"
+    }
+  ],
+  "preuves": [
+    "15 tests du lanceur réussis le 2026-11-15",
+    "Inventaire browser/client2 sans navigateur ; cible inconnue et famille non installée refusées",
+    "Suites et exécution Compose décrites dans la carte ; aucune preuve de scanner déjà opérationnel"
+  ]
+}
