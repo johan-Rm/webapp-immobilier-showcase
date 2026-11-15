@@ -53,6 +53,17 @@ notamment le regroupement `webapp/` et la configuration des couches.
 - Un domaine sans entrée signifie qu’aucune convention n’y est encore recensée, pas que ce domaine est conforme. L’inventaire initial n’est pas exhaustif.
 - Une évolution des règles, de leur classement ou de leurs contrôles suit la consolidation.
 
+### Exécution des contrôles
+
+Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limites**, et produit un résultat fidèle à son exécution.
+
+- Sélectionner explicitement la **famille de contrôle** et la **cible applicative** lorsque le contrôle les distingue.
+- Séparer les tests selon leur **moteur** et leur **environnement**, notamment les tests Bun, Vitest Node et Nuxt.
+- Ne jamais annoncer une réussite pour une suite **absente, vide, interrompue ou échouée**.
+- Permettre de consulter la sélection de tests et les commandes **sans les exécuter ni divulguer l’environnement privé**.
+- Exiger une **adresse de test explicite** et un serveur de test préparé pour les vérifications navigateur ; ne démarrer aucune pile utilisateur ni API distante implicitement.
+- Utiliser des **environnements de contrôle jetables**, sans injection implicite de secrets, et reconstruire les images après modification des sources.
+
 ## Organisation
 
 `domaines/<domaine>/scripts/` contient les vérificateurs ; `tests/` leurs tests,

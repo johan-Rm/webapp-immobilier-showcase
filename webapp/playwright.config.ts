@@ -13,6 +13,11 @@ export default defineConfig({
       : target.id === 'client2-immobilier'
         ? '**/client2*.spec.ts'
         : '**/home.smoke.spec.ts',
+  ...(target.kind === 'dashboard'
+    ? {
+        snapshotPathTemplate: './dashboard/tests/visual-references/{arg}-{projectName}{ext}',
+      }
+    : {}),
   fullyParallel: false,
   retries: process.env.CI ? 1 : 0,
   reporter: [['list'], ['html', { outputFolder: '.tmp/playwright/report', open: 'never' }]],

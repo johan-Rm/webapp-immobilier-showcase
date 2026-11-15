@@ -29,7 +29,8 @@
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report .tmp/playwright/report",
     "type-check": "bun scripts/build/type-check.ts",
-    "setup:local": "bun scripts/setup-local.ts && bun scripts/run-schema-hook.mjs && nuxt prepare"
+    "setup:local": "bun scripts/setup-local.ts && bun scripts/run-schema-hook.mjs && nuxt prepare",
+    "verify": "bun scripts/quality/run.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.123",
@@ -66,15 +67,21 @@
     "vue": "3.5.41"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@iconify-json/heroicons": "^1.2.3",
     "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@nuxt/hints": "^1.1.4",
+    "@nuxt/test-utils": "4.4.0",
     "@pinia/nuxt": "^1.0.2",
     "@playwright/test": "1.62.1",
+    "@stryker-mutator/core": "10.1.1",
+    "@stryker-mutator/vitest-runner": "10.1.1",
     "@types/node": "^26.2.0",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
+    "@vue/test-utils": "2.6.0",
     "autoprefixer": "^10.5.4",
+    "dependency-cruiser": "18.7.2",
     "dotenv": "^17.4.2",
     "eslint": "10.8.1",
     "eslint-config-prettier": "^10.1.8",
@@ -83,6 +90,7 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-unused-imports": "^4.4.1",
     "eslint-plugin-vue": "^10.10.0",
+    "happy-dom": "21.0.4",
     "jiti": "^2.7.0",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",

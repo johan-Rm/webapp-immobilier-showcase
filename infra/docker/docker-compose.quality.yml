@@ -1,0 +1,31 @@
+services:
+  verify:
+    profiles: [quality]
+    build:
+      context: ./webapp
+      dockerfile: ../infra/docker/Dockerfile.playwright
+    init: true
+    working_dir: /app
+    entrypoint: [bun, --no-env-file, run, verify, --]
+    command: [unit, --target, showcase-immobilier]
+    environment:
+      CI: "true"
+      NUXT_TELEMETRY_DISABLED: "1"
+      VERIFY_GIT_ROOT: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
+      PLAYWRIGHT_BASE_URL: ${PLAYWRIGHT_BASE_URL:-}
+    volumes:
+      - type: bind
+        source: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
+        target: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
+        read_only: true
+      - type: bind
+        source: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
+        target: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
+        read_only: true
+    tmpfs:
+      - /app/.nuxt
+      - /app/.output
+      - /app/dashboard/.nuxt
+      - /app/.tmp/quality
+    # Le code exécuté est celui de l’image reconstruite, pas un montage modifiable.
+    # Aucun .env n’est injecté et aucun service utilisateur n’est démarré.

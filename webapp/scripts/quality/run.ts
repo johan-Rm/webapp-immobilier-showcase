@@ -1,0 +1,233 @@
+import { execFileSync, spawn } from 'node:child_process'
+import { existsSync, readFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+export const families = [
+  'unit',
+  'integration',
+  'browser',
+  'conventions',
+  'components',
+  'security',
+  'architecture',
+  'mutation',
+  'load',
+  'lighthouse',
+  'contracts',
+] as const
+export const targets = ['showcase-immobilier', 'client2-immobilier', 'dashboard'] as const
+type Family = (typeof families)[number]
+type Target = (typeof targets)[number]
+export type Options = { family: Family; target: Target; list: boolean; profile?: string }
+type Command = { executable: string; args: string[]; cwd: string; env: NodeJS.ProcessEnv }
+export type Plan = { family: Family; target: Target; files: string[]; commands: Command[] }
+
+export const webappRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
+
+export function parseOptions(args: string[]): Options {
+  const remaining = args.filter((arg) => arg !== '--')
+  const family = remaining.shift()
+  if (!families.includes(family as Family))
+    throw new Error(`Famille attendue : ${families.join(', ')}`)
+  let target = process.env.GD_TARGET || 'showcase-immobilier'
+  let list = false
+  let profile: string | undefined
+  while (remaining.length) {
+    const arg = remaining.shift()
+    if (arg === '--list') list = true
+    else if (arg === '--target' || arg === '--profile') {
+      const value = remaining.shift()
+      if (!value || value.startsWith('-')) throw new Error(`Valeur absente pour ${arg}`)
+      if (arg === '--target') target = value
+      else profile = value
+    } else throw new Error(`Argument inconnu : ${arg}`)
+  }
+  if (!targets.includes(target as Target)) throw new Error(`Cible inconnue : ${target}`)
+  if (profile && (family !== 'lighthouse' || !['desktop', 'mobile'].includes(profile)))
+    throw new Error('Profil Lighthouse attendu : desktop ou mobile')
+  return { family: family as Family, target: target as Target, list, profile }
+}
+
+export function projectFiles(root: string): string[] {
+  const gitRoot = process.env.VERIFY_GIT_ROOT || resolve(root, '..')
+  return execFileSync(
+    'git',
+    [
+      '-c',
+      `safe.directory=${gitRoot}`,
+      'ls-files',
+      '--cached',
+      '--others',
+      '--exclude-standard',
+      '--deduplicate',
+      '-z',
+      '--',
+      'webapp',
+    ],
+    { cwd: gitRoot, encoding: 'utf8' },
+  )
+    .split('\0')
+    .filter((path) => path.startsWith('webapp/'))
+    .map((path) => path.slice('webapp/'.length))
+    .filter((path) => existsSync(join(root, path)))
+    .sort()
+}
+
+export function isIntegration(file: string, source: string): boolean {
+  return (
+    file.startsWith('server/') ||
+    file.startsWith('tests/layers/') ||
+    /from\s+['"]node:(?:http|https|child_process|fs)(?:\/promises)?['"]/.test(source)
+  )
+}
+
+export function nodeTestFiles(root: string, target: Target, files = projectFiles(root)): string[] {
+  const targetRoot = target === 'dashboard' ? 'dashboard/' : `sites/${target}/`
+  return files.filter(
+    (file) =>
+      file.endsWith('.vitest.ts') &&
+      !file.endsWith('.nuxt.vitest.ts') &&
+      ['scripts/', 'services/', 'shared/', 'tests/', 'server/', targetRoot].some((prefix) =>
+        file.startsWith(prefix),
+      ),
+  )
+}
+
+export function buildPlan(options: Options, root = webappRoot, files = projectFiles(root)): Plan {
+  const { family, target } = options
+  const env = { GD_TARGET: target, VERIFY_FAMILY: family }
+  const command = (args: string[], cwd = root, executable = process.execPath): Command => ({
+    executable,
+    args,
+    cwd,
+    env,
+  })
+  const plan: Plan = { family, target, files: [], commands: [] }
+  if (family === 'unit' || family === 'integration') {
+    plan.files = nodeTestFiles(root, target, files).filter(
+      (file) =>
+        isIntegration(file, readFileSync(join(root, file), 'utf8')) === (family === 'integration'),
+    )
+    const bunTests = files.filter((file) => file.startsWith('server/') && file.endsWith('.test.ts'))
+    const vitestFiles = [...plan.files]
+    if (family === 'unit') plan.files.push(...bunTests)
+    if (!plan.files.length) throw new Error(`Aucun test découvert : ${family}/${target}`)
+    if (vitestFiles.length) {
+      plan.commands.push(
+        command(
+          ['node_modules/nuxt/bin/nuxt.mjs', 'prepare', '--dotenv', '.env.test'],
+          root,
+          'node',
+        ),
+      )
+      plan.commands.push(
+        command(['node_modules/vitest/vitest.mjs', 'run', ...vitestFiles], root, 'node'),
+      )
+    }
+    if (family === 'unit' && bunTests.length) plan.commands.push(command(['test', ...bunTests]))
+  } else if (family === 'components') {
+    plan.files = files.filter(
+      (file) =>
+        file.endsWith('.nuxt.vitest.ts') &&
+        file.startsWith(target === 'dashboard' ? 'dashboard/' : `sites/${target}/`),
+    )
+    if (!plan.files.length) throw new Error(`Pilote composants non installé pour ${target}`)
+    plan.commands.push(
+      command(['node_modules/vitest/vitest.mjs', 'run', ...plan.files], root, 'node'),
+    )
+  } else if (family === 'browser') {
+    const matchesTarget = (file: string) => {
+      if (target === 'dashboard') return /\/saas-/.test(file)
+      if (target === 'client2-immobilier') return /\/client2/.test(file)
+      return file.endsWith('/home.smoke.spec.ts')
+    }
+    plan.files = files.filter(
+      (file) => file.startsWith('tests/e2e/') && file.endsWith('.spec.ts') && matchesTarget(file),
+    )
+    if (!plan.files.length) throw new Error(`Aucun parcours navigateur pour ${target}`)
+    if (!options.list && !process.env.PLAYWRIGHT_BASE_URL)
+      throw new Error('PLAYWRIGHT_BASE_URL explicite requis ; démarrer un serveur fixture isolé')
+    plan.commands.push(
+      command(['node_modules/@playwright/test/cli.js', 'test', ...plan.files], root, 'node'),
+    )
+  } else if (family === 'conventions') {
+    const integrity = resolve(root, '../codebase-integrity')
+    if (!existsSync(join(integrity, 'package.json')))
+      throw new Error('Paquet Codebase Integrity absent')
+    plan.files = ['../codebase-integrity/package.json']
+    plan.commands.push(command(['run', 'check:conventions'], integrity))
+  } else {
+    const script = `scripts/quality/${family}.ts`
+    if (!existsSync(join(root, script)))
+      throw new Error(`Famille non installée : ${family} (${script})`)
+    plan.files = [script]
+    plan.commands.push(
+      command(['run', script, ...(options.profile ? ['--profile', options.profile] : [])]),
+    )
+  }
+  return plan
+}
+
+export async function executePlan(plan: Plan): Promise<number> {
+  for (const command of plan.commands) {
+    const code = await new Promise<number>((complete, reject) => {
+      const child = spawn(command.executable, command.args, {
+        cwd: command.cwd,
+        env: { ...process.env, ...command.env },
+        stdio: 'inherit',
+        detached: process.platform !== 'win32',
+      })
+      let interrupted = false
+      let forceStop: ReturnType<typeof setTimeout> | undefined
+      const signalGroup = (signal: NodeJS.Signals) => {
+        if (!child.pid) return
+        try {
+          if (process.platform === 'win32') child.kill(signal)
+          else process.kill(-child.pid, signal)
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code !== 'ESRCH') reject(error)
+        }
+      }
+      const interrupt = () => {
+        if (interrupted) return
+        interrupted = true
+        signalGroup('SIGTERM')
+        forceStop = setTimeout(() => signalGroup('SIGKILL'), 5000)
+        forceStop.unref()
+      }
+      process.once('SIGINT', interrupt)
+      process.once('SIGTERM', interrupt)
+      const clean = () => {
+        clearTimeout(forceStop)
+        process.removeListener('SIGINT', interrupt)
+        process.removeListener('SIGTERM', interrupt)
+      }
+      child.once('error', (error) => {
+        clean()
+        reject(error)
+      })
+      child.once('exit', (status) => {
+        clean()
+        complete(interrupted ? 130 : (status ?? 1))
+      })
+    })
+    if (code !== 0) return code
+  }
+  return 0
+}
+
+if (import.meta.main) {
+  try {
+    const options = parseOptions(process.argv.slice(2))
+    const plan = buildPlan(options)
+    if (options.list) process.stdout.write(`${JSON.stringify(plan, null, 2)}\n`)
+    else {
+      process.stdout.write(`${plan.family}/${plan.target} : ${plan.files.length} fichier(s)\n`)
+      process.exitCode = await executePlan(plan)
+    }
+  } catch (error) {
+    process.stderr.write(`${(error as Error).message}\n`)
+    process.exitCode = 1
+  }
+}
