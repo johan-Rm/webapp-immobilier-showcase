@@ -1,6 +1,12 @@
 <template>
-  <div class="grid h-dvh w-screen overflow-hidden lg:grid-cols-[260px_minmax(0,1fr)]">
-    <aside class="border-default bg-default hidden min-h-0 border-r lg:block">
+  <div
+    data-layout="default"
+    class="grid h-dvh w-screen overflow-hidden lg:grid-cols-[260px_minmax(0,1fr)]"
+  >
+    <aside
+      data-section="navigation"
+      class="border-default bg-default hidden min-h-0 border-r lg:block"
+    >
       <ClientOnly>
         <DashboardNavigation />
         <template #fallback><USkeleton class="m-5 h-12" /></template>
@@ -8,6 +14,7 @@
     </aside>
     <div class="flex min-h-0 min-w-0 flex-col">
       <header
+        data-section="header"
         class="bg-default flex h-16 shrink-0 items-center justify-between gap-3 px-5 sm:px-10"
       >
         <UButton
@@ -27,14 +34,14 @@
           <template #fallback><USkeleton class="h-8 w-44" /></template>
         </ClientOnly>
       </header>
-      <div class="min-h-0 flex-1 [&>section]:h-full [&>section]:pt-8">
+      <main data-section="content" class="min-h-0 flex-1 [&>section]:h-full [&>section]:pt-8">
         <ClientOnly>
           <slot />
           <template #fallback>
             <p class="px-5 pt-8 sm:px-10" role="status">{{ t('access.loading') }}</p>
           </template>
         </ClientOnly>
-      </div>
+      </main>
     </div>
     <USlideover v-model:open="menuOpen" side="left" :title="t('menu.navigation')">
       <template #body><DashboardNavigation @navigate="menuOpen = false" /></template>

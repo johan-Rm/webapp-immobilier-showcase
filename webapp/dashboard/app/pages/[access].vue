@@ -1,5 +1,7 @@
 <template>
-  <div class="h-full w-full"><DashboardAccessForm :key="mode" :mode="mode" /></div>
+  <div data-page="access" class="h-full w-full">
+    <DashboardAccessForm :key="mode" :mode="mode" />
+  </div>
 </template>
 
 <script setup lang="ts">

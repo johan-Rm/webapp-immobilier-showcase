@@ -1,5 +1,5 @@
 <template>
-  <span class="inline-flex items-center gap-3 text-left">
+  <span data-component="dashboard-brand" class="inline-flex items-center gap-3 text-left">
     <UAvatar
       :src="`${brandSource}#svgView(viewBox(250,250,500,500))`"
       alt=""

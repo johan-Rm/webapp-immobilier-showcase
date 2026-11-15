@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full"><DashboardOverview /></div>
+  <div data-page="index" class="h-full w-full"><DashboardOverview /></div>
 </template>
 
 <script setup lang="ts">

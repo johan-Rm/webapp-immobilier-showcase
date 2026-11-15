@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-3">
+  <div data-component="dashboard-rich-text" class="space-y-3">
     <div class="flex flex-wrap gap-2" role="toolbar" :aria-label="t('editor.formatting')">
       <UButton
         class="dashboard-panel-action"

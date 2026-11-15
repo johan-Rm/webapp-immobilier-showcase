@@ -1,5 +1,8 @@
 import type { Page } from '@playwright/test'
 
+import { existsSync } from 'node:fs'
+
+import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
 // Contract doubles only: these tests prove UI behavior, not real API security or persistence.
@@ -424,6 +427,52 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(page.getByLabel('Titre de l’article', { exact: true })).toHaveValue(
         'Article initial',
       )
+    })
+  })
+}
+
+// Initial candidates remain test artifacts until a human explicitly validates the references.
+for (const scheme of ['light', 'dark'] as const) {
+  test.describe(`pilote edition ${scheme}`, () => {
+    test.use({ colorScheme: scheme })
+    test('repère principal, mesure axe et référence visuelle proposée', async ({ page }) => {
+      const data = await setup(page)
+      await open(page)
+      expect(data.publicationKeys).toEqual([])
+      await page.waitForFunction(() =>
+        Boolean(
+          (document.getElementById('__nuxt') as HTMLElement & { __vue_app__?: unknown })
+            ?.__vue_app__,
+        ),
+      )
+      await expect(page.getByRole('main')).toHaveCount(1)
+      await page.evaluate(async () => {
+        await document.fonts.ready
+      })
+      const scan = await new AxeBuilder({ page }).analyze()
+      await test.info().attach('accessibilite-informative', {
+        body: JSON.stringify(
+          { informative: true, violations: scan.violations, incomplete: scan.incomplete },
+          null,
+          2,
+        ),
+        contentType: 'application/json',
+      })
+      const name = `edition-${scheme}.png`
+      const reference = test.info().snapshotPath(name)
+      if (existsSync(reference)) {
+        if (['all', 'changed'].includes(test.info().config.updateSnapshots))
+          throw new Error(
+            'Actualisation automatique des références interdite ; utiliser --update-snapshots=none.',
+          )
+        await expect(page).toHaveScreenshot(name, { animations: 'disabled' })
+      } else {
+        await page.screenshot({
+          path: test.info().outputPath(`proposition-${name}`),
+          animations: 'disabled',
+        })
+        test.info().annotations.push({ type: 'référence à valider', description: reference })
+      }
     })
   })
 }

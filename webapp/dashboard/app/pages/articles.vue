@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full">
+  <div data-page="articles" class="h-full w-full">
     <ClientOnly><DashboardArticles /></ClientOnly>
   </div>
 </template>
