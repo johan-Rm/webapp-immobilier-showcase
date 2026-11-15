@@ -93,3 +93,12 @@ Le graphe contrôle l’**indépendance des services vis-à-vis des frameworks**
 - Afficher les **modules, dépendances et imports non résolus** ; refuser un graphe vide ou une analyse interrompue.
 - Conserver le vérificateur historique tant que sa migration n’est pas éprouvée sur le périmètre déclaré.
 - Distinguer les imports explicites des **auto-imports et des templates**, que ce graphe ne couvre pas.
+
+### Mutation ciblée
+
+La mesure de mutation porte sur une **fonction pure et ses tests directs**, dans une copie temporaire isolée. Les tests, contrats générés et suites HTTP ne sont pas mutés.
+
+- Refuser des tests initiaux échoués, une mesure vide, incomplète ou interrompue.
+- Présenter les mutants détectés, survivants et non couverts, ainsi que les erreurs et la durée.
+- Conserver le **score informatif** tant qu’aucun budget n’a été choisi après revue humaine.
+- Arrêter les seuls processus possédés et préserver les sources.
