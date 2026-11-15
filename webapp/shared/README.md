@@ -1,25 +1,20 @@
-# shared/
-
-Code partagé entre la couche Vue (`app/`) et la couche serveur (`server/`).
+# Code partagé
 
 ## Rôle et responsabilités
 
-**Rôle Nuxt :** le dossier `shared/` héberge le code utilisable à la fois par l'app Vue et
-par le serveur Nitro. Nuxt auto-importe le premier niveau de `shared/utils/` et
-`shared/types/` des deux côtés ; le reste s'importe explicitement via l'alias `#shared`.
-Réf. : [doc Nuxt — `shared/`](https://nuxt.com/docs/4.x/directory-structure/shared).
-
-**Rôle attendu :** cette couche porte les briques neutres communes aux deux runtimes —
-helpers purs, constantes et contrats de types transverses. Son code ne dépend d'aucun
-runtime (ni Vue, ni Nitro, ni DOM, ni route, ni store) : c'est la condition pour qu'il
-s'exécute indifféremment côté client et côté serveur. Ce qui est propre à un seul runtime
-appartient à sa couche dédiée.
+- Porter les helpers purs, constantes et contrats communs au client et au serveur.
+- Rester indépendant des runtimes et expliquer les contrats de façon **pédagogique et concise**.
 
 ## Conventions techniques
 
-Aucune règle CI spécifique à ce dossier à ce jour.
+### Neutralité des runtimes
 
-Les types manuels partagés vivent dans `shared/types/`. Les contrats générés
-restent dans `schemas/interfaces/` et `schemas/dtos/` et sont vérifiés par TypeScript.
-Les schémas de validation runtime restent dans `shared/schemas.ts` ; leurs types
-inférés sont exportés depuis `shared/types/echo.ts` via des imports de types.
+Le code partagé ne dépend ni de Vue, de Nitro, du DOM, d’une route ou d’un store. Les éléments propres à un runtime appartiennent à sa couche dédiée.
+
+### Contrats et types
+
+Les types manuels partagés sont distincts des contrats générés et des validations exécutables. Les types inférés sont exportés comme types ; les contrats générés se régénèrent depuis leurs sources, sans modification manuelle.
+
+### Liens éditoriaux
+
+Les liens éditoriaux refusent les protocoles dangereux, chemins réseau, caractères de contrôle et identifiants intégrés aux URL. Leur validation reste pure et testable sans réseau. Une fixture locale ne prouve pas le contrat d’une API externe.
