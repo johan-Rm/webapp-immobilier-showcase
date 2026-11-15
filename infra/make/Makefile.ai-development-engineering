@@ -95,3 +95,7 @@ aide-runtime-check:
 .PHONY: integrity-domains
 integrity-domains:
 	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py --list
+
+.PHONY: devbook-check
+devbook-check:
+	@python3 -B codebase-integrity/commun/run_check_output.py devbook -- python3 -B codebase-integrity/domaines/construction-livraison/scripts/check_devbook.py --base "$${BASE}"

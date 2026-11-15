@@ -40,7 +40,7 @@ Implémentation du 2026-11-11, session de création inchangée, base HEAD
 - `infra/docker/docker-compose.dev.yml` : noms et URL SSR calculés par pile, sans reprendre SITE_URL/PUBLIC_HOST historiques ; montage du gabarit et de son entrée Nginx.
 - `infra/nginx/vhost.conf` : deux hôtes explicites, refus HTTP 421 par défaut.
 - Nouveaux fichiers : `infra/nginx/19-local-vhosts.sh` (exécutable), `infra/nginx/test-local-vhosts.py`, `infra/nginx/README.md`.
-- Documentation technique et commande reproductible : [README Nginx](../../infra/nginx/README.md).
+- Documentation technique et commande reproductible : [Documentation Nginx](../../docs/nginx-local.md).
 
 Vérifications depuis le worktree DevOps :
 
@@ -68,6 +68,17 @@ distant modifié. Aucun code applicatif ni Codebase Integrity modifié.
 ci-dessus ; les deux cartes DEM-004 restent non suivies depuis le découpage.
 
 ## Verdict humain
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "Validation explicite historique du 2026-11-11, limitée à OPS-008 ; OPS-009 exclue.",
+  "contenu": {
+    "type": "git",
+    "valeur": "dce5e9e16c5be9d851a97e8da46da6eb01a25690"
+  }
+}
+```
 
 Validation explicite le 2026-11-11 dans la session de création : « ok c’est validé »,
 après présentation d’OPS-008 et des commandes Make de test. Le verdict couvre
