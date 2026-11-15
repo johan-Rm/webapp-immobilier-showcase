@@ -57,13 +57,14 @@ export function runOwned(
   args: string[],
   cwd: string,
   timeoutMs: number,
+  environment: NodeJS.ProcessEnv = {},
 ): Promise<void> {
   return new Promise((done, reject) => {
     const child = spawn(executable, args, {
       cwd,
       stdio: 'inherit',
       detached: process.platform !== 'win32',
-      env: { PATH: process.env.PATH, HOME: tmpdir(), CI: 'true' },
+      env: { PATH: process.env.PATH, HOME: tmpdir(), CI: 'true', ...environment },
     })
     let interrupted = false
     const stop = () => {
