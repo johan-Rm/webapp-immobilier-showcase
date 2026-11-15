@@ -76,9 +76,9 @@ function extractScriptBlock(content: string): { text: string; lineOffset: number
   return { text: match[1], lineOffset }
 }
 
-function isCommentedCode(line: string): boolean {
+export function isCommentedCode(line: string): boolean {
   const trimmed = line.trim()
-  return COMMENTED_PATTERNS.some((p) => trimmed.startsWith(p.trim()))
+  return COMMENTED_PATTERNS.some((p) => trimmed.startsWith(p.trimStart()))
 }
 
 function isNestedTernary(line: string): boolean {

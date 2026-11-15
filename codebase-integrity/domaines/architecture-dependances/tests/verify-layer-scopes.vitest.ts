@@ -91,6 +91,21 @@ describe('couverture frontend indépendante de la cible active', () => {
       expect(resolveImportPath(alias, consumer, app)).toBe(definition)
   })
 
+  it('résout les alias partagés et générés dans le root fourni pour chaque application', () => {
+    const { app, file } = project()
+    for (const [alias, folder] of [
+      ['#shared/', 'shared/'],
+      ['@schemas/', 'schemas/'],
+      ['@services/', 'services/'],
+    ]) {
+      const definition = file(`${folder}contract.ts`, 'export type Contract = string')
+      for (const application of ['sites/client-a/app', 'sites/client-b/app', 'dashboard/app']) {
+        const consumer = file(`${application}/components/Probe.vue`, '')
+        expect(resolveImportPath(`${alias}contract`, consumer, app)).toBe(definition)
+      }
+    }
+  })
+
   it('résout les alias du catalogue dans son unique application consommatrice', () => {
     const { app, file } = project()
     const definition = file(

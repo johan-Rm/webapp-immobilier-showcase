@@ -22,7 +22,7 @@
       "id": "app-no-redundant-guards",
       "nom": "Sur-vérification des variables",
       "domaine": "qualite",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#sur-vérification-des-variables",
+      "source": "webapp/base/README.md#vérifications-des-valeurs",
       "controles": [
         {
           "id": "app-no-redundant-guards",
@@ -37,7 +37,7 @@
       "id": "vue-block-order",
       "nom": "Ordre des blocs Vue",
       "domaine": "qualite",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#ordre-des-blocs-dans-un-fichier-vue",
+      "source": "webapp/base/README.md#ordre-des-blocs-vue",
       "controles": [
         {
           "id": "vue-block-order",
@@ -45,6 +45,13 @@
           "mode": "automatique",
           "fichier": "webapp/eslint.config.ts",
           "limite": "Règle ESLint vue/block-order."
+        },
+        {
+          "id": "vue-script-contract",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts",
+          "limite": "AST Vue : ordre des blocs et setup TypeScript lorsqu’un script est présent ; style scoped facultatif."
         }
       ]
     },
@@ -52,7 +59,7 @@
       "id": "app-script-setup-standard",
       "nom": "Structure du script setup",
       "domaine": "qualite",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#structure-interne-de-",
+      "source": "webapp/base/README.md#organisation-du-script-setup",
       "controles": [
         {
           "id": "app-script-setup-standard",
@@ -67,14 +74,14 @@
       "id": "ui-ready-data",
       "nom": "Données prêtes pour le template",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#données-prêtes-pour-le-template",
+      "source": "webapp/base/README.md#données-prêtes-pour-le-template",
       "controles": [
         {
           "id": "ui-ready-data",
-          "etat": "à implémenter",
-          "mode": "automatique",
-          "fichier": null,
-          "limite": "Aucun contrôle spécifique recensé des transformations non triviales dans les templates."
+          "etat": "implémenté",
+          "mode": "revue humaine",
+          "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts",
+          "limite": "Warning AST sur les transformations de template reconnaissables ; ni pertinence métier ni transformations indirectes garanties."
         }
       ]
     },
@@ -82,14 +89,14 @@
       "id": "module-wrappers",
       "nom": "Encapsulation des modules externes",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#encapsulation-des-modules-externes",
+      "source": "webapp/base/README.md#modules-externes",
       "controles": [
         {
           "id": "module-wrappers",
-          "etat": "à implémenter",
+          "etat": "implémenté",
           "mode": "automatique",
-          "fichier": null,
-          "limite": "Le verrou CI propre à chaque wrapper n’est pas inventorié ; une présence dans le code ne suffit pas."
+          "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts",
+          "limite": "Imports statiques, dynamiques littéraux et require des seuls modules déclarés dans le YAML ; initialement image Nuxt. Internationalisation directe autorisée ; encapsulation générale et choix Nuxt UI à relire."
         }
       ]
     },
@@ -97,7 +104,7 @@
       "id": "app-images",
       "nom": "Images via AppImage",
       "domaine": "interface-i18n",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#images",
+      "source": "webapp/base/components/README.md#images",
       "controles": [
         {
           "id": "app-images",
@@ -112,7 +119,7 @@
       "id": "app-components-no-business-logic",
       "nom": "Logique métier des composants",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#logique-métier-dans-les-composants",
+      "source": "webapp/base/components/README.md#logique-métier",
       "controles": [
         {
           "id": "app-components-no-business-logic",
@@ -127,7 +134,7 @@
       "id": "app-types-placement",
       "nom": "Placement des types partagés",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#placement-des-types",
+      "source": "webapp/base/README.md#types-partagés",
       "controles": [
         {
           "id": "app-types-placement",
@@ -142,7 +149,7 @@
       "id": "app-no-fetch-in-components",
       "nom": "Fetch des composants",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#fetch-dans-les-composants",
+      "source": "webapp/base/components/README.md#accès-réseau",
       "controles": [
         {
           "id": "app-no-fetch-in-components",
@@ -157,7 +164,7 @@
       "id": "app-no-store-write-in-components",
       "nom": "Mutations de store dans les composants",
       "domaine": "architecture",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#mutations-de-store-dans-les-composants",
+      "source": "webapp/base/components/README.md#mutations-globales",
       "controles": [
         {
           "id": "app-no-store-write-in-components",
@@ -172,7 +179,7 @@
       "id": "app-large-component",
       "nom": "Taille des composants",
       "domaine": "qualite",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#composants-larges",
+      "source": "webapp/base/components/README.md#taille-des-composants",
       "controles": [
         {
           "id": "app-large-component",
@@ -187,14 +194,14 @@
       "id": "app-composable-many-returns",
       "nom": "Retours des composables",
       "domaine": "qualite",
-      "source": "webapp/sites/showcase-immobilier/app/README.md#composables-avec-beaucoup-de-retours",
+      "source": "webapp/base/composables/README.md#taille-de-lapi",
       "controles": [
         {
           "id": "app-composable-many-returns",
           "etat": "implémenté",
-          "mode": "revue humaine",
+          "mode": "automatique",
           "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-solid.ts",
-          "limite": "Vérification limitée au périmètre du script ; aucun résultat de passage n’est enregistré dans ce registre."
+          "limite": "AST des fonctions use* de premier niveau : propriétés et spreads statiques, retours par branches ; dépassement certain bloquant, retour dynamique en avertissement. La pertinence du découpage reste humaine."
         }
       ]
     },
@@ -299,6 +306,36 @@
           "mode": "automatique",
           "fichier": "codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py",
           "limite": "Domaines uniques, références et états cohérents ; ne prouve ni exhaustivité de l’inventaire ni application des conventions."
+        }
+      ]
+    },
+    {
+      "id": "readme-structure",
+      "nom": "Structure des README et description des conventions",
+      "domaine": "fiabilite-controles",
+      "source": "docs/README.md#contenu-des-readme",
+      "controles": [
+        {
+          "id": "readme-structure",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "codebase-integrity/domaines/fiabilite-verifications/scripts/check_readmes.py",
+          "limite": "Tous les README Markdown Git suivis ou non ignorés, hors copies de worktrees ; structure et description présentes, pertinence et inventaires sémantiques à relire humainement. Aucun écart historique exempté."
+        }
+      ]
+    },
+    {
+      "id": "devbook-traceability",
+      "nom": "Traçabilité des cartes et verdicts",
+      "domaine": "livraison",
+      "source": "dev-book/README.md#préservation-des-traces",
+      "controles": [
+        {
+          "id": "devbook-traceability",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "codebase-integrity/domaines/construction-livraison/scripts/check_devbook.py",
+          "limite": "Base Git explicite, cartes nouvelles ou modifiées, métadonnées et références de verdict ; suppressions et renommages refusés. Ni accord humain, ni pertinence des preuves, ni conservation sémantique de toutes les décisions prouvés."
         }
       ]
     }

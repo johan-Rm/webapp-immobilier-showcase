@@ -161,7 +161,7 @@ export function resolveImportPath(
     const resolvedTarget =
       appRoot && (appAlias || utilsAlias)
         ? resolve(appRoot, utilsAlias ? 'utils' : '.') + '/'
-        : target
+        : resolve(root, relativePath(ROOT, target)) + '/'
     base = resolvedTarget + importPath.slice(prefix.length)
   } else {
     base = resolve(dirname(fromFile), importPath)
