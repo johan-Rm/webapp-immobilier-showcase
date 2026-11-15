@@ -1,5 +1,9 @@
 <template>
-  <section class="h-dvh min-h-0 overflow-y-auto px-5 pt-20 pb-8 sm:px-10 lg:pt-10">
+  <section
+    data-section="dashboard-overview"
+    data-component="dashboard-overview"
+    class="h-dvh min-h-0 overflow-y-auto px-5 pt-20 pb-8 sm:px-10 lg:pt-10"
+  >
     <div class="mx-auto max-w-4xl space-y-7">
       <header>
         <p class="text-primary mb-2 text-sm font-medium">{{ t('home.eyebrow') }}</p>

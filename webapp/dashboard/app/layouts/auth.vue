@@ -1,5 +1,9 @@
 <template>
-  <main class="flex h-dvh w-screen items-center justify-center overflow-y-auto p-5">
+  <main
+    data-section="content"
+    data-layout="auth"
+    class="flex h-dvh w-screen items-center justify-center overflow-y-auto p-5"
+  >
     <div class="w-full max-w-md">
       <div class="mb-6 text-center">
         <DashboardBrand />

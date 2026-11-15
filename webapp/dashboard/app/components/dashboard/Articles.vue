@@ -1,5 +1,9 @@
 <template>
-  <section class="h-full min-h-0 overflow-y-auto px-5 pt-20 pb-10 lg:p-8">
+  <section
+    data-section="dashboard-articles"
+    data-component="dashboard-articles"
+    class="h-full min-h-0 overflow-y-auto px-5 pt-20 pb-10 lg:p-8"
+  >
     <div class="mx-auto max-w-5xl space-y-6">
       <h1 class="text-2xl font-bold">{{ t('menu.articles') }}</h1>
       <DashboardContextPicker />

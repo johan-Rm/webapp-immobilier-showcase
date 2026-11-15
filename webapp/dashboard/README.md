@@ -2,50 +2,37 @@
 
 ## Rôle et responsabilités
 
-Layer d’administration indépendante, sélectionnée par `GD_TARGET=dashboard`.
-Composition et sorties : [scripts](../scripts/README.md). Les conventions frontend
-restent celles de [l’application](../sites/showcase-immobilier/app/README.md).
-
-L’interface consomme le contrat BFF préparé par OPS-010 ; ses modèles de vue sont définis
-dans `app/composables/useDashboardAccess.ts`. Les endpoints absents sont signalés comme
-indisponibles : aucune session ou autorisation fictive en fonctionnement normal.
-Les tests navigateur simulent les réponses BFF pour vérifier les interactions indépendamment
-de Symfony. La sécurité réelle reste une responsabilité du BFF et de l’API.
+- Présenter l’administration des organisations, projets et contenus.
+- Rendre les états et les actions accessibles, avec des explications **pédagogiques et concises**.
+- Consommer le contrat du BFF sans remplacer ses autorisations ni celles de l’API.
+- Signaler les fonctions indisponibles sans simuler de session en fonctionnement normal.
 
 ## Conventions techniques
 
-Textes dans `i18n/locales/fr.json`, état et appels dans les composables ; les composants
-présentent les données. Les rubriques non réalisées restent affichées et indisponibles.
-Les preuves de raccordement réel aux accès attendent BFF-002 et OPS-013.
+### Présentation et état
 
-Le thème local (`app/assets/css/main.css`, `app/app.config.ts`) applique la
-[charte Graines Digitales](<../../resources/design/Brand Guidelines - Graines Digitales (standalone).html>)
-sans modifier les thèmes clients. `DashboardBrand` importe directement le pictogramme
-source, sans copie du SVG. Rationale pour les titres et Inter pour les textes sont
-hébergées dans `app/assets/fonts/`, avec leurs licences OFL ; elles proviennent de
-[Google Fonts](https://github.com/google/fonts/tree/main/ofl).
-Le sélecteur de l’en-tête connecté propose Clair, Sombre et Automatique (par défaut).
-Le choix est mémorisé dans ce navigateur par le color mode Nuxt UI existant ;
-Automatique suit le système, avec repli clair. Il s’applique à tout l’espace connecté.
-Les tokens sémantiques couvrent aussi le mode sombre et les états des composants Nuxt UI.
-Les couleurs de statut restent distinctes, avec des messages textuels. Hors des blocs
-colorés, les actions principales emploient un olive foncé sur clair pour préserver le contraste.
-Les sections utilisent `DashboardPanel` : fond neutre sans bordure, pictogramme Lucide sur fond teinté
-et accents locaux, légère teinte au survol. Les icônes utilisées sont embarquées au build,
-sans chargement externe. Les tokens et traitements de contraste restent dans le thème local.
-Le layout connecté applique le style sans bordures aux champs, boutons, séparations et
-panneaux, y compris leurs fenêtres et menus. Les fonds distinguent les champs ;
-le focus clavier conserve son contour visible. Le layout d’authentification reste distinct.
+Les composants présentent les données ; les composables portent l’état et les appels. Les textes utilisateur sont traduits. Les rubriques indisponibles restent explicitement désactivées.
 
-Les contrôles frontend découvrent cette application via Git, même quand une autre
-cible est active. Les alias de types restent locaux à `dashboard/app/`.
-L'exception temporaire DEM-007 ne couvre que les sections manquantes (règle 1)
-des 18 contenus référencés dans les `temporaryExceptions` des
-[règles](../../codebase-integrity/domaines/qualite-code/regles.yaml).
-Chemin, SHA-256 et liste des sections doivent correspondre exactement ; chaque
-usage est affiché. Un contenu modifié ou un nouveau fichier reste contrôlé, et
-l'ordre des sections comme toutes les autres règles restent actifs. Un fichier
-corrigé ne consomme plus l'exception ; aucune extension automatique n'est autorisée.
-Le [guide](../../docs/2.architecture/6.script-setup-standard.md) permet l'omission
-de blocs inutiles tandis que le contrôle exige douze sections : cette divergence
-reste à arbitrer globalement ; cette tolérance locale ne la tranche pas.
+### Structure sémantique
+
+Les racines HTML stables portent leur marqueur de composant, page ou layout. Les racines de composants Vue restent exemptées sans ajout de conteneur. Les régions sémantiques stables portent un marqueur de section. Le layout porte **un unique repère principal**, autour du contenu de la route, en conservant les replis de chargement et le défilement.
+
+### Identité visuelle
+
+Le thème local applique la charte **Graines Digitales**, sans modifier les thèmes clients. Le pictogramme source est utilisé sans copie. Les polices **Rationale** pour les titres et **Inter** pour les textes sont hébergées localement avec leurs licences. Les icônes Lucide sont embarquées sans chargement externe.
+
+### Thème et contraste
+
+Le sélecteur propose **Clair**, **Sombre** et **Automatique**. Le choix est mémorisé dans le navigateur ; Automatique suit le système avec un repli clair. Les couleurs sémantiques couvrent les deux modes et les états des composants. Les statuts comportent des messages textuels et le focus clavier reste visible.
+
+### Panneaux et actions
+
+Les panneaux présentent un fond neutre sans bordure, un pictogramme sur fond teinté et des accents locaux. Le survol modifie légèrement la teinte sans déplacement. Hors des blocs colorés, les actions principales emploient un olive foncé sur clair. L’espace connecté utilise les fonds pour distinguer champs et panneaux ; ses fenêtres et menus suivent le même traitement sans bordures. L’authentification conserve son thème distinct.
+
+### Vérifications isolées
+
+Les tests simulent le contrat BFF pour vérifier les interactions indépendamment de l’API réelle ; ils ne prouvent pas sa sécurité. Les saisies sont conservées lors d’un refus et aucune publication n’est déclenchée implicitement. Les contrôles clavier sont bloquants ; les mesures automatiques d’accessibilité restent informatives. Une référence visuelle exige une **validation humaine explicite** avant de devenir bloquante et ne doit jamais être actualisée automatiquement.
+
+### Contrôles transverses
+
+La découverte des sources couvre également les applications inactives. Les alias de types restent locaux à l’application. Une exception de convention est limitée à des chemins, empreintes et sections explicitement déclarés ; chaque usage est signalé et aucune extension automatique n’est autorisée. Les autres règles restent actives.

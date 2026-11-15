@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full"><DashboardAdministration /></div>
+  <div data-page="administration" class="h-full w-full"><DashboardAdministration /></div>
 </template>
 
 <script setup lang="ts">

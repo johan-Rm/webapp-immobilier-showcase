@@ -1,5 +1,10 @@
 <template>
-  <nav class="flex h-full min-h-0 flex-col" :aria-label="t('menu.navigation')">
+  <nav
+    data-section="navigation"
+    data-component="dashboard-navigation"
+    class="flex h-full min-h-0 flex-col"
+    :aria-label="t('menu.navigation')"
+  >
     <div class="border-default border-b p-5">
       <UButton to="/" variant="link" @click="emit('navigate')">
         <DashboardBrand />
