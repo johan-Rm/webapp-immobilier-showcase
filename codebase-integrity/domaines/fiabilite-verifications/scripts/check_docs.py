@@ -229,13 +229,16 @@ def main():
             raise ValueError('source des conventions docs/README.md absente')
         output = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z'], cwd=root)
         paths = [Path(os.fsdecode(name)) for name in output.split(b'\0') if name]
-        # Adoption bornée : les anciennes conventions documentaires restent inchangées.
+        from check_readmes import check_readmes
+        readme_errors, readme_count = check_readmes(root, paths)
+        # Les liens hors README conservent leur adoption bornée.
         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
-            'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
+            'README.md', 'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
             'worktree/README.md', 'dev-book/README.md') or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)
+        errors.extend(readme_errors)
     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f'Contrôle documentaire impossible : {exc}', file=sys.stderr)
         return 1
@@ -244,7 +247,7 @@ def main():
     if errors:
         print('\n'.join(errors), file=sys.stderr)
         return 1
-    print('Structure documentaire et liens locaux conformes ; limites : docs/README.md.')
+    print(f'Structure documentaire, {readme_count} README et liens locaux conformes ; limites : docs/README.md.')
     return 0
 
 

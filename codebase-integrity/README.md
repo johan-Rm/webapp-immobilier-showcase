@@ -2,56 +2,68 @@
 
 ## Rôle et responsabilités
 
-- Vérifier les conventions de contribution et les traces des demandes.
-- Préparer des worktrees et des environnements locaux isolés.
-- Tester les vérificateurs dans des dépôts jetables, sans remote.
+- **Contrôler les conventions techniques**, les contributions et leurs traces.
+- **Sécuriser la préparation des worktrees et des environnements isolés**.
+- **Vérifier la fiabilité des contrôles** avec des cas conformes et non conformes, sans altérer le dépôt utilisateur.
 
 ## Conventions techniques
 
 ### Contributions
 
-- L’intégration est `develop` ; la production est `master`. Une contribution utilise une branche dédiée.
-- Une demande déclare un seul type : `développement` ou `consolidation`.
-- Une carte validée produit un commit `type(CARTE-NNN): résultat`, avec `Demande : DEM-NNN` dans le corps. Le scope `DEM-NNN` est réservé aux traces documentaires (`docs`).
-- Une contribution de développement ne modifie pas `codebase-integrity/`. Les modifications des conventions et des contrôles passent par la consolidation.
-- Une consolidation déclare chaque chemin modifié, sa convention et un contrôle ajouté ou modifié ; les accompagnements sont justifiés séparément. Les demandes et cartes référencées sont les traces exemptées de cette déclaration.
-- La plage contrôlée est explicite ; les anciens commits hors plage ne sont pas contrôlés rétroactivement. Les commits de fusion sont refusés dans une contribution.
-- Le vérificateur local de contribution est extrait de la base d’intégration, jamais remplacé par le candidat. L’amorçage local exige un SHA complet explicitement approuvé via `--bootstrap-policy-sha`, depuis la base initiale de DEM-001.
-- Ne pas modifier un contrôle pour contourner un échec. Les preuves techniques ne valent pas validation humaine.
+Les contributions respectent leur **boucle de travail**, leur **périmètre** et la **traçabilité des validations**.
+
+- **Branches** : l’intégration utilise `develop` et la production `master`. Toute contribution utilise une branche dédiée.
+- **Type de demande** : chaque demande déclare un seul type, `développement` ou `consolidation`.
+- **Traçabilité des commits** : une carte validée produit un commit `type(CARTE-NNN): résultat`, avec `Demande : DEM-NNN` dans le corps. Le scope `DEM-NNN` est réservé aux traces documentaires de type `docs`.
+- **Protection des contrôles** : une contribution de développement ne modifie pas l’outillage Codebase Integrity. Les modifications des conventions et des contrôles passent par une consolidation.
+- **Déclaration de consolidation** : chaque chemin modifié est associé à sa convention et à un contrôle ajouté ou modifié. Les accompagnements sont justifiés séparément ; seules les demandes et cartes référencées sont exemptées de cette déclaration.
+- **Plage vérifiée** : la plage de commits est explicite. Les commits antérieurs hors plage ne sont pas contrôlés rétroactivement ; les commits de fusion sont refusés dans la contribution.
+- **Indépendance du vérificateur** : le contrôle local de contribution utilise le vérificateur extrait de la base d’intégration, jamais celui proposé par la contribution candidate.
+- **Intégrité des résultats** : ne pas modifier un contrôle pour contourner un échec. Une réussite technique ne vaut pas validation humaine.
 
 ### Worktrees et environnements
 
-- Les couches et leurs préfixes de cartes, dont `DASH` pour Dashboard, sont déclarés dans [la configuration](../infra/config/layers.json) ; leurs identifiants restent stables. Le routage retient le chemin correspondant le plus long : les tests dédiés exacts priment sur le dossier général de Web.
-- Un seul écrivain par couche ; les affectations se vérifient dans les cartes, pas seulement avec Git.
-- Créer les worktrees sur affectation, depuis une base explicite. Aucun fetch, service ou copie de secrets lors de la création.
-- Réutiliser la branche déjà sortie ; refuser les destinations étrangères, liens symboliques et chemins non enregistrés avant toute écriture.
-- Les environnements propres à chaque worktree ont leurs ports, noms Compose, caches, contenus, médias et données. Une relance préserve les fichiers locaux.
-- Refuser les chemins de données sortant du worktree et les liens symboliques dans ces destinations.
-- Une API Symfony externe n’est pas isolée par Git : son accès en écriture exige une affectation explicite et un projet de test dédié.
-- Tester l’outillage dans des dépôts temporaires ; ne jamais réinitialiser le dépôt utilisateur pour un test.
+Chaque mission utilise une **couche disponible** et un **environnement isolé**, sans altérer le travail existant.
+
+- **Affectation** : les couches et leurs préfixes de cartes sont déclarés dans la configuration du projet ; leurs identifiants restent stables. Le routage retient le chemin correspondant le plus long : un test dédié à une couche prime sur le dossier général d’une autre couche.
+- **Disponibilité** : un seul intervenant écrit dans une couche à la fois. Vérifier les affectations dans les cartes ; un état Git propre ne suffit pas à établir la disponibilité.
+- **Création** : créer un worktree uniquement sur affectation, depuis une base explicite, sans récupération distante Git, démarrage de service ni copie de secrets.
+- **Destination** : réutiliser la branche déjà extraite dans son worktree ; refuser les destinations étrangères, les liens symboliques et les chemins non enregistrés avant toute écriture.
+- **Isolation** : chaque environnement possède ses ports, noms Compose, caches, contenus, médias et données. Une relance préserve les fichiers locaux.
+- **Protection des données** : refuser les destinations de données situées hors du worktree ainsi que les liens symboliques dans ces destinations.
+- **API externe** : Git n’isole pas une API Symfony externe. Son accès en écriture exige une affectation explicite et un projet de test dédié.
+- **Fiabilité des tests** : tester l’outillage dans des dépôts temporaires ; ne jamais réinitialiser le dépôt utilisateur pour un test.
 
 ### Contrôles existants
 
-Les conventions Nuxt restent définies dans les README applicatifs et les [standards d’architecture](../docs/2.architecture/index.md). Leurs vérificateurs et leurs tests sont regroupés sous `codebase-integrity/domaines/`, sans duplication.
+Les contrôles appliquent les **conventions techniques des README applicatifs** sur un périmètre explicite, indépendamment de la cible exécutée.
 
-Les contrôles frontend découvrent tous les fichiers Git de `app/`, des
-`sites/<client>/app/`, de `dashboard/app/` et de `base/real-estate/`, y compris les clients inactifs.
-Les scopes composants, pages, layouts et composables restent distincts. L’exception
-image concerne seulement `components/AppImage.vue` à la racine d’une application ;
-un fichier homonyme dans le catalogue ou un sous-dossier reste contrôlé.
-Les alias frontend des imports de types se résolvent dans l’application du fichier ;
-ceux du catalogue, provisoirement consommé par Showcase seul, ciblent son application.
-
-Le créateur refuse une base sans les fichiers requis par `requireBasePaths`,
-notamment le regroupement `webapp/` et la configuration des couches.
+- **Organisation** : regrouper les vérificateurs et leurs tests par domaine, sans duplication.
+- **Couverture** : découvrir les fichiers Git des applications publiques, du Dashboard et du catalogue partagé, y compris les clients inactifs.
+- **Périmètres distincts** : distinguer les composants, pages, layouts et composables pour appliquer les règles à leur contexte.
+- **Exceptions bornées** : limiter l’exception du composant image à sa position autorisée à la racine d’une application. Un composant homonyme ailleurs reste contrôlé.
+- **Résolution des types** : résoudre les alias dans l’application du fichier ; utiliser l’application consommatrice désignée pour le catalogue partagé.
+- **Base de création** : refuser la création d’un worktree si la base ne contient pas les fichiers requis par la configuration des couches.
 
 ### Classement des conventions
 
-- Chaque convention recensée appartient à un seul domaine et référence le chapitre `Conventions techniques` de son README source. Ne pas recopier sa règle dans le registre.
-- Le [registre central](conventions.json) référence les points de contrôle, leur état (`implémenté` ou `à implémenter`), leur mode et leurs limites.
-- Un contrôle implémenté n’est pas une preuve que la convention passe ; les résultats sont consignés dans les cartes. Une détection nécessitant une revue humaine reste explicitement qualifiée.
-- Un domaine sans entrée signifie qu’aucune convention n’y est encore recensée, pas que ce domaine est conforme. L’inventaire initial n’est pas exhaustif.
-- Une évolution des règles, de leur classement ou de leurs contrôles suit la consolidation.
+Le **registre central** classe les conventions et décrit leurs contrôles, sans recopier les règles définies dans les README.
+
+- **Domaine unique** : chaque convention recensée appartient à un seul domaine.
+- **Source de référence** : chaque entrée du registre identifie le chapitre « Conventions techniques » du README qui définit la règle.
+- **Description des contrôles** : le registre indique leurs points de contrôle, leur état (`implémenté` ou `à implémenter`), leur mode et leurs limites.
+- **Résultats observés** : la présence d’un contrôle ne prouve pas que la convention est respectée. Les cartes conservent les résultats des vérifications exécutées.
+- **Relecture humaine** : une détection nécessitant un jugement humain est explicitement signalée comme telle ; une réussite technique ne vaut pas validation humaine.
+- **Limite de couverture** : l’absence d’entrée pour un domaine ne prouve pas sa conformité. Le registre ne garantit pas un inventaire exhaustif des conventions.
+- **Évolution** : toute modification des règles, de leur classement ou de leurs contrôles passe par une consolidation.
+
+### Organisation
+
+Les **vérificateurs**, leurs **tests** et leurs **paramètres** sont regroupés par domaine pour conserver une responsabilité claire.
+
+- Créer un dossier de domaine uniquement lorsqu’il porte des contrôles ; ne pas ajouter de README dans les sous-dossiers techniques de ces domaines.
+- Regrouper les **utilitaires partagés** séparément des règles propres à un domaine.
+- Conserver les **tests des fonctionnalités applicatives** dans la couche applicative, distinctement des tests des vérificateurs.
 
 ### Exécution des contrôles
 
@@ -63,35 +75,3 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 - Permettre de consulter la sélection de tests et les commandes **sans les exécuter ni divulguer l’environnement privé**.
 - Exiger une **adresse de test explicite** et un serveur de test préparé pour les vérifications navigateur ; ne démarrer aucune pile utilisateur ni API distante implicitement.
 - Utiliser des **environnements de contrôle jetables**, sans injection implicite de secrets, et reconstruire les images après modification des sources.
-
-## Organisation
-
-`domaines/<domaine>/scripts/` contient les vérificateurs ; `tests/` leurs tests,
-et `regles.yaml` les paramètres des conventions lorsqu’ils existent. Seuls les
-cinq domaines disposant de contrôles ont un dossier. Aucun README n’est créé
-dans ces sous-dossiers. `commun/` accueille les utilitaires utilisés par plusieurs
-domaines. Les tests des fonctionnalités Nuxt restent dans `webapp/`.
-
-Installer les dépendances des contrôles avec `bun install --frozen-lockfile`
-depuis `codebase-integrity/`, puis lancer `bun run test`. `make aide-check`
-vérifie le registre et les tests Python ; les tests TypeScript des vérificateurs
-sont également exécutés par la CI AIDE. Les anciennes commandes `check:*` du
-paquet webapp délèguent au paquet Codebase Integrity.
-
-## Commandes de contrôle
-
-- `make integrity-domains` : vue centrale des conventions par domaine.
-- `make aide-check` : registre, demandes, liens documentaires et tests Python de l’outillage.
-- `make contribution-check BASE=<sha-cible> HEAD=<sha-candidat>` : contrôle des objets Git avec les vérificateurs extraits de la base, sans exécuter le code applicatif candidat.
-- `make quality-conventions-check` : conventions Nuxt dans Docker, avec les limites de revue humaine déclarées.
-
-Depuis `webapp/`, exécuter aussi `bun run quality:check` et `bun run test`.
-La portée du contrôle documentaire est définie dans [docs/README.md](../docs/README.md#conventions-techniques).
-Les commandes des environnements isolés sont dans [worktree/README.md](../worktree/README.md).
-
-Le workflow AIDE exécute les tests TypeScript et Bun des vérificateurs puis
-`make aide-check`, sans variable d’amorçage ni étape distante de contrôle de
-contribution. Le contrôle local `make contribution-check BASE=<sha>` reste
-disponible et conserve ses restrictions. Cette divergence avec la référence AIDE
-est explicitement autorisée et tracée dans DEM-003 ; les contrôles applicatifs
-restent actifs.
