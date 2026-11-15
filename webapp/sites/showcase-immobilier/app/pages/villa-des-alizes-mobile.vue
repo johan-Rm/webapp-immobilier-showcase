@@ -34,8 +34,8 @@
          `overscroll-x-contain` : en mobile, empêche le swipe horizontal en
          butée de bord de déclencher le geste « retour » du navigateur (iOS Safari). -->
     <div
-      data-section="parcours"
       ref="scrollerRef"
+      data-section="parcours"
       class="flex h-full w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       :style="readingModeScrollerStyle"
     >

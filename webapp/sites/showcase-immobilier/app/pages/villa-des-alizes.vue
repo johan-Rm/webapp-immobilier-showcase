@@ -32,8 +32,8 @@
          défilement horizontal (cf. handleWheel). En mode lecture, le snap est
          neutralisé via readingModeScrollerStyle pour un travelling continu. -->
     <div
-      data-section="parcours"
       ref="scrollerRef"
+      data-section="parcours"
       class="flex h-full w-full snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto overflow-y-hidden scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       :style="readingModeScrollerStyle"
     >
