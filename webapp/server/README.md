@@ -1,25 +1,22 @@
-# server/
-
-Couche serveur de l'application (Nitro).
+# Serveur BFF
 
 ## Rôle et responsabilités
 
-**Rôle Nitro :** le dossier `server/` enregistre les routes et handlers exécutés par le
-moteur Nitro — routes API (`api/`), routes sans préfixe (`routes/`), middlewares et
-utilitaires serveur. Chaque handler est un `defineEventHandler` ; l'arborescence des
-fichiers reflète les URLs exposées. Réf. : [doc Nuxt — `server/`](https://nuxt.com/docs/4.x/directory-structure/server).
-
-**Rôle attendu :** `server/` est le BFF (Backend for Frontend) qui s'interpose entre le
-frontend et les backends externes. Il possède les secrets et les accès privilégiés,
-valide les entrées, orchestre les appels vers l'API métier et normalise les réponses
-consommées par l'app. Il garde côté serveur ce qui ne doit jamais atteindre le client
-(jetons, identifiants, clés), et expose au frontend un contrat stable, indépendant de la
-forme des services amont.
+- Exposer les routes et traitements Nitro consommés par le frontend.
+- Valider les entrées, orchestrer les backends et normaliser les réponses.
+- Conserver les secrets et accès privilégiés côté serveur.
+- Présenter des erreurs **pédagogiques et concises**.
 
 ## Conventions techniques
 
-Aucune règle CI spécifique à ce dossier à ce jour.
+### Frontière de confiance
 
-Le contrat d'intégration des routes BFF du dashboard avec l'API Symfony (écritures,
-projection de lecture `content/`, cache, sécurité des `SYMFONY_*`) est documenté dans
-[docs/3.application/bff-dashboard-symfony.md](../../docs/3.application/bff-dashboard-symfony.md).
+Le BFF contrôle les autorisations sur chaque opération ; une autorisation affichée dans le navigateur ne remplace pas celle du serveur. Les jetons et identifiants privilégiés ne sont jamais exposés au client.
+
+### Erreurs et destinations
+
+Les refus métier restent distincts des pannes techniques. Les destinations et redirections des appels amont sont contrôlées, sans suivre implicitement une origine étrangère.
+
+### Vérifications isolées
+
+Les tests unitaires utilisant Bun sont séparés des intégrations HTTP H3 utilisant Vitest. Les intégrations emploient des amonts simulés et des sockets locaux ; elles ne prouvent pas la disponibilité, les permissions ou le contrat d’une API distante. Aucun endpoint de test n’est ajouté au produit.
