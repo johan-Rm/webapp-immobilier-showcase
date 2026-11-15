@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-15T14:04:01.742Z",
+  "bun": "1.4.0",
+  "code": 1,
+  "workspaces": [
+    {
+      "workspace": "webapp",
+      "lockSha256": "d817e30ac52f8b037b92dfa0b9caf2ae205aa11d2fd24c267afc7eb755f837d6",
+      "packages": 2365,
+      "notAnalyzed": [],
+      "severityOccurrences": {
+        "low": 25,
+        "moderate": 61,
+        "high": 79,
+        "critical": 4
+      },
+      "error": null
+    },
+    {
+      "workspace": "codebase-integrity",
+      "lockSha256": "f3a649f63acac6e3a30bf32b712f74179bfd263f95ec48445f2dfe8455754065",
+      "packages": 167,
+      "notAnalyzed": [],
+      "severityOccurrences": {
+        "moderate": 4
+      },
+      "error": null
+    }
+  ]
+}
