@@ -77,6 +77,24 @@ const article = () => ({
 })
 
 describe('contrat article SaaS', () => {
+  it('valide une copie normalisée sans modifier la saisie ni accepter des champs privilégiés', () => {
+    const input = write()
+    input.translation.headline = '  Titre saisi  '
+    const original = structuredClone(input)
+    const parsed = saasArticleWriteSchema.parse(input)
+    expect(parsed.translation.headline).toBe('Titre saisi')
+    expect(input).toEqual(original)
+    expect(saasArticleWriteSchema.safeParse({ ...input, projectId: otherProject }).success).toBe(
+      false,
+    )
+    expect(
+      saasArticleWriteSchema.safeParse({
+        ...input,
+        translation: { ...input.translation, published: true },
+      }).success,
+    ).toBe(false)
+  })
+
   it('accepte titres, listes imbriquées, liens et sauts de ligne sans attributs supplémentaires', () => {
     const document = {
       type: 'doc',
