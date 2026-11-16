@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : implémentée et commitée, à vérifier.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : WEB-006, DASH-004 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -32,7 +32,7 @@ Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen
 
 ## Réalisation et preuves
 
-Aucune implémentation exécutée : les commits amont indiqués ne sont pas disponibles. Les arbitrages de reprise sont confirmés dans l’analyse ; ils ne remplacent pas ces dépendances.
+Au découpage initial, la réalisation attendait les commits amont. Ces dépendances sont désormais disponibles ; les preuves de réalisation figurent ci-dessous.
 
 Depuis codebase-integrity/ : bun run test:typescript ; bun run test:bun. Depuis racine : make aide-check et make quality-conventions-check. Fixtures : slot imbriqué après template, racine multiple/conditionnelle/composant, mauvais nom et marqueur dynamique, régions autorisées Screen, deux main. Erreur déterministe bloquante ; suggestions de revue informatives.
 

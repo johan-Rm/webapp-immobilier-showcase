@@ -6,7 +6,7 @@
 - Couche : devops ; branche : layers/devops.
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`.
 - Base : `ca571d60c39b8b5932d74cd43dcbe4131c47c578`.
-- État : garde-fou implémenté, non commité ; migration globale des README non réalisée, contrôle global en échec.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 - Périmètre autorisé : fichiers détaillés dans « Résultat et critères » et « Relecture accompagnée des README », y compris la reprise des critères documentaires.
 - Dépendances : aucune dépendance de code nouvelle ; reprise des seuls changements DEM-011 identifiés dans DevOps.
 
@@ -22,7 +22,7 @@ Le script découvre les README via Git, détecte H1/H2, ordre, H3 et description
 
 Commande depuis ce worktree : `python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_readmes.py`. Tests : `python3 -B codebase-integrity/domaines/fiabilite-verifications/tests/test_readmes.py` et `python3 -B codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py` : respectivement 11 et 28 réussis. Cas négatifs : description absente, liste/exemple/lien en guise de description, rubriques absentes/doublées/inversées, H4 au lieu de H3, lien symbolique, encodage invalide et inventaire impossible. Fixture Git : README non suivi/casse différente contrôlé, dépendance ignorée et copie worktree exclues.
 
-Le contrôle réel reste bloquant sur les README existants ; relevé de reprise dans `tmp/rapport-controle-readme.txt` du principal. Ce rapport ne couvre pas les modifications non commitées des autres couches. Leur migration doit suivre leurs cartes et worktrees, sans copie de travail non commité. La pertinence d’une description et la détection sémantique d’un inventaire restent humaines.
+Le contrôle initial était bloquant sur les README existants ; relevé historique de reprise dans `tmp/rapport-controle-readme.txt` du principal. Ce rapport ne couvre pas les modifications non commitées des autres couches. Leur migration doit suivre leurs cartes et worktrees, sans copie de travail non commité. La pertinence d’une description et la détection sémantique d’un inventaire restent humaines.
 
 ## Verdict humain
 

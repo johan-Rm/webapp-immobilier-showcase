@@ -8,7 +8,7 @@
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
 - Périmètre autorisé : moteur AST commun frontend, commande et tests du domaine qualité, règles YAML, dépendances verrouillées Codebase Integrity, résolution des alias et ses tests, registre, commande Make de conventions, workflow CI de conventions, documentation de cette extension et cette carte.
 - Dépendances : base `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; rédaction et tests du moteur indépendants ; raccordement aux sources canoniques attend le commit validé de WEB-007, sans copie de documents Web non commitées.
-- État : contrôles implémentés, non commités, à vérifier ; code existant non conforme et raccordement documentaire partiel.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 
 Chemins de cette extension (en plus de cette carte) :
 
@@ -80,7 +80,7 @@ Reprise de l’étape 03 explicitement demandée après la recette manuelle : le
 
 Preuves de cette reprise : 151 tests Python, 55 Vitest et 44 Bun réussis. Lint et TypeScript strict ciblés, formatage et diff vérifiés. Six exécutions réelles contrôlées, journaux `/tmp/dem011-reprise-{aide,frontend,docker,devbook,solid,frontend-web}.log` : les cinq commandes locales conservent leur échec attendu ; Docker n’est pas exécuté sans son environnement ; la lecture des sources Web affiche bien layers/web, sans transfert ni changement de sources. Le résultat frontend reste différent selon le worktree : les marqueurs non commités de Web ne sont pas disponibles dans DevOps. Aucun budget, seuil, exception DEM-007 ni verdict historique modifié.
 
-Limite de poursuite : les neuf cartes initiales dépendantes et le raccordement documentaire inter-couches attendent toujours les commits amont validés. Les compléments autonomes OPS-035 sont implémentés, non commités, à vérifier. Cette reprise n’autorise ni à copier les sources non commitées, ni à déduire une validation des cartes de la seule validation des chapitres README. Aucun déploiement ni service utilisateur lancé.
+Relevé historique avant changement du workflow : les cartes dépendantes attendaient alors les commits amont et les compléments OPS-035 n’étaient pas commités. Cette attente est levée par les commits techniques autorisés ; le bilan courant est OPS-031. Cette reprise n’autorise ni à copier les sources non commitées, ni à déduire une validation des cartes de la seule validation des chapitres README. Aucun déploiement ni service utilisateur lancé.
 
 Reprise de l’étape 03 après la sortie manuelle jointe ccf05b08-4e02-46f6-bd50-a8b41eaa687a : correction du faux positif « construite » détecté comme const. La reconnaissance conserve l’espace final des motifs YAML configurés au lieu de le supprimer ; les vrais commentaires de code restent signalés. Aucune suppression de garde ni modification applicative automatique ; détections d’imbrication et de gardes toujours informatives et heuristiques.
 
