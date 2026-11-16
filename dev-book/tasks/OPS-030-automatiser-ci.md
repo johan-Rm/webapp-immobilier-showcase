@@ -41,3 +41,7 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 ## Commits
 
 Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche terminée puis la poursuite des dépendances, avant vérification humaine globale. Les SHA réels sont consignés dans le récapitulatif du brouillon. Aucun push, PR ou fusion.
+
+### Droits de l’image qualité
+
+Les sources reçoivent leur propriétaire pendant la copie ; seules les racines et les caches nécessaires sont ajustés ensuite. Les dépendances installées restent lisibles sans parcours récursif coûteux. La reconstruction corrigée et les 28 contrats ont été réellement vérifiés dans l’image finale.
