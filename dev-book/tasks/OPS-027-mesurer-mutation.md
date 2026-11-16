@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : implémentée et commitée, à vérifier.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-023, DOM-002 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -26,7 +26,7 @@ Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen
 
 ## Réalisation et preuves
 
-Aucune implémentation exécutée : les commits amont indiqués ne sont pas disponibles. Les arbitrages de reprise sont confirmés dans l’analyse ; ils ne remplacent pas ces dépendances.
+Au découpage initial, la réalisation attendait les commits amont. Ces dépendances sont désormais disponibles ; les preuves de réalisation figurent ci-dessous.
 
 Depuis webapp/ : bun run verify -- mutation ; bun run test scripts/quality/mutation.vitest.ts. Prouver la détection d’une mutation connue dans une fixture isolée, puis produire rapport réel du module pur. Vérifier identité du code produit avant/après et fermeture des processus en interruption.
 

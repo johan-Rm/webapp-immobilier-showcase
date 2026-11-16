@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : implémentée et commitée, à vérifier ; résultats et limites ci-dessous.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-023 disponible par le commit local `7344a3b48ce344aa943e646ede31051e02fc630b`, ancêtre du HEAD DevOps `461150bec36c88d11a84befc0297279eb9d6f796`.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -45,6 +45,6 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 
 ## Commits
 
-Aucun. L’implémentation de consolidation ne crée pas de commit avant validation humaine selon son skill. Les dépendances entre missions exigent les vrais commits amont validés ; aucun échange de travail non commité. Reconstitution prévue dans le principal libre et propre sur `demands/DEM-011` depuis develop vérifié.
+Les commits techniques locaux sont autorisés par le workflow confirmé le 2026-11-15 ; ils précèdent la vérification humaine globale. Leur relevé exact est conservé dans le brouillon de la demande. Aucun push, PR ou fusion.
 
 Commit technique local créé selon le workflow autorisé le 2026-11-15, sans verdict humain implicite ; SHA réel dans le récapitulatif du brouillon.

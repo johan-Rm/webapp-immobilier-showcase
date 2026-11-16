@@ -9,7 +9,7 @@
 - Base : `ca571d60c39b8b5932d74cd43dcbe4131c47c578`
 - Périmètre autorisé : cette carte, le script check_devbook et ses tests dans construction-livraison, le README et modèle de carte du dev-book, le champ de périmètre d’OPS-032, le registre des conventions, le Makefile AIDE et les documents explicatifs de cette reprise.
 - Dépendances : aucune dépendance de code nouvelle ; reprise identifiée DEM-011.
-- État : implémentée, non commitée, à vérifier.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 
 ## Résultat et critères
 

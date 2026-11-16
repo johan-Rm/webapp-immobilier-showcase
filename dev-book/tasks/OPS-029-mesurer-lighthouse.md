@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : implémentée et commitée, à vérifier.
+- État : implémentée et commitée, à vérifier ; bilan global dans OPS-031.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-023, OPS-028, WEB-006, DASH-004 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -27,7 +27,7 @@ Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen
 
 ## Réalisation et preuves
 
-Aucune implémentation exécutée : les commits amont indiqués ne sont pas disponibles. Les arbitrages de reprise sont confirmés dans l’analyse ; ils ne remplacent pas ces dépendances.
+Au découpage initial, la réalisation attendait les commits amont. Ces dépendances sont désormais disponibles ; les preuves de réalisation figurent ci-dessous.
 
 Depuis webapp/ : bun run verify -- lighthouse --profile desktop ; bun run verify -- lighthouse --profile mobile ; bun run test scripts/quality/lighthouse.vitest.ts. Contre-exemples : JSON invalide, interstitiel, mauvaise page finale, audit absent et processus étranger. Puis deux profils réels sur builds SSR reconstruits, versions et URL finales consignées. Politique confirmée le 2026-11-15 : erreurs d’exécution bloquantes ; scores initiaux informatifs, budgets à choisir explicitement après examen des premières mesures (voir analyse).
 

@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : implémentation du catalogue et des contrats terminée ; bilan global en cours, sans verdict humain.
+- État : outils implémentés et commités ; clôture technique bloquée par sécurité et SOLID, vérification humaine à faire.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-030, WEB-006, DASH-004, DOM-002, BFF-005 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -40,3 +40,7 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 ## Commits
 
 Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche terminée puis la poursuite des dépendances, avant vérification humaine globale. Les SHA réels sont consignés dans le récapitulatif du brouillon. Aucun push, PR ou fusion.
+
+## Bilan intégré
+
+Le rapport de référence est [ops031-verification.json](../reports/ops031-verification.json). Il distingue suites par cible, mesures, blocages et limites ; les suites communes ne doivent pas être additionnées. Les outils des cartes sont réalisés ; les contrôles globaux ne sont pas tous verts. Aucune validation humaine nouvelle ni livraison n’est déduite de ce bilan.

@@ -1,0 +1,139 @@
+{
+  "demande": "DEM-011",
+  "type": "consolidation",
+  "date": "2026-11-16",
+  "etat": "bilan technique ; aucun verdict humain nouveau",
+  "suites": [
+    {
+      "famille": "unit",
+      "cible": "showcase-immobilier",
+      "vitest_reussis": 126,
+      "bun_reussis": 7,
+      "rapport": "/tmp/dem011-unit-showcase-immobilier.log"
+    },
+    {
+      "famille": "unit",
+      "cible": "client2-immobilier",
+      "vitest_reussis": 116,
+      "bun_reussis": 7,
+      "rapport": "/tmp/dem011-unit-client2-immobilier.log"
+    },
+    {
+      "famille": "integration",
+      "cible": "showcase-immobilier",
+      "vitest_reussis": 191,
+      "bun_reussis": 0,
+      "rapport": "/tmp/dem011-integration-showcase-immobilier.log"
+    },
+    {
+      "famille": "integration",
+      "cible": "client2-immobilier",
+      "vitest_reussis": 202,
+      "bun_reussis": 0,
+      "rapport": "/tmp/dem011-integration-client2-immobilier.log"
+    },
+    {
+      "famille": "unit",
+      "cible": "dashboard",
+      "vitest_reussis": 116,
+      "bun_reussis": 7,
+      "rapport": "/tmp/dem011-unit-complete.log"
+    },
+    {
+      "famille": "integration",
+      "cible": "dashboard",
+      "vitest_reussis": 191,
+      "bun_reussis": 0,
+      "rapport": "/tmp/dem011-integration-final.log"
+    }
+  ],
+  "verificateurs": {
+    "python": 154,
+    "vitest": 66,
+    "bun": 44,
+    "aide_etapes_reussies": 4
+  },
+  "types": [
+    {
+      "target": "showcase-immobilier",
+      "code": 0
+    },
+    {
+      "target": "client2-immobilier",
+      "code": 0
+    },
+    {
+      "target": "dashboard",
+      "code": 0
+    }
+  ],
+  "composants_dashboard": {
+    "nuxt_reussis": 2
+  },
+  "qualite": {
+    "lint": "réussi",
+    "formatage": "réussi"
+  },
+  "contrats": {
+    "artefacts": 28,
+    "deux_generations_identiques": true,
+    "api_externe_verifiee": false,
+    "execution_conteneur": "réussie"
+  },
+  "architecture": {
+    "entrees": 18,
+    "modules": 67,
+    "dependances": 126,
+    "violations": 0,
+    "imports_non_resolus": 2
+  },
+  "mesures_pilotes": {
+    "mutation": {
+      "mutants": 52,
+      "tues": 47,
+      "survivants": 5,
+      "non_couverts": 0,
+      "score_informatif": 90.38
+    },
+    "charge_dashboard": {
+      "smoke_requetes": 6,
+      "mesure_requetes": 60,
+      "erreurs_fonctionnelles": 0,
+      "latences": "informatives"
+    },
+    "lighthouse": {
+      "audits_complets": 24,
+      "cibles": 3,
+      "profils": 2,
+      "repetitions": 3,
+      "routes_dashboard": 2,
+      "scores": "informatifs ; voir médianes et empreintes dans OPS-029"
+    }
+  },
+  "blocages": [
+    {
+      "controle": "security",
+      "high_critical_non_exemptes": 83,
+      "motif": "Avis existants des dépendances ; aucune mise à jour ou exception autorisée dans ces cartes."
+    },
+    {
+      "controle": "solid",
+      "erreurs": 4,
+      "composables": {
+        "useDashboardSave": 9,
+        "useDeviceDetect": 10,
+        "useExceptionalRail": 27,
+        "useScreenSystem": 11
+      },
+      "maximum": 8,
+      "motif": "Refonte de responsabilités hors des chemins applicatifs confiés aux cartes."
+    }
+  ],
+  "limites": [
+    "GitHub CI non exécutée à l’étape d’implémentation.",
+    "Références visuelles et budgets non approuvés.",
+    "Les compteurs par cible partagent des suites communes : ne pas les additionner comme tests distincts.",
+    "Le contrôle complet de contribution attend la demande définitive en reconstitution ; syntaxe des messages vérifiée depuis la base.",
+    "Chromium hôte indisponible (libnspr4) ; vérification en conteneur en cours."
+  ]
+}
