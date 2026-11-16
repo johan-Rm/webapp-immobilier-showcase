@@ -8,7 +8,7 @@
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/dashboard`
 - État : implémentée et commitée, à vérifier ; références visuelles proposées, non approuvées.
 - Base de reprise : `7344a3b48ce344aa943e646ede31051e02fc630b`, obtenue par avance rapide locale explicitement autorisée ; aucun nouveau commit ni fetch.
-- Dépendance : OPS-023 disponible par `7344a3b48ce344aa943e646ede31051e02fc630b`. Session de reprise : `01a1d56d-446b-7931-bf53-7687a7d10912`.
+- Dépendances : OPS-023 disponible par `7344a3b48ce344aa943e646ede31051e02fc630b`. Session de reprise : `01a1d56d-446b-7931-bf53-7687a7d10912`.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
 - Chemins autorisés (en plus de cette carte) :
 
