@@ -128,7 +128,7 @@ dépublication par omission, reprise idempotente et accusés authentifiés réal
 Le worker est optionnel, avec volume isolé accessible en lecture seule par Client 2 ;
 préparation explicite des chemins, refus des liens symboliques et aucune création
 Docker implicite. Usage et contrat consommable par WEB-005 :
-[Scripts README](../../webapp/scripts/README.md#projection-publiée-saas--client-2).
+[Scripts README](../../docs/3.application/scripts-application.md#projection-publiée-saas--client-2).
 
 État soumis : cinq fichiers suivis de réalisation modifiés et neuf nouveaux
 fichiers de réalisation ; cette carte est également modifiée. Les 14 fichiers

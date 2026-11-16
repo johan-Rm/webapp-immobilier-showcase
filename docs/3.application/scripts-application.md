@@ -1,7 +1,6 @@
----
-blueprint_source: /app/docs/blueprints/modern-webapp-nuxt/directory-structure/scripts/README.md
-blueprint_copied_at: 2026-01-22T13:03:48+00:00
----
+# Scripts applicatifs
+
+> Exécuter les scripts de préparation et de projection de l’application.
 
 `setup-local.ts` prépare les données fictives et `.env` sans API ni secret hérité.
 Il refuse d’écraser des données non fictives. `run-schema-hook.mjs` génère les
@@ -18,7 +17,7 @@ conservés. Publication après réussite ; aucune écriture en `--dry-run`.
 Le filtre `--locale=` porte sur les contenus, pas sur la liste complète des langues.
 
 Les scripts de contenu et de médias suivent `GD_TARGET`, comme Nuxt. Les chemins
-et surcharges sont décrits dans [le guide des layers](../../docs/2.architecture/14.site-layers.md).
+et surcharges sont décrits dans [le guide des layers](../2.architecture/14.site-layers.md).
 
 La composition accepte aussi `GD_TARGET=dashboard` : la layer `dashboard/` doit fournir
 `site.ts`, `nuxt.config.ts` et son application. Ses sorties `dashboard/.nuxt` et
@@ -63,7 +62,7 @@ vaut `g<generation>-<version>` ; `version` est le SHA-256 de
 `releases/<release>/manifest.json`. Ce manifeste contient les articles publics,
 les index `{fr,en,es}` de `{id,slug,snapshotId}`, la génération, `sourceVersion`
 et les médias `{id,path,mimeType,sha256,bytes}`. Les schémas stricts de
-[saas/contract.ts](saas/contract.ts) font référence. Les médias relatifs restent
+[saas/contract.ts](../../webapp/scripts/saas/contract.ts) font référence. Les médias relatifs restent
 dans cette release ; leurs noms permettent un cache immuable. Le lecteur capture
 le pointeur une seule fois par requête ; pointeur et réponses éditoriales doivent
 être revalidés. Les anciennes releases restent disponibles pour les requêtes en

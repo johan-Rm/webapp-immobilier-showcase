@@ -43,7 +43,7 @@ au présent projet reste celui décidé ci-dessous ; les écarts éventuels sero
 
 Préserver travaux existants, historique des cartes, branches, worktrees, données,
 secrets et `.env`. Aucun transfert de travail non commité. Respecter les conditions
-d’affectation et de disponibilité du [guide des worktrees](../../worktree/README.md).
+d’affectation et de disponibilité du [guide des worktrees](../../docs/worktrees.md).
 Pas de nouvelle responsabilité BFF ou Domaine, de nouveaux vhosts Showcase/Client 2
 sur cette lane, de changement distant ou de déploiement de production.
 

@@ -9,7 +9,7 @@ Les résultats de recette et l’environnement utilisé restent dans la carte OP
 ## Préparer l’environnement
 
 Utiliser un assemblage des commits validés et la couche affectée, avec ses ports et
-données isolés ; voir [les worktrees](../../worktree/README.md). Aucun secret d’une
+données isolés ; voir [les worktrees](../worktrees.md). Aucun secret d’une
 pile existante ne doit être copié automatiquement. Ne pas lancer de parcours d’écriture
 contre Symfony sans organisations, projets et comptes de test explicitement affectés.
 
@@ -17,7 +17,7 @@ Configurer côté serveur l’origine publique du dashboard et l’origine Symfo
 `SAAS_PLATFORM_ADMIN_EMAILS` désigne les opérateurs, sans remplacer les droits natifs.
 `SAAS_PUBLICATION_PROJECTS` associe explicitement le seul UUID pilote à Client 2.
 Le worker et Client 2 doivent recevoir ce même projet. Les paramètres et commandes
-restent dans le [guide du projecteur](../../webapp/scripts/README.md#projection-publiée-saas--client-2)
+restent dans le [guide du projecteur](../3.application/scripts-application.md#projection-publiée-saas--client-2)
 et le [README Client 2](../../webapp/sites/client2-immobilier/README.md).
 
 Préparer le volume avec `make dev-saas-project-prepare`, puis construire/lancer
@@ -66,7 +66,7 @@ signalées indisponibles ; les catégories s’administrent depuis les fiches.
 Un succès natif ne vaut pas succès public. En cas d’état en attente ou d’échec,
 consulter le résultat JSON du worker, vérifier configuration du projet, accès à la
 file et disponibilité des médias, puis reprendre avec la même commande autorisée.
-Le [guide du projecteur](../../webapp/scripts/README.md#projection-publiée-saas--client-2)
+Le [guide du projecteur](../3.application/scripts-application.md#projection-publiée-saas--client-2)
 décrit la reprise, les erreurs et l’inspection d’un verrou après arrêt brutal.
 Ne pas supprimer automatiquement les données ou changer les empreintes pour débloquer.
 

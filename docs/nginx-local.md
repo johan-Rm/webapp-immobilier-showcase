@@ -18,7 +18,7 @@ Ajouter `--showcase-image <image-locale> --client2-image <image-locale>` pour te
 
 ## Activer le Dashboard serveur
 
-L’extension `infra/docker/docker-compose.dashboard.yml` active le service et le domaine `dashboard.<suffixe>.localhost` sur le port public de la pile, avec ses données privées séparées. Préparer le volume publié selon la [procédure de projection](../webapp/scripts/README.md#projection-publiée-saas--client-2).
+L’extension `infra/docker/docker-compose.dashboard.yml` active le service et le domaine `dashboard.<suffixe>.localhost` sur le port public de la pile, avec ses données privées séparées. Préparer le volume publié selon la [procédure de projection](3.application/scripts-application.md#projection-publiée-saas--client-2).
 
 Depuis la racine, lancer `make dev-dashboard-ssr BUILD=1`, puis `make dev-check-dashboard-ssr`. Dans une couche, utiliser son environnement et son port isolés. Les commandes à deux sites restent disponibles sans réécriture des fichiers `.env` par l’extension.
 
@@ -32,4 +32,4 @@ Les endpoints SaaS et la synchronisation des articles sont des dépendances dist
 
 La composition de développement utilise `infra/nginx/dashboard-dev.conf.template`, rendu par l’entrée standard de l’image Nginx. Le filtre de substitution retient uniquement `DASHBOARD_HOST`, pour préserver les variables proxy et WebSocket. Les ressources Nuxt ne reçoivent pas de cache immutable et les hôtes étrangers sont refusés en HTTP 421.
 
-Les [commandes des worktrees](../worktree/README.md) décrivent le démarrage et les services isolés de cette lane.
+Les [commandes des worktrees](worktrees.md) décrivent le démarrage et les services isolés de cette lane.

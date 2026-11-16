@@ -20,6 +20,7 @@ Chaque information possède une **source de référence unique**.
 Un README formalise exclusivement le **rôle et les responsabilités** du dossier et ses **conventions techniques**.
 
 - Les README sont placés à la **racine du dépôt ou dans ses dossiers de premier niveau**. Les règles des sous-dossiers de niveau deux ou plus sont regroupées dans le README du dossier de premier niveau concerné.
+- Les emplacements webapp explicitement retenus restent autorisés : Dashboard, services, code partagé, schémas, serveur et sites clients ; les sous-dossiers techniques supplémentaires restent interdits hors du socle commun.
 - **Exception du socle frontend** : ses README spécialisés sont autorisés dans les sous-dossiers pour définir les règles communes aux projets. Ils respectent les règles de contenu et de forme.
 - **Exception du README racine** : sa structure et son contenu sont conservés ; ses liens restent contrôlés.
 - Un **titre H1 unique** nomme le dossier ou son rôle.
