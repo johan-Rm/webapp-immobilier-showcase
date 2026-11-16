@@ -1,17 +1,30 @@
-# Contexte de build : webapp/ (défini dans les fichiers Compose).
-FROM mcr.microsoft.com/playwright:v1.62.1-noble
-
-RUN npm install --global bun@1.4.0
-
-WORKDIR /app
-
-COPY package.json bun.lock ./
+FROM mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e
+RUN npm install --global bun@1.4.0 lighthouse@13.0.1
+COPY --from=grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1 /usr/bin/k6 /usr/local/bin/k6
+WORKDIR /workspace/webapp
+COPY webapp/package.json webapp/bun.lock ./
 RUN bun install --frozen-lockfile --ignore-scripts
-
-COPY . ./
-
+WORKDIR /workspace/codebase-integrity
+COPY codebase-integrity/package.json codebase-integrity/bun.lock ./
+RUN bun install --frozen-lockfile --ignore-scripts
+WORKDIR /workspace
+COPY webapp ./webapp
+COPY codebase-integrity ./codebase-integrity
+COPY infra ./infra
+COPY docs ./docs
+COPY dev-book ./dev-book
+COPY resources/design ./resources/design
+COPY .github ./.github
+COPY README.md AGENTS.md Makefile ./
+COPY worktree/README.md ./worktree/README.md
+ARG QUALITY_UID=1000
+ARG QUALITY_GID=1000
+RUN chown -R ${QUALITY_UID}:${QUALITY_GID} /workspace
+USER ${QUALITY_UID}:${QUALITY_GID}
+WORKDIR /workspace/webapp
 ENV CI=true
 ENV HOME=/tmp
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+CMD ["bun", "--no-env-file", "run", "verify", "--", "unit"]
 
-CMD ["bun", "run", "test:e2e"]
+ENV CHROME_PATH=/ms-playwright/chromium-1234/chrome-linux64/chrome

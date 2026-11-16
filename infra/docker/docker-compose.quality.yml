@@ -2,17 +2,28 @@ services:
   verify:
     profiles: [quality]
     build:
-      context: ./webapp
-      dockerfile: ../infra/docker/Dockerfile.playwright
+      context: .
+      dockerfile: infra/docker/Dockerfile.playwright
+      args:
+        QUALITY_UID: ${DOCKER_UID:-1000}
+        QUALITY_GID: ${DOCKER_GID:-1000}
     init: true
-    working_dir: /app
+    network_mode: host
+    working_dir: /workspace/webapp
     entrypoint: [bun, --no-env-file, run, verify, --]
     command: [unit, --target, showcase-immobilier]
     environment:
       CI: "true"
+      QUALITY_CONTAINER: "1"
+      QUALITY_BASE_URL: ${QUALITY_BASE_URL:-}
+      QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
       NUXT_TELEMETRY_DISABLED: "1"
+      AIDE_GIT_ROOT: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
       VERIFY_GIT_ROOT: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
       PLAYWRIGHT_BASE_URL: ${PLAYWRIGHT_BASE_URL:-}
+      WEB005_E2E_FIXTURES: "1"
+      SAAS_PROJECTION_ROOT: .tmp/web005-ci
+      SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
     volumes:
       - type: bind
         source: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
@@ -22,11 +33,13 @@ services:
         source: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
         target: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
         read_only: true
+      - type: bind
+        source: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}/webapp/.tmp
+        target: /workspace/webapp/.tmp
     tmpfs:
-      - /app/.nuxt
-      - /app/.output
-      - /app/dashboard/.nuxt
-      - /app/.tmp/quality
+      - /workspace/webapp/.nuxt
+      - /workspace/webapp/.output
+      - /workspace/webapp/dashboard/.nuxt
     # Le code exécuté est celui de l’image reconstruite, pas un montage modifiable.
     # Aucun .env n’est injecté et aucun service utilisateur n’est démarré.
 
@@ -36,9 +49,19 @@ services:
     network_mode: host
     user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
     environment:
-      QUALITY_BASE_URL: ${QUALITY_BASE_URL:?Origine locale de test requise}
-      QUALITY_ROUTE: ${QUALITY_ROUTE:?Route et contenu attendus requis}
+      QUALITY_BASE_URL: ${QUALITY_BASE_URL:-}
+      QUALITY_ROUTE: ${QUALITY_ROUTE:-}
       QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
     volumes:
       - ./webapp/scripts/quality/load:/scripts:ro
     command: [run, /scripts/scenarios.js]
+
+  lighthouse:
+    profiles: [quality]
+    image: dem011-lighthouse:13.0.1
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.lighthouse
+    network_mode: host
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    command: [--version]

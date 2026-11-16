@@ -41,7 +41,7 @@ describe('commande de vérification', () => {
   it('découvre les suites Bun séparément de Vitest et ne divulgue pas l’environnement', () => {
     const plan = buildPlan(parseOptions(['unit', '--target', 'dashboard', '--list']))
     expect(plan.files).toContain('server/utils/auth/symfonyProjectMember.test.ts')
-    expect(plan.commands.some((command) => command.args[0] === 'test')).toBe(true)
+    expect(plan.commands.some((command) => command.args.includes('test'))).toBe(true)
     expect(
       plan.commands
         .filter((command) => command.args.some((arg) => arg.includes('vitest.mjs')))
@@ -113,7 +113,15 @@ describe('commande de vérification', () => {
         child.kill('SIGKILL')
         reject(new Error('Processus de test non interrompu'))
       }, 5000)
-      child.stdout.once('data', () => child.kill('SIGINT'))
+      let output = ''
+      let signaled = false
+      child.stdout.on('data', (chunk) => {
+        output += String(chunk)
+        if (!signaled && output.includes('READY')) {
+          signaled = true
+          child.kill('SIGINT')
+        }
+      })
       child.once('error', reject)
       child.once('exit', (code) => {
         clearTimeout(timer)
@@ -122,4 +130,48 @@ describe('commande de vérification', () => {
     })
     expect(result).toBe(130)
   })
+})
+
+it('interdit le chargement implicite de dotenv par les sous-processus Bun', () => {
+  for (const family of [
+    'unit',
+    'conventions',
+    'security',
+    'architecture',
+    'mutation',
+    'load',
+    'lighthouse',
+    'contracts',
+  ] as const) {
+    const plan = buildPlan({
+      family,
+      target: 'dashboard',
+      list: true,
+      ...(family === 'lighthouse' ? { profile: 'desktop' } : {}),
+    })
+    for (const command of plan.commands.filter((command) => command.executable === 'bun'))
+      expect(command.args[0]).toBe('--no-env-file')
+  }
+})
+
+it('prouve que le lanceur ne charge pas le dotenv de sa fixture', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'verify-dotenv-'))
+  temporary.push(root)
+  mkdirSync(join(root, 'scripts/quality'), { recursive: true })
+  writeFileSync(join(root, '.env'), 'QUALITY_DOTENV_PROBE=fixture-only\n')
+  writeFileSync(
+    join(root, 'scripts/quality/security.ts'),
+    'process.exitCode = process.env.QUALITY_DOTENV_PROBE === "fixture-only" ? 7 : 0',
+  )
+  const plan = buildPlan({ family: 'security', target: 'dashboard', list: true }, root, [])
+  expect(await executePlan(plan)).toBe(0)
+  expect(
+    await executePlan({
+      ...plan,
+      commands: plan.commands.map((command) => ({
+        ...command,
+        args: command.args.filter((arg) => arg !== '--no-env-file'),
+      })),
+    }),
+  ).toBe(7)
 })
