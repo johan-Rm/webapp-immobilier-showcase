@@ -134,6 +134,53 @@
     "Références visuelles et budgets non approuvés.",
     "Les compteurs par cible partagent des suites communes : ne pas les additionner comme tests distincts.",
     "Le contrôle complet de contribution attend la demande définitive en reconstitution ; syntaxe des messages vérifiée depuis la base.",
-    "Chromium hôte indisponible (libnspr4) ; vérification en conteneur en cours."
-  ]
+    "Chromium hôte ne démarre pas (libnspr4 absent) ; les parcours ont réussi dans les conteneurs prévus."
+  ],
+  "navigateur": {
+    "showcase-immobilier": {
+      "reussis": 2,
+      "rapport": "/tmp/dem011-browser-final-showcase.log"
+    },
+    "client2-immobilier": {
+      "reussis": 4,
+      "rapport": "/tmp/dem011-browser-final-client2.log"
+    },
+    "dashboard": {
+      "reussis": 82,
+      "rapport": "/tmp/dem011-browser-ready-image-dashboard.log",
+      "limite": "Exécutés dans l’image initiale ; nouvelle image ensuite vérifiée sur contrats, Client2, Showcase, k6 et Lighthouse. Aucune modification des sources navigateur entre ces images."
+    }
+  },
+  "traces": {
+    "cartes_verifiees": 20,
+    "ecarts": 0,
+    "rapport": "/tmp/dem011-devbook-corrected.log"
+  },
+  "controles_complementaires": {
+    "guards": "réussi, avertissements à relire",
+    "services_sans_framework": "réussi"
+  },
+  "image_finale": {
+    "contrats": "28 artefacts identiques",
+    "charge_native": "smoke réussi, six requêtes bornées",
+    "lighthouse_natif": "six audits Dashboard desktop réussis ; scores non utilisés comme nouvelle référence comparative",
+    "sources_hotes": "lecture seule, rapports seuls en écriture",
+    "services_de_test": "tous les processus possédés ont reçu leur arrêt"
+  },
+  "empreintes_journaux": {
+    "/tmp/dem011-aide-complete.log": "d15950beaadf21675e100fd596046ca01b6c20407b75210c68a9681b6b06e454",
+    "/tmp/dem011-integrity-ts-complete.log": "ad43e97dabeebedb421d1d424bc059e4148dc987e61f6cc1186bad34cf1cbee4",
+    "/tmp/dem011-integrity-bun-complete.log": "ff62a88ca3c93ae8c8edf03888200a0b364e384a9dfc9f3d6851e7d59e7f26a3",
+    "/tmp/dem011-format-final.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "/tmp/dem011-lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/dem011-security-complete.log": "0a407cac41f592cf6d832996b81a1ab498f94d574e6f8076b5ed5077a4651b94",
+    "/tmp/dem011-conventions-complete.log": "f4643571a71f8f307834c5457c521be0bca4e103698b67d609b96e9b7e26f9c3",
+    "/tmp/dem011-architecture-complete.log": "c8c7338af904e65b505c06e16103fd188b63a658f8d939564715154a881700a6",
+    "/tmp/dem011-docker-final-image.log": "aef7bd7cb2b65afadda5e15cd018a47e0f30335e4769280218d07807fae92c25",
+    "/tmp/dem011-native-load-final.log": "d60cf6521e63b18fdefe9e2db54188018a36ac96a2524b0ca1a6f6e697685ea2",
+    "/tmp/dem011-native-lighthouse-final.log": "d75c931000089570660bc957855225fb7dba56b8a219cf72de1d18ab15067520",
+    "/tmp/dem011-browser-final-showcase.log": "60db5dc04117928715bb4c26edc829f8a580da2a61b441bfac508f947c05b2ad",
+    "/tmp/dem011-browser-final-client2.log": "e47df5961bc6fa49a552adf73680d2413fe1bb3a82b6b72ee7c6a804296c22c8",
+    "/tmp/dem011-browser-ready-image-dashboard.log": "b1d64389897310d1d3d6f99e6d09c24ee51642b91b57b1a8df624355edf919b4"
+  }
 }
