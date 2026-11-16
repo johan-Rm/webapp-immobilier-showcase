@@ -61,3 +61,9 @@ Le contrôle de traçabilité détecte deux verdicts historiques non structurés
 Exception documentaire explicitement approuvée : README racine conservé sans contrôle de forme ou de contenu, avec liens contrôlés ; README spécialisés du socle frontend autorisés en profondeur, tout en contrôlant leur contenu. Le script et ses tests sont adaptés : 15 tests README et 28 tests documentaires réussis. La rédaction des sources communes appartient à WEB-007 ; aucune de ces sources non commitées n’est copiée dans DevOps. Les références de registre et des guides seront raccordées après disponibilité de la migration Web par commit validé.
 
 Reprise du 2026-11-15 : l’implémentation crée désormais les commits techniques par tâche, avant vérification humaine globale. Le garde-fou et la migration documentaire locale sont commités ; les emplacements Web explicitement affectés restent en arbitrage, les documents des autres couches arrivent par leurs commits. Aucun succès global supposé.
+
+Arbitrage explicite du 2026-11-15 : conserver les emplacements webapp déjà retenus (Dashboard, services, shared, schemas, server, sites et deux sites clients), sans autoriser leurs sous-dossiers techniques. Test positif de ces huit emplacements et cas négatif sous server ajoutés. Les autres écarts sont traités sans exemption implicite.
+
+### Complément de vérification
+
+Les procédures sont conservées dans la documentation ; les README profonds non retenus sont retirés par WEB-007. Les huit emplacements webapp explicitement confirmés restent autorisés. Les 16 tests du vérificateur README réussissent. La vérification globale suit l’intégration des suppressions commitées de WEB-007.

@@ -191,7 +191,7 @@ make dev-check-ssr
 make dev-down
 ```
 
-Pour une couche, suivre les [commandes de son worktree](../../worktree/README.md).
+Pour une couche, suivre les [commandes de son worktree](../worktrees.md).
 Les anciens noms ne sont plus des alias ; utiliser exclusivement les accès du guide
 ci-dessus. La configuration locale est indépendante des vhosts distants.
 

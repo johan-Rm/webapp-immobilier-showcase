@@ -50,3 +50,7 @@ Cette documentation complete les README locaux et centralise les conventions tra
 
 - [Utilisation et exploitation](1.getting-started/dashboard-saas.md)
 - [Contrat et limites](3.application/dashboard-saas-contrats.md)
+
+- [Environnements des worktrees](worktrees.md)
+- [Scripts applicatifs et projection](3.application/scripts-application.md)
+- [Contenus et fixtures](3.application/contenus-et-fixtures.md)

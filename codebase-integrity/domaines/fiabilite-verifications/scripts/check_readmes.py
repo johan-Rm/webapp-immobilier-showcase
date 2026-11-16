@@ -105,7 +105,14 @@ def check_readmes(root, paths):
         if relative == Path('README.md') and path.is_file() and not path.is_symlink():
             root_exception = True
             continue  # Exception explicite : contenu inchangé ; liens contrôlés par check_docs.
-        if len(relative.parts) > 2 and relative.parts[:2] != ('webapp', 'base') and (path.exists() or path.is_symlink()):
+        if (len(relative.parts) > 2 and relative.parts[:2] != ('webapp', 'base')
+                and relative.as_posix() not in {
+                    'webapp/dashboard/README.md', 'webapp/services/README.md',
+                    'webapp/shared/README.md', 'webapp/schemas/README.md',
+                    'webapp/server/README.md', 'webapp/sites/README.md',
+                    'webapp/sites/showcase-immobilier/README.md',
+                    'webapp/sites/client2-immobilier/README.md',
+                } and (path.exists() or path.is_symlink())):
             errors.append(f'{relative}:1: README interdit à partir du deuxième niveau ; regrouper les règles au premier niveau')
         if path.is_symlink():
             errors.append(f'{relative}:1: README symbolique non analysé')

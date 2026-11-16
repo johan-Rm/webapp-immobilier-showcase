@@ -119,7 +119,7 @@ les confirmer. Aucun brouillon ou article dépublié n’est activé. Si l’éc
 réussit mais pas la journalisation, la réponse échoue ; une reprise identique réconcilie
 la file sans nouvelle écriture native. Le texte publié reste figé.
 
-Le [contrat et l’exploitation du projecteur](../../webapp/scripts/README.md#projection-publiée-saas--client-2)
+Le [contrat et l’exploitation du projecteur](scripts-application.md#projection-publiée-saas--client-2)
 font référence pour les variables, formats disque, empreintes, bascule atomique,
 reprises et verrou. Le [lecteur Client 2](../../webapp/sites/client2-immobilier/README.md)
 fait référence pour les URLs et le cache. Les visiteurs lisent uniquement la release

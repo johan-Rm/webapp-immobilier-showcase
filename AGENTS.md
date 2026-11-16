@@ -20,7 +20,7 @@ un lien plutôt qu’une copie. Ne créer du contenu que s’il apporte une info
 ## Conventions de workflow
 
 - Intégration : `develop` ; production : `master`. Aucune contribution de tâche sur ces branches.
-- Les missions utilisent les branches et chemins définis dans `infra/config/layers.json`. Créer les worktrees uniquement sur affectation, selon les [commandes locales](worktree/README.md).
+- Les missions utilisent les branches et chemins définis dans `infra/config/layers.json`. Créer les worktrees uniquement sur affectation, selon les [commandes locales](docs/worktrees.md).
 - Appliquer l’étape demandée avec le skill disponible de développement ou de consolidation, sans passage automatique à la suivante. Les procédures détaillées restent dans les skills.
 - `implementer-demande` et `implementer-consolidation` réalisent toute la demande avec un commit local distinct par tâche terminée, sans validation humaine intermédiaire. Ils poursuivent les dépendances sur ces commits, intégrés localement dans les couches affectées, libres et propres par avance rapide ou cherry-pick ciblé. Aucun transfert de travail non commité. L’humain vérifie ensuite la demande complète via `verifier-arbitrer-demande` ou `verifier-arbitrer-consolidation`, qui tracent les verdicts sans recréer les commits de tâches. Un commit technique ne vaut pas validation humaine. Aucun push, PR ou fusion de livraison à ces étapes.
 - La reconstitution réunit les commits validés dans le principal libre et propre, sur `demands/DEM-NNN` depuis `develop`, avec traçabilité des SHA. Aucun échange de travail non commité.
@@ -43,5 +43,5 @@ un lien plutôt qu’une copie. Ne créer du contenu que s’il apporte une info
 
 - Produit, organisation du dépôt et démarrage : [README](README.md).
 - Architecture et standards applicatifs : [index d’architecture](docs/2.architecture/index.md), notamment le [modèle de pages et screens](docs/2.architecture/3.page-layout-screen-model.md) avant toute modification de page.
-- Isolation des environnements : [worktrees](worktree/README.md) ; Git seul n’isole pas les services et les données de l’API externe.
+- Isolation des environnements : [worktrees](docs/worktrees.md) ; Git seul n’isole pas les services et les données de l’API externe.
 - Autres guides durables : [index documentaire](docs/index.md).

@@ -108,6 +108,22 @@ class ReadmesTest(unittest.TestCase):
             nested.write_text(VALID + '\nhttps://example.test')
             self.assertTrue(checker.check_readmes(root, paths)[0])
 
+    def test_explicit_webapp_owners_do_not_allow_deeper_technical_readmes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            allowed = ['webapp/dashboard/README.md', 'webapp/services/README.md',
+                       'webapp/shared/README.md', 'webapp/schemas/README.md',
+                       'webapp/server/README.md', 'webapp/sites/README.md',
+                       'webapp/sites/showcase-immobilier/README.md',
+                       'webapp/sites/client2-immobilier/README.md']
+            denied = 'webapp/server/utils/README.md'
+            for name in [*allowed, denied]:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(VALID)
+            self.assertEqual(checker.check_readmes(root, [Path(p) for p in allowed])[0], [])
+            self.assertTrue(any('deuxième niveau' in error for error in checker.check_readmes(root, [Path(denied)])[0]))
+
     def test_empty_inventory_fails(self):
         self.assertTrue(checker.check_readmes(Path('/tmp'), [])[0])
 
