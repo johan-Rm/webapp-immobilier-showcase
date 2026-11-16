@@ -31,7 +31,7 @@ Le catalogue unique est `docs/executer-controles.md` : familles, cibles, préreq
 
 Le pilote de contrats compare deux générations isolées : 28 artefacts identiques observés, sources inchangées, aucun appel Symfony distant. Trois tests couvrent génération vide, sortie symbolique, YAML invalide et empreintes de contenu. Le manifeste vérifie toutes les sélections disponibles et les refus explicites, sans exposer l’environnement privé.
 
-Le bilan complet suit l’intégration des deux correctifs WEB-006/007 déjà committés. Les contrôles de sécurité signalent des avis high/critical existants et SOLID quatre dépassements de responsabilité de composables. Ces résultats restent bloquants sans baisse de seuil ni exemption ajoutée. La livraison GitHub, les budgets et l’approbation des références visuelles restent hors de cette étape. La déclaration et les preuves finales sont conservées dans le brouillon du principal.
+Le bilan complet inclut les correctifs WEB-006/007 committés et la métadonnée de dépendances DASH-004 corrigée. Les contrôles de sécurité signalent des avis high/critical existants et SOLID quatre dépassements de responsabilité de composables. Ces résultats restent bloquants sans baisse de seuil ni exemption ajoutée. La livraison GitHub, les budgets et l’approbation des références visuelles restent hors de cette étape. La déclaration et les preuves finales sont conservées dans le brouillon du principal.
 
 ## Verdict humain
 
@@ -44,3 +44,5 @@ Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche 
 ## Bilan intégré
 
 Le rapport de référence est [ops031-verification.json](../reports/ops031-verification.json). Il distingue suites par cible, mesures, blocages et limites ; les suites communes ne doivent pas être additionnées. Les outils des cartes sont réalisés ; les contrôles globaux ne sont pas tous verts. Aucune validation humaine nouvelle ni livraison n’est déduite de ce bilan.
+
+La recette automatisée navigateur est réussie : 82 parcours Dashboard, quatre Client2 et deux Showcase. Les types des trois cibles, lint et formatage réussissent. Le contrôle des traces vérifie 20 cartes sans écart. La nouvelle image est construite et vérifiée avec contrats, Chromium sur les sites, k6 et Lighthouse natifs ; les processus de test possédés sont arrêtés. Les scores supplémentaires exécutés en parallèle ne constituent pas des budgets ni de nouvelles références comparatives.
