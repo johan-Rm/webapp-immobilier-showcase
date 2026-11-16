@@ -77,47 +77,73 @@ export async function runLoad(root = resolve(dirname(fileURLToPath(import.meta.u
       : [{ path: target === 'showcase-immobilier' ? '/fr' : '/', status: 200, contains: '<main' }]
   const directory = join(root, '.tmp/quality/load', target + '-' + profile + '-' + Date.now())
   mkdirSync(directory, { recursive: true })
+  const local = process.env.QUALITY_CONTAINER === '1'
+  if (local) {
+    const version = spawnSync('k6', ['version'], { encoding: 'utf8', timeout: 5000 })
+    if (version.status !== 0 || !version.stdout.includes('v1.6.1'))
+      throw new Error('Version k6 non éprouvée')
+  }
   const summaries = []
   for (const [index, route] of routes.entries()) {
     await preflight(origin, route)
     const name = 'dem011-k6-' + randomUUID()
     try {
-      await runOwned(
-        'docker',
-        [
-          'run',
-          '--rm',
-          '--name',
-          name,
-          '--network',
-          'host',
-          '--user',
-          `${process.getuid?.() ?? 1000}:${process.getgid?.() ?? 1000}`,
-          '-v',
-          `${join(root, 'scripts/quality/load')}:/scripts:ro`,
-          '-v',
-          `${directory}:/reports`,
-          '-e',
-          `QUALITY_BASE_URL=${origin}`,
-          '-e',
-          `QUALITY_LOAD_PROFILE=${profile}`,
-          '-e',
-          `QUALITY_ROUTE=${JSON.stringify(route)}`,
-          k6Image,
-          'run',
-          '--summary-export',
-          `/reports/${index}.json`,
-          '/scripts/scenarios.js',
-        ],
-        root,
-        30000,
-      )
+      if (local) {
+        await runOwned(
+          'k6',
+          [
+            'run',
+            '--summary-export',
+            join(directory, `${index}.json`),
+            '-e',
+            `QUALITY_BASE_URL=${origin}`,
+            '-e',
+            `QUALITY_LOAD_PROFILE=${profile}`,
+            '-e',
+            `QUALITY_ROUTE=${JSON.stringify(route)}`,
+            join(root, 'scripts/quality/load/scenarios.js'),
+          ],
+          root,
+          30000,
+        )
+      } else {
+        await runOwned(
+          'docker',
+          [
+            'run',
+            '--rm',
+            '--name',
+            name,
+            '--network',
+            'host',
+            '--user',
+            `${process.getuid?.() ?? 1000}:${process.getgid?.() ?? 1000}`,
+            '-v',
+            `${join(root, 'scripts/quality/load')}:/scripts:ro`,
+            '-v',
+            `${directory}:/reports`,
+            '-e',
+            `QUALITY_BASE_URL=${origin}`,
+            '-e',
+            `QUALITY_LOAD_PROFILE=${profile}`,
+            '-e',
+            `QUALITY_ROUTE=${JSON.stringify(route)}`,
+            k6Image,
+            'run',
+            '--summary-export',
+            `/reports/${index}.json`,
+            '/scripts/scenarios.js',
+          ],
+          root,
+          30000,
+        )
+      }
       summaries.push({
         route,
         ...assessLoad(JSON.parse(readFileSync(join(directory, `${index}.json`), 'utf8'))),
       })
     } finally {
-      spawnSync('docker', ['rm', '--force', name], { stdio: 'ignore', timeout: 5000 })
+      if (!local) spawnSync('docker', ['rm', '--force', name], { stdio: 'ignore', timeout: 5000 })
     }
   }
   const report = {

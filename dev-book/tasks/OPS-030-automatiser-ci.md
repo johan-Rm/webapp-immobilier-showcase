@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : prête à reprendre selon l’ordre des commits amont ; pas de verdict humain implicite.
+- État : implémentée, à vérifier humainement après commit local.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-024, OPS-025, OPS-026, OPS-027, OPS-028, OPS-029, BFF-005, DOM-002 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -28,11 +28,11 @@ Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen
 
 ## Réalisation et preuves
 
-Aucune implémentation exécutée : les commits amont indiqués ne sont pas disponibles. Les arbitrages de reprise sont confirmés dans l’analyse ; ils ne remplacent pas ces dépendances.
+Les workflows couvrent les trois cibles et conservent les rapports même en échec. Les mesures longues restent manuelles. Le contrôle des messages utilise le vérificateur de la base PR. Aucune exécution GitHub n’a été effectuée à cette étape.
 
-Depuis webapp/ : bun run test scripts/quality/ci-plan.vitest.ts ; examiner la matrice et les scripts invoqués. Tests de planification : chaque cible et famille attendue est présente, changement Dashboard pris en charge, erreur transport audit bloquante, suites informatives conservant leur rapport. L’exécution GitHub réelle appartient à la livraison ; ne pas la déclarer réussie sur lecture YAML.
+L’image qualité contient les deux paquets, Chromium, Lighthouse et k6 verrouillés. Son contexte exclut les secrets, dépendances locales et sorties de build. Les ajustements compagnons nécessaires concernent `.dockerignore`, `Dockerfile.playwright`, `Makefile.dev`, le lanceur et ses tests, le serveur de fixtures, le pilote de charge et la configuration Playwright. Le serveur de fixtures utilise une API fictive et des répertoires temporaires possédés ; l’image du héros CI est une simulation explicitement activée, jamais une preuve des médias réels.
 
-Les commandes nouvelles ci-dessus sont à créer, pas réputées disponibles aujourd’hui. Pour les essais humains : lire les chemins modifiés, indiquer préparation et répertoire, conserver sortie/code/rapport, reproduire les cas négatifs dans une fixture temporaire. Préserver la saisie et les données en cas d’erreur.
+Vérifications locales : 58 tests ciblés de qualité et vérification TypeScript réussis. `make quality-verify FAMILY=contracts` a construit l’image et comparé réellement 28 artefacts identiques. Les erreurs de sécurité restent bloquantes ; les avis existants ne sont pas exemptés. Les contrôles globaux et la recette sont consolidés dans OPS-031.
 
 ## Verdict humain
 

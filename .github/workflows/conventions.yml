@@ -19,7 +19,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.0
-      - run: bun install
+      - run: bun install --frozen-lockfile --ignore-scripts
       - run: bun install --frozen-lockfile --cwd ../codebase-integrity
       - name: Conventions frontend AST — erreurs et avertissements
         run: bun run --cwd ../codebase-integrity check:frontend:policy
@@ -30,4 +30,5 @@ jobs:
       - run: bun run check:app:soc
       - run: bun run check:app:code-quality
       - run: bun run check:app:solid
+      - run: bun run check:app:guards
       - run: bun run check:services:no-framework-imports

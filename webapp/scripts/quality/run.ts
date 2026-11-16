@@ -125,7 +125,8 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
         command(['node_modules/vitest/vitest.mjs', 'run', ...vitestFiles], root, 'node'),
       )
     }
-    if (family === 'unit' && bunTests.length) plan.commands.push(command(['test', ...bunTests]))
+    if (family === 'unit' && bunTests.length)
+      plan.commands.push(command(['--no-env-file', 'test', ...bunTests], root, 'bun'))
   } else if (family === 'components') {
     plan.files = files.filter(
       (file) =>
@@ -156,20 +157,46 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
     if (!existsSync(join(integrity, 'package.json')))
       throw new Error('Paquet Codebase Integrity absent')
     plan.files = ['../codebase-integrity/package.json']
-    plan.commands.push(command(['run', 'check:conventions'], integrity))
+    plan.commands.push(command(['--no-env-file', 'run', 'check:conventions'], integrity, 'bun'))
   } else {
     const script = `scripts/quality/${family}.ts`
     if (!existsSync(join(root, script)))
       throw new Error(`Famille non installée : ${family} (${script})`)
     plan.files = [script]
     plan.commands.push(
-      command(['run', script, ...(options.profile ? ['--profile', options.profile] : [])]),
+      command(
+        [
+          '--no-env-file',
+          'run',
+          script,
+          ...(options.profile ? ['--profile', options.profile] : []),
+        ],
+        root,
+        'bun',
+      ),
     )
   }
   return plan
 }
 
+const explanations: Record<Family, string> = {
+  unit: 'Teste la logique avec les moteurs Vitest et Bun séparés.',
+  integration: 'Teste les échanges et assemblages avec des dépendances simulées.',
+  components: 'Teste les interactions des composants dans le vrai environnement Nuxt.',
+  browser: 'Vérifie les parcours dans Chromium contre un serveur de test explicite.',
+  conventions: 'Contrôle les conventions techniques du code ; les avertissements restent à relire.',
+  security: 'Audite les deux fichiers de dépendances ; les avis high et critical bloquent.',
+  architecture: 'Mesure les imports des services et contrôle leur indépendance du framework.',
+  mutation: 'Évalue si les tests détectent les modifications volontaires du module pur.',
+  load: 'Mesure une charge locale bornée ; les erreurs bloquent, les latences sont informatives.',
+  lighthouse: 'Audite les vraies pages SSR trois fois ; scores informatifs, erreurs bloquantes.',
+  contracts: 'Compare deux générations isolées des contrats YAML locaux.',
+}
+
 export async function executePlan(plan: Plan): Promise<number> {
+  const info = `INFO — ${explanations[plan.family]}\n`
+  const colors = process.stdout.isTTY && process.env.TERM !== 'dumb' && !('NO_COLOR' in process.env)
+  process.stdout.write(colors ? `\u001b[34m${info}\u001b[0m` : info)
   for (const command of plan.commands) {
     const code = await new Promise<number>((complete, reject) => {
       const child = spawn(command.executable, command.args, {
