@@ -17,6 +17,7 @@ describe('contrat des workflows qualité', () => {
       'dashboard',
     ])
     expect(job.strategy['fail-fast']).toBe(false)
+    expect(job.env.QUALITY_MEDIA_FIXTURES).toBe('1')
   })
   it('route réellement les familles sur les trois cibles sans suite vide', () => {
     for (const target of ['showcase-immobilier', 'client2-immobilier', 'dashboard'] as const)

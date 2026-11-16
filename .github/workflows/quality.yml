@@ -20,6 +20,7 @@ jobs:
       CI: "true"
       NUXT_TELEMETRY_DISABLED: "1"
       QUALITY_BROWSER_FIXTURES: "1"
+      QUALITY_MEDIA_FIXTURES: "1"
       WEB005_E2E_FIXTURES: "1"
       SAAS_PROJECTION_ROOT: .tmp/web005-ci
       SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
