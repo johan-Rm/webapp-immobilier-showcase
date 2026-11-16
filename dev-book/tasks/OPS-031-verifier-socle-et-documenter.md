@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : prête à reprendre selon l’ordre des commits amont ; pas de verdict humain implicite.
+- État : implémentation du catalogue et des contrats terminée ; bilan global en cours, sans verdict humain.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-030, WEB-006, DASH-004, DOM-002, BFF-005 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -21,17 +21,17 @@
 
 ## Résultat et critères
 
-Publier un catalogue unique des commandes dans les rubriques README existantes, avec familles, cibles, déclencheurs, prérequis et limites ; les cartes renvoient à cette référence. Vérifier génération déterministe des contrats YAML dans deux répertoires temporaires et entrées invalides, sans git diff sur artefacts ignorés ni téléchargement Symfony implicite. Réconcilier la déclaration de contribution avec chaque chemin final. Préparer une recette de relecture et exécution manuelles ; distinguer résultats techniques et verdict humain, préserver DEM-010, aucun déploiement. Rassembler les commits amont seulement selon l’étape autorisée ; aucun transfert de fichiers non commité.
+Publier un catalogue unique des commandes dans la documentation, conformément au contrat README confirmé, avec familles, cibles, déclencheurs, prérequis et limites ; les cartes renvoient à cette référence. Vérifier génération déterministe des contrats YAML dans deux répertoires temporaires et entrées invalides, sans git diff sur artefacts ignorés ni téléchargement Symfony implicite. Réconcilier la déclaration de contribution avec chaque chemin final. Préparer une recette de relecture et exécution manuelles ; distinguer résultats techniques et verdict humain, préserver DEM-010, aucun déploiement. Rassembler les commits amont seulement selon l’étape autorisée ; aucun transfert de fichiers non commité.
 
 Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen en écriture, production, DEM-010, nouvelles conventions non arbitrées. Préserver les rubriques et l’ordre des README. Un résultat inconnu ne vaut pas réussite.
 
 ## Réalisation et preuves
 
-Aucune implémentation exécutée : les commits amont indiqués ne sont pas disponibles. Les arbitrages de reprise sont confirmés dans l’analyse ; ils ne remplacent pas ces dépendances.
+Le catalogue unique est `docs/executer-controles.md` : familles, cibles, prérequis, rapports et limites. Les guides d’architecture expliquent la propriété du repère principal et la relation entre conventions et contrôles. Les README ne contiennent pas de liens ni d’inventaire temporaire de commandes.
 
-Depuis webapp/ : bun run verify -- contracts ; bun run test scripts/quality/contracts.vitest.ts scripts/quality/manifest.vitest.ts ; lancer chacune des familles documentées sur les cibles pertinentes et conserver codes/rapports. Depuis racine : make aide-check, make quality-conventions-check et contrôles de contribution sur la plage explicitement vérifiée. Tableau recette : commande, résultat attendu, résultat réel, limite, verdict humain non prérempli. Les références visuelles et budgets non approuvés restent indiqués comme tels.
+Le pilote de contrats compare deux générations isolées : 28 artefacts identiques observés, sources inchangées, aucun appel Symfony distant. Trois tests couvrent génération vide, sortie symbolique, YAML invalide et empreintes de contenu. Le manifeste vérifie toutes les sélections disponibles et les refus explicites, sans exposer l’environnement privé.
 
-Les commandes nouvelles ci-dessus sont à créer, pas réputées disponibles aujourd’hui. Pour les essais humains : lire les chemins modifiés, indiquer préparation et répertoire, conserver sortie/code/rapport, reproduire les cas négatifs dans une fixture temporaire. Préserver la saisie et les données en cas d’erreur.
+Le bilan complet suit l’intégration des deux correctifs WEB-006/007 déjà committés. Les contrôles de sécurité signalent des avis high/critical existants et SOLID quatre dépassements de responsabilité de composables. Ces résultats restent bloquants sans baisse de seuil ni exemption ajoutée. La livraison GitHub, les budgets et l’approbation des références visuelles restent hors de cette étape. La déclaration et les preuves finales sont conservées dans le brouillon du principal.
 
 ## Verdict humain
 
