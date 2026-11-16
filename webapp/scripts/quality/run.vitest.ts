@@ -67,7 +67,9 @@ describe('commande de vérification', () => {
     temporary.push(root)
     expect(() => buildPlan(parseOptions(['security']), root, [])).toThrow('non installée')
     expect(() => buildPlan(parseOptions(['unit']), root, [])).toThrow('Aucun test découvert')
-    expect(() => buildPlan(parseOptions(['components']), webappRoot)).toThrow('non installé')
+    expect(() =>
+      buildPlan(parseOptions(['components', '--target', 'showcase-immobilier']), webappRoot),
+    ).toThrow('non installé')
   })
 
   it('ne laisse pas une commande échouée devenir un succès', async () => {
