@@ -15,6 +15,11 @@ export const families = [
   'load',
   'lighthouse',
   'contracts',
+  'lint',
+  'format',
+  'types',
+  'guards',
+  'services',
 ] as const
 export const targets = ['showcase-immobilier', 'client2-immobilier', 'dashboard'] as const
 type Family = (typeof families)[number]
@@ -152,12 +157,42 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
     plan.commands.push(
       command(['node_modules/@playwright/test/cli.js', 'test', ...plan.files], root, 'node'),
     )
-  } else if (family === 'conventions') {
+  } else if (family === 'lint' || family === 'format') {
+    plan.files = ['package.json']
+    plan.commands.push(
+      command(
+        ['--no-env-file', 'run', family === 'lint' ? 'lint:check' : 'format:check'],
+        root,
+        'bun',
+      ),
+    )
+  } else if (family === 'types') {
+    plan.files = ['scripts/build/type-check.ts']
+    plan.commands.push(
+      command(['node_modules/nuxt/bin/nuxt.mjs', 'prepare', '--dotenv', '.env.test'], root, 'node'),
+      command(
+        [
+          'node_modules/vue-tsc/bin/vue-tsc.js',
+          '--noEmit',
+          '--project',
+          target === 'dashboard' ? 'dashboard/.nuxt/tsconfig.site.json' : 'tsconfig.json',
+        ],
+        root,
+        'node',
+      ),
+    )
+  } else if (family === 'conventions' || family === 'guards' || family === 'services') {
     const integrity = resolve(root, '../codebase-integrity')
     if (!existsSync(join(integrity, 'package.json')))
       throw new Error('Paquet Codebase Integrity absent')
     plan.files = ['../codebase-integrity/package.json']
-    plan.commands.push(command(['--no-env-file', 'run', 'check:conventions'], integrity, 'bun'))
+    const script =
+      family === 'guards'
+        ? 'check:app:guards'
+        : family === 'services'
+          ? 'check:services:no-framework-imports'
+          : 'check:conventions'
+    plan.commands.push(command(['--no-env-file', 'run', script], integrity, 'bun'))
   } else {
     const script = `scripts/quality/${family}.ts`
     if (!existsSync(join(root, script)))
@@ -180,6 +215,11 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
 }
 
 const explanations: Record<Family, string> = {
+  lint: 'Vérifie les règles de code des deux paquets sans correction automatique.',
+  format: 'Vérifie le formatage des deux paquets sans réécrire les fichiers.',
+  types: 'Prépare Nuxt puis vérifie les types de la cible, sans démarrer de serveur.',
+  guards: 'Signale les gardes potentiellement redondantes, à relire humainement.',
+  services: 'Vérifie les imports interdits de frameworks dans les services.',
   unit: 'Teste la logique avec les moteurs Vitest et Bun séparés.',
   integration: 'Teste les échanges et assemblages avec des dépendances simulées.',
   components: 'Teste les interactions des composants dans le vrai environnement Nuxt.',

@@ -8,13 +8,14 @@ Les [conventions Codebase Integrity](../codebase-integrity/README.md#organisatio
 
 ## Préparer et tester les vérificateurs
 
-Depuis `codebase-integrity/`, installer les dépendances avec `bun install --frozen-lockfile`, puis lancer `bun run test`. Les commandes `check:*` du paquet webapp délèguent au paquet Codebase Integrity.
+Depuis la racine, `make integrity-test` lance les tests des vérificateurs. Les dépendances des outils doivent être installées. Les commandes internes `check:*` du paquet webapp délèguent au paquet Codebase Integrity.
 
 Depuis la racine du worktree :
 
 - `make integrity-domains` affiche les conventions regroupées par domaine.
 - `make aide-check` vérifie le registre, les demandes, la documentation et les README, puis exécute les tests Python des vérificateurs. Ses quatre étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
-- `make quality-conventions-check` exécute les conventions Nuxt dans Docker, avec leurs limites de relecture humaine déclarées.
+- `make quality-conventions-check` exécute les conventions Nuxt dans l’image qualité déjà préparée, avec leurs limites de relecture humaine déclarées.
+- `make integrity-test` exécute les tests Python, Vitest et Bun des vérificateurs depuis le dépôt, sans commande Bun à saisir.
 
 Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans aide-check ; son exécution sur les cartes est distincte.
 
@@ -26,16 +27,16 @@ Les [contrôles frontend AST](controle-conventions-frontend.md) expliquent les e
 
 ## Choisir une famille de tests applicatifs
 
-Depuis `webapp/`, lancer `bun run verify -- <famille> --target <cible>`. Les cibles reconnues sont `showcase-immobilier`, `client2-immobilier` et `dashboard`. Ajouter `--list` pour afficher la sélection de fichiers, les moteurs et les commandes, sans démarrer la suite ni afficher l’environnement privé.
+Depuis la racine, lancer `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` après `make quality-prepare`. Les cibles reconnues sont `showcase-immobilier`, `client2-immobilier` et `dashboard`. Le lanceur interne conserve la sélection détaillée des fichiers et les commandes techniques ; la recette humaine utilise Make.
 
-Les familles reconnues sont `unit`, `integration`, `browser`, `conventions`, `components`, `security`, `architecture`, `mutation`, `load`, `lighthouse` et `contracts`. Toutes ces familles sont installées. Le pilote `components` concerne actuellement Dashboard ; son absence sur les deux sites provoque un refus explicite. Une sélection vide échoue.
+Les familles reconnues sont `unit`, `integration`, `browser`, `conventions`, `components`, `security`, `architecture`, `mutation`, `load`, `lighthouse`, `contracts`, `lint`, `format`, `types`, `guards` et `services`. Toutes ces familles sont installées. Le pilote `components` concerne actuellement Dashboard ; son absence sur les deux sites provoque un refus explicite. Une sélection vide échoue.
 
 - `unit` route séparément les tests Bun du BFF et les tests Vitest.
 - `integration` inclut notamment les suites HTTP et la préparation Nuxt.
 - `components` sélectionne les tests `*.nuxt.vitest.ts` dans un environnement Nuxt isolé. Sans test dédié, cette famille échoue.
 - `browser` exige une variable `PLAYWRIGHT_BASE_URL` explicite et un serveur de test déjà démarré. Le lanceur ne démarre ni pile utilisateur ni API distante.
 
-Les commandes existantes restent utilisables, notamment `bun run quality:check` et `bun run test` depuis `webapp/`.
+Les scripts internes restent disponibles ; la recette humaine utilise les commandes Make décrites dans ce catalogue.
 
 ## Exécuter dans un conteneur jetable
 
@@ -60,7 +61,7 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 Depuis la racine du worktree, lancer **`make quality-prepare` une fois**, puis `make quality-verify FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Relancer `make quality-prepare` après modification des sources, dépendances ou outils. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
 
-Depuis `webapp/`, utiliser le même lanceur :
+Depuis la racine, choisir la famille avec `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` :
 
 | Famille | Préparation et résultat attendu | Limite |
 | --- | --- | --- |
@@ -82,3 +83,22 @@ Construire Lighthouse depuis la racine avec `docker build -f infra/docker/Docker
 Les rapports résident dans `webapp/.tmp/quality/`, et ceux du navigateur dans `webapp/.tmp/playwright/`. Conserver le code de sortie et examiner les erreurs avant les scores. Un refus de prérequis ou une exécution absente ne vaut pas réussite. Les budgets et références visuelles demandent un arbitrage humain explicite.
 
 La recette consiste à relire les changements, lancer les familles pertinentes sur chaque cible, examiner les rapports puis consigner le verdict humain dans la carte. Les preuves d’implémentation de cette consolidation sont rassemblées dans OPS-031 ; elles ne préremplissent pas ce verdict.
+
+## Interface Make des contrôles manuels
+
+Toutes les commandes se lancent depuis la racine du worktree. Préparer l’image avec `make quality-prepare`, puis utiliser `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` pour les tests applicatifs et mesures. Les outils restent utilisés en interne ; aucune commande Bun ou Node n’est nécessaire dans la recette manuelle de contrôles sans serveur.
+
+Les raccourcis suivants utilisent le même lanceur, la même image existante et les mêmes explications :
+
+| Commande Make | Famille du lanceur |
+| --- | --- |
+| `make quality-lint-check` | `lint` : application et vérificateurs |
+| `make quality-format-check` | `format` : application et vérificateurs |
+| `make quality-type-check` | `types` : préparation Nuxt puis Vue TSC |
+| `make quality-conventions-check` | `conventions` |
+| `make quality-guards-check` | `guards` |
+| `make quality-services-check` | `services` |
+
+Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_TARGET=dashboard`. `make quality-check` enchaîne lint, formatage et types, avec arrêt au premier échec. Ces contrôles ne démarrent pas de serveur web et n’injectent pas de `.env` privé. La préparation des types produit ses fichiers dans le conteneur jetable.
+
+Les contrôles du cadre restent `make aide-check`, `make devbook-check BASE=<SHA>` et `make integrity-test`. Ils fonctionnent dans le worktree, avec leurs rapports et explications. Le regroupement général et son bilan final restent un complément à analyser.

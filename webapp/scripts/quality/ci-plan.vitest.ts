@@ -167,6 +167,26 @@ describe('préparation explicite de l’image qualité', () => {
     expect(results[0]!.stdout).toContain('Image qualité absente')
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
+  it.each([
+    ['quality-lint-check', 'lint'],
+    ['quality-format-check', 'format'],
+    ['quality-type-check', 'types'],
+    ['quality-guards-check', 'guards'],
+    ['quality-services-check', 'services'],
+    ['quality-conventions-check', 'conventions'],
+  ])('route %s vers le lanceur commun sans build', (target, family) => {
+    const { results, recorded } = scenario([target])
+    expect(results[0]!.status).toBe(0)
+    const runs = recorded.filter((args) => args[0] === 'run')
+    expect(runs).toHaveLength(1)
+    expect(runs[0]).toContain(family)
+    expect(recorded.some((args) => args[0] === 'build')).toBe(false)
+  })
+  it('arrête quality-check au premier échec sans lancer les autres contrôles', () => {
+    const { results, recorded } = scenario(['quality-check'], 42)
+    expect(results[0]!.status).not.toBe(0)
+    expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
+  })
   it('ne prétend pas que l’image est prête si sa préparation échoue', () => {
     const { results } = scenario(['quality-prepare'], 17)
     expect(results[0]!.status).not.toBe(0)

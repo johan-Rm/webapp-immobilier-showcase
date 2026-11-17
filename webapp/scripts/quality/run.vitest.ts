@@ -177,3 +177,23 @@ it('prouve que le lanceur ne charge pas le dotenv de sa fixture', async () => {
     }),
   ).toBe(7)
 })
+
+describe('contrôles de types isolés', () => {
+  it.each(['showcase-immobilier', 'client2-immobilier', 'dashboard'])(
+    'prépare %s sans environnement privé ni serveur',
+    (target) => {
+      const plan = buildPlan(parseOptions(['types', '--target', target, '--list']))
+      expect(plan.commands).toHaveLength(2)
+      expect(plan.commands[0]!.args).toEqual([
+        'node_modules/nuxt/bin/nuxt.mjs',
+        'prepare',
+        '--dotenv',
+        '.env.test',
+      ])
+      expect(plan.commands[1]!.args).toContain(
+        target === 'dashboard' ? 'dashboard/.nuxt/tsconfig.site.json' : 'tsconfig.json',
+      )
+      expect(plan.commands[1]!.args).toContain('--noEmit')
+    },
+  )
+})

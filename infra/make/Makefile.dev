@@ -77,19 +77,21 @@ dev-playwright-report:
 	cd webapp && bun run test:e2e:report
 
 quality-check:
-	$(DOCKER_RUN) bun run quality:check
+	@$(MAKE) --no-print-directory quality-lint-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+	@$(MAKE) --no-print-directory quality-format-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+	@$(MAKE) --no-print-directory quality-type-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-lint-check:
-	$(DOCKER_RUN) bun run lint:check
+	@$(MAKE) --no-print-directory quality-verify FAMILY=lint GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-lint-fix:
 	$(DOCKER_RUN) bun run lint:fix
 
 quality-format-check:
-	$(DOCKER_RUN) bun run format:check
+	@$(MAKE) --no-print-directory quality-verify FAMILY=format GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-type-check:
-	$(DOCKER_RUN) bun run type-check
+	@$(MAKE) --no-print-directory quality-verify FAMILY=types GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
@@ -98,7 +100,7 @@ frontend-conventions-check:
 	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
 
 quality-conventions-check:
-	@python3 -B codebase-integrity/commun/run_check_output.py conventions -- docker compose --project-directory . --env-file webapp/.env -f $(COMPOSE_FILE) run --rm --volume "$(CURDIR):$(CURDIR):ro" --env AIDE_GIT_ROOT="$(CURDIR)" --volume "$(CURDIR)/webapp/.tmp/quality:/app/.tmp/quality" --volume "$(CURDIR)/.git:/app/.git:ro" --volume "$(GIT_COMMON_DIR):$(GIT_COMMON_DIR):ro" webapp-localhost sh -c "bun run --cwd ../codebase-integrity check:frontend:policy && bun run check:app:types && bun run check:app:images && bun run check:app:components:no-business-logic && bun run check:app:script-setup-standard && bun run check:app:soc && bun run check:app:code-quality && bun run check:app:solid && bun run check:app:guards && bun run check:services:no-framework-imports"
+	@$(MAKE) --no-print-directory quality-verify FAMILY=conventions GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 dev-content-sync:
 	$(DOCKER_RUN) bun scripts/content-sync.ts
@@ -199,3 +201,14 @@ quality-verify:
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image qualité absente ou Docker indisponible : lancer make quality-prepare."; exit 2; }
 	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm verify $(FAMILY) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
+
+.PHONY: integrity-test quality-guards-check quality-services-check
+integrity-test:
+	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
+	@bun --no-env-file run --cwd codebase-integrity test
+
+quality-guards-check:
+	@$(MAKE) --no-print-directory quality-verify FAMILY=guards GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+
+quality-services-check:
+	@$(MAKE) --no-print-directory quality-verify FAMILY=services GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
