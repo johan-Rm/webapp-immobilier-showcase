@@ -71,6 +71,9 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 
 - **Commandes publiques** : employer des noms anglais avec les préfixes `third-party-tests-` pour les tests et analyses des outils tiers, `conventions-` pour appliquer les règles des README et `verifiers-` pour tester les vérificateurs eux-mêmes.
 - **Séparation** : chaque contrôle préfixé `conventions-` correspond à une convention écrite dans un README ; il ne lance pas les tests de fonctionnement des vérificateurs. Les commandes de préparation restent distinctes.
+- **Présentation** : annoncer catégorie, type, objet, commande, outils et niveau dans un bandeau ; rattacher progression et résultat à la commande et à la cible. Conserver les journaux détaillés sur l’hôte, sans couleur, avec code de sortie fidèle.
+- **Bilan** : distinguer réussites, échecs, prérequis manquants et interruptions. Ne pas inventer un total d’avertissements depuis les journaux des scénarios de test ; signaler tout décompte non consolidé.
+
 
 - Sélectionner explicitement la **famille de contrôle** et la **cible applicative** lorsque le contrôle les distingue.
 - Séparer les tests selon leur **moteur** et leur **environnement**, notamment les tests Bun, Vitest Node et Nuxt.

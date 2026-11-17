@@ -15,6 +15,7 @@ services:
     environment:
       CI: "true"
       QUALITY_CONTAINER: "1"
+      TMPDIR: /workspace/webapp/.tmp/quality/console-tmp
       QUALITY_BASE_URL: ${QUALITY_BASE_URL:-}
       QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
       NUXT_TELEMETRY_DISABLED: "1"

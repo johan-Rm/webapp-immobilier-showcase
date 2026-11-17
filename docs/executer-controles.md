@@ -84,3 +84,13 @@ Les rapports résident dans `webapp/.tmp/quality/`, et ceux du navigateur dans `
 ## Nommage des commandes
 
 Les [conventions d’exécution](../codebase-integrity/README.md#exécution-des-contrôles) définissent les trois préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms restent des délégations de compatibilité, hors de l’aide et de la recette canonique. Les preuves historiques conservent les commandes réellement exécutées.
+
+## Lire les sorties et le bilan
+
+Chaque commande canonique affiche un bandeau de contexte avec les six champs du catalogue, la cible et le profil éventuel. Les messages de progression et de résultat répètent la commande et la cible. Bleu : en cours ; vert : réussi ; rouge : échec ; jaune : prérequis absent, interruption ou signalement à relire. Les statuts restent lisibles sans couleur ; `NO_COLOR` et les sorties redirigées désactivent la palette.
+
+Les sorties brutes de Make, Docker et des outils sont capturées dans des journaux complets sous `webapp/.tmp/quality/console/`. Chaque exécution possède un dossier distinct contenant `output.log` et `result.json`. Les journaux temporaires des outils conteneurisés résident sous `webapp/.tmp/quality/console-tmp/`, monté depuis l’hôte ; les autres rapports JSON restent dans le dossier qualité habituel. Aucun journal n’est supprimé par la présentation.
+
+Après préparation de l’image, `make checks-run GD_TARGET=showcase-immobilier BASE=<SHA>` exécute tous les contrôles de cette cible, poursuit après un échec et termine par un bilan limité à cette exécution. Lint, formatage et types sont exécutés séparément : le raccourci groupé ne les répète pas. Les deux profils Lighthouse sont distingués. Le pilote composants reste non exécuté sur les sites, puisqu’il appartient à Dashboard. Aucun serveur n’est démarré ; navigateur, charge et Lighthouse sont marqués non exécutés si leur URL requise manque. Les contrôles frontend globaux conservent leur périmètre partagé documenté.
+
+Un échec ou un contrôle non exécuté conserve un code non nul. Un score informatif ne transforme pas une erreur d’exécution en réussite. Le bilan indique que le décompte des avertissements n’est pas consolidé lorsque les outils ne fournissent pas de données structurées fiables ; les messages des fixtures ne sont pas comptés comme des écarts du produit. Les diagnostics utiles sont abrégés à l’écran, jamais dans le journal complet. L’interruption arrête le groupe de processus possédé et reste explicitement signalée.
