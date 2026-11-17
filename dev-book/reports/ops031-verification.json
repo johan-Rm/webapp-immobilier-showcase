@@ -262,5 +262,45 @@
       "/tmp/dem011-prepare-idempotent-first.log": "046b1ae4529efc53b0d8f287d42d767ae84d6c71cb7dc291f29615070fe88562",
       "/tmp/dem011-prepare-idempotent-second.log": "046b1ae4529efc53b0d8f287d42d767ae84d6c71cb7dc291f29615070fe88562"
     }
+  },
+  "correctif_nommage_commandes": {
+    "date": "2026-11-17",
+    "carte": "OPS-030",
+    "commandes_canoniques": [
+      "check FAMILY=…",
+      "checks-prepare",
+      "checks-rebuild",
+      "conventions-check",
+      "conventions-guards-check",
+      "conventions-services-check"
+    ],
+    "anciens_noms": "délégations de compatibilité ; absents de l’aide et des recettes canoniques",
+    "tests_cibles_reussis": 46,
+    "executions_reelles": {
+      "checks-prepare": "deux appels sans build",
+      "check FAMILY=contracts": "28 artefacts identiques",
+      "conventions-guards-check": "réussi, avertissements à relire",
+      "conventions-services-check": "réussi",
+      "conventions-check": "échec conservé sur les quatre écarts SOLID connus"
+    },
+    "regles": "aucun seuil ni sévérité modifié",
+    "journaux": {
+      "/tmp/dem011-command-names-tests.log": "f35212c6c7db4af1e601d5e04f1c04575c054d5dc08769fda0a6cc5d3b9895db",
+      "/tmp/dem011-command-names-prepare1.log": "82fdf94e8999ce3154bdc22ab5b9204edea53d2d17c42e416f67bcfcabb7baff",
+      "/tmp/dem011-command-names-prepare2.log": "82fdf94e8999ce3154bdc22ab5b9204edea53d2d17c42e416f67bcfcabb7baff",
+      "/tmp/dem011-command-names-contracts.log": "6ecf8e5f1c0e67f50761a9b55032311aedf106a95ff197585dae51423b45d73c",
+      "/tmp/dem011-command-names-guards.log": "9147a6fd273a165849a9d06279cd8740d799b6b142992d0f68a7c88783bb80c1",
+      "/tmp/dem011-command-names-services.log": "b3da52351de2d51dff946b96890bd949cd918dd2c27dc0c9234d22c55fc93669",
+      "/tmp/dem011-command-names-conventions.log": "5587db7efc1614b97679fc491bc5c1138b5136859ee1b7fffc881f5032df4908"
+    }
+  },
+  "correctif_architecture_conteneur": {
+    "date": "2026-11-17",
+    "carte": "OPS-026",
+    "commit": "7005de0",
+    "tests_cibles_reussis": 9,
+    "commande": "make check FAMILY=architecture GD_TARGET=showcase-immobilier",
+    "resultat": "18 entrées, 67 modules, 126 dépendances ; zéro violation, deux imports virtuels non résolus",
+    "limite": "Mêmes règles et limites de couverture ; inventaire Git lu depuis le dépôt monté, sources analysées dans l’image."
   }
 }

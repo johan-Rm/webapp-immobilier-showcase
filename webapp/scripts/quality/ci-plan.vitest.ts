@@ -128,11 +128,7 @@ describe('préparation explicite de l’image qualité', () => {
     }
   }
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
-    const { results, recorded } = scenario(
-      ['quality-prepare', 'quality-verify', 'quality-verify'],
-      0,
-      1,
-    )
+    const { results, recorded } = scenario(['checks-prepare', 'check', 'check'], 0, 1)
     expect(results.map((result) => result.status)).toEqual([0, 0, 0])
     expect(recorded.filter((args) => args[0] === 'build')).toEqual([['build', 'verify']])
     expect(recorded.filter((args) => args[0] === 'run')).toEqual([
@@ -159,38 +155,38 @@ describe('préparation explicite de l’image qualité', () => {
         'showcase-immobilier',
       ],
     ])
-    expect(results[1]!.stdout).toContain('make quality-prepare')
+    expect(results[1]!.stdout).toContain('make checks-prepare')
     expect(results[1]!.stdout).not.toContain(String.fromCharCode(27))
   })
   it('ignore les préparations répétées quand l’image existe', () => {
-    const { results, recorded } = scenario(['quality-prepare', 'quality-prepare'], 0, 1)
+    const { results, recorded } = scenario(['checks-prepare', 'checks-prepare'], 0, 1)
     expect(results.map((result) => result.status)).toEqual([0, 0])
     expect(recorded.filter((args) => args[0] === 'build')).toHaveLength(1)
     expect(results[1]!.stdout).toContain('préparation ignorée')
   })
   it('reconstruit explicitement même si l’image existe déjà', () => {
-    const { results, recorded } = scenario(['quality-rebuild'])
+    const { results, recorded } = scenario(['checks-rebuild'])
     expect(results[0]!.status).toBe(0)
     expect(recorded).toEqual([['build', 'verify']])
   })
   it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
-    const { results, recorded } = scenario(['quality-verify'], 42)
+    const { results, recorded } = scenario(['check'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image', 'run'])
   })
   it('refuse une image absente sans lancer ni construire un conteneur', () => {
-    const { results, recorded } = scenario(['quality-verify'], 0, 1)
+    const { results, recorded } = scenario(['check'], 0, 1)
     expect(results[0]!.status).not.toBe(0)
-    expect(results[0]!.stdout).toContain('Image qualité absente')
+    expect(results[0]!.stdout).toContain('Image des contrôles absente')
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
   it.each([
     ['quality-lint-check', 'lint'],
     ['quality-format-check', 'format'],
     ['quality-type-check', 'types'],
-    ['quality-guards-check', 'guards'],
-    ['quality-services-check', 'services'],
-    ['quality-conventions-check', 'conventions'],
+    ['conventions-guards-check', 'guards'],
+    ['conventions-services-check', 'services'],
+    ['conventions-check', 'conventions'],
   ])('route %s vers le lanceur commun sans build', (target, family) => {
     const { results, recorded } = scenario([target])
     expect(results[0]!.status).toBe(0)
@@ -204,8 +200,21 @@ describe('préparation explicite de l’image qualité', () => {
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
   })
+  it.each([
+    ['quality-verify', 'check'],
+    ['quality-prepare', 'checks-prepare'],
+    ['quality-rebuild', 'checks-rebuild'],
+    ['quality-conventions-check', 'conventions-check'],
+    ['quality-guards-check', 'conventions-guards-check'],
+    ['quality-services-check', 'conventions-services-check'],
+  ])('conserve %s comme délégation de compatibilité vers %s', (legacy, canonical) => {
+    const before = scenario([legacy])
+    const after = scenario([canonical])
+    expect(before.results[0]!.status).toBe(0)
+    expect(before.recorded).toEqual(after.recorded)
+  })
   it('ne prétend pas que l’image est prête si sa préparation échoue', () => {
-    const { results } = scenario(['quality-prepare'], 17, 1)
+    const { results } = scenario(['checks-prepare'], 17, 1)
     expect(results[0]!.status).not.toBe(0)
     expect(results[0]!.stdout).not.toContain('Image prête')
   })
