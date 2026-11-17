@@ -102,8 +102,8 @@ describe('préparation explicite de l’image qualité', () => {
           [
             '-f',
             'infra/make/Makefile.dev',
-            action,
-            'FAMILY=contracts',
+            ...action.split(' '),
+            ...(action === 'quality-verify' ? ['FAMILY=contracts'] : []),
             'GD_TARGET=showcase-immobilier',
             `QUALITY_COMPOSE=node ${docker}`,
             `QUALITY_DOCKER=node ${docker}`,
@@ -128,7 +128,11 @@ describe('préparation explicite de l’image qualité', () => {
     }
   }
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
-    const { results, recorded } = scenario(['checks-prepare', 'check', 'check'], 0, 1)
+    const { results, recorded } = scenario(
+      ['checks-prepare', 'conventions-contracts-check', 'conventions-contracts-check'],
+      0,
+      1,
+    )
     expect(results.map((result) => result.status)).toEqual([0, 0, 0])
     expect(recorded.filter((args) => args[0] === 'build')).toEqual([['build', 'verify']])
     expect(recorded.filter((args) => args[0] === 'run')).toEqual([
@@ -170,17 +174,27 @@ describe('préparation explicite de l’image qualité', () => {
     expect(recorded).toEqual([['build', 'verify']])
   })
   it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
-    const { results, recorded } = scenario(['check'], 42)
+    const { results, recorded } = scenario(['conventions-contracts-check'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image', 'run'])
   })
   it('refuse une image absente sans lancer ni construire un conteneur', () => {
-    const { results, recorded } = scenario(['check'], 0, 1)
+    const { results, recorded } = scenario(['conventions-contracts-check'], 0, 1)
     expect(results[0]!.status).not.toBe(0)
     expect(results[0]!.stdout).toContain('Image des contrôles absente')
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
   it.each([
+    ['test-unit', 'unit'],
+    ['test-integration', 'integration'],
+    ['test-components', 'components'],
+    ['test-browser', 'browser'],
+    ['security-check', 'security'],
+    ['test-mutation', 'mutation'],
+    ['load-check', 'load'],
+    ['lighthouse-check', 'lighthouse'],
+    ['conventions-contracts-check', 'contracts'],
+    ['conventions-architecture-check', 'architecture'],
     ['quality-lint-check', 'lint'],
     ['quality-format-check', 'format'],
     ['quality-type-check', 'types'],
@@ -195,13 +209,24 @@ describe('préparation explicite de l’image qualité', () => {
     expect(runs[0]).toContain(family)
     expect(recorded.some((args) => args[0] === 'build')).toBe(false)
   })
+  it('exécute chaque commande lors d’un appel Make multiple sans FAMILY', () => {
+    const { results, recorded } = scenario([
+      'test-unit test-integration conventions-contracts-check',
+    ])
+    expect(results[0]!.status).toBe(0)
+    expect(recorded.filter((args) => args[0] === 'run').map((args) => args[6])).toEqual([
+      'unit',
+      'integration',
+      'contracts',
+    ])
+  })
   it('arrête quality-check au premier échec sans lancer les autres contrôles', () => {
     const { results, recorded } = scenario(['quality-check'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
   })
   it.each([
-    ['quality-verify', 'check'],
+    ['quality-verify', 'conventions-contracts-check'],
     ['quality-prepare', 'checks-prepare'],
     ['quality-rebuild', 'checks-rebuild'],
     ['quality-conventions-check', 'conventions-check'],

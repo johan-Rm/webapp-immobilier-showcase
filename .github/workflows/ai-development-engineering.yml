@@ -17,7 +17,7 @@ jobs:
       - run: bun run --cwd codebase-integrity test:typescript
       - run: bun run --cwd codebase-integrity test:bun
       - name: Vérifier les outils du cadre
-        run: make aide-check
+        run: make conventions-docs-check
   commits:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

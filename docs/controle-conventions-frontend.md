@@ -4,7 +4,7 @@
 
 ## Exécuter
 
-Depuis la racine du worktree, lancer `make frontend-conventions-check`. Cette commande utilise Bun localement. Le contrôle est aussi appelé par la famille `conventions` du lanceur qualité, la commande `make conventions-check` et le workflow de conventions. Il ne fait pas partie du contrôle documentaire rapide.
+Depuis la racine du worktree, lancer `make conventions-frontend-check`. Cette commande utilise Bun localement. Le contrôle est aussi appelé par la famille `conventions` du lanceur qualité, la commande `make conventions-check` et le workflow de conventions. Il ne fait pas partie du contrôle documentaire rapide.
 
 Les sources sont découvertes avec Git, y compris les fichiers non suivis non ignorés des clients inactifs. Le rapport complet est écrit dans `webapp/.tmp/quality/frontend-conventions.json`. La console présente trois étapes, les totaux et toutes les erreurs lorsqu’il y en a au plus huit, sinon les trois premières, puis ce chemin. Les couleurs distinguent progression (bleu), réussite (vert), erreur (rouge) et avertissements (jaune) ; elles sont désactivées hors terminal, avec TERM vide ou dumb, ou avec NO_COLOR ; le contrôle Docker monte ce dossier de rapport sur l’hôte. Aucun fichier applicatif n’est corrigé automatiquement.
 
@@ -18,7 +18,7 @@ Les commandes de contrôle démarrent par une description INFO en bleu dans un t
 
 `make conventions-check` conserve la sortie Docker complète dans un journal temporaire et présente un résultat synthétique. Lorsque le fichier d’environnement manque ou que l’exécutable est absent, le statut est NON EXÉCUTÉ et le code de sortie reste non nul. Il ne crée pas ce fichier. Le contrôle SOLID présente toutes les erreurs jusqu’à huit, puis les trois premières au-delà ; sans erreur, il applique la même limite aux avertissements et conserve tous les résultats dans `webapp/.tmp/quality/solid.json`.
 
-Pour les traces, utiliser une base réelle : `make devbook-check BASE="$(git rev-parse develop)"`. Les chevrons de la notation illustrative BASE=<SHA> ne constituent pas une commande shell exécutable.
+Pour les traces, utiliser une base réelle : `make conventions-devbook-check BASE="$(git rev-parse develop)"`. Les chevrons de la notation illustrative BASE=<SHA> ne constituent pas une commande shell exécutable.
 
 ## Erreurs bloquantes
 
@@ -46,7 +46,7 @@ Un warning ou une exemption ne provoque pas d’échec. Les erreurs déterminist
 
 ## Taille des composants et des composables
 
-Le contrôle `check:app:solid` de Codebase Integrity, inclus dans `make conventions-check`, conserve le dépassement de 200 lignes en avertissement. Le moteur seul lancé par `make frontend-conventions-check` ne lance pas ce contrôle complémentaire.
+Le contrôle `check:app:solid` de Codebase Integrity, inclus dans `make conventions-check`, conserve le dépassement de 200 lignes en avertissement. Le moteur seul lancé par `make conventions-frontend-check` ne lance pas ce contrôle complémentaire.
 
 Le dépassement certain de huit propriétés retournées par un composable est bloquant. Le comptage AST inclut données et fonctions, indépendamment des lignes, et examine les branches sans compter les retours des fonctions internes. Les objets locaux constants et les spreads statiques sont résolus ; un retour dynamique ou une mutation empêchant le comptage produit un avertissement explicite. Les regroupements artificiels, la pertinence du découpage et les mutations indirectes complexes restent à examiner humainement. Une erreur de lecture ou de syntaxe d’un composable bloque le contrôle.
 
