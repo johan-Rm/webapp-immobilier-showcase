@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 import { createWriteStream } from 'node:fs'
-import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { dirname, join, resolve } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
@@ -63,6 +63,35 @@ export function startFixtureServer(port = 0) {
     })
   })
 }
+// JPEG déterministe décodable par IPX ; utilisé uniquement sous opt-in des fixtures média.
+const fixtureJpeg = Buffer.from(
+  '/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAYACADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAT/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAQF/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AkAZCAAAAAAB//9k=',
+  'base64',
+)
+
+export async function prepareShowcaseMediaFixtures(root: string, publicRoot: string) {
+  const site = join(root, 'sites/showcase-immobilier')
+  const sources = await Promise.all([
+    readFile(join(site, 'app/app.config.ts'), 'utf8'),
+    ...['fr', 'en', 'es'].map((locale) =>
+      readFile(join(site, 'content', locale, 'web-pages/home.md'), 'utf8'),
+    ),
+  ])
+  const images = new Set(
+    sources.flatMap((source) =>
+      [...source.matchAll(/\/images\/([a-zA-Z0-9_-]+\.jpe?g)\b/g)].map((match) => match[1]!),
+    ),
+  )
+  const folder = join(publicRoot, 'images')
+  await mkdir(folder, { recursive: true })
+  for (const image of images) {
+    await writeFile(join(folder, image), fixtureJpeg, { flag: 'wx' }).catch((error) => {
+      if (error.code !== 'EEXIST') throw error
+    })
+  }
+  return [...images]
+}
+
 export async function startFixtureStack(
   target: string,
   port: number,
@@ -114,17 +143,7 @@ export async function startFixtureStack(
     const output = target === 'dashboard' ? 'dashboard/.output' : '.output'
     if (target === 'showcase-immobilier') {
       if (process.env.QUALITY_MEDIA_FIXTURES === '1') {
-        const folder = join(root, output, 'public/images')
-        await mkdir(folder, { recursive: true })
-        const pixel = Buffer.from(
-          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aJe0AAAAASUVORK5CYII=',
-          'base64',
-        )
-        await writeFile(join(folder, 'maison-mid-century-los-angeles.jpg'), pixel, {
-          flag: 'wx',
-        }).catch((error) => {
-          if (error.code !== 'EEXIST') throw error
-        })
+        await prepareShowcaseMediaFixtures(root, join(root, output, 'public'))
       }
 
       await cp(join(root, output, 'site', target, 'content'), join(temporary, 'content'), {

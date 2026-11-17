@@ -438,5 +438,20 @@
       "rapport": "webapp/.tmp/playwright/report/index.html"
     },
     "verdict_humain": "aucun nouveau verdict"
+  },
+  "correction_medias_browser_2026_11_17": {
+    "carte": "OPS-030",
+    "tests_cibles_reussis": 15,
+    "browser": {
+      "desktop": "réussi",
+      "mobile": "réussi",
+      "code": 0,
+      "rapport": "webapp/.tmp/quality/console/third-party-tests-browser-8qnwx7sn/output.log"
+    },
+    "limites": [
+      "médias simulés, aucun rendu des médias réels validé",
+      "composants Dashboard toujours en échec",
+      "aucune CI distante ni validation humaine nouvelle"
+    ]
   }
 }
