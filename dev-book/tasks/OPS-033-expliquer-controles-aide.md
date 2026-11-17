@@ -46,3 +46,7 @@ Validation humaine explicite le 2026-11-15 : « tout est validé », limitée à
 ## Commits
 
 Commit local de cette carte et de sa preuve ; SHA annoncé après création. Aucun push, PR ou fusion.
+
+### Séparation des sorties — précision du 2026-11-17
+
+Les évolutions ultérieures de nommage, préparation et séparation des tests sont portées par OPS-030 ; le catalogue courant est la documentation d’exécution des contrôles. Les commandes et résultats plus haut constituent les traces de la version initialement examinée. Le verdict humain initial n’est pas étendu aux correctifs ultérieurs ; leur recette et leurs réserves sont suivies dans OPS-031.

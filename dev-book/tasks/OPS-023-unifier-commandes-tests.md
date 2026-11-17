@@ -59,3 +59,7 @@ Validation explicite le 2026-11-15 : « tout est validé ». Portée : carte OPS
 ## Commits
 
 Commit local de la carte et de sa preuve ; SHA annoncé après création. Aucun push, PR ou fusion.
+
+### Interface Make — précision du 2026-11-17
+
+Les évolutions ultérieures de nommage, préparation et séparation des tests sont portées par OPS-030 ; le catalogue courant est la documentation d’exécution des contrôles. Les commandes et résultats plus haut constituent les traces de la version initialement examinée. Le verdict humain initial n’est pas étendu aux correctifs ultérieurs ; leur recette et leurs réserves sont suivies dans OPS-031.

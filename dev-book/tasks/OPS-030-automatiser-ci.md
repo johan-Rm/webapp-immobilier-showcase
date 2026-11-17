@@ -26,6 +26,14 @@ Parité local/CI, installations verrouillées, matrice Showcase/Client2/Dashboar
 
 Exclusions communes : secrets et .env, données utilisateur, code Cap Nour/Kazen en écriture, production, DEM-010, nouvelles conventions non arbitrées. Préserver les rubriques et l’ordre des README. Un résultat inconnu ne vaut pas réussite.
 
+### Critères complémentaires confirmés le 2026-11-17
+
+- Appliquer les trois préfixes anglais et leurs responsabilités selon le README Codebase Integrity ; fournir des commandes Make directes, sans sélecteur public de famille.
+- Conserver la séparation entre application des conventions au dépôt et tests de fiabilité des vérificateurs, en local et en CI.
+- Rattacher chaque commande de conventions à un chapitre de README existant ; une correspondance vérifiée manuellement ne vaut pas contrôle automatique exhaustif des assertions.
+- Conserver les codes d’échec, les alias historiques et la préparation explicite sans reconstruction à chaque contrôle.
+- Distinguer ces correctifs techniques du verdict humain et de l’exécution distante des workflows.
+
 ## Réalisation et preuves
 
 Les workflows couvrent les trois cibles et conservent les rapports même en échec. Les mesures longues restent manuelles. Le contrôle des messages utilise le vérificateur de la base PR. Aucune exécution GitHub n’a été effectuée à cette étape.
