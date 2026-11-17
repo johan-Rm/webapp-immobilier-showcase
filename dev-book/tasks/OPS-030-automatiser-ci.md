@@ -45,3 +45,9 @@ Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche 
 ### Droits de l’image qualité
 
 Les sources reçoivent leur propriétaire pendant la copie ; seules les racines et les caches nécessaires sont ajustés ensuite. Les dépendances installées restent lisibles sans parcours récursif coûteux. La reconstruction corrigée et les 28 contrats ont été réellement vérifiés dans l’image finale.
+
+### Correction demandée le 2026-11-17 — réutiliser l’image
+
+L’humain demande immédiatement dans DEM-011 de séparer préparation et exécution. `make quality-prepare` construit explicitement l’image une fois ; `quality-verify` vérifie sa présence locale puis la réutilise avec `--pull never --no-deps`, sans reconstruction ni téléchargement implicite, y compris si elle manque. Les sorties expliquent les deux étapes et rappellent de préparer à nouveau après une modification des sources. La fraîcheur n’est pas contrôlée automatiquement. Ce correctif ne met pas en œuvre le chantier plus large de présentation et de reporting, conservé en brouillon.
+
+Chemins compagnons : `Makefile` (aide), `infra/make/Makefile.dev`, `webapp/scripts/quality/ci-plan.vitest.ts` et le catalogue `docs/executer-controles.md`. Neuf tests ciblés réussis, lint et formatage ciblés conformes, documentation et 24 README conformes. Construction explicite réelle réussie ; deux exécutions de contrats réussies ensuite, sans build. Le refus d’une image absente a été reproduit avec un nom de projet Compose isolé, sans créer d’image ni de conteneur. Aucun nouveau verdict humain.

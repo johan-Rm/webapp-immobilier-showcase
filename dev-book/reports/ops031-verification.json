@@ -182,5 +182,23 @@
     "/tmp/dem011-browser-final-showcase.log": "60db5dc04117928715bb4c26edc829f8a580da2a61b441bfac508f947c05b2ad",
     "/tmp/dem011-browser-final-client2.log": "e47df5961bc6fa49a552adf73680d2413fe1bb3a82b6b72ee7c6a804296c22c8",
     "/tmp/dem011-browser-ready-image-dashboard.log": "b1d64389897310d1d3d6f99e6d09c24ee51642b91b57b1a8df624355edf919b4"
+  },
+  "correctif_reutilisation_image": {
+    "date": "2026-11-17",
+    "carte": "OPS-030",
+    "preparation": "make quality-prepare : construction explicite réussie",
+    "verification": "deux contrats successifs réussis : 28 artefacts identiques, aucun build",
+    "image_absente": "refus explicite reproduit avant tout lancement ; aucune image créée",
+    "tests_cibles_reussis": 9,
+    "lint_formatage": "ciblés réussis",
+    "documentation": "24 README et liens conformes",
+    "limite": "Fraîcheur non détectée automatiquement : préparation explicite après modification ; autres résultats du rapport issus de la recette précédente.",
+    "journaux": {
+      "/tmp/dem011-prepare-split-tests.log": "d176335496ce27e67887f0adfe211742ad1f637b18231f6913dfd3636b56aa55",
+      "/tmp/dem011-prepare-split-build.log": "0f1261339628701f8eb9d8d50804b378d0b52c0476c2b57f0c9ac9aa193e9ae4",
+      "/tmp/dem011-prepare-split-run1.log": "a0b6ff6a9915426186b99de92fffeb49613e6c7acc017bac8477a382331a1ce0",
+      "/tmp/dem011-prepare-split-run2.log": "460d43ec4b3be3e62794784cc84f1a2f7cb98232335928fa19218f8d0e599c3f",
+      "/tmp/dem011-prepare-split-absent.log": "da16501bfc34cef3e3280221085e4b191febc64ad89ca2a674883391c06460e2"
+    }
   }
 }

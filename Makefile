@@ -26,6 +26,8 @@ help:
 	@printf "  lane-rebuild COUCHE        Reconstruire puis relancer\n"
 	@printf "  demands                    Demandes locales non livrées ou état incertain\n"
 	@printf "  tasks [DEM-NNN]            Cartes en cours ou détail d’une demande\n"
+	@printf "  quality-prepare             Construire l’image des tests une fois\n"
+	@printf "  quality-verify FAMILY=...   Exécuter un contrôle sans reconstruire\n"
 	@printf "  quality-check               Lint + Format + Type Check\n"
 	@printf "  quality-lint-check          ESLint\n"
 	@printf "  quality-lint-fix            ESLint Fix\n"
