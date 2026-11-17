@@ -14,7 +14,7 @@ Depuis la racine du worktree :
 
 - `make integrity-domains` affiche les conventions regroupées par domaine.
 - `make aide-check` vérifie le registre, les demandes, la documentation et les README, puis exécute les tests Python des vérificateurs. Ses quatre étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
-- `make quality-conventions-check` exécute les conventions Nuxt dans l’image qualité déjà préparée, avec leurs limites de relecture humaine déclarées.
+- `make conventions-check` exécute les conventions Nuxt dans l’image qualité déjà préparée, avec leurs limites de relecture humaine déclarées.
 - `make integrity-test` exécute les tests Python, Vitest et Bun des vérificateurs depuis le dépôt, sans commande Bun à saisir.
 
 Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans aide-check ; son exécution sur les cartes est distincte.
@@ -27,7 +27,7 @@ Les [contrôles frontend AST](controle-conventions-frontend.md) expliquent les e
 
 ## Choisir une famille de tests applicatifs
 
-Depuis la racine, lancer `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` après `make quality-prepare`. Les cibles reconnues sont `showcase-immobilier`, `client2-immobilier` et `dashboard`. Le lanceur interne conserve la sélection détaillée des fichiers et les commandes techniques ; la recette humaine utilise Make.
+Depuis la racine, lancer `make check FAMILY=<famille> GD_TARGET=<cible>` après `make checks-prepare`. Les cibles reconnues sont `showcase-immobilier`, `client2-immobilier` et `dashboard`. Le lanceur interne conserve la sélection détaillée des fichiers et les commandes techniques ; la recette humaine utilise Make.
 
 Les familles reconnues sont `unit`, `integration`, `browser`, `conventions`, `components`, `security`, `architecture`, `mutation`, `load`, `lighthouse`, `contracts`, `lint`, `format`, `types`, `guards` et `services`. Toutes ces familles sont installées. Le pilote `components` concerne actuellement Dashboard ; son absence sur les deux sites provoque un refus explicite. Une sélection vide échoue.
 
@@ -59,9 +59,9 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Catalogue complémentaire et recette manuelle
 
-Depuis la racine du worktree, lancer **`make quality-prepare`** (construction seulement si l’image est absente), puis `make quality-verify FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Lancer **`make quality-rebuild`** après modification des sources, dépendances ou outils. Rejouer `quality-prepare` avec une image existante ignore entièrement le build. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
+Depuis la racine du worktree, lancer **`make checks-prepare`** (construction seulement si l’image est absente), puis `make check FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Lancer **`make checks-rebuild`** après modification des sources, dépendances ou outils. Rejouer `checks-prepare` avec une image existante ignore entièrement le build. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
 
-Depuis la racine, choisir la famille avec `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` :
+Depuis la racine, choisir la famille avec `make check FAMILY=<famille> GD_TARGET=<cible>` :
 
 | Famille | Préparation et résultat attendu | Limite |
 | --- | --- | --- |
@@ -86,7 +86,7 @@ La recette consiste à relire les changements, lancer les familles pertinentes s
 
 ## Interface Make des contrôles manuels
 
-Toutes les commandes se lancent depuis la racine du worktree. Préparer l’image avec `make quality-prepare`, puis utiliser `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` pour les tests applicatifs et mesures. Les outils restent utilisés en interne ; aucune commande Bun ou Node n’est nécessaire dans la recette manuelle de contrôles sans serveur.
+Toutes les commandes se lancent depuis la racine du worktree. Préparer l’image avec `make checks-prepare`, puis utiliser `make check FAMILY=<famille> GD_TARGET=<cible>` pour les tests applicatifs et mesures. Les outils restent utilisés en interne ; aucune commande Bun ou Node n’est nécessaire dans la recette manuelle de contrôles sans serveur.
 
 Les raccourcis suivants utilisent le même lanceur, la même image existante et les mêmes explications :
 
@@ -95,10 +95,16 @@ Les raccourcis suivants utilisent le même lanceur, la même image existante et 
 | `make quality-lint-check` | `lint` : application et vérificateurs |
 | `make quality-format-check` | `format` : application et vérificateurs |
 | `make quality-type-check` | `types` : préparation Nuxt puis Vue TSC |
-| `make quality-conventions-check` | `conventions` |
-| `make quality-guards-check` | `guards` |
-| `make quality-services-check` | `services` |
+| `make conventions-check` | `conventions` |
+| `make conventions-guards-check` | `guards` |
+| `make conventions-services-check` | `services` |
 
 Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_TARGET=dashboard`. `make quality-check` enchaîne lint, formatage et types, avec arrêt au premier échec. Ces contrôles ne démarrent pas de serveur web et n’injectent pas de `.env` privé. La préparation des types produit ses fichiers dans le conteneur jetable.
 
 Les contrôles du cadre restent `make aide-check`, `make devbook-check BASE=<SHA>` et `make integrity-test`. Ils fonctionnent dans le worktree, avec leurs rapports et explications. Le regroupement général et son bilan final restent un complément à analyser.
+
+## Nommage des commandes
+
+`check FAMILY=<famille>` est le lanceur neutre des contrôles. `checks-prepare` prépare l’image seulement si elle manque ; `checks-rebuild` reconstruit explicitement après une modification. Les raccourcis `conventions-check`, `conventions-guards-check` et `conventions-services-check` désignent les règles techniques du projet. `quality-check`, lint, formatage et types conservent leurs noms de qualité du code. Le paramètre reste `FAMILY` : une catégorie du tableau peut regrouper plusieurs familles.
+
+Les anciens noms `quality-verify`, `quality-prepare`, `quality-rebuild`, `quality-conventions-check`, `quality-guards-check` et `quality-services-check` restent des délégations de compatibilité. L’aide et les recettes affichent les noms canoniques ci-dessus.
