@@ -183,20 +183,28 @@ dev-saas-project-watch:
 	python3 infra/scripts/saas_projection_path.py
 	$(DASHBOARD_COMPOSE) run --rm --no-deps saas-projector bun --no-env-file scripts/saas/project.ts --watch
 
-# La préparation est explicite : les contrôles réutilisent ensuite la même image.
+# La préparation réutilise une image existante ; la reconstruction est explicite.
 QUALITY_DOCKER ?= docker
 QUALITY_COMPOSE = QUALITY_BASE_URL="$(QUALITY_BASE_URL)" PLAYWRIGHT_BASE_URL="$(PLAYWRIGHT_BASE_URL)" QUALITY_REPO_ROOT="$(CURDIR)" QUALITY_GIT_COMMON_DIR="$(GIT_COMMON_DIR)" $(QUALITY_DOCKER) compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality
 QUALITY_INFO = python3 -c 'import os,sys; sys.path.insert(0,"codebase-integrity/commun"); from run_aide_checks import paint,supports_color; print(paint(sys.argv[1],"blue",supports_color(sys.stdout,os.environ)))'
 
-.PHONY: quality-prepare quality-verify
+.PHONY: quality-prepare quality-rebuild quality-verify
 quality-prepare:
-	@$(QUALITY_INFO) "INFO — Prépare l’image des tests. À relancer après modification des sources, dépendances ou outils ; aucun serveur web démarré."
+	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
+	  if $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1; then \
+	    $(QUALITY_INFO) "INFO — Image déjà prête : préparation ignorée, aucun build. Après modification des sources ou dépendances, lancer make quality-rebuild."; \
+	  else \
+	    $(MAKE) --no-print-directory quality-rebuild; \
+	  fi
+
+quality-rebuild:
+	@$(QUALITY_INFO) "INFO — Construit l’image des tests avec les sources et dépendances actuelles ; aucun serveur web démarré."
 	@$(QUALITY_COMPOSE) build verify
 	@$(QUALITY_INFO) "INFO — Image prête. Les commandes quality-verify peuvent maintenant la réutiliser sans reconstruction."
 
 quality-verify:
 	@test -n "$(FAMILY)" || { echo "FAMILY est requis"; exit 1; }
-	@$(QUALITY_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque ou si les sources ont changé, lancer make quality-prepare."
+	@$(QUALITY_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque, lancer make quality-prepare ; après modification des sources, lancer make quality-rebuild."
 	@mkdir -p webapp/.tmp/quality
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image qualité absente ou Docker indisponible : lancer make quality-prepare."; exit 2; }

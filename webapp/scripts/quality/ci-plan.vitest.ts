@@ -85,13 +85,15 @@ describe('préparation explicite de l’image qualité', () => {
     try {
       const calls = resolve(directory, 'calls.jsonl')
       const docker = resolve(directory, 'compose.cjs')
+      const image = resolve(directory, 'image-ready')
       writeFileSync(
         docker,
         [
           `const args = process.argv.slice(2);`,
           `require('node:fs').appendFileSync(${JSON.stringify(calls)}, JSON.stringify(args) + String.fromCharCode(10));`,
           `if (args[0] === 'config') { console.log(JSON.stringify({name: 'fixture', services: {verify: {}}})); process.exit(0); }`,
-          `process.exit(args[0] === 'image' ? ${imageExit} : ${exitCode});`,
+          `if (args[0] === 'build' && ${exitCode} === 0) require('node:fs').writeFileSync(${JSON.stringify(image)}, 'ready');`,
+          `process.exit(args[0] === 'image' ? (require('node:fs').existsSync(${JSON.stringify(image)}) ? 0 : ${imageExit}) : ${exitCode});`,
         ].join('\n'),
       )
       const results = actions.map((action) =>
@@ -126,7 +128,11 @@ describe('préparation explicite de l’image qualité', () => {
     }
   }
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
-    const { results, recorded } = scenario(['quality-prepare', 'quality-verify', 'quality-verify'])
+    const { results, recorded } = scenario(
+      ['quality-prepare', 'quality-verify', 'quality-verify'],
+      0,
+      1,
+    )
     expect(results.map((result) => result.status)).toEqual([0, 0, 0])
     expect(recorded.filter((args) => args[0] === 'build')).toEqual([['build', 'verify']])
     expect(recorded.filter((args) => args[0] === 'run')).toEqual([
@@ -155,6 +161,17 @@ describe('préparation explicite de l’image qualité', () => {
     ])
     expect(results[1]!.stdout).toContain('make quality-prepare')
     expect(results[1]!.stdout).not.toContain(String.fromCharCode(27))
+  })
+  it('ignore les préparations répétées quand l’image existe', () => {
+    const { results, recorded } = scenario(['quality-prepare', 'quality-prepare'], 0, 1)
+    expect(results.map((result) => result.status)).toEqual([0, 0])
+    expect(recorded.filter((args) => args[0] === 'build')).toHaveLength(1)
+    expect(results[1]!.stdout).toContain('préparation ignorée')
+  })
+  it('reconstruit explicitement même si l’image existe déjà', () => {
+    const { results, recorded } = scenario(['quality-rebuild'])
+    expect(results[0]!.status).toBe(0)
+    expect(recorded).toEqual([['build', 'verify']])
   })
   it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
     const { results, recorded } = scenario(['quality-verify'], 42)
@@ -188,7 +205,7 @@ describe('préparation explicite de l’image qualité', () => {
     expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
   })
   it('ne prétend pas que l’image est prête si sa préparation échoue', () => {
-    const { results } = scenario(['quality-prepare'], 17)
+    const { results } = scenario(['quality-prepare'], 17, 1)
     expect(results[0]!.status).not.toBe(0)
     expect(results[0]!.stdout).not.toContain('Image prête')
   })
