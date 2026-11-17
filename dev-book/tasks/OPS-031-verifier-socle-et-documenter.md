@@ -60,3 +60,7 @@ Restent à vérifier humainement : interface à trois préfixes et séparation d
 ### Rejeu d’intégration du 2026-11-17
 
 Le diagnostic et les correctifs de l’image et de la concurrence sont portés par OPS-030. Le rapport de référence contient les versions, l’image exacte, le journal et son empreinte, ainsi que le résultat du rejeu complet Showcase. Ce résultat résout les échecs d’outillage observés dans cette suite ; il ne clôture ni les réserves sécurité/SOLID ni la vérification humaine de la demande.
+
+### Défauts ouverts après aide aux commandes — 2026-11-17
+
+Le rapport de référence consigne le défaut de préparation des composants Dashboard et le résultat réel des parcours Showcase sur le serveur de fixtures désormais disponible. Ces derniers échouent sur des erreurs IPX, malgré le prérequis d’URL résolu. Le serveur possédé est arrêté après l’essai. Aucun de ces défauts ne vaut validation ni clôture ; leur qualification reste distincte des correctifs de démarrage portés par OPS-030.

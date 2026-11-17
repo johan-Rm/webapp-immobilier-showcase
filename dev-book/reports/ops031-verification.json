@@ -398,5 +398,45 @@
       "CI distante non exécutée",
       "Sécurité et SOLID non modifiés ni réaudités"
     ]
+  },
+  "aide_browser_et_signalement_components_2026_11_17": {
+    "carte": "OPS-030",
+    "components": {
+      "etat": "défaut ouvert ; non corrigé à la demande humaine",
+      "cause_observee": "dashboard/.nuxt/tsconfig.site.json absent ; transformation interrompue avant les tests",
+      "journal": "webapp/.tmp/quality/console/third-party-tests-components-hatqjzlg/output.log"
+    },
+    "commandes": [
+      "checks-fixture-start",
+      "checks-fixture-stop"
+    ],
+    "environnement": {
+      "url": "http://127.0.0.1:19856",
+      "api": "fictive locale",
+      "medias": "simulés explicitement",
+      "sortie_nitro": "couche jetable du conteneur ; surcharge Compose dédiée",
+      "serveur_apres_verification": "arrêté ; conteneur absent"
+    },
+    "verifications": [
+      "53 tests Make réussis",
+      "Cible inconnue refusée",
+      "Port occupé refusé sans nouveau conteneur",
+      "SSR disponible puis arrêt ciblé réussi"
+    ],
+    "browser": {
+      "executes": 2,
+      "echoues": 2,
+      "cause": "erreurs console IPX ; aucune exemption",
+      "ordinateur": {
+        "IPX_INVALID_MODIFIER": 1,
+        "IPX_FILE_NOT_FOUND": 6
+      },
+      "mobile": {
+        "erreurs": 3
+      },
+      "journal": "webapp/.tmp/quality/console/third-party-tests-browser-zrh6krc0/output.log",
+      "rapport": "webapp/.tmp/playwright/report/index.html"
+    },
+    "verdict_humain": "aucun nouveau verdict"
   }
 }

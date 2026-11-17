@@ -52,6 +52,8 @@ help:
 	@printf "  %-32s %s\n" "verifiers-test" "Tests Python, Vitest et Bun des outils"
 	@printf "\nPréparation et autres opérations\n"
 	@printf "  %-32s %s\n" "checks-run" "Tous les contrôles, sans serveur démarré ; bilan final"
+	@printf "  %-32s %s\n" "checks-fixture-start" "Construire et servir le SSR de fixtures ; terminal dédié"
+	@printf "  %-32s %s\n" "checks-fixture-stop" "Arrêter le seul serveur de fixtures de cette cible"
 	@printf "  %-32s %s\n" "checks-prepare" "Préparer si nécessaire ; sinon réutiliser"
 	@printf "  %-32s %s\n" "checks-rebuild" "Reconstruire après modification des sources"
 	@printf "  %-32s %s\n" "quality-lint-fix" "Corriger le code avec ESLint"
