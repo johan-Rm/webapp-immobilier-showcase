@@ -36,7 +36,7 @@ def main():
     total = len(STEPS)
     print(f'Conventions documentaires et registre — {total} étapes\n', flush=True)
     print('Contexte : ' + str(ROOT) + '\n', flush=True)
-    print(style('INFO — Applique les conventions du registre, des demandes et des documents ; les tests des vérificateurs se lancent séparément avec make integrity-test.', 'blue') + '\n', flush=True)
+    print(style('INFO — Applique les conventions du registre, des demandes et des documents ; les tests des vérificateurs se lancent séparément avec make verifiers-test.', 'blue') + '\n', flush=True)
     for number, (title, explanation, script) in enumerate(STEPS, 1):
         print(style(f'[{number}/{total}] EN COURS — {title}', 'blue'), flush=True)
         print('  ' + style(explanation, 'gray'), flush=True)

@@ -80,7 +80,7 @@ sont préparés sans appel à l’API Symfony.
 ```bash
 cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
 
-make quality-check
+make third-party-tests-code
 make dev-playwright BUILD=1
 ```
 
@@ -146,7 +146,7 @@ créer un snapshot initial du contenu nettoyé plutôt que pousser les branches 
 ## Validation
 
 ```bash
-make quality-check
+make third-party-tests-code
 docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run test
 docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps webapp-localhost bun run build
 ```

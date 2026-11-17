@@ -77,3 +77,9 @@ Vérifications : 57 tests ciblés réussis, dont les seize routages sans paramè
 À la demande humaine, `conventions-docs-check` applique uniquement les trois contrôles de registre, demandes et documentation ; la suite Python des vérificateurs reste dans `integrity-test`, avec Vitest et Bun. La CI distingue les deux étapes pour ne perdre aucune suite. Les tests du lanceur vérifient les trois scripts réellement appelés, les rapports, la couleur et la conservation des échecs. Les fichiers non suivis préexistants de DevOps sont préservés.
 
 Vérifications : trois contrôles documentaires réussis ; 154 tests Python réussis. Exécution séparée de `integrity-test` réussie : 154 Python, 66 Vitest et 44 Bun. Traces des cartes conformes. Aucun verdict humain ajouté.
+
+### Trois préfixes anglais confirmés le 2026-11-17
+
+L’humain exige les préfixes `third-party-tests-`, `conventions-` et `verifiers-`. La règle durable est définie dans le README Codebase Integrity ; le catalogue des commandes reste dans la documentation d’exécution. Les commandes de préparation restent distinctes. Les noms directs, l’aide groupée, les références actives et la CI sont harmonisés ; les noms précédents restent des alias masqués pour compatibilité. Les preuves historiques restent inchangées.
+
+Vérifications : 74 tests ciblés réussis (routages, alias, appels multiples et échecs), lint ciblé conforme ; `verifiers-test` réussit avec 154 Python, 66 Vitest et 44 Bun. Les nouvelles commandes de lint, contrats et architecture réussissent réellement sans reconstruction : 28 contrats identiques, zéro violation d’architecture et deux imports virtuels signalés. Les trois contrôles documentaires et les 24 README sont conformes. Fichiers non suivis préexistants conservés. Aucun verdict humain ni contrôle CI distant ajouté.
