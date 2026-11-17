@@ -65,3 +65,9 @@ L’humain demande de pouvoir rejouer la recette entière en ignorant le build d
 ### Nommage confirmé le 2026-11-17
 
 L’humain demande d’appliquer immédiatement les noms discutés : `check FAMILY=…`, `checks-prepare`, `checks-rebuild`, `conventions-check`, `conventions-guards-check` et `conventions-services-check`. Les raccourcis de qualité du code restent distincts. L’aide, les références actives et les recettes utilisent ces noms. Les anciens noms délèguent aux mêmes contrôles pour préserver les recettes existantes ; aucune règle, sévérité ni famille n’est modifiée. Les traces historiques conservent les commandes réellement exécutées. 46 tests ciblés réussis ; compatibilité des six anciens noms vérifiée. Les nouveaux noms sont exécutés réellement : préparation répétée sans build, contrats réussis, gardes et services réussis ; `conventions-check` conserve les quatre écarts SOLID bloquants. L’architecture est vérifiée après son correctif isolé OPS-026. Lint ciblé, documentation, 24 README et traces conformes.
+
+### Commandes explicites demandées le 2026-11-17
+
+L’humain remplace le choix public par `FAMILY` par des commandes directes. Toutes les conventions automatisées portent désormais le préfixe `conventions-`, y compris frontend, documentation, traces, architecture et contrats. Le catalogue de référence reste `docs/executer-controles.md` ; les anciennes entrées délèguent uniquement pour compatibilité. Aucun changement de sélection, de sévérité ou de construction implicite.
+
+Vérifications : 57 tests ciblés réussis, dont les seize routages sans paramètre et plusieurs commandes dans un même appel Make ; lint ciblé, documentation et 24 README conformes. Les traces des cartes restent conformes. Exécution réelle des deux commandes explicites : 28 contrats identiques ; architecture sans violation, avec deux imports virtuels signalés. Image réutilisée sans build. Aucun nouveau verdict humain.

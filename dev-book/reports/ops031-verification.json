@@ -302,5 +302,17 @@
     "commande": "make check FAMILY=architecture GD_TARGET=showcase-immobilier",
     "resultat": "18 entrées, 67 modules, 126 dépendances ; zéro violation, deux imports virtuels non résolus",
     "limite": "Mêmes règles et limites de couverture ; inventaire Git lu depuis le dépôt monté, sources analysées dans l’image."
+  },
+  "correction_commandes_explicites_2026_11_17": {
+    "carte": "OPS-030",
+    "tests_cibles": 57,
+    "lint_cible": "conforme",
+    "documentation": "24 README conformes",
+    "execution_reelle": {
+      "preparation": "image réutilisée sans build",
+      "contrats": "28 artefacts identiques",
+      "architecture": "0 violations ; 2 imports non résolus signalés"
+    },
+    "verdict_humain": "non sollicité ; correctif technique"
   }
 }

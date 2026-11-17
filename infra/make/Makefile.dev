@@ -81,26 +81,18 @@ quality-check:
 	@$(MAKE) --no-print-directory quality-format-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 	@$(MAKE) --no-print-directory quality-type-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
-quality-lint-check:
-	@$(MAKE) --no-print-directory check FAMILY=lint GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-lint-fix:
 	$(DOCKER_RUN) bun run lint:fix
 
-quality-format-check:
-	@$(MAKE) --no-print-directory check FAMILY=format GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
-quality-type-check:
-	@$(MAKE) --no-print-directory check FAMILY=types GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
 
-frontend-conventions-check:
+conventions-frontend-check:
 	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
 
-conventions-check:
-	@$(MAKE) --no-print-directory check FAMILY=conventions GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 dev-content-sync:
 	$(DOCKER_RUN) bun scripts/content-sync.ts
@@ -200,26 +192,89 @@ checks-prepare:
 checks-rebuild:
 	@$(QUALITY_INFO) "INFO — Construit l’image des tests avec les sources et dépendances actuelles ; aucun serveur web démarré."
 	@$(QUALITY_COMPOSE) build verify
-	@$(QUALITY_INFO) "INFO — Image prête. Les commandes check peuvent maintenant la réutiliser sans reconstruction."
+	@$(QUALITY_INFO) "INFO — Image prête. Les commandes de contrôle peuvent maintenant la réutiliser sans reconstruction."
 
-check:
-	@test -n "$(FAMILY)" || { echo "FAMILY est requis"; exit 1; }
+# Chaque commande exécute sa propre recette, même lors d’un appel Make multiple.
+define run-control
 	@$(QUALITY_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque, lancer make checks-prepare ; après modification des sources, lancer make checks-rebuild."
 	@mkdir -p webapp/.tmp/quality
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
-	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm verify $(FAMILY) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
+	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm verify $(1) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
+
+endef
+
+.PHONY: test-unit
+test-unit:
+	$(call run-control,unit)
+
+.PHONY: test-integration
+test-integration:
+	$(call run-control,integration)
+
+.PHONY: test-components
+test-components:
+	$(call run-control,components)
+
+.PHONY: test-browser
+test-browser:
+	$(call run-control,browser)
+
+.PHONY: security-check
+security-check:
+	$(call run-control,security)
+
+.PHONY: test-mutation
+test-mutation:
+	$(call run-control,mutation)
+
+.PHONY: load-check
+load-check:
+	$(call run-control,load)
+
+.PHONY: lighthouse-check
+lighthouse-check:
+	$(call run-control,lighthouse)
+
+.PHONY: conventions-contracts-check
+conventions-contracts-check:
+	$(call run-control,contracts)
+
+.PHONY: conventions-architecture-check
+conventions-architecture-check:
+	$(call run-control,architecture)
+
+.PHONY: quality-lint-check
+quality-lint-check:
+	$(call run-control,lint)
+
+.PHONY: quality-format-check
+quality-format-check:
+	$(call run-control,format)
+
+.PHONY: quality-type-check
+quality-type-check:
+	$(call run-control,types)
+
+.PHONY: conventions-check
+conventions-check:
+	$(call run-control,conventions)
+
+.PHONY: conventions-guards-check
+conventions-guards-check:
+	$(call run-control,guards)
+
+.PHONY: conventions-services-check
+conventions-services-check:
+	$(call run-control,services)
+
 
 .PHONY: integrity-test conventions-guards-check conventions-services-check
 integrity-test:
 	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
 	@bun --no-env-file run --cwd codebase-integrity test
 
-conventions-guards-check:
-	@$(MAKE) --no-print-directory check FAMILY=guards GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
-conventions-services-check:
-	@$(MAKE) --no-print-directory check FAMILY=services GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 # Compatibilité des recettes existantes : toute exécution délègue au nom canonique.
 .PHONY: quality-verify quality-prepare quality-rebuild quality-conventions-check quality-guards-check quality-services-check
@@ -240,3 +295,12 @@ quality-guards-check:
 
 quality-services-check:
 	@$(MAKE) --no-print-directory conventions-services-check
+
+# Ancienne interface paramétrée, conservée uniquement pour compatibilité.
+.PHONY: check frontend-conventions-check
+check:
+	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make test-unit, par exemple."; exit 1; }
+	$(call run-control,$(FAMILY))
+
+frontend-conventions-check:
+	@$(MAKE) --no-print-directory conventions-frontend-check
