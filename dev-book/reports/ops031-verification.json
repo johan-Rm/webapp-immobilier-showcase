@@ -200,5 +200,49 @@
       "/tmp/dem011-prepare-split-run2.log": "460d43ec4b3be3e62794784cc84f1a2f7cb98232335928fa19218f8d0e599c3f",
       "/tmp/dem011-prepare-split-absent.log": "da16501bfc34cef3e3280221085e4b191febc64ad89ca2a674883391c06460e2"
     }
+  },
+  "correctif_interface_make": {
+    "date": "2026-11-17",
+    "carte": "OPS-030",
+    "tests_cibles_reussis": 38,
+    "integrity_test": {
+      "python": 154,
+      "vitest": 66,
+      "bun": 44
+    },
+    "commandes_showcase": [
+      {
+        "commande": "quality-lint-check",
+        "code": 0
+      },
+      {
+        "commande": "quality-format-check",
+        "code": 0
+      },
+      {
+        "commande": "quality-type-check",
+        "code": 0
+      },
+      {
+        "commande": "quality-guards-check",
+        "code": 0
+      },
+      {
+        "commande": "quality-services-check",
+        "code": 0
+      }
+    ],
+    "execution": "image existante, aucun build pendant les contrôles ; aucun serveur web démarré",
+    "documentation": "24 README, liens et traces conformes",
+    "limites": "Les réserves de sécurité, SOLID, budgets et références visuelles demeurent. Les autres suites globales ne sont pas relancées pour ce correctif.",
+    "journaux": {
+      "/tmp/dem011-make-interface-tests.log": "f5a4d1a7305a093f44691a54c8e73f2ddb7156b557d23aab43a19f1f6e84c1c0",
+      "/tmp/dem011-make-interface-integrity.log": "f7134b868d6eceea82f794ad9ac42e0a140d13ecd3dc592035480f72bc360fa2",
+      "/tmp/dem011-make-quality-lint-check.log": "712b1a785f09cc3a0686022db41bd01330ea839a34546c1cd707694070d338ca",
+      "/tmp/dem011-make-quality-format-check.log": "e789007d89bd66efe9180a9ad8b49f254c81f6973730d5e4a36718f26964abb0",
+      "/tmp/dem011-make-quality-type-check.log": "355bbde56592a1ba8c3d89a7cf5eb28e43b5b7f43a15c4626e2f83c8901c574c",
+      "/tmp/dem011-make-quality-guards-check.log": "188e685331af2fdfd3cb8510228b43b8444e60eeec4269dd9ccfaa4bbfb3b6bb",
+      "/tmp/dem011-make-quality-services-check.log": "9b38e975a95af73e3b86083820c485ccfb5003756bbb73c98fd69ce8c14b47f1"
+    }
   }
 }
