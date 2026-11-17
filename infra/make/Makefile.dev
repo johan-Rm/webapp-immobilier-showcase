@@ -76,7 +76,7 @@ dev-playwright: dev-env
 dev-playwright-report:
 	cd webapp && bun run test:e2e:report
 
-third-party-tests-code:
+_output-third-party-tests-code:
 	@$(MAKE) --no-print-directory third-party-tests-lint GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 	@$(MAKE) --no-print-directory third-party-tests-format GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 	@$(MAKE) --no-print-directory third-party-tests-types GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
@@ -90,7 +90,7 @@ quality-lint-fix:
 quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
 
-conventions-frontend:
+_output-conventions-frontend:
 	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
 
 
@@ -181,7 +181,7 @@ QUALITY_COMPOSE = QUALITY_BASE_URL="$(QUALITY_BASE_URL)" PLAYWRIGHT_BASE_URL="$(
 QUALITY_INFO = python3 -c 'import os,sys; sys.path.insert(0,"codebase-integrity/commun"); from run_aide_checks import paint,supports_color; print(paint(sys.argv[1],"blue",supports_color(sys.stdout,os.environ)))'
 
 .PHONY: checks-prepare checks-rebuild check
-checks-prepare:
+_output-checks-prepare:
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  if $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1; then \
 	    $(QUALITY_INFO) "INFO — Image déjà prête : préparation ignorée, aucun build. Après modification des sources ou dépendances, lancer make checks-rebuild."; \
@@ -189,7 +189,7 @@ checks-prepare:
 	    $(MAKE) --no-print-directory checks-rebuild; \
 	  fi
 
-checks-rebuild:
+_output-checks-rebuild:
 	@$(QUALITY_INFO) "INFO — Construit l’image des tests avec les sources et dépendances actuelles ; aucun serveur web démarré."
 	@$(QUALITY_COMPOSE) build verify
 	@$(QUALITY_INFO) "INFO — Image prête. Les commandes de contrôle peuvent maintenant la réutiliser sans reconstruction."
@@ -197,7 +197,7 @@ checks-rebuild:
 # Chaque commande exécute sa propre recette, même lors d’un appel Make multiple.
 define run-control
 	@$(QUALITY_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque, lancer make checks-prepare ; après modification des sources, lancer make checks-rebuild."
-	@mkdir -p webapp/.tmp/quality
+	@mkdir -p webapp/.tmp/quality/console-tmp
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
 	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm verify $(1) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
@@ -205,72 +205,72 @@ define run-control
 endef
 
 .PHONY: third-party-tests-unit
-third-party-tests-unit:
+_output-third-party-tests-unit:
 	$(call run-control,unit)
 
 .PHONY: third-party-tests-integration
-third-party-tests-integration:
+_output-third-party-tests-integration:
 	$(call run-control,integration)
 
 .PHONY: third-party-tests-components
-third-party-tests-components:
+_output-third-party-tests-components:
 	$(call run-control,components)
 
 .PHONY: third-party-tests-browser
-third-party-tests-browser:
+_output-third-party-tests-browser:
 	$(call run-control,browser)
 
 .PHONY: third-party-tests-security
-third-party-tests-security:
+_output-third-party-tests-security:
 	$(call run-control,security)
 
 .PHONY: third-party-tests-mutation
-third-party-tests-mutation:
+_output-third-party-tests-mutation:
 	$(call run-control,mutation)
 
 .PHONY: third-party-tests-load
-third-party-tests-load:
+_output-third-party-tests-load:
 	$(call run-control,load)
 
 .PHONY: third-party-tests-lighthouse
-third-party-tests-lighthouse:
+_output-third-party-tests-lighthouse:
 	$(call run-control,lighthouse)
 
 .PHONY: conventions-contracts
-conventions-contracts:
+_output-conventions-contracts:
 	$(call run-control,contracts)
 
 .PHONY: conventions-architecture
-conventions-architecture:
+_output-conventions-architecture:
 	$(call run-control,architecture)
 
 .PHONY: third-party-tests-lint
-third-party-tests-lint:
+_output-third-party-tests-lint:
 	$(call run-control,lint)
 
 .PHONY: third-party-tests-format
-third-party-tests-format:
+_output-third-party-tests-format:
 	$(call run-control,format)
 
 .PHONY: third-party-tests-types
-third-party-tests-types:
+_output-third-party-tests-types:
 	$(call run-control,types)
 
 .PHONY: conventions-all
-conventions-all:
+_output-conventions-all:
 	$(call run-control,conventions)
 
 .PHONY: conventions-guards
-conventions-guards:
+_output-conventions-guards:
 	$(call run-control,guards)
 
 .PHONY: conventions-services
-conventions-services:
+_output-conventions-services:
 	$(call run-control,services)
 
 
 .PHONY: verifiers-test conventions-guards conventions-services
-verifiers-test:
+_output-verifiers-test:
 	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
 	@bun --no-env-file run --cwd codebase-integrity test
 
@@ -381,3 +381,93 @@ conventions-architecture-check:
 .PHONY: conventions-contracts-check
 conventions-contracts-check:
 	@$(MAKE) --no-print-directory conventions-contracts
+
+# Présentation publique commune ; les alias délèguent aux noms canoniques.
+.PHONY: third-party-tests-unit _output-third-party-tests-unit
+third-party-tests-unit:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-unit -- $(MAKE) --no-print-directory _output-third-party-tests-unit
+
+.PHONY: third-party-tests-integration _output-third-party-tests-integration
+third-party-tests-integration:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-integration -- $(MAKE) --no-print-directory _output-third-party-tests-integration
+
+.PHONY: third-party-tests-components _output-third-party-tests-components
+third-party-tests-components:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-components -- $(MAKE) --no-print-directory _output-third-party-tests-components
+
+.PHONY: third-party-tests-browser _output-third-party-tests-browser
+third-party-tests-browser:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-browser -- $(MAKE) --no-print-directory _output-third-party-tests-browser
+
+.PHONY: third-party-tests-mutation _output-third-party-tests-mutation
+third-party-tests-mutation:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-mutation -- $(MAKE) --no-print-directory _output-third-party-tests-mutation
+
+.PHONY: third-party-tests-lint _output-third-party-tests-lint
+third-party-tests-lint:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-lint -- $(MAKE) --no-print-directory _output-third-party-tests-lint
+
+.PHONY: third-party-tests-format _output-third-party-tests-format
+third-party-tests-format:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-format -- $(MAKE) --no-print-directory _output-third-party-tests-format
+
+.PHONY: third-party-tests-types _output-third-party-tests-types
+third-party-tests-types:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-types -- $(MAKE) --no-print-directory _output-third-party-tests-types
+
+.PHONY: third-party-tests-code _output-third-party-tests-code
+third-party-tests-code:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-code -- $(MAKE) --no-print-directory _output-third-party-tests-code
+
+.PHONY: third-party-tests-security _output-third-party-tests-security
+third-party-tests-security:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-security -- $(MAKE) --no-print-directory _output-third-party-tests-security
+
+.PHONY: third-party-tests-load _output-third-party-tests-load
+third-party-tests-load:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-load -- $(MAKE) --no-print-directory _output-third-party-tests-load
+
+.PHONY: third-party-tests-lighthouse _output-third-party-tests-lighthouse
+third-party-tests-lighthouse:
+	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-lighthouse -- $(MAKE) --no-print-directory _output-third-party-tests-lighthouse
+
+.PHONY: conventions-all _output-conventions-all
+conventions-all:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-all -- $(MAKE) --no-print-directory _output-conventions-all
+
+.PHONY: conventions-frontend _output-conventions-frontend
+conventions-frontend:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-frontend -- $(MAKE) --no-print-directory _output-conventions-frontend
+
+.PHONY: conventions-guards _output-conventions-guards
+conventions-guards:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-guards -- $(MAKE) --no-print-directory _output-conventions-guards
+
+.PHONY: conventions-services _output-conventions-services
+conventions-services:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-services -- $(MAKE) --no-print-directory _output-conventions-services
+
+.PHONY: conventions-architecture _output-conventions-architecture
+conventions-architecture:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-architecture -- $(MAKE) --no-print-directory _output-conventions-architecture
+
+.PHONY: conventions-contracts _output-conventions-contracts
+conventions-contracts:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-contracts -- $(MAKE) --no-print-directory _output-conventions-contracts
+
+.PHONY: verifiers-test _output-verifiers-test
+verifiers-test:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-test -- $(MAKE) --no-print-directory _output-verifiers-test
+
+.PHONY: checks-prepare _output-checks-prepare
+checks-prepare:
+	@python3 -B codebase-integrity/commun/check_presentation.py checks-prepare -- $(MAKE) --no-print-directory _output-checks-prepare
+
+.PHONY: checks-rebuild _output-checks-rebuild
+checks-rebuild:
+	@python3 -B codebase-integrity/commun/check_presentation.py checks-rebuild -- $(MAKE) --no-print-directory _output-checks-rebuild
+
+
+.PHONY: checks-run
+checks-run:
+	@python3 -B codebase-integrity/commun/check_presentation.py checks-run

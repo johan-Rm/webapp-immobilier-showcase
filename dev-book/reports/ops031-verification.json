@@ -337,5 +337,26 @@
     "construction": "image existante réutilisée ; aucun build implicite",
     "ci_distante": "non exécutée",
     "verdict_humain": "en attente"
+  },
+  "presentation_2026_11_17": {
+    "carte": "OPS-030",
+    "perimetre": "présentation seulement ; tests échoués réservés à la suite",
+    "tests": {
+      "python": 162,
+      "vitest_cibles": 74,
+      "vitest_verifiers": 66,
+      "bun_verifiers": 44
+    },
+    "execution_reelle": [
+      "conventions-docs",
+      "conventions-devbook",
+      "conventions-contracts",
+      "checks-prepare : image réutilisée sans build",
+      "verifiers-test"
+    ],
+    "bilan_groupe": "testé avec outils simulés ; recette complète non rejouée",
+    "journaux": "webapp/.tmp/quality/console ; journaux conteneur persistants sous console-tmp",
+    "avertissements": "décompte non consolidé, aucune somme inventée",
+    "verdict_humain": "en attente"
   }
 }
