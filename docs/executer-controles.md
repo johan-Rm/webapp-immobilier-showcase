@@ -44,7 +44,8 @@ Le fichier `infra/docker/docker-compose.quality.yml` fournit le service `verify`
 Lancer ensuite :
 
 ```sh
-docker compose --project-directory . -f infra/docker/docker-compose.quality.yml --profile quality run --build --rm verify <famille> --target <cible>
+docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality build verify
+docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality run --pull never --no-deps --rm verify <famille> --target <cible>
 ```
 
 Reconstruire les images après modification des sources. L’image contient les deux paquets et leurs dépendances verrouillées. Seuls les rapports `.tmp` sont montés en écriture ; les sources hôtes restent en lecture seule. Le socket Docker n’est pas monté. Les outils de charge et Lighthouse sont aussi installés dans l’image.
@@ -57,7 +58,7 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Catalogue complémentaire et recette manuelle
 
-Depuis la racine du worktree, `make quality-verify FAMILY=contracts` reconstruit l’image et exécute la famille choisie. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
+Depuis la racine du worktree, lancer **`make quality-prepare` une fois**, puis `make quality-verify FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Relancer `make quality-prepare` après modification des sources, dépendances ou outils. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
 
 Depuis `webapp/`, utiliser le même lanceur :
 

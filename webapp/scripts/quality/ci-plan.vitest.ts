@@ -1,4 +1,6 @@
-import { readFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { resolve } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
@@ -74,5 +76,100 @@ describe('contrat des workflows qualité', () => {
       'lighthouse',
     ])
     expect(file.jobs.measure['timeout-minutes']).toBe(20)
+  })
+})
+
+describe('préparation explicite de l’image qualité', () => {
+  function scenario(actions: string[], exitCode = 0, imageExit = 0) {
+    const directory = mkdtempSync(resolve(tmpdir(), 'quality-make-'))
+    try {
+      const calls = resolve(directory, 'calls.jsonl')
+      const docker = resolve(directory, 'compose.cjs')
+      writeFileSync(
+        docker,
+        [
+          `const args = process.argv.slice(2);`,
+          `require('node:fs').appendFileSync(${JSON.stringify(calls)}, JSON.stringify(args) + String.fromCharCode(10));`,
+          `if (args[0] === 'config') { console.log(JSON.stringify({name: 'fixture', services: {verify: {}}})); process.exit(0); }`,
+          `process.exit(args[0] === 'image' ? ${imageExit} : ${exitCode});`,
+        ].join('\n'),
+      )
+      const results = actions.map((action) =>
+        spawnSync(
+          'make',
+          [
+            '-f',
+            'infra/make/Makefile.dev',
+            action,
+            'FAMILY=contracts',
+            'GD_TARGET=showcase-immobilier',
+            `QUALITY_COMPOSE=node ${docker}`,
+            `QUALITY_DOCKER=node ${docker}`,
+          ],
+          { cwd: resolve(webappRoot, '..'), encoding: 'utf8' },
+        ),
+      )
+      let recorded: string[][]
+      try {
+        recorded = readFileSync(calls, 'utf8')
+          .trim()
+          .split('\n')
+          .map((line) => JSON.parse(line))
+      } catch (error) {
+        throw new Error(results.map((result) => result.stdout + result.stderr).join('\n'), {
+          cause: error,
+        })
+      }
+      return { results, recorded }
+    } finally {
+      rmSync(directory, { recursive: true, force: true })
+    }
+  }
+  it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
+    const { results, recorded } = scenario(['quality-prepare', 'quality-verify', 'quality-verify'])
+    expect(results.map((result) => result.status)).toEqual([0, 0, 0])
+    expect(recorded.filter((args) => args[0] === 'build')).toEqual([['build', 'verify']])
+    expect(recorded.filter((args) => args[0] === 'run')).toEqual([
+      [
+        'run',
+        '--pull',
+        'never',
+        '--no-deps',
+        '--rm',
+        'verify',
+        'contracts',
+        '--target',
+        'showcase-immobilier',
+      ],
+      [
+        'run',
+        '--pull',
+        'never',
+        '--no-deps',
+        '--rm',
+        'verify',
+        'contracts',
+        '--target',
+        'showcase-immobilier',
+      ],
+    ])
+    expect(results[1]!.stdout).toContain('make quality-prepare')
+    expect(results[1]!.stdout).not.toContain(String.fromCharCode(27))
+  })
+  it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
+    const { results, recorded } = scenario(['quality-verify'], 42)
+    expect(results[0]!.status).not.toBe(0)
+    expect(recorded.map((args) => args[0])).toEqual(['config', 'image', 'run'])
+  })
+  it('refuse une image absente sans lancer ni construire un conteneur', () => {
+    const { results, recorded } = scenario(['quality-verify'], 0, 1)
+    expect(results[0]!.status).not.toBe(0)
+    expect(results[0]!.stdout).toContain('Image qualité absente')
+    expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
+  })
+  it('ne prétend pas que l’image est prête si sa préparation échoue', () => {
+    const { results } = scenario(['quality-prepare'], 17)
+    expect(results[0]!.status).not.toBe(0)
+    expect(results[0]!.stdout).not.toContain('Image prête')
   })
 })
