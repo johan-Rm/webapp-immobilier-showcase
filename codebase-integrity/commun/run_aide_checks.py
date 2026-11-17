@@ -12,7 +12,6 @@ STEPS = (
     ('Registre des conventions', 'Vérifie les références et la déclaration des contrôles, pas leur application.', 'codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py'),
     ('Demandes et cartes', 'Vérifie la déclaration du type des demandes.', 'codebase-integrity/domaines/construction-livraison/scripts/check_demands.py'),
     ('Documentation et README', 'Vérifie les règles documentaires ; les écarts existants font échouer cette étape.', 'codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py'),
-    ('Tests des vérificateurs', 'Teste les garde-fous sur des cas conformes et volontairement incorrects, dans des dépôts temporaires.', 'codebase-integrity/commun/test_domains.py'),
 )
 
 
@@ -34,11 +33,12 @@ def main():
 
     report = Path(tempfile.mkdtemp(prefix='aide-check-'))
     failed = []
-    print('Contrôle du cadre AIDE — 4 étapes\n', flush=True)
+    total = len(STEPS)
+    print(f'Conventions documentaires et registre — {total} étapes\n', flush=True)
     print('Contexte : ' + str(ROOT) + '\n', flush=True)
-    print(style('INFO — Vérifie le cadre AIDE, les documents et les tests des vérificateurs ; ne lance pas les tests fonctionnels de l’application.', 'blue') + '\n', flush=True)
+    print(style('INFO — Applique les conventions du registre, des demandes et des documents ; les tests des vérificateurs se lancent séparément avec make integrity-test.', 'blue') + '\n', flush=True)
     for number, (title, explanation, script) in enumerate(STEPS, 1):
-        print(style(f'[{number}/4] EN COURS — {title}', 'blue'), flush=True)
+        print(style(f'[{number}/{total}] EN COURS — {title}', 'blue'), flush=True)
         print('  ' + style(explanation, 'gray'), flush=True)
         start = time.monotonic()
         log = report / f'{number}.log'
@@ -56,13 +56,8 @@ def main():
             failed.append(title)
             print('  Détails : ' + str(log), flush=True)
             print('  ' + '\n  '.join(detail.splitlines() if len(detail.splitlines()) <= 8 else detail.splitlines()[:3]), flush=True)
-        elif number == 4:
-            import re
-            count = re.search(r'Ran (\d+) tests?', detail)
-            if count:
-                print(f'  {count[1]} tests réussis ; les refus simulés attendus sont masqués.', flush=True)
         print(flush=True)
-    print(style(f'Résultat : {4 - len(failed)}/4 étapes réussies.', 'red' if failed else 'green'), flush=True)
+    print(style(f'Résultat : {total - len(failed)}/{total} étapes réussies.', 'red' if failed else 'green'), flush=True)
     if failed:
         print(style('À corriger : ', 'red') + ', '.join(failed), flush=True)
     print('Rapport complet : ' + str(report), flush=True)

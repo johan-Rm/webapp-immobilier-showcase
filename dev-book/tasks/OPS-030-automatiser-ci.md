@@ -71,3 +71,9 @@ L’humain demande d’appliquer immédiatement les noms discutés : `check FAMI
 L’humain remplace le choix public par `FAMILY` par des commandes directes. Toutes les conventions automatisées portent désormais le préfixe `conventions-`, y compris frontend, documentation, traces, architecture et contrats. Le catalogue de référence reste `docs/executer-controles.md` ; les anciennes entrées délèguent uniquement pour compatibilité. Aucun changement de sélection, de sévérité ou de construction implicite.
 
 Vérifications : 57 tests ciblés réussis, dont les seize routages sans paramètre et plusieurs commandes dans un même appel Make ; lint ciblé, documentation et 24 README conformes. Les traces des cartes restent conformes. Exécution réelle des deux commandes explicites : 28 contrats identiques ; architecture sans violation, avec deux imports virtuels signalés. Image réutilisée sans build. Aucun nouveau verdict humain.
+
+### Séparation des conventions et des tests de fiabilité — 2026-11-17
+
+À la demande humaine, `conventions-docs-check` applique uniquement les trois contrôles de registre, demandes et documentation ; la suite Python des vérificateurs reste dans `integrity-test`, avec Vitest et Bun. La CI distingue les deux étapes pour ne perdre aucune suite. Les tests du lanceur vérifient les trois scripts réellement appelés, les rapports, la couleur et la conservation des échecs. Les fichiers non suivis préexistants de DevOps sont préservés.
+
+Vérifications : trois contrôles documentaires réussis ; 154 tests Python réussis. Exécution séparée de `integrity-test` réussie : 154 Python, 66 Vitest et 44 Bun. Traces des cartes conformes. Aucun verdict humain ajouté.

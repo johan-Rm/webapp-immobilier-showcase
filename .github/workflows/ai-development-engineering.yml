@@ -14,9 +14,9 @@ jobs:
         with:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile --cwd codebase-integrity
-      - run: bun run --cwd codebase-integrity test:typescript
-      - run: bun run --cwd codebase-integrity test:bun
-      - name: Vérifier les outils du cadre
+      - name: Tester la fiabilité des vérificateurs
+        run: make integrity-test
+      - name: Appliquer les conventions documentaires
         run: make conventions-docs-check
   commits:
     if: github.event_name == 'pull_request'

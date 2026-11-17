@@ -19,12 +19,13 @@ class AideRunnerTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             output = io.StringIO()
             def run(*args, **kwargs):
-                kwargs['stdout'].write('Ran 132 tests in 1.0s\nOK\n')
+                kwargs['stdout'].write('Contrôle effectué\n')
                 return SimpleNamespace(returncode=next(codes))
             with patch.object(runner.tempfile, 'mkdtemp', return_value=directory), patch.object(runner.subprocess, 'run', side_effect=run) as mock, patch.object(runner, 'supports_color', return_value=colored), redirect_stdout(output):
                 code = runner.main()
-            self.assertEqual(mock.call_count, 4)
-            self.assertEqual(len(list(Path(directory).glob('*.log'))), 4)
+            self.assertEqual(mock.call_count, 3)
+            self.assertEqual([Path(call.args[0][-1]).name for call in mock.call_args_list], ['check_registry.py', 'check_demands.py', 'check_docs.py'])
+            self.assertEqual(len(list(Path(directory).glob('*.log'))), 3)
             if not colored:
                 self.assertNotIn('\033[', output.getvalue())
             for log in Path(directory).glob('*.log'):
@@ -44,9 +45,9 @@ class AideRunnerTest(unittest.TestCase):
         self.assertEqual(runner.paint('ÉCHEC', 'red', False), 'ÉCHEC')
 
     def test_colored_run_keeps_diagnostics_and_reports_plain(self):
-        code, output = self.execute(iter([0, 0, 1, 0]), colored=True)
+        code, output = self.execute(iter([0, 0, 1]), colored=True)
         self.assertEqual(code, 1)
-        self.assertIn('\033[34m[1/4] EN COURS', output)
+        self.assertIn('\033[34m[1/3] EN COURS', output)
         self.assertIn('\033[32mRÉUSSI', output)
         self.assertIn('\033[31mÉCHEC', output)
         self.assertIn('\033[90m', output)
@@ -55,15 +56,16 @@ class AideRunnerTest(unittest.TestCase):
                 self.assertNotIn('\033[', line)
 
     def test_success_is_explained(self):
-        code, output = self.execute(iter([0, 0, 0, 0]))
+        code, output = self.execute(iter([0, 0, 0]))
         self.assertEqual(code, 0)
-        self.assertIn('4/4 étapes réussies', output)
-        self.assertIn('132 tests réussis', output)
+        self.assertIn('3/3 étapes réussies', output)
+        self.assertIn('make integrity-test', output)
+        self.assertNotIn('tests réussis', output)
 
     def test_failure_is_not_hidden_and_all_steps_run(self):
-        code, output = self.execute(iter([1, 0, 1, 0]))
+        code, output = self.execute(iter([1, 0, 1]))
         self.assertEqual(code, 1)
-        self.assertIn('2/4 étapes réussies', output)
+        self.assertIn('1/3 étapes réussies', output)
         self.assertIn('À corriger', output)
 
 
