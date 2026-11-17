@@ -80,7 +80,7 @@ describe('contrat des workflows qualité', () => {
 })
 
 describe('préparation explicite de l’image qualité', () => {
-  function scenario(actions: string[], exitCode = 0, imageExit = 0) {
+  function scenario(actions: string[], exitCode = 0, imageExit = 0, makeExecutable = 'make') {
     const directory = mkdtempSync(resolve(tmpdir(), 'quality-make-'))
     try {
       const calls = resolve(directory, 'calls.jsonl')
@@ -96,9 +96,9 @@ describe('préparation explicite de l’image qualité', () => {
           `process.exit(args[0] === 'image' ? (require('node:fs').existsSync(${JSON.stringify(image)}) ? 0 : ${imageExit}) : ${exitCode});`,
         ].join('\n'),
       )
-      const results = actions.map((action) =>
-        spawnSync(
-          'make',
+      const results = actions.map((action) => {
+        const result = spawnSync(
+          makeExecutable,
           [
             '-f',
             'infra/make/Makefile.dev',
@@ -111,8 +111,14 @@ describe('préparation explicite de l’image qualité', () => {
             `QUALITY_DOCKER=node ${docker}`,
           ],
           { cwd: resolve(webappRoot, '..'), encoding: 'utf8' },
-        ),
-      )
+        )
+        if (result.error)
+          throw new Error(`Impossible de lancer Make : ${result.error.message}`, {
+            cause: result.error,
+          })
+        if (result.signal) throw new Error(`Make interrompu par le signal ${result.signal}`)
+        return result
+      })
       let recorded: string[][]
       try {
         recorded = readFileSync(calls, 'utf8')
@@ -120,15 +126,23 @@ describe('préparation explicite de l’image qualité', () => {
           .split('\n')
           .map((line) => JSON.parse(line))
       } catch (error) {
-        throw new Error(results.map((result) => result.stdout + result.stderr).join('\n'), {
-          cause: error,
-        })
+        throw new Error(
+          results.map((result) => `${result.stdout ?? ''}${result.stderr ?? ''}`).join('\n'),
+          {
+            cause: error,
+          },
+        )
       }
       return { results, recorded }
     } finally {
       rmSync(directory, { recursive: true, force: true })
     }
   }
+  it('signale Make absent sans masquer la cause par un journal manquant ou NaN', () => {
+    expect(() => scenario(['checks-prepare'], 0, 0, '/absent-make-dem011')).toThrow(
+      /Impossible de lancer Make.*ENOENT/,
+    )
+  })
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
     const { results, recorded } = scenario(
       ['checks-prepare', 'conventions-contracts', 'conventions-contracts'],
