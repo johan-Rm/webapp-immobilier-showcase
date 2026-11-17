@@ -69,6 +69,9 @@ Les **vérificateurs**, leurs **tests** et leurs **paramètres** sont regroupés
 
 Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limites**, et produit un résultat fidèle à son exécution.
 
+- **Commandes publiques** : employer des noms anglais avec les préfixes `third-party-tests-` pour les tests et analyses des outils tiers, `conventions-` pour appliquer les règles des README et `verifiers-` pour tester les vérificateurs eux-mêmes.
+- **Séparation** : chaque contrôle préfixé `conventions-` correspond à une convention écrite dans un README ; il ne lance pas les tests de fonctionnement des vérificateurs. Les commandes de préparation restent distinctes.
+
 - Sélectionner explicitement la **famille de contrôle** et la **cible applicative** lorsque le contrôle les distingue.
 - Séparer les tests selon leur **moteur** et leur **environnement**, notamment les tests Bun, Vitest Node et Nuxt.
 - Ne jamais annoncer une réussite pour une suite **absente, vide, interrompue ou échouée**.

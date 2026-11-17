@@ -129,7 +129,7 @@ describe('préparation explicite de l’image qualité', () => {
   }
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
     const { results, recorded } = scenario(
-      ['checks-prepare', 'conventions-contracts-check', 'conventions-contracts-check'],
+      ['checks-prepare', 'conventions-contracts', 'conventions-contracts'],
       0,
       1,
     )
@@ -174,33 +174,33 @@ describe('préparation explicite de l’image qualité', () => {
     expect(recorded).toEqual([['build', 'verify']])
   })
   it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
-    const { results, recorded } = scenario(['conventions-contracts-check'], 42)
+    const { results, recorded } = scenario(['conventions-contracts'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image', 'run'])
   })
   it('refuse une image absente sans lancer ni construire un conteneur', () => {
-    const { results, recorded } = scenario(['conventions-contracts-check'], 0, 1)
+    const { results, recorded } = scenario(['conventions-contracts'], 0, 1)
     expect(results[0]!.status).not.toBe(0)
     expect(results[0]!.stdout).toContain('Image des contrôles absente')
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
   it.each([
-    ['test-unit', 'unit'],
-    ['test-integration', 'integration'],
-    ['test-components', 'components'],
-    ['test-browser', 'browser'],
-    ['security-check', 'security'],
-    ['test-mutation', 'mutation'],
-    ['load-check', 'load'],
-    ['lighthouse-check', 'lighthouse'],
-    ['conventions-contracts-check', 'contracts'],
-    ['conventions-architecture-check', 'architecture'],
-    ['quality-lint-check', 'lint'],
-    ['quality-format-check', 'format'],
-    ['quality-type-check', 'types'],
-    ['conventions-guards-check', 'guards'],
-    ['conventions-services-check', 'services'],
-    ['conventions-check', 'conventions'],
+    ['third-party-tests-unit', 'unit'],
+    ['third-party-tests-integration', 'integration'],
+    ['third-party-tests-components', 'components'],
+    ['third-party-tests-browser', 'browser'],
+    ['third-party-tests-security', 'security'],
+    ['third-party-tests-mutation', 'mutation'],
+    ['third-party-tests-load', 'load'],
+    ['third-party-tests-lighthouse', 'lighthouse'],
+    ['conventions-contracts', 'contracts'],
+    ['conventions-architecture', 'architecture'],
+    ['third-party-tests-lint', 'lint'],
+    ['third-party-tests-format', 'format'],
+    ['third-party-tests-types', 'types'],
+    ['conventions-guards', 'guards'],
+    ['conventions-services', 'services'],
+    ['conventions-all', 'conventions'],
   ])('route %s vers le lanceur commun sans build', (target, family) => {
     const { results, recorded } = scenario([target])
     expect(results[0]!.status).toBe(0)
@@ -211,7 +211,7 @@ describe('préparation explicite de l’image qualité', () => {
   })
   it('exécute chaque commande lors d’un appel Make multiple sans FAMILY', () => {
     const { results, recorded } = scenario([
-      'test-unit test-integration conventions-contracts-check',
+      'third-party-tests-unit third-party-tests-integration conventions-contracts',
     ])
     expect(results[0]!.status).toBe(0)
     expect(recorded.filter((args) => args[0] === 'run').map((args) => args[6])).toEqual([
@@ -220,23 +220,44 @@ describe('préparation explicite de l’image qualité', () => {
       'contracts',
     ])
   })
-  it('arrête quality-check au premier échec sans lancer les autres contrôles', () => {
-    const { results, recorded } = scenario(['quality-check'], 42)
+  it('arrête third-party-tests-code au premier échec sans lancer les autres contrôles', () => {
+    const { results, recorded } = scenario(['third-party-tests-code'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
   })
   it.each([
-    ['quality-verify', 'conventions-contracts-check'],
+    ['quality-verify', 'conventions-contracts'],
     ['quality-prepare', 'checks-prepare'],
     ['quality-rebuild', 'checks-rebuild'],
-    ['quality-conventions-check', 'conventions-check'],
-    ['quality-guards-check', 'conventions-guards-check'],
-    ['quality-services-check', 'conventions-services-check'],
+    ['quality-conventions-check', 'conventions-all'],
+    ['quality-guards-check', 'conventions-guards'],
+    ['quality-services-check', 'conventions-services'],
   ])('conserve %s comme délégation de compatibilité vers %s', (legacy, canonical) => {
     const before = scenario([legacy])
     const after = scenario([canonical])
     expect(before.results[0]!.status).toBe(0)
     expect(before.recorded).toEqual(after.recorded)
+  })
+  it.each([
+    ['test-unit', 'third-party-tests-unit'],
+    ['test-integration', 'third-party-tests-integration'],
+    ['test-components', 'third-party-tests-components'],
+    ['test-browser', 'third-party-tests-browser'],
+    ['test-mutation', 'third-party-tests-mutation'],
+    ['security-check', 'third-party-tests-security'],
+    ['load-check', 'third-party-tests-load'],
+    ['lighthouse-check', 'third-party-tests-lighthouse'],
+    ['quality-lint-check', 'third-party-tests-lint'],
+    ['quality-format-check', 'third-party-tests-format'],
+    ['quality-type-check', 'third-party-tests-types'],
+    ['quality-check', 'third-party-tests-code'],
+    ['conventions-check', 'conventions-all'],
+    ['conventions-guards-check', 'conventions-guards'],
+    ['conventions-services-check', 'conventions-services'],
+    ['conventions-architecture-check', 'conventions-architecture'],
+    ['conventions-contracts-check', 'conventions-contracts'],
+  ])('préserve l’alias %s vers %s', (legacy, canonical) => {
+    expect(scenario([legacy]).recorded).toEqual(scenario([canonical]).recorded)
   })
   it('ne prétend pas que l’image est prête si sa préparation échoue', () => {
     const { results } = scenario(['checks-prepare'], 17, 1)

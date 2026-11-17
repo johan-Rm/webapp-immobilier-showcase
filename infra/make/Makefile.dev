@@ -15,8 +15,8 @@ export DOCKER_GID := $(shell id -g)
 .PHONY: dev-shell-webapp-localhost dev-shell-webapp-ssr dev-shell-nginx
 .PHONY: dev-analyze dev-analyse
 .PHONY: dev-playwright dev-playwright-report
-.PHONY: quality-check quality-lint-check quality-lint-fix quality-format-check quality-type-check
-.PHONY: conventions-check frontend-conventions-check quality-generate-schemas
+.PHONY: third-party-tests-code third-party-tests-lint quality-lint-fix third-party-tests-format third-party-tests-types
+.PHONY: conventions-all frontend-conventions-check quality-generate-schemas
 .PHONY: dev-content-sync dev-content-sync-dry
 
 dev-env:
@@ -76,10 +76,10 @@ dev-playwright: dev-env
 dev-playwright-report:
 	cd webapp && bun run test:e2e:report
 
-quality-check:
-	@$(MAKE) --no-print-directory quality-lint-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
-	@$(MAKE) --no-print-directory quality-format-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
-	@$(MAKE) --no-print-directory quality-type-check GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+third-party-tests-code:
+	@$(MAKE) --no-print-directory third-party-tests-lint GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+	@$(MAKE) --no-print-directory third-party-tests-format GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
+	@$(MAKE) --no-print-directory third-party-tests-types GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 
 
 quality-lint-fix:
@@ -90,7 +90,7 @@ quality-lint-fix:
 quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
 
-conventions-frontend-check:
+conventions-frontend:
 	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
 
 
@@ -204,73 +204,73 @@ define run-control
 
 endef
 
-.PHONY: test-unit
-test-unit:
+.PHONY: third-party-tests-unit
+third-party-tests-unit:
 	$(call run-control,unit)
 
-.PHONY: test-integration
-test-integration:
+.PHONY: third-party-tests-integration
+third-party-tests-integration:
 	$(call run-control,integration)
 
-.PHONY: test-components
-test-components:
+.PHONY: third-party-tests-components
+third-party-tests-components:
 	$(call run-control,components)
 
-.PHONY: test-browser
-test-browser:
+.PHONY: third-party-tests-browser
+third-party-tests-browser:
 	$(call run-control,browser)
 
-.PHONY: security-check
-security-check:
+.PHONY: third-party-tests-security
+third-party-tests-security:
 	$(call run-control,security)
 
-.PHONY: test-mutation
-test-mutation:
+.PHONY: third-party-tests-mutation
+third-party-tests-mutation:
 	$(call run-control,mutation)
 
-.PHONY: load-check
-load-check:
+.PHONY: third-party-tests-load
+third-party-tests-load:
 	$(call run-control,load)
 
-.PHONY: lighthouse-check
-lighthouse-check:
+.PHONY: third-party-tests-lighthouse
+third-party-tests-lighthouse:
 	$(call run-control,lighthouse)
 
-.PHONY: conventions-contracts-check
-conventions-contracts-check:
+.PHONY: conventions-contracts
+conventions-contracts:
 	$(call run-control,contracts)
 
-.PHONY: conventions-architecture-check
-conventions-architecture-check:
+.PHONY: conventions-architecture
+conventions-architecture:
 	$(call run-control,architecture)
 
-.PHONY: quality-lint-check
-quality-lint-check:
+.PHONY: third-party-tests-lint
+third-party-tests-lint:
 	$(call run-control,lint)
 
-.PHONY: quality-format-check
-quality-format-check:
+.PHONY: third-party-tests-format
+third-party-tests-format:
 	$(call run-control,format)
 
-.PHONY: quality-type-check
-quality-type-check:
+.PHONY: third-party-tests-types
+third-party-tests-types:
 	$(call run-control,types)
 
-.PHONY: conventions-check
-conventions-check:
+.PHONY: conventions-all
+conventions-all:
 	$(call run-control,conventions)
 
-.PHONY: conventions-guards-check
-conventions-guards-check:
+.PHONY: conventions-guards
+conventions-guards:
 	$(call run-control,guards)
 
-.PHONY: conventions-services-check
-conventions-services-check:
+.PHONY: conventions-services
+conventions-services:
 	$(call run-control,services)
 
 
-.PHONY: integrity-test conventions-guards-check conventions-services-check
-integrity-test:
+.PHONY: verifiers-test conventions-guards conventions-services
+verifiers-test:
 	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
 	@bun --no-env-file run --cwd codebase-integrity test
 
@@ -288,19 +288,96 @@ quality-rebuild:
 	@$(MAKE) --no-print-directory checks-rebuild
 
 quality-conventions-check:
-	@$(MAKE) --no-print-directory conventions-check
+	@$(MAKE) --no-print-directory conventions-all
 
 quality-guards-check:
-	@$(MAKE) --no-print-directory conventions-guards-check
+	@$(MAKE) --no-print-directory conventions-guards
 
 quality-services-check:
-	@$(MAKE) --no-print-directory conventions-services-check
+	@$(MAKE) --no-print-directory conventions-services
 
 # Ancienne interface paramétrée, conservée uniquement pour compatibilité.
 .PHONY: check frontend-conventions-check
 check:
-	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make test-unit, par exemple."; exit 1; }
+	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make third-party-tests-unit, par exemple."; exit 1; }
 	$(call run-control,$(FAMILY))
 
 frontend-conventions-check:
-	@$(MAKE) --no-print-directory conventions-frontend-check
+	@$(MAKE) --no-print-directory conventions-frontend
+
+# Compatibilité des noms antérieurs ; ne pas les présenter dans l’aide.
+.PHONY: test-unit
+test-unit:
+	@$(MAKE) --no-print-directory third-party-tests-unit
+
+.PHONY: test-integration
+test-integration:
+	@$(MAKE) --no-print-directory third-party-tests-integration
+
+.PHONY: test-components
+test-components:
+	@$(MAKE) --no-print-directory third-party-tests-components
+
+.PHONY: test-browser
+test-browser:
+	@$(MAKE) --no-print-directory third-party-tests-browser
+
+.PHONY: test-mutation
+test-mutation:
+	@$(MAKE) --no-print-directory third-party-tests-mutation
+
+.PHONY: security-check
+security-check:
+	@$(MAKE) --no-print-directory third-party-tests-security
+
+.PHONY: load-check
+load-check:
+	@$(MAKE) --no-print-directory third-party-tests-load
+
+.PHONY: lighthouse-check
+lighthouse-check:
+	@$(MAKE) --no-print-directory third-party-tests-lighthouse
+
+.PHONY: quality-lint-check
+quality-lint-check:
+	@$(MAKE) --no-print-directory third-party-tests-lint
+
+.PHONY: quality-format-check
+quality-format-check:
+	@$(MAKE) --no-print-directory third-party-tests-format
+
+.PHONY: quality-type-check
+quality-type-check:
+	@$(MAKE) --no-print-directory third-party-tests-types
+
+.PHONY: quality-check
+quality-check:
+	@$(MAKE) --no-print-directory third-party-tests-code
+
+.PHONY: integrity-test
+integrity-test:
+	@$(MAKE) --no-print-directory verifiers-test
+
+.PHONY: conventions-check
+conventions-check:
+	@$(MAKE) --no-print-directory conventions-all
+
+.PHONY: conventions-frontend-check
+conventions-frontend-check:
+	@$(MAKE) --no-print-directory conventions-frontend
+
+.PHONY: conventions-guards-check
+conventions-guards-check:
+	@$(MAKE) --no-print-directory conventions-guards
+
+.PHONY: conventions-services-check
+conventions-services-check:
+	@$(MAKE) --no-print-directory conventions-services
+
+.PHONY: conventions-architecture-check
+conventions-architecture-check:
+	@$(MAKE) --no-print-directory conventions-architecture
+
+.PHONY: conventions-contracts-check
+conventions-contracts-check:
+	@$(MAKE) --no-print-directory conventions-contracts
