@@ -358,5 +358,45 @@
     "journaux": "webapp/.tmp/quality/console ; journaux conteneur persistants sous console-tmp",
     "avertissements": "décompte non consolidé, aucune somme inventée",
     "verdict_humain": "en attente"
+  },
+  "correction_integration_docker_2026_11_17": {
+    "carte": "OPS-030",
+    "causes": [
+      "Make absent de l’image : spawnSync make ENOENT",
+      "Deux timeouts de 5 secondes sous concurrence élevée après correction de Make"
+    ],
+    "correctifs": [
+      "Make et Python explicitement installés",
+      "Erreur de démarrage signalée avant lecture du journal ; pas de NaN",
+      "Deux workers pour la famille intégration ; délais et assertions inchangés"
+    ],
+    "versions": {
+      "make": "4.3",
+      "python": "3.12.3"
+    },
+    "tests_cibles": {
+      "hote": 53,
+      "docker": 53,
+      "inclus_dans_integration": true
+    },
+    "integration_showcase": {
+      "fichiers": 23,
+      "tests_reussis": 243,
+      "tests_echoues": 0,
+      "code_sortie": 0,
+      "duree_vitest_secondes": 83.23,
+      "workers": 2
+    },
+    "image": "sha256:c6243334f4483f22d89c74118b662eaea51ef7f5b600872c003dc5a4f9f5dd96",
+    "preuve": {
+      "journal": "webapp/.tmp/quality/integration-confirm-20261117.log",
+      "sha256": "edaa9cad32e348f4d28e95bdfe458fcef535dc369e4ca622a3d2a917e26403a9",
+      "code_sortie": "webapp/.tmp/quality/integration-confirm-20261117.exit"
+    },
+    "limites": [
+      "Premier lanceur borné interrompu (143) ; résultat confirmé par exécution autonome avec journal et code sur hôte",
+      "CI distante non exécutée",
+      "Sécurité et SOLID non modifiés ni réaudités"
+    ]
   }
 }

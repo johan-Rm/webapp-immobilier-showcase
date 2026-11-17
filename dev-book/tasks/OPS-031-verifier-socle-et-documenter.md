@@ -56,3 +56,7 @@ Rattachement des travaux : OPS-023 conserve le lanceur et sa validation initiale
 Vérification complémentaire : les huit commandes canoniques de conventions possèdent une source README identifiée. Le registre valide ses propres références mais ne garantit pas automatiquement la correspondance de toutes les commandes Make et de toutes leurs assertions : cette limite doit rester visible dans la recette. Les suites de fiabilité sont distinctes des contrôles du dépôt.
 
 Restent à vérifier humainement : interface à trois préfixes et séparation des commandes après les correctifs OPS-030. Le reporting commun et le bilan groupé restent une note en brouillon, sans implémentation déduite du renommage. Les blocages sécurité et SOLID des dernières mesures restent ouverts ; ils n’ont pas été réexécutés dans cette revue documentaire. Les budgets, références visuelles et contrôles CI distants ne sont pas validés par cette revue.
+
+### Rejeu d’intégration du 2026-11-17
+
+Le diagnostic et les correctifs de l’image et de la concurrence sont portés par OPS-030. Le rapport de référence contient les versions, l’image exacte, le journal et son empreinte, ainsi que le résultat du rejeu complet Showcase. Ce résultat résout les échecs d’outillage observés dans cette suite ; il ne clôture ni les réserves sécurité/SOLID ni la vérification humaine de la demande.

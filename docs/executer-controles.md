@@ -27,7 +27,7 @@ Les [contrôles frontend AST](controle-conventions-frontend.md) expliquent les e
 
 ## Choisir un contrôle
 
-Chaque contrôle possède une commande Make explicite, sans paramètre de sélection. Le catalogue ci-dessous constitue l’interface manuelle. Le lanceur interne sélectionne les fichiers ; une sélection vide échoue. Les tests de composants concernent actuellement Dashboard : les deux sites sont refusés explicitement.
+Chaque contrôle possède une commande Make explicite, sans paramètre de sélection. Les suites d’intégration Node utilisent au plus deux workers Vitest pour borner la concurrence des processus Nuxt et CLI ; leurs délais et assertions restent inchangés. Le catalogue ci-dessous constitue l’interface manuelle. Le lanceur interne sélectionne les fichiers ; une sélection vide échoue. Les tests de composants concernent actuellement Dashboard : les deux sites sont refusés explicitement.
 
 ## Exécuter dans un conteneur jetable
 
@@ -40,7 +40,7 @@ docker compose --project-directory . --env-file /dev/null -f infra/docker/docker
 docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality run --pull never --no-deps --rm verify <famille> --target <cible>
 ```
 
-Reconstruire les images après modification des sources. L’image contient les deux paquets et leurs dépendances verrouillées. Seuls les rapports `.tmp` sont montés en écriture ; les sources hôtes restent en lecture seule. Le socket Docker n’est pas monté. Les outils de charge et Lighthouse sont aussi installés dans l’image.
+Reconstruire les images après modification des sources. L’image contient les deux paquets et leurs dépendances verrouillées. Make et Python sont installés explicitement pour exécuter les recettes Make et leur présentation dans le conteneur ; les tests de routage utilisent un simulateur de Docker, sans socket Docker. Seuls les rapports `.tmp` sont montés en écriture ; les sources hôtes restent en lecture seule. Le socket Docker n’est pas monté. Les outils de charge et Lighthouse sont aussi installés dans l’image.
 
 ## Automatisation et limites
 

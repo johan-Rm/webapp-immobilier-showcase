@@ -44,6 +44,8 @@ const nodeConfig = {
   },
   test: {
     environment: 'node',
+    // Les suites d’intégration lancent leurs propres processus Nuxt et outils CLI.
+    maxWorkers: family === 'integration' ? 2 : undefined,
     exclude: [
       ...configDefaults.exclude,
       '**/worktree/**',
