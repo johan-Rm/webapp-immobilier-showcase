@@ -48,3 +48,7 @@ Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validati
 Les commits techniques locaux sont autorisés par le workflow confirmé le 2026-11-15 ; ils précèdent la vérification humaine globale. Leur relevé exact est conservé dans le brouillon de la demande. Aucun push, PR ou fusion.
 
 Commit technique local créé selon le workflow autorisé le 2026-11-15, sans verdict humain implicite ; SHA réel dans le récapitulatif du brouillon.
+
+### Correction du 2026-11-17 — inventaire Git en conteneur
+
+L’essai réel de `make check FAMILY=architecture` révèle un accès Git au répertoire de l’image, qui ne contient pas de métadonnées Git. Le contrôle réutilise désormais la découverte commune du lanceur : dépôt Git monté en lecture seule via `VERIFY_GIT_ROOT`, puis analyse des sources présentes dans la copie de travail de l’image. Aucun changement des règles d’imports. Un test reproduit un catalogue Git distinct d’une copie source sans Git. Neuf tests ciblés réussis, lint et formatage conformes. Après reconstruction explicite, `make check FAMILY=architecture GD_TARGET=showcase-immobilier` réussit dans Docker : 18 entrées, 67 modules, 126 dépendances, aucune violation et deux imports virtuels non résolus exposés. Journaux : `/tmp/dem011-architecture-container-fix-tests.log` et `/tmp/dem011-command-names-architecture-fixed.log`.

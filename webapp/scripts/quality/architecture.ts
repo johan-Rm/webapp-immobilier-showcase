@@ -1,10 +1,12 @@
-import { execFileSync, spawnSync } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { loadValidationRule } from '../../../codebase-integrity/commun/validation-rules'
+
+import { projectFiles } from './run'
 
 const say = (message: string) => process.stdout.write(message + '\n')
 
@@ -59,14 +61,7 @@ export function assessGraph(value: unknown) {
 export function analyzeArchitecture(appRoot = root, files?: string[]) {
   const selected =
     files ??
-    execFileSync(
-      'git',
-      ['ls-files', '--cached', '--others', '--exclude-standard', '--deduplicate', '--', 'services'],
-      { cwd: appRoot, encoding: 'utf8' },
-    )
-      .trim()
-      .split('\n')
-      .filter((f) => f.endsWith('.ts'))
+    projectFiles(appRoot).filter((file) => file.startsWith('services/') && file.endsWith('.ts'))
   if (!selected.length) throw new Error('Aucun module services découvert ; analyse non exécutée')
   const aliases = loadValidationRule<{
     name: string

@@ -1,13 +1,17 @@
+import { execFileSync } from 'node:child_process'
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync, symlinkSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { analyzeArchitecture, assessGraph } from './architecture'
 
 const roots: string[] = []
-afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })))
+afterEach(() => {
+  vi.unstubAllEnvs()
+  roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true }))
+})
 const fixture = (source: string) => {
   const root = mkdtempSync(join(tmpdir(), 'architecture-fixture-'))
   roots.push(root)
@@ -17,6 +21,17 @@ const fixture = (source: string) => {
   return root
 }
 describe('couverture dependency-cruiser des services', () => {
+  it('découvre les sources depuis le Git monté et analyse une copie sans métadonnées Git', () => {
+    const catalog = mkdtempSync(join(tmpdir(), 'architecture-git-'))
+    roots.push(catalog)
+    execFileSync('git', ['init', '--quiet', catalog])
+    mkdirSync(join(catalog, 'webapp/services'), { recursive: true })
+    writeFileSync(join(catalog, 'webapp/services/example.ts'), 'export const value=1')
+    vi.stubEnv('VERIFY_GIT_ROOT', catalog)
+    const result = analyzeArchitecture(fixture('export const value=1'))
+    expect(result.entryModules).toBe(1)
+    expect(result.summary.violations).toHaveLength(0)
+  })
   it('accepte un module sans dépendance, mais jamais un graphe vide', () => {
     const result = analyzeArchitecture(fixture('export const value=1'), ['services/example.ts'])
     expect(result.summary.dependencies).toBe(0)
