@@ -46,3 +46,13 @@ Le workflow autorisé le 2026-11-15 permet un commit technique local par tâche 
 Le rapport de référence est [ops031-verification.json](../reports/ops031-verification.json). Il distingue suites par cible, mesures, blocages et limites ; les suites communes ne doivent pas être additionnées. Les outils des cartes sont réalisés ; les contrôles globaux ne sont pas tous verts. Aucune validation humaine nouvelle ni livraison n’est déduite de ce bilan.
 
 La recette automatisée navigateur est réussie : 82 parcours Dashboard, quatre Client2 et deux Showcase. Les types des trois cibles, lint et formatage réussissent. Le contrôle des traces vérifie 20 cartes sans écart. La nouvelle image est construite et vérifiée avec contrats, Chromium sur les sites, k6 et Lighthouse natifs ; les processus de test possédés sont arrêtés. Les scores supplémentaires exécutés en parallèle ne constituent pas des budgets ni de nouvelles références comparatives.
+
+## Réconciliation après harmonisation des commandes — 2026-11-17
+
+Les correctifs d’interface et de séparation sont rattachés à OPS-030 ; leurs décisions, essais et commits y font référence. Le catalogue courant reste `docs/executer-controles.md`. Ne pas recopier ici la liste des commandes ni assimiler les résultats précédents à un nouveau verdict humain.
+
+Rattachement des travaux : OPS-023 conserve le lanceur et sa validation initiale ; OPS-033 conserve la présentation et sa validation initiale ; OPS-030 porte leurs évolutions ultérieures ; cette carte porte la recette et le bilan final. Aucune nouvelle carte nécessaire. Les 18 cartes existantes restent le périmètre de la demande.
+
+Vérification complémentaire : les huit commandes canoniques de conventions possèdent une source README identifiée. Le registre valide ses propres références mais ne garantit pas automatiquement la correspondance de toutes les commandes Make et de toutes leurs assertions : cette limite doit rester visible dans la recette. Les suites de fiabilité sont distinctes des contrôles du dépôt.
+
+Restent à vérifier humainement : interface à trois préfixes et séparation des commandes après les correctifs OPS-030. Le reporting commun et le bilan groupé restent une note en brouillon, sans implémentation déduite du renommage. Les blocages sécurité et SOLID des dernières mesures restent ouverts ; ils n’ont pas été réexécutés dans cette revue documentaire. Les budgets, références visuelles et contrôles CI distants ne sont pas validés par cette revue.
