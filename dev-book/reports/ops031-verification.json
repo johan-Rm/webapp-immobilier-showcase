@@ -244,5 +244,23 @@
       "/tmp/dem011-make-quality-guards-check.log": "188e685331af2fdfd3cb8510228b43b8444e60eeec4269dd9ccfaa4bbfb3b6bb",
       "/tmp/dem011-make-quality-services-check.log": "9b38e975a95af73e3b86083820c485ccfb5003756bbb73c98fd69ce8c14b47f1"
     }
+  },
+  "correctif_preparation_reutilisable": {
+    "date": "2026-11-17",
+    "carte": "OPS-030",
+    "tests_cibles_reussis": 40,
+    "cas_couverts": [
+      "image absente : un build",
+      "préparation répétée : aucun nouveau build",
+      "reconstruction explicite",
+      "échecs préservés"
+    ],
+    "observations_docker": "Deux appels réels successifs ignorent le build de l’image présente.",
+    "limite": "La présence ne prouve pas la fraîcheur ; quality-rebuild reste nécessaire après modification.",
+    "journaux": {
+      "/tmp/dem011-prepare-idempotent-tests.log": "7346634ca850789a08c792582a4a5ed45262c8ddb41e2543d814f00d6d4cd5a1",
+      "/tmp/dem011-prepare-idempotent-first.log": "046b1ae4529efc53b0d8f287d42d767ae84d6c71cb7dc291f29615070fe88562",
+      "/tmp/dem011-prepare-idempotent-second.log": "046b1ae4529efc53b0d8f287d42d767ae84d6c71cb7dc291f29615070fe88562"
+    }
   }
 }

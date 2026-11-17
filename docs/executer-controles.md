@@ -59,7 +59,7 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Catalogue complémentaire et recette manuelle
 
-Depuis la racine du worktree, lancer **`make quality-prepare` une fois**, puis `make quality-verify FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Relancer `make quality-prepare` après modification des sources, dépendances ou outils. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
+Depuis la racine du worktree, lancer **`make quality-prepare`** (construction seulement si l’image est absente), puis `make quality-verify FAMILY=contracts` pour exécuter la famille choisie. Les contrôles réutilisent la même image, sans build ni téléchargement implicite. Une image absente provoque un échec : lancer la préparation avant de réessayer. Lancer **`make quality-rebuild`** après modification des sources, dépendances ou outils. Rejouer `quality-prepare` avec une image existante ignore entièrement le build. La fraîcheur de l’image n’est pas détectée automatiquement ; le rappel est affiché à chaque contrôle. Ajouter `GD_TARGET=dashboard` ou `GD_TARGET=client2-immobilier` pour changer de cible ; `PROFILE=mobile` sélectionne le profil Lighthouse. Aucun `.env` privé n’est injecté.
 
 Depuis la racine, choisir la famille avec `make quality-verify FAMILY=<famille> GD_TARGET=<cible>` :
 
