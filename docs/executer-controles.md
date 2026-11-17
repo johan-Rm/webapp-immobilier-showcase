@@ -13,11 +13,11 @@ Depuis la racine, `make integrity-test` lance les tests des vérificateurs. Les 
 Depuis la racine du worktree :
 
 - `make integrity-domains` affiche les conventions regroupées par domaine.
-- `make conventions-docs-check` vérifie le registre, les demandes, la documentation et les README, puis exécute les tests Python des vérificateurs. Ses quatre étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
+- `make conventions-docs-check` vérifie le registre, les demandes, la documentation et les README. Ses trois étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
 - `make conventions-check` exécute les conventions Nuxt dans l’image qualité déjà préparée, avec leurs limites de relecture humaine déclarées.
 - `make integrity-test` exécute les tests Python, Vitest et Bun des vérificateurs depuis le dépôt, sans commande Bun à saisir.
 
-Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans conventions-docs-check ; son exécution sur les cartes est distincte.
+Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans `make integrity-test` ; son exécution sur les cartes est distincte.
 
 Pour vérifier une contribution Git, suivre la [procédure de contrôle des contributions](controle-contributions.md), qui définit la commande et l’amorçage initial.
 
@@ -44,7 +44,7 @@ Reconstruire les images après modification des sources. L’image contient les 
 
 ## Automatisation et limites
 
-Le workflow AIDE exécute les tests TypeScript et Bun des vérificateurs puis `make conventions-docs-check`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct ; la demande définitive de consolidation est créée lors de la reconstitution, pas pendant cette implémentation.
+Le workflow AIDE exécute séparément `make integrity-test` (Python, Vitest et Bun), puis `make conventions-docs-check`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct ; la demande définitive de consolidation est créée lors de la reconstitution, pas pendant cette implémentation.
 
 Les versions non livrées des commandes appartiennent au worktree où elles sont implémentées. Une exécution depuis une autre branche peut utiliser une version différente. Les cartes conservent les résultats réellement obtenus et le verdict humain.
 
@@ -73,7 +73,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make conventions-services-check` | Indépendance des services | Analyse statique |
 | `make conventions-architecture-check` | Imports des services avec dependency-cruiser | Imports Nuxt virtuels signalés séparément |
 | `make conventions-contracts-check` | Reproductibilité des contrats locaux | Aucun contrôle du Symfony distant |
-| `make conventions-docs-check` | Registre, demandes, documentation, README et tests Python | Ne teste pas les fonctionnalités |
+| `make conventions-docs-check` | Registre, demandes, documentation et README | Ne teste pas les fonctionnalités |
 | `make conventions-devbook-check BASE=<SHA>` | Traces des cartes | Base Git explicite requise |
 | `make integrity-test` | Tests Python, Vitest et Bun des vérificateurs | Exécution locale avec dépendances installées |
 
