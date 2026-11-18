@@ -43,9 +43,10 @@ def prepare_test_container(tree, name):
     result = subprocess.run(['docker', 'inspect', '--format', fields, name],
                             capture_output=True, text=True)
     if result.returncode:
-        if 'No such object' in result.stderr or 'No such container' in result.stderr:
+        diagnostic = result.stderr.strip()
+        if 'no such object' in diagnostic.casefold() or 'no such container' in diagnostic.casefold():
             return False
-        raise ValueError('État Docker inaccessible ; aucun conteneur modifié')
+        raise ValueError('État Docker inaccessible ; aucun conteneur modifié : ' + diagnostic[:500])
     state, automatic, labels = map(json.loads, result.stdout.strip().split('|', 2))
     if (not automatic or labels.get('com.docker.compose.service') != 'verify'
             or labels.get('com.docker.compose.oneoff', '').lower() != 'true'
