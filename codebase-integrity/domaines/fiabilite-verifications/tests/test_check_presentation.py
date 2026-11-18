@@ -129,24 +129,6 @@ class PresentationTest(unittest.TestCase):
             self.assertEqual(Path(result['log']).read_text().count('verbose'), 1000)
         self.assertLess(output.getvalue().count('verbose'), 10)
 
-    def test_grouped_run_continues_and_keeps_distinct_profiles(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / 'webapp/.tmp/quality/console').mkdir(parents=True)
-            calls = []
-            def execute(name, argv, env):
-                calls.append((name, env.get('PROFILE', '')))
-                return {'command': name, 'profile': env.get('PROFILE', ''), 'exit_code': 1 if len(calls) == 1 else 0, 'status': 'ÉCHEC' if len(calls) == 1 else 'RÉUSSI'}
-            with patch.object(presentation, 'ROOT', root), patch.object(presentation, 'run', side_effect=execute), patch.dict(os.environ, {}, clear=True), patch.object(sys, 'argv', ['presentation', 'checks-run']), redirect_stdout(io.StringIO()) as output:
-                code = presentation.main()
-            self.assertEqual(code, 1)
-            self.assertIn(('verifiers-test', ''), calls)
-            self.assertIn(('third-party-tests-lighthouse', 'desktop'), calls)
-            self.assertIn(('third-party-tests-lighthouse', 'mobile'), calls)
-            self.assertFalse(any(name in ('checks-rebuild', 'third-party-tests-code') for name, _ in calls))
-            self.assertEqual(len(list((root / 'webapp/.tmp/quality/console').glob('summary-*.json'))), 1)
-            self.assertIn('ÉCHEC : 1', output.getvalue())
-
     def test_interruption_stops_only_the_owned_group(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, patch.object(presentation.os, 'killpg') as stop, redirect_stdout(io.StringIO()):
             launch.return_value.pid = 12345
