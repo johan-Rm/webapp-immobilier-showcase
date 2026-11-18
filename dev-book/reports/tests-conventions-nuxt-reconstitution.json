@@ -292,6 +292,26 @@
   "controles": {
     "documentation": "réussi",
     "traces_cartes": "réussi",
-    "limites": "Contrôles techniques antérieurs conservés ; pas de réexécution applicative ni de CI distante pour des arbres applicatifs identiques. SOLID reste en échec sous réserve acceptée."
-  }
+    "limites": "Contrôles techniques antérieurs conservés ; pas de réexécution applicative ni de CI distante pour des arbres applicatifs identiques. SOLID reste en échec sous réserve acceptée.",
+    "contribution": {
+      "etat": "échec",
+      "base": "ca571d60c39b8b5932d74cd43dcbe4131c47c578",
+      "regle": "vérificateur extrait de develop local, non celui proposé par la consolidation",
+      "refus": [
+        {
+          "source": "a04d88d5335a5ee712eb2c7bc3641d881d6a0bcb",
+          "obtenu": "3c978762f9e051e5cc92b50e25b660cc4a238e5e",
+          "motif": "scope DEM sur un commit touchant dev-book/reports/ops031-verification.json"
+        },
+        {
+          "source": null,
+          "obtenu": "b4f2ff657515340c31382829d079a544544f298e",
+          "motif": "scope DEM sur le commit de matérialisation touchant dev-book/reports/tests-conventions-nuxt-analyse.md"
+        }
+      ],
+      "journal_local": "/tmp/dem011-reconstitution-contribution.log",
+      "arbitrage": "Aucun commit validé réécrit, aucune règle assouplie ; correction des scopes à arbitrer avant livraison."
+    }
+  },
+  "etat": "reconstituée localement ; livraison bloquée par le contrôle des scopes de contribution"
 }

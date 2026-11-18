@@ -7,7 +7,7 @@
   DEM-010 est réservée dans le brouillon des sections Vue (brouillon réservé dans le principal).
 - Session de création : 01a1d56d-446b-7931-bf53-7687a7d10912
 - Date : 2026-11-14
-- État : reconstituée localement et validée sous réserves ; livraison non réalisée.
+- État : reconstituée localement et validée sous réserves ; contrôle de contribution en échec, livraison non réalisée.
 - Confirmation humaine : « cadrage confirmé », après ajout de la reprise des
   conventions techniques disponibles dans les README de Cap Nour.
 - Priorité humaine : traiter cette consolidation avant de commencer DEM-010.
@@ -135,6 +135,8 @@ Verdict explicite « oui validé » sur les 18 cartes et les correctifs présent
 ## Reconstitution locale — 2026-11-18
 
 Branche `demands/DEM-011` créée depuis `develop` local à `ca571d60c39b8b5932d74cd43dcbe4131c47c578`, sans fetch. Les 70 commits validés sont appliqués par cherry-pick `-x`, sans conflit, dans leur ordre de dépendance. La [correspondance source → obtenu](../reports/tests-conventions-nuxt-reconstitution.json) conserve tous les SHA. Avant matérialisation documentaire, l’arbre obtenu est identique à celui de `44711c8ae1a4d56cc99dd55fae042183623558f3` ; les `.env` préexistants sont inchangés. Les couches conservent leurs branches. Le verdict sous réserves reste applicable, dont le contrôle SOLID en échec ; aucune CI distante ni livraison déduite.
+
+Le contrôle de contribution extrait de `develop` refuse deux scopes de commits ; les références exactes sont consignées dans la trace de reconstitution. L’un appartient aux sources validées, l’autre à la matérialisation documentaire. Aucun commit réécrit ni contrôle assoupli ; cet écart doit être arbitré avant livraison. Les contrôles documentation, liens locaux et traces des cartes réussissent.
 
 ## Déclaration de contribution
 
