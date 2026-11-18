@@ -7,6 +7,9 @@ export type ApplicationTarget = (typeof targets)[number]
 
 export type SourceKind = 'source' | 'test' | 'types' | 'generated' | 'other'
 
+/** Preserve literal route brackets and other glob metacharacters. */
+export const escapeGlobPath = (path: string): string => path.replace(/[\\*?[\]{}()!+@]/g, '\\$&')
+
 const shared = ['webapp/base/real-estate/', 'webapp/server/', 'webapp/services/', 'webapp/shared/']
 const rootFor = (target: ApplicationTarget) =>
   target === 'dashboard' ? 'webapp/dashboard/' : `webapp/sites/${target}/`
