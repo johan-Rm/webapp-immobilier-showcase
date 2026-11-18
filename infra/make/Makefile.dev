@@ -15,8 +15,8 @@ export DOCKER_GID := $(shell id -g)
 .PHONY: dev-shell-webapp-localhost dev-shell-webapp-ssr dev-shell-nginx
 .PHONY: dev-analyze dev-analyse
 .PHONY: dev-playwright dev-playwright-report
-.PHONY: third-party-tests-code third-party-tests-lint quality-lint-fix third-party-tests-format third-party-tests-types
-.PHONY: conventions-all frontend-conventions-check quality-generate-schemas
+.PHONY: third-party-tests-lint quality-lint-fix third-party-tests-format third-party-tests-types
+.PHONY: frontend-conventions-check quality-generate-schemas
 .PHONY: dev-content-sync dev-content-sync-dry
 
 dev-env:
@@ -75,12 +75,6 @@ dev-playwright: dev-env
 
 dev-playwright-report:
 	cd webapp && bun run test:e2e:report
-
-_output-third-party-tests-code:
-	@$(MAKE) --no-print-directory third-party-tests-lint GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
-	@$(MAKE) --no-print-directory third-party-tests-format GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
-	@$(MAKE) --no-print-directory third-party-tests-types GD_TARGET=$(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
-
 
 quality-lint-fix:
 	$(DOCKER_RUN) bun run lint:fix
@@ -256,10 +250,6 @@ _output-third-party-tests-format:
 _output-third-party-tests-types:
 	$(call run-control,types)
 
-.PHONY: conventions-all
-_output-conventions-all:
-	$(call run-control,conventions)
-
 .PHONY: conventions-guards
 _output-conventions-guards:
 	$(call run-control,guards)
@@ -277,7 +267,7 @@ _output-verifiers-test:
 
 
 # Compatibilité des recettes existantes : toute exécution délègue au nom canonique.
-.PHONY: quality-verify quality-prepare quality-rebuild quality-conventions-check quality-guards-check quality-services-check
+.PHONY: quality-verify quality-prepare quality-rebuild quality-guards-check quality-services-check
 quality-verify:
 	@$(MAKE) --no-print-directory check
 
@@ -286,9 +276,6 @@ quality-prepare:
 
 quality-rebuild:
 	@$(MAKE) --no-print-directory checks-rebuild
-
-quality-conventions-check:
-	@$(MAKE) --no-print-directory conventions-all
 
 quality-guards-check:
 	@$(MAKE) --no-print-directory conventions-guards
@@ -350,17 +337,9 @@ quality-format-check:
 quality-type-check:
 	@$(MAKE) --no-print-directory third-party-tests-types
 
-.PHONY: quality-check
-quality-check:
-	@$(MAKE) --no-print-directory third-party-tests-code
-
 .PHONY: integrity-test
 integrity-test:
 	@$(MAKE) --no-print-directory verifiers-test
-
-.PHONY: conventions-check
-conventions-check:
-	@$(MAKE) --no-print-directory conventions-all
 
 .PHONY: conventions-frontend-check
 conventions-frontend-check:
@@ -415,10 +394,6 @@ third-party-tests-format:
 third-party-tests-types:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-types -- $(MAKE) --no-print-directory _output-third-party-tests-types
 
-.PHONY: third-party-tests-code _output-third-party-tests-code
-third-party-tests-code:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-code -- $(MAKE) --no-print-directory _output-third-party-tests-code
-
 .PHONY: third-party-tests-security _output-third-party-tests-security
 third-party-tests-security:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-security -- $(MAKE) --no-print-directory _output-third-party-tests-security
@@ -430,10 +405,6 @@ verifiers-tests-load:
 .PHONY: third-party-tests-lighthouse _output-third-party-tests-lighthouse
 third-party-tests-lighthouse:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-lighthouse -- $(MAKE) --no-print-directory _output-third-party-tests-lighthouse
-
-.PHONY: conventions-all _output-conventions-all
-conventions-all:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-all -- $(MAKE) --no-print-directory _output-conventions-all
 
 .PHONY: conventions-frontend _output-conventions-frontend
 conventions-frontend:
@@ -467,10 +438,6 @@ checks-prepare:
 checks-rebuild:
 	@python3 -B codebase-integrity/commun/check_presentation.py checks-rebuild -- $(MAKE) --no-print-directory _output-checks-rebuild
 
-
-.PHONY: checks-run
-checks-run:
-	@python3 -B codebase-integrity/commun/check_presentation.py checks-run
 
 # Serveur de fixtures explicite : construction SSR et service dans le même conteneur.
 QUALITY_FIXTURE_PORT ?= 19856

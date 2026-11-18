@@ -14,7 +14,6 @@ Depuis la racine du worktree :
 
 - `make integrity-domains` affiche les conventions regroupées par domaine.
 - `make conventions-docs` vérifie le registre, les demandes, la documentation et les README. Ses trois étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
-- `make conventions-all` exécute les conventions Nuxt dans l’image qualité déjà préparée, avec leurs limites de relecture humaine déclarées.
 - `make verifiers-test` exécute les tests Python, Vitest et Bun des vérificateurs depuis le dépôt, sans commande Bun à saisir.
 
 Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans `make verifiers-test` ; son exécution sur les cartes est distincte.
@@ -67,7 +66,6 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make verifiers-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
 | `make verifiers-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
 | `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
-| `make conventions-all` | Conventions Nuxt, responsabilités, types et SOLID | Warnings à relire ; aucune preuve de rendu |
 | `make conventions-frontend` | Structure frontend AST | Exécution locale ; limites documentées |
 | `make conventions-guards` | Gardes potentiellement redondantes | Relecture humaine nécessaire |
 | `make conventions-services` | Indépendance des services | Analyse statique |
@@ -77,7 +75,6 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make conventions-devbook` | Traces des cartes du dépôt | Base commune develop/HEAD calculée et affichée ; `BASE=<SHA>` facultatif |
 | `make verifiers-test` | Tests Python, Vitest et Bun des vérificateurs | Exécution locale avec dépendances installées |
 
-`make third-party-tests-code` enchaîne lint, formatage et types avec arrêt au premier échec. Plusieurs commandes explicites peuvent être données à un même appel Make. Les contrôles ne démarrent pas de serveur web ; les mesures et parcours exigent un serveur préparé séparément.
 
 Les rapports résident dans `webapp/.tmp/quality/`, et ceux du navigateur dans `webapp/.tmp/playwright/`. Examiner les erreurs et le code de sortie avant les scores. Les budgets et références visuelles exigent un arbitrage humain. Le regroupement général et son bilan final restent en brouillon.
 
@@ -91,7 +88,6 @@ Chaque commande canonique affiche un bandeau de contexte avec les six champs du 
 
 Les sorties brutes de Make, Docker et des outils sont capturées dans des journaux complets sous `webapp/.tmp/quality/console/`. Chaque exécution possède un dossier distinct contenant `output.log` et `result.json`. Les journaux temporaires des outils conteneurisés résident sous `webapp/.tmp/quality/console-tmp/`, monté depuis l’hôte ; les autres rapports JSON restent dans le dossier qualité habituel. Aucun journal n’est supprimé par la présentation.
 
-Après préparation de l’image, `make checks-run GD_TARGET=showcase-immobilier BASE=<SHA>` exécute tous les contrôles de cette cible, poursuit après un échec et termine par un bilan limité à cette exécution. Lint, formatage et types sont exécutés séparément : le raccourci groupé ne les répète pas. Les deux profils Lighthouse sont distingués. Le pilote composants reste non exécuté sur les sites, puisqu’il appartient à Dashboard. Aucun serveur n’est démarré ; navigateur, charge et Lighthouse sont marqués non exécutés si leur URL requise manque. Les contrôles frontend globaux conservent leur périmètre partagé documenté.
 
 Un échec ou un contrôle non exécuté conserve un code non nul. Un score informatif ne transforme pas une erreur d’exécution en réussite. Le bilan indique que le décompte des avertissements n’est pas consolidé lorsque les outils ne fournissent pas de données structurées fiables ; les messages des fixtures ne sont pas comptés comme des écarts du produit. Les diagnostics utiles sont abrégés à l’écran, jamais dans le journal complet. L’interruption arrête le groupe de processus possédé et reste explicitement signalée.
 
@@ -108,3 +104,5 @@ Une relance conserve un serveur de test déjà actif et invite à consulter ses 
 ## Lire les détails en direct
 
 Le bandeau de chaque contrôle commence par le nom de la commande, puis une description concrète des vérifications effectuées et de leur périmètre, en olive clair Graines Digitales (`#A8B97A`) lorsque la couleur est disponible. Un séparateur la distingue des métadonnées du contrôle. Par défaut, les détails restent dans le rapport et seul un résumé est affiché. Ajouter `VERBOSE=1` à la commande Make pour afficher également les sorties des outils au fil de leur émission, préfixées par commande et cible ; par exemple `make verifiers-tests-unit GD_TARGET=showcase-immobilier VERBOSE=1`. Le rapport complet et le code de sortie sont conservés. Une valeur absente ou différente de `1` garde le mode synthétique. Un outil peut retarder lui-même ses écritures ; ce paramètre ne supprime pas sa mise en tampon interne.
+
+Les commandes Make de regroupement des contrôles sont absentes ; lancer les contrôles individuels explicitement.

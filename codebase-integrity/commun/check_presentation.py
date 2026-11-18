@@ -26,11 +26,9 @@ META = {
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
-    'third-party-tests-code': ('Code', 'Outils tiers', 'Lint, formatage et types', 'ESLint / Prettier / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
     'verifiers-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
     'third-party-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
-    'conventions-all': ('Frontend', 'Conventions', 'Conventions Nuxt regroupées', 'Vérificateurs spécifiques', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-guards': ('Gardes', 'Conventions', 'Gardes suspectes', 'Vérificateur spécifique', 'Relecture humaine'),
     'conventions-services': ('Services', 'Conventions', 'Indépendance du framework', 'Vérificateur spécifique', 'Bloquant'),
@@ -67,9 +65,6 @@ DESCRIPTIONS = {
     'third-party-tests-types': (
         'Prépare les fichiers générés par Nuxt, puis vérifie la cohérence des types TypeScript, des composants Vue et de leurs usages pour la cible sélectionnée.'
     ),
-    'third-party-tests-code': (
-        'Exécute successivement les vérifications ESLint, Prettier et TypeScript/Vue pour contrôler les règles de code, la mise en forme et la cohérence des types.'
-    ),
     'third-party-tests-security': (
         'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
@@ -78,9 +73,6 @@ DESCRIPTIONS = {
     ),
     'third-party-tests-lighthouse': (
         'Audite les pages servies par le serveur de test avec Lighthouse et Chromium et produit les mesures de performance, d’accessibilité, de bonnes pratiques et de référencement.'
-    ),
-    'conventions-all': (
-        'Exécute les vérificateurs des conventions frontend : structure Vue, placement des types, images, sections script setup, responsabilités et organisation du code.'
     ),
     'conventions-frontend': (
         'Analyse les sources Vue pour vérifier les marqueurs de pages et de composants, les sections sémantiques et les règles de structure frontend documentées.'
@@ -262,45 +254,15 @@ def run(command, argv, env=None, report_root=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('command', choices=[*META, 'checks-run'])
+    parser.add_argument('command', choices=list(META))
     parser.add_argument('args', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     argv = args.args[1:] if args.args[:1] == ['--'] else args.args
     if os.environ.get('CHECK_PRESENTATION_ACTIVE') == '1':
         return subprocess.call(argv, cwd=ROOT) if argv else 2
-    if args.command != 'checks-run':
-        if not argv:
-            parser.error('Commande interne requise après --')
-        return run(args.command, argv)['exit_code']
-    results = []
-    # Un seul client ; les pilotes propres à une autre cible ne sont pas exécutés implicitement.
-    names = [name for name in META if name not in ('third-party-tests-code', 'checks-prepare', 'checks-rebuild')]
-    for name in names:
-        profiles = ('desktop', 'mobile') if name == 'third-party-tests-lighthouse' else ('',)
-        for profile in profiles:
-            env = dict(os.environ)
-            if profile:
-                env['PROFILE'] = profile
-            result = run(name, ['make', '--no-print-directory', '_output-' + name], env)
-            results.append(result)
-            if result['exit_code'] == 130:
-                break
-        if results[-1]['exit_code'] == 130:
-            break
-    root = ROOT / 'webapp/.tmp/quality/console'
-    descriptor, filename = tempfile.mkstemp(prefix='summary-', suffix='.json', dir=root)
-    with os.fdopen(descriptor, 'w') as stream:
-        json.dump(results, stream, ensure_ascii=False, indent=2)
-    context = f'[checks-run | {os.environ.get("GD_TARGET") or "showcase-immobilier"}]'
-    print('\n' + '═' * 88 + '\n' + context + ' BILAN GLOBAL — exécutions de cette commande uniquement', flush=True)
-    for result in results:
-        profile = (' / ' + result['profile']) if result.get('profile') else ''
-        print(f"{context} {result['command']}{profile} : {result['status']}", flush=True)
-    for status in ('RÉUSSI', 'ÉCHEC', 'NON EXÉCUTÉ', 'INTERROMPU'):
-        print(f'{context} {status} : {sum(r["status"] == status for r in results)}', flush=True)
-    print(context + ' Avertissements : consulter les signalements et journaux ; aucun total fiable consolidé.')
-    print(context + ' Rapport global : ' + filename)
-    return 1 if any(r['exit_code'] for r in results) else 0
+    if not argv:
+        parser.error('Commande interne requise après --')
+    return run(args.command, argv)['exit_code']
 
 
 if __name__ == '__main__':

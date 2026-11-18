@@ -216,7 +216,6 @@ describe('préparation explicite de l’image qualité', () => {
     ['third-party-tests-types', 'types'],
     ['conventions-guards', 'guards'],
     ['conventions-services', 'services'],
-    ['conventions-all', 'conventions'],
   ])('route %s vers le lanceur commun sans build', (target, family) => {
     const { results, recorded } = scenario([target])
     expect(results[0]!.status).toBe(0)
@@ -225,6 +224,11 @@ describe('préparation explicite de l’image qualité', () => {
     expect(runs[0]).toContain(family)
     expect(recorded.some((args) => args[0] === 'build')).toBe(false)
   })
+  it.each(['conventions-all', 'third-party-tests-code', 'conventions-check', 'quality-conventions-check', 'quality-check', 'checks-run'])(
+    'refuse le regroupement supprimé %s', (name) => {
+      expect(() => scenario([name])).toThrow(/No rule to make target/)
+    },
+  )
   it('exécute chaque commande lors d’un appel Make multiple sans FAMILY', () => {
     const { results, recorded } = scenario([
       'verifiers-tests-unit verifiers-tests-integration conventions-contracts',
@@ -236,16 +240,10 @@ describe('préparation explicite de l’image qualité', () => {
       'contracts',
     ])
   })
-  it('arrête third-party-tests-code au premier échec sans lancer les autres contrôles', () => {
-    const { results, recorded } = scenario(['third-party-tests-code'], 42)
-    expect(results[0]!.status).not.toBe(0)
-    expect(recorded.filter((args) => args[0] === 'run')).toHaveLength(1)
-  })
   it.each([
     ['quality-verify', 'conventions-contracts'],
     ['quality-prepare', 'checks-prepare'],
     ['quality-rebuild', 'checks-rebuild'],
-    ['quality-conventions-check', 'conventions-all'],
     ['quality-guards-check', 'conventions-guards'],
     ['quality-services-check', 'conventions-services'],
   ])('conserve %s comme délégation de compatibilité vers %s', (legacy, canonical) => {
@@ -266,8 +264,6 @@ describe('préparation explicite de l’image qualité', () => {
     ['quality-lint-check', 'third-party-tests-lint'],
     ['quality-format-check', 'third-party-tests-format'],
     ['quality-type-check', 'third-party-tests-types'],
-    ['quality-check', 'third-party-tests-code'],
-    ['conventions-check', 'conventions-all'],
     ['conventions-guards-check', 'conventions-guards'],
     ['conventions-services-check', 'conventions-services'],
     ['conventions-architecture-check', 'conventions-architecture'],

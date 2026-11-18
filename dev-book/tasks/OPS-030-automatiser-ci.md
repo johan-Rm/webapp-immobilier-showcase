@@ -223,3 +223,7 @@ Sur demande humaine, `verifiers-tests-components` remplace `third-party-tests-co
 ### Base automatique du contrôle dev-book — 2026-11-18
 
 Sur demande humaine, `conventions-devbook` calcule par défaut `git merge-base develop HEAD` et affiche la base dans un contexte dépôt, indépendant de GD_TARGET. BASE reste prioritaire quand fourni ; une référence absente ou sans ancêtre commun bloque explicitement le contrôle. Aucun fetch implicite : develop est la référence locale.
+
+### Suppression des regroupements Make — 2026-11-18
+
+Sur demande humaine, suppression de `conventions-all`, `third-party-tests-code`, leurs alias de regroupement et `checks-run`, de leurs recettes, de l’aide et du catalogue public. Les contrôles individuels et les familles internes de CI restent inchangés. La suite des vérificateurs reste une commande de tests ; aucun regroupement général de contrôles n’est proposé.
