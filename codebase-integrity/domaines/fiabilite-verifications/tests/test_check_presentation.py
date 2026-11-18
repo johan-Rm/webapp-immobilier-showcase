@@ -47,9 +47,9 @@ class PresentationTest(unittest.TestCase):
                 argv = [sys.executable, '-u', '-c',
                         'import sys,time;print("detail-unique",flush=True);time.sleep(.2);print("erreur-unique",file=sys.stderr);sys.exit(7)']
                 with redirect_stdout(output):
-                    result = presentation.run('third-party-tests-unit', argv, env, directory)
+                    result = presentation.run('verifiers-tests-unit', argv, env, directory)
                 self.assertEqual(result['exit_code'], 7)
-                self.assertIn('NOM — make third-party-tests-unit', output.getvalue())
+                self.assertIn('NOM — make verifiers-tests-unit', output.getvalue())
                 self.assertLess(output.getvalue().index('NOM —'), output.getvalue().index('DESCRIPTION'))
                 self.assertIn('DESCRIPTION', output.getvalue())
                 self.assertLess(output.getvalue().index('DESCRIPTION'), output.getvalue().index('Catégorie'))

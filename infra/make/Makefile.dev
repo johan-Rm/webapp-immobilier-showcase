@@ -204,8 +204,8 @@ define run-control
 
 endef
 
-.PHONY: third-party-tests-unit
-_output-third-party-tests-unit:
+.PHONY: verifiers-tests-unit
+_output-verifiers-tests-unit:
 	$(call run-control,unit)
 
 .PHONY: third-party-tests-integration
@@ -299,7 +299,7 @@ quality-services-check:
 # Ancienne interface paramétrée, conservée uniquement pour compatibilité.
 .PHONY: check frontend-conventions-check
 check:
-	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make third-party-tests-unit, par exemple."; exit 1; }
+	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make verifiers-tests-unit, par exemple."; exit 1; }
 	$(call run-control,$(FAMILY))
 
 frontend-conventions-check:
@@ -308,7 +308,7 @@ frontend-conventions-check:
 # Compatibilité des noms antérieurs ; ne pas les présenter dans l’aide.
 .PHONY: test-unit
 test-unit:
-	@$(MAKE) --no-print-directory third-party-tests-unit
+	@$(MAKE) --no-print-directory verifiers-tests-unit
 
 .PHONY: test-integration
 test-integration:
@@ -383,9 +383,9 @@ conventions-contracts-check:
 	@$(MAKE) --no-print-directory conventions-contracts
 
 # Présentation publique commune ; les alias délèguent aux noms canoniques.
-.PHONY: third-party-tests-unit _output-third-party-tests-unit
-third-party-tests-unit:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-unit -- $(MAKE) --no-print-directory _output-third-party-tests-unit
+.PHONY: verifiers-tests-unit _output-verifiers-tests-unit
+verifiers-tests-unit:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-unit -- $(MAKE) --no-print-directory _output-verifiers-tests-unit
 
 .PHONY: third-party-tests-integration _output-third-party-tests-integration
 third-party-tests-integration:

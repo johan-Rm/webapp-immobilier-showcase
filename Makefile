@@ -27,7 +27,7 @@ help:
 	@printf "  demands                    Demandes locales non livrées ou état incertain\n"
 	@printf "  tasks [DEM-NNN]            Cartes en cours ou détail d’une demande\n"
 	@printf "\nTests et analyses avec les outils tiers\n"
-	@printf "  %-32s %s\n" "third-party-tests-unit" "Logique Vitest et Bun"
+	@printf "  %-32s %s\n" "verifiers-tests-unit" "Logique Vitest et Bun"
 	@printf "  %-32s %s\n" "third-party-tests-integration" "Interactions entre modules"
 	@printf "  %-32s %s\n" "third-party-tests-components" "Composants Nuxt ; Dashboard"
 	@printf "  %-32s %s\n" "third-party-tests-browser" "Parcours et accessibilité ; serveur requis"

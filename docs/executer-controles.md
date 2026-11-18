@@ -56,7 +56,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 
 | Commande | Ce qui est vérifié | Limite ou prérequis |
 | --- | --- | --- |
-| `make third-party-tests-unit` | Logique applicative, Vitest et Bun séparément | Dépendances externes simulées |
+| `make verifiers-tests-unit` | Suite unitaire existante : logique applicative et outils internes, Vitest et Bun | Sélection mixte ; ne se limite pas aux vérificateurs |
 | `make third-party-tests-integration` | Interactions entre modules et suites HTTP | Environnement isolé |
 | `make third-party-tests-components GD_TARGET=dashboard` | Formulaire pilote Nuxt | Dashboard uniquement |
 | `make third-party-tests-browser` | Parcours Playwright et accessibilité axe-core | `PLAYWRIGHT_BASE_URL` explicite, serveur déjà démarré |
@@ -107,4 +107,4 @@ Une relance conserve un serveur de test déjà actif et invite à consulter ses 
 
 ## Lire les détails en direct
 
-Le bandeau de chaque contrôle commence par le nom de la commande, puis une description de son rôle et des limites du résultat, en olive clair Graines Digitales (`#A8B97A`) lorsque la couleur est disponible. Un séparateur la distingue des métadonnées du contrôle. Par défaut, les détails restent dans le rapport et seul un résumé est affiché. Ajouter `VERBOSE=1` à la commande Make pour afficher également les sorties des outils au fil de leur émission, préfixées par commande et cible ; par exemple `make third-party-tests-unit GD_TARGET=showcase-immobilier VERBOSE=1`. Le rapport complet et le code de sortie sont conservés. Une valeur absente ou différente de `1` garde le mode synthétique. Un outil peut retarder lui-même ses écritures ; ce paramètre ne supprime pas sa mise en tampon interne.
+Le bandeau de chaque contrôle commence par le nom de la commande, puis une description de son rôle et des limites du résultat, en olive clair Graines Digitales (`#A8B97A`) lorsque la couleur est disponible. Un séparateur la distingue des métadonnées du contrôle. Par défaut, les détails restent dans le rapport et seul un résumé est affiché. Ajouter `VERBOSE=1` à la commande Make pour afficher également les sorties des outils au fil de leur émission, préfixées par commande et cible ; par exemple `make verifiers-tests-unit GD_TARGET=showcase-immobilier VERBOSE=1`. Le rapport complet et le code de sortie sont conservés. Une valeur absente ou différente de `1` garde le mode synthétique. Un outil peut retarder lui-même ses écritures ; ce paramètre ne supprime pas sa mise en tampon interne.

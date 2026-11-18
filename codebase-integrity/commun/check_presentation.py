@@ -18,7 +18,7 @@ from run_aide_checks import paint, supports_color
 ROOT = Path(__file__).resolve().parents[2]
 # Catégorie, type, objet, outils, niveau : métadonnées d’affichage uniquement.
 META = {
-    'third-party-tests-unit': ('Logique', 'Outils tiers', 'Logique applicative', 'Vitest / Bun', 'Bloquant'),
+    'verifiers-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
     'third-party-tests-integration': ('Intégration', 'Outils tiers', 'Interactions et HTTP', 'Vitest', 'Bloquant'),
     'third-party-tests-components': ('Composants', 'Outils tiers', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
     'third-party-tests-browser': ('Navigateur', 'Outils tiers', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
@@ -43,8 +43,8 @@ META = {
     'checks-rebuild': ('Préparation', 'Environnement', 'Construire explicitement l’image', 'Docker Compose', 'Prérequis'),
 }
 DESCRIPTIONS = {
-    'third-party-tests-unit': (
-        'Teste des fonctions isolées sur des exemples connus : calculs, données et erreurs. Ne vérifie pas le rendu dans un navigateur.'
+    'verifiers-tests-unit': (
+        'Exécute les tests unitaires écrits pour le projet : logique applicative et outils internes. Cette sélection mixte ne se limite pas aux vérificateurs et ne vérifie pas le rendu dans un navigateur.'
     ),
     'third-party-tests-integration': (
         'Teste les échanges entre modules, les outils CLI et les requêtes HTTP simulées. Ne dépend pas d’une API réelle ni d’un serveur à démarrer manuellement.'
