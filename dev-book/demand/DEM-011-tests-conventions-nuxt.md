@@ -138,6 +138,10 @@ Branche `demands/DEM-011` créée depuis `develop` local à `ca571d60c39b8b5932d
 
 Le contrôle de contribution extrait de `develop` refuse deux scopes de commits ; les références exactes sont consignées dans la trace de reconstitution. L’un appartient aux sources validées, l’autre à la matérialisation documentaire. Aucun commit réécrit ni contrôle assoupli ; cet écart doit être arbitré avant livraison. Les contrôles documentation, liens locaux et traces des cartes réussissent.
 
+## Tentative de livraison — 2026-11-18
+
+La base distante est vérifiée par fetch. Les contrôles frontend, vérificateurs, documentation, traces et les deux parcours navigateur réussissent après préparation de l’environnement local et utilisation d’un dossier neuf de rapports, sans modification des anciens fichiers. Les preuves et limites sont centralisées dans la [trace de reconstitution](../reports/tests-conventions-nuxt-reconstitution.json), entrée `tentative_livraison_2026_11_18`. Le contrôle des scopes de contribution reste en échec ; livraison arrêtée avant push ou PR, sans réécriture des commits ni contournement.
+
 ## Déclaration de contribution
 
 ```contribution-json
