@@ -19,6 +19,8 @@ Sélecteur commun dans `codebase-integrity/commun/application-scope.ts` : trois 
 
 Vérification : `node node_modules/vitest/vitest.mjs run domaines/fiabilite-verifications/tests/application-scope.vitest.ts` depuis `codebase-integrity/` : 6 tests réussis hors sandbox. Dans le sandbox, le cas Git a échoué avec `spawnSync git EPERM` ; les cinq autres passaient. Formatage ciblé Prettier effectué. Aucune validation humaine.
 
+Correctif : une fonction commune protège les caractères de chemins interprétés comme motifs, notamment les crochets des routes ; 7 tests ciblés réussis.
+
 ## Verdict humain
 
 Aucun verdict humain.
