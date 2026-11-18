@@ -214,6 +214,13 @@ describe('préparation explicite de l’image qualité', () => {
     ['third-party-tests-lint', 'lint'],
     ['third-party-tests-format', 'format'],
     ['third-party-tests-types', 'types'],
+    ['conventions-tests-types-placement', 'types-placement'],
+    ['conventions-tests-images', 'images'],
+    ['conventions-tests-business-logic', 'business-logic'],
+    ['conventions-tests-script-setup', 'script-setup'],
+    ['conventions-tests-responsibilities', 'responsibilities'],
+    ['conventions-tests-code-quality', 'code-quality'],
+    ['conventions-tests-solid', 'solid'],
     ['conventions-tests-guards', 'guards'],
     ['conventions-tests-services', 'services'],
   ])('route %s vers le lanceur commun sans build', (target, family) => {

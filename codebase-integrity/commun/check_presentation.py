@@ -18,6 +18,14 @@ from run_aide_checks import paint, supports_color
 ROOT = Path(__file__).resolve().parents[2]
 # Catégorie, type, objet, outils, niveau : métadonnées d’affichage uniquement.
 META = {
+    'conventions-tests-types-placement': ('Frontend', 'Conventions', 'Placement des types', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-images': ('Frontend', 'Conventions', 'Images Vue', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-business-logic': ('Frontend', 'Conventions', 'Logique des composants', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-script-setup': ('Frontend', 'Conventions', 'Sections script setup', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-responsibilities': ('Frontend', 'Conventions', 'Séparation des responsabilités', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-code-quality': ('Frontend', 'Conventions', 'Conventions de code', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-solid': ('Frontend', 'Conventions', 'Responsabilités SOLID', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
+
     'internal-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
     'internal-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
     'internal-tests-components': ('Composants', 'Tests internes', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
@@ -41,6 +49,14 @@ META = {
     'checks-rebuild': ('Préparation', 'Environnement', 'Construire explicitement l’image', 'Docker Compose', 'Prérequis'),
 }
 DESCRIPTIONS = {
+    'conventions-tests-types-placement': 'Vérifie le placement des types partagés conformément aux conventions du socle.',
+    'conventions-tests-images': 'Vérifie les composants et attributs d’image attendus dans les templates Vue.',
+    'conventions-tests-business-logic': 'Recherche la logique métier interdite dans les composants selon les conventions documentées.',
+    'conventions-tests-script-setup': 'Vérifie les sections documentées du script setup et leurs exceptions explicites.',
+    'conventions-tests-responsibilities': 'Vérifie la séparation des responsabilités entre pages et composants.',
+    'conventions-tests-code-quality': 'Vérifie les conventions de code propres au projet sur les sources frontend.',
+    'conventions-tests-solid': 'Vérifie les seuils documentés de responsabilités des composables, composants et types.',
+
     'internal-tests-unit': (
         'Exécute avec Vitest et Bun les tests unitaires de la logique applicative et des outils internes : calculs, transformations de données et gestion des erreurs.'
     ),

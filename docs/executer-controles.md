@@ -66,6 +66,13 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
 | `make internal-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
 | `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
+| `make conventions-tests-types-placement` | Placement des types | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-images` | Images Vue | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-business-logic` | Logique des composants | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-script-setup` | Sections script setup | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-responsibilities` | Séparation des responsabilités | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-code-quality` | Conventions de code | Contrôle individuel issu des conventions documentées |
+| `make conventions-tests-solid` | Responsabilités SOLID | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-frontend` | Structure frontend AST | Exécution locale ; limites documentées |
 | `make conventions-tests-guards` | Gardes potentiellement redondantes | Relecture humaine nécessaire |
 | `make conventions-tests-services` | Indépendance des services | Analyse statique |
