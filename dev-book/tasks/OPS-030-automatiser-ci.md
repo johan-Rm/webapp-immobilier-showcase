@@ -173,3 +173,9 @@ Sur demande humaine, `verifiers-tests-unit` remplace `third-party-tests-unit` da
 ### Description positive du formatage — 2026-11-18
 
 Lors de la revue humaine, la description Prettier est précisée positivement : périmètre application et vérificateurs, indentation, guillemets, points-virgules, retours à la ligne et ordre des classes Tailwind. L’objet du bandeau devient « Mise en forme des fichiers ». Le journal humain `third-party-tests-format-c920__si/output.log` signale un écart de formatage dans `codebase-integrity/README.md` ; cet échec reste distinct et n’est pas corrigé par cette évolution rédactionnelle. Contrôle documentaire exécuté ; aucun nouveau formatage global lancé.
+
+### Revue de toutes les descriptions — 2026-11-18
+
+À la demande humaine, les 23 descriptions du catalogue et les explications intermédiaires sont revues pour présenter positivement les vérifications effectuées et leur périmètre. Les descriptions précisent les objets analysés, les outils et les mesures selon la commande. Les prérequis, erreurs et niveaux de blocage restent dans les champs et diagnostics dédiés. La règle de présentation est alignée dans le README responsable et le guide d’exécution. La sélection mixte de la suite unitaire reste explicite ; aucun périmètre de contrôle ni assertion n’est changé.
+
+Vérifications : 11 tests ciblés de présentation réussis, contrôle documentaire réel réussi, formatage et lint ciblés du lanceur TypeScript conformes. Aucun contrôle applicatif global ni reconstruction d’image lancé pour cette revue rédactionnelle ; les textes embarqués dans l’image actuelle seront actualisés lors de la prochaine reconstruction explicite.

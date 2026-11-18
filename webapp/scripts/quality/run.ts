@@ -215,9 +215,10 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
 }
 
 const explanations: Record<Family, string> = {
-  lint: 'Vérifie les règles de code des deux paquets sans correction automatique.',
-  format: 'Vérifie le formatage des deux paquets sans réécrire les fichiers.',
-  types: 'Prépare Nuxt puis vérifie les types de la cible, sans démarrer de serveur.',
+  lint: 'Vérifie les règles ESLint de l’application Nuxt et des vérificateurs.',
+  format:
+    'Vérifie la mise en forme des fichiers de l’application et des vérificateurs selon la configuration Prettier.',
+  types: 'Prépare Nuxt puis vérifie les types TypeScript et Vue de la cible.',
   guards: 'Signale les gardes potentiellement redondantes, à relire humainement.',
   services: 'Vérifie les imports interdits de frameworks dans les services.',
   unit: 'Teste la logique avec les moteurs Vitest et Bun séparés.',
