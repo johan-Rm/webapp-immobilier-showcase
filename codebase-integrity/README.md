@@ -45,6 +45,16 @@ Les contrôles appliquent les **conventions techniques des README applicatifs** 
 - **Résolution des types** : résoudre les alias dans l’application du fichier ; utiliser l’application consommatrice désignée pour le catalogue partagé.
 - **Base de création** : refuser la création d’un worktree si la base ne contient pas les fichiers requis par la configuration des couches.
 
+### Exceptions temporaires des composables
+
+Une exception au contrôle de **taille de l’API** exige un **arbitrage humain explicite** et une demande de correction identifiée, sans modifier le seuil général.
+
+- Borner chaque exception à un **fichier**, une **fonction**, une **empreinte SHA-256** et un **nombre exact de propriétés comptées avec certitude**.
+- Indiquer une **justification** et une **date d’expiration**, valable jusqu’à la fin du jour indiqué en UTC.
+- Refuser les déclarations invalides ou dupliquées, les fichiers modifiés ou absents, les écarts absents ou ambigus et les exceptions expirées.
+- Afficher séparément les **exceptions**, les **avertissements** et les **erreurs** ; conserver les autres dépassements bloquants.
+- Supprimer l’exception lorsque la correction est réalisée ; son existence ne prouve pas la conformité du composable.
+
 ### Classement des conventions
 
 Le **registre central** classe les conventions et décrit leurs contrôles, sans recopier les règles définies dans les README.

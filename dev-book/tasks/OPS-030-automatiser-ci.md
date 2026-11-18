@@ -247,3 +247,13 @@ Le répertoire temporaire Stryker possède un tsconfig autonome pour le module p
 ### Contexte Docker du principal — 2026-11-18
 
 Sur accord humain explicite après reconstitution, la réinclusion Docker `!**/.env.example` devient `!webapp/.env.example`, seul modèle d’environnement suivi. La réinclusion générale empêchait l’élagage des dossiers `.data` et provoquait un refus de lecture du répertoire local des sessions. Reproduction Docker sur données factices et dossier inaccessible : configuration initiale en échec, réinclusion ciblée réussie. Aucun changement de données, propriétaire ou permissions du projet. Le correctif est destiné à être intégré par cherry-pick dans DEM-011 puis éprouvé par préparation réelle de l’image du principal.
+
+### Exception SOLID arbitrée — 2026-11-18
+
+L’humain demande une exception aux quatre dépassements reportés dans DEM-012 puis confirme l’échéance proposée du **2 décembre 2026 inclus**. Cet arbitrage succède au report initial sans exemption ; il ne modifie pas le maximum de huit propriétés. Le périmètre technique de reprise comprend le vérificateur SOLID, ses tests et ses paramètres, ainsi que la convention générique dans le README Codebase Integrity.
+
+Les paramètres de `app-composable-many-returns` portent la référence DEM-012, le fichier exact, le nom du composable, son empreinte SHA-256, le nombre certain de propriétés et la justification. Le contrôle refuse une expiration (fin de journée UTC), une empreinte différente, une déclaration invalide ou dupliquée et un écart absent ou ambigu. Tout autre dépassement demeure bloquant. Les exceptions apparaissent séparément dans le terminal et dans `solid.json`.
+
+Vérification locale sur les sources DevOps : **0 erreur, 66 avertissements et 4 exceptions explicites**. Les **29 tests Vitest SOLID** réussissent, dont les cas d’expiration, modification de contenu, fichier illisible, mauvais nom ou comptage, écart absent ou ambigu et paramètres invalides. Lint de Codebase Integrity, formatage ciblé et trois étapes des conventions documentaires réussis. Journal de mesure : `/tmp/dem011-solid-exceptions.log`. La suite Vitest complète réussit également : **85 tests dans six fichiers** (`/tmp/dem011-solid-all-vitest.log`), après autorisation de création des dépôts Git temporaires nécessaires aux tests.
+
+Le correctif est implémenté localement et reste à vérifier humainement avant reprise de la livraison. Les verdicts antérieurs restent historiques ; aucun résultat distant ni conformité des quatre composables n’est déduit de cette exception.
