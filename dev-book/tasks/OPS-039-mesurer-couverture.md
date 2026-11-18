@@ -19,6 +19,8 @@ Mesure Vitest Node/V8 par cible et sources sélectionnées ; rapports unitaires 
 
 Vérifications : 3 tests ciblés de rapport et lint ciblé réussis ; pilote isolé `shared/saas/links.vitest.ts` : 30 tests réussis. Dans `/tmp/dem013-coverage-OzTLl5`, copie isolée Showcase : 129 tests unitaires et 254 d’intégration réussis sous V8 ; rapport : 47 fichiers mesurés, 87 non couverts, 163 non mesurables. Le lancement intégration a duré environ 61 secondes. Les suites Bun, Nuxt et navigateur n’ont pas été mesurées. Audit des deux lockfiles : aucun avis high/critical non exempté ; avis connus et exceptions restent ceux du rapport de sécurité. Aucune validation humaine.
 
+Correctif : chaque exécution écrit son résumé dans un dossier neuf afin de préserver les rapports précédents.
+
 ## Verdict humain
 
 Aucun verdict humain.

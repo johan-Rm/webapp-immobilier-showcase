@@ -91,7 +91,9 @@ export async function runCoverage(
     }
     const output = join(root, '.tmp/quality/coverage')
     mkdirSync(output, { recursive: true })
-    writeFileSync(join(output, `${target}.json`), JSON.stringify(result, null, 2) + '\n')
+    const directory = mkdtempSync(join(output, `${target}-`))
+    writeFileSync(join(directory, 'summary.json'), JSON.stringify(result, null, 2) + '\n')
+    process.stdout.write(`Rapport : ${directory}\n`)
     return result
   } finally {
     rmSync(temporary, { recursive: true, force: true })
