@@ -72,6 +72,17 @@ describe('commande de vérification', () => {
     ).toThrow('non installé')
   })
 
+  it('prépare les types Nuxt avant de compiler le pilote de composants Dashboard', () => {
+    const plan = buildPlan(parseOptions(['components', '--target', 'dashboard', '--list']))
+    expect(plan.commands.map((command) => command.args[0])).toEqual([
+      'node_modules/nuxt/bin/nuxt.mjs',
+      'node_modules/vitest/vitest.mjs',
+    ])
+    expect(plan.commands[0]!.args).toContain('prepare')
+    expect(plan.commands[0]!.env.GD_TARGET).toBe('dashboard')
+    expect(plan.commands[0]!.args).toContain('.env.test')
+  })
+
   it('ne laisse pas une commande échouée devenir un succès', async () => {
     const root = mkdtempSync(join(tmpdir(), 'verify-process-'))
     temporary.push(root)
