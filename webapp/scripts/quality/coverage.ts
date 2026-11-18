@@ -10,6 +10,13 @@ import { buildPlan, webappRoot } from './run'
 type CoverageFile = { path: string; s: Record<string, number> }
 type CoverageResult = Record<string, CoverageFile>
 
+export function coverageEnvironment(
+  environment: NodeJS.ProcessEnv,
+  repo: string,
+): NodeJS.ProcessEnv {
+  return { ...environment, VERIFY_GIT_ROOT: repo, AIDE_GIT_ROOT: repo }
+}
+
 export function summarizeCoverage(sources: string[], reports: CoverageResult[], root: string) {
   const measured = new Map<string, Record<string, number>>()
   for (const report of reports) {
@@ -75,7 +82,13 @@ export async function runCoverage(
                 .map((path) => `--coverage.include=${path.slice('webapp/'.length)}`),
             ]
           : command.args
-        await runOwned(command.executable, args, command.cwd, 900000, command.env)
+        await runOwned(
+          command.executable,
+          args,
+          command.cwd,
+          900000,
+          coverageEnvironment(command.env, repo),
+        )
         if (isVitest) measured = true
       }
       if (!measured) throw new Error(`Suite Vitest absente : ${family}`)

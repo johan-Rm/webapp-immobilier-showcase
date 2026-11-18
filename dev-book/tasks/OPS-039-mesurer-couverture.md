@@ -21,6 +21,8 @@ Vérifications : 3 tests ciblés de rapport et lint ciblé réussis ; pilote iso
 
 Correctif : chaque exécution écrit son résumé dans un dossier neuf afin de préserver les rapports précédents.
 
+Correctif Docker : le chemin du dépôt monté est transmis aux processus de test. Le premier essai échouait sur un chemin Git absent ; après correction, `make internal-tests-coverage GD_TARGET=showcase-immobilier` réussit dans l’image reconstruite : 136 tests unitaires et 254 d’intégration. Quatre tests ciblés de rapport réussissent.
+
 ## Verdict humain
 
 Aucun verdict humain.

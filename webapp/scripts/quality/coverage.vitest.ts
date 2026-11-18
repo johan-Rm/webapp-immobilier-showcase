@@ -1,8 +1,15 @@
 import { describe, expect, it } from 'vitest'
 
-import { summarizeCoverage } from './coverage'
+import { coverageEnvironment, summarizeCoverage } from './coverage'
 
 describe('bilan de couverture', () => {
+  it('transmet le dépôt Git monté aux processus de test', () => {
+    expect(coverageEnvironment({ GD_TARGET: 'dashboard' }, '/repo')).toEqual({
+      GD_TARGET: 'dashboard',
+      VERIFY_GIT_ROOT: '/repo',
+      AIDE_GIT_ROOT: '/repo',
+    })
+  })
   it('distingue les sources exécutées, non couvertes et non mesurables', () => {
     const result = summarizeCoverage(
       ['webapp/shared/a.ts', 'webapp/shared/b.ts', 'webapp/shared/c.vue'],
