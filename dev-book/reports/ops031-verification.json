@@ -666,5 +666,14 @@
     ],
     "exception_appliquee": false,
     "limite": "sources et livrables locaux sous profil de test ; aucune image déployée inspectée"
+  },
+  "exception_picomatch_approuvee_2026_11_18": {
+    "carte": "OPS-030",
+    "rapport": "dev-book/reports/ops030-exposition-picomatch.md",
+    "expiration": "2026-12-02",
+    "audit_code": 0,
+    "tests_securite": 17,
+    "journal": "webapp/.tmp/quality/console/third-party-tests-security-4zp66gos/output.log",
+    "limite": "Picomatch reste vulnérable ; exception explicite du seul avis GHSA-fc5q-39xc-vjpf."
   }
 }

@@ -64,3 +64,9 @@ Proposition uniquement : exception du seul couple paquet/avis ci-dessous jusqu�
 ```
 
 Cette proposition n’est pas ajoutée à `webapp/scripts/quality/security-exceptions.json`. L’audit demeure bloquant en attente d’un éventuel arbitrage explicite.
+
+## Arbitrage et application — 18 novembre 2026
+
+Après présentation de cette analyse, l’humain autorise explicitement l’exception proposée (« parfait go »). Le seul couple et l’échéance ci-dessus sont appliqués dans `webapp/scripts/quality/security-exceptions.json`, sans modification des seuils. Les mentions de proposition non appliquée décrivent l’état avant cet arbitrage.
+
+Après reconstruction de l’image, `make third-party-tests-security GD_TARGET=showcase-immobilier VERBOSE=1` réussit : 1 908 paquets / 8 avis côté application, 179 paquets / 2 avis côté vérificateurs, aucun high/critical non exempté et aucun paquet non analysable. Les 17 tests existants du mécanisme de sécurité réussissent, ainsi que le contrôle documentaire. La dépendance demeure vulnérable ; cette réussite tient compte de l’exception temporaire approuvée.

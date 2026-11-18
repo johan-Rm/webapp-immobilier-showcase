@@ -195,3 +195,7 @@ Confirmation sur l’image définitive : 133 tests unitaires (126 Vitest, 7 Bun)
 ### Analyse d’exposition Picomatch — 2026-11-18
 
 Sur accord humain pour l’analyse recommandée, recherche des origines des motifs dans les sources et dépendances, lecture du handler d’icônes et inventaire des trois builds SSR locaux reconstruits. Conclusion, preuves, limites et proposition bornée à arbitrer dans le [rapport d’exposition](../reports/ops030-exposition-picomatch.md). Aucun fichier d’exception, seuil ou contrôle n’est modifié ; les conteneurs de construction sont jetables. La proposition ne vaut pas acceptation du risque par l’humain.
+
+### Exception Picomatch approuvée — 2026-11-18
+
+L’humain approuve explicitement la proposition du rapport d’exposition : exception du seul couple `picomatch` / `GHSA-fc5q-39xc-vjpf`, commune aux deux inventaires, jusqu’au 2 décembre 2026. Application dans `webapp/scripts/quality/security-exceptions.json` ; seuils inchangés. Cette acceptation temporaire ne corrige pas la dépendance.
