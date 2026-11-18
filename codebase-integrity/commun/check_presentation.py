@@ -22,7 +22,7 @@ META = {
     'verifiers-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
     'third-party-tests-components': ('Composants', 'Outils tiers', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
     'third-party-tests-browser': ('Navigateur', 'Outils tiers', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
-    'third-party-tests-mutation': ('Mutation', 'Outils tiers', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
+    'verifiers-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
@@ -55,7 +55,7 @@ DESCRIPTIONS = {
     'third-party-tests-browser': (
         'Exécute les parcours navigateur de la cible dans Chromium et contrôle les réponses HTTP, les éléments attendus et les erreurs du navigateur selon les assertions de chaque scénario.'
     ),
-    'third-party-tests-mutation': (
+    'verifiers-tests-mutation': (
         'Modifie volontairement le module pilote et relance ses tests pour mesurer les erreurs détectées, les mutations survivantes et les parties couvertes.'
     ),
     'third-party-tests-lint': (

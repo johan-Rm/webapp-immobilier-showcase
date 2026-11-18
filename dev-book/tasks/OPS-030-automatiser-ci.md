@@ -203,3 +203,7 @@ L’humain approuve explicitement la proposition du rapport d’exposition : exc
 ### Renommage des tests d’intégration — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-integration` remplace `third-party-tests-integration` dans Make, sa présentation, la documentation et les tests de routage. Les scénarios sont inchangés : ils couvrent les interactions applicatives et les outils internes. Le classement reste provisoire, à affiner ultérieurement selon l’objet testé.
+
+### Renommage des tests de mutation — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-mutation` remplace `third-party-tests-mutation` dans Make, sa présentation, la documentation et les tests de routage. Stryker reste le moteur tiers et réexécute les scénarios internes existants ; le module pilote, les assertions et le score informatif sont inchangés. Le préfixe suit le classement provisoire retenu, sans affirmer que ces scénarios testent exclusivement des vérificateurs.
