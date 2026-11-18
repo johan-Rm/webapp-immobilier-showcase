@@ -19,6 +19,8 @@ Lanceur Stryker sur les sources TypeScript/JavaScript sélectionnées, dans une 
 
 Vérifications : 13 tests Vitest ciblés réussis, dont erreurs et interruption du processus ; lint et formatage ciblés conformes. Dans une copie isolée, le pilote `shared/saas/links.ts` a produit 47 mutants détectés et 5 survivants ; 30 tests directs, puis les 383 tests Node sélectionnés ont réussi avant mutation. Le fichier applicatif du worktree est resté identique à Git. La sélection complète des fichiers n’a pas été exécutée ; sa durée et les capacités au-delà de Node restent à établir. Aucune validation humaine.
 
+Correctif Docker : la copie temporaire est placée hors de l’arbre applicatif pour éviter l’héritage de sa configuration TypeScript. L’essai initial échouait sur les types Nuxt ; le pilote Docker réussit après correction, avec 47 mutants détectés et 5 survivants. Quatorze tests ciblés réussissent.
+
 ## Verdict humain
 
 Aucun verdict humain.
