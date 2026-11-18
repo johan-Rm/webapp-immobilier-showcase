@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 # Catégorie, type, objet, outils, niveau : métadonnées d’affichage uniquement.
 META = {
     'verifiers-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
-    'third-party-tests-integration': ('Intégration', 'Outils tiers', 'Interactions et HTTP', 'Vitest', 'Bloquant'),
+    'verifiers-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
     'third-party-tests-components': ('Composants', 'Outils tiers', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
     'third-party-tests-browser': ('Navigateur', 'Outils tiers', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
     'third-party-tests-mutation': ('Mutation', 'Outils tiers', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
@@ -46,7 +46,7 @@ DESCRIPTIONS = {
     'verifiers-tests-unit': (
         'Exécute avec Vitest et Bun les tests unitaires de la logique applicative et des outils internes : calculs, transformations de données et gestion des erreurs.'
     ),
-    'third-party-tests-integration': (
+    'verifiers-tests-integration': (
         'Vérifie les échanges entre modules, les réponses HTTP simulées et le fonctionnement des commandes de préparation et de contrôle.'
     ),
     'third-party-tests-components': (

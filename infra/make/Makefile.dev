@@ -208,8 +208,8 @@ endef
 _output-verifiers-tests-unit:
 	$(call run-control,unit)
 
-.PHONY: third-party-tests-integration
-_output-third-party-tests-integration:
+.PHONY: verifiers-tests-integration
+_output-verifiers-tests-integration:
 	$(call run-control,integration)
 
 .PHONY: third-party-tests-components
@@ -312,7 +312,7 @@ test-unit:
 
 .PHONY: test-integration
 test-integration:
-	@$(MAKE) --no-print-directory third-party-tests-integration
+	@$(MAKE) --no-print-directory verifiers-tests-integration
 
 .PHONY: test-components
 test-components:
@@ -387,9 +387,9 @@ conventions-contracts-check:
 verifiers-tests-unit:
 	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-unit -- $(MAKE) --no-print-directory _output-verifiers-tests-unit
 
-.PHONY: third-party-tests-integration _output-third-party-tests-integration
-third-party-tests-integration:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-integration -- $(MAKE) --no-print-directory _output-third-party-tests-integration
+.PHONY: verifiers-tests-integration _output-verifiers-tests-integration
+verifiers-tests-integration:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-integration -- $(MAKE) --no-print-directory _output-verifiers-tests-integration
 
 .PHONY: third-party-tests-components _output-third-party-tests-components
 third-party-tests-components:
