@@ -12,6 +12,10 @@ export const families = [
   'security',
   'architecture',
   'mutation',
+  'mutation-extended',
+  'coverage',
+  'functions-debug',
+  'duplicates',
   'load',
   'lighthouse',
   'contracts',
@@ -218,7 +222,7 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
           : 'check:conventions')
     plan.commands.push(command(['--no-env-file', 'run', script], integrity, 'bun'))
   } else {
-    const script = `scripts/quality/${family}.ts`
+    const script = `scripts/quality/${family === 'functions-debug' || family === 'duplicates' ? 'source-quality' : family}.ts`
     if (!existsSync(join(root, script)))
       throw new Error(`Famille non installée : ${family} (${script})`)
     plan.files = [script]
@@ -228,6 +232,7 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
           '--no-env-file',
           'run',
           script,
+          ...(family === 'functions-debug' || family === 'duplicates' ? [family] : []),
           ...(options.profile ? ['--profile', options.profile] : []),
         ],
         root,
@@ -264,6 +269,12 @@ const explanations: Record<Family, string> = {
   security: 'Audite les deux fichiers de dépendances ; les avis high et critical bloquent.',
   architecture: 'Mesure les imports des services et contrôle leur indépendance du framework.',
   mutation: 'Évalue si les tests détectent les modifications volontaires du module pur.',
+  'mutation-extended':
+    'Mesure la mutation des sources compatibles dans une copie isolée ; score informatif.',
+  coverage: 'Mesure la couverture Vitest Node et distingue les sources non mesurables.',
+  'functions-debug':
+    'Signale les fonctions et journaux suspects ; bloque les instructions debugger non exemptées.',
+  duplicates: 'Signale les fragments similaires pour revue humaine.',
   load: 'Mesure une charge locale bornée ; les erreurs bloquent, les latences sont informatives.',
   lighthouse: 'Audite les vraies pages SSR trois fois ; scores informatifs, erreurs bloquantes.',
   contracts: 'Compare deux générations isolées des contrats YAML locaux.',

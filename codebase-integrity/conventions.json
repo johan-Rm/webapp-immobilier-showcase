@@ -325,6 +325,28 @@
       ]
     },
     {
+      "id": "application-quality-target",
+      "nom": "Qualité applicative par cible",
+      "domaine": "qualite",
+      "source": "codebase-integrity/README.md#contrôles-existants",
+      "controles": [
+        {
+          "id": "functions-debug",
+          "etat": "implémenté",
+          "mode": "revue humaine",
+          "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-functions-debug.ts",
+          "limite": "Métriques et journaux à relire ; seules les instructions debugger non exemptées bloquent. Les journaux indirects peuvent échapper à la détection."
+        },
+        {
+          "id": "application-duplicates",
+          "etat": "implémenté",
+          "mode": "revue humaine",
+          "fichier": "codebase-integrity/domaines/qualite-code/scripts/verify-duplicates.ts",
+          "limite": "Comparaison textuelle normalisée ; variantes renommées non détectées et pertinence de mutualisation à relire."
+        }
+      ]
+    },
+    {
       "id": "devbook-traceability",
       "nom": "Traçabilité des cartes et verdicts",
       "domaine": "livraison",

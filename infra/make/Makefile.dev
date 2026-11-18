@@ -222,6 +222,18 @@ _output-third-party-tests-security:
 _output-internal-tests-mutation:
 	$(call run-control,mutation)
 
+_output-internal-tests-coverage:
+	$(call run-control,coverage)
+
+_output-internal-tests-mutation-extended:
+	$(call run-control,mutation-extended)
+
+_output-conventions-tests-functions:
+	$(call run-control,functions-debug)
+
+_output-conventions-tests-duplicates:
+	$(call run-control,duplicates)
+
 .PHONY: internal-tests-load
 _output-internal-tests-load:
 	$(call run-control,load)
@@ -381,6 +393,16 @@ internal-tests-browser:
 .PHONY: internal-tests-mutation _output-internal-tests-mutation
 internal-tests-mutation:
 	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-mutation -- $(MAKE) --no-print-directory _output-internal-tests-mutation
+
+.PHONY: internal-tests-coverage _output-internal-tests-coverage internal-tests-mutation-extended _output-internal-tests-mutation-extended conventions-tests-functions _output-conventions-tests-functions conventions-tests-duplicates _output-conventions-tests-duplicates
+internal-tests-coverage:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-coverage -- $(MAKE) --no-print-directory _output-internal-tests-coverage
+internal-tests-mutation-extended:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-mutation-extended -- $(MAKE) --no-print-directory _output-internal-tests-mutation-extended
+conventions-tests-functions:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-functions -- $(MAKE) --no-print-directory _output-conventions-tests-functions
+conventions-tests-duplicates:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-duplicates -- $(MAKE) --no-print-directory _output-conventions-tests-duplicates
 
 .PHONY: third-party-tests-lint _output-third-party-tests-lint
 third-party-tests-lint:
