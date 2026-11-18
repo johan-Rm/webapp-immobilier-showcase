@@ -74,7 +74,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make conventions-architecture` | Imports des services avec dependency-cruiser | Imports Nuxt virtuels signalés séparément |
 | `make conventions-contracts` | Reproductibilité des contrats locaux | Aucun contrôle du Symfony distant |
 | `make conventions-docs` | Registre, demandes, documentation et README | Ne teste pas les fonctionnalités |
-| `make conventions-devbook BASE=<SHA>` | Traces des cartes | Base Git explicite requise |
+| `make conventions-devbook` | Traces des cartes du dépôt | Base commune develop/HEAD calculée et affichée ; `BASE=<SHA>` facultatif |
 | `make verifiers-test` | Tests Python, Vitest et Bun des vérificateurs | Exécution locale avec dépendances installées |
 
 `make third-party-tests-code` enchaîne lint, formatage et types avec arrêt au premier échec. Plusieurs commandes explicites peuvent être données à un même appel Make. Les contrôles ne démarrent pas de serveur web ; les mesures et parcours exigent un serveur préparé séparément.

@@ -219,3 +219,7 @@ Sur demande humaine, `verifiers-tests-browser` remplace `third-party-tests-brows
 ### Renommage des tests de composants — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-components` remplace `third-party-tests-components` dans Make, sa présentation, la documentation et les tests de routage et de prérequis. Nuxt Test Utils et Vitest restent les outils tiers ; le scénario interne du formulaire Dashboard, ses assertions et la restriction à cette cible sont inchangés. Le classement suit le préfixe provisoire retenu pour les scénarios internes. Le défaut de préparation connu reste ouvert ; ce renommage ne relance ni ne valide le scénario de composants.
+
+### Base automatique du contrôle dev-book — 2026-11-18
+
+Sur demande humaine, `conventions-devbook` calcule par défaut `git merge-base develop HEAD` et affiche la base dans un contexte dépôt, indépendant de GD_TARGET. BASE reste prioritaire quand fourni ; une référence absente ou sans ancêtre commun bloque explicitement le contrôle. Aucun fetch implicite : develop est la référence locale.
