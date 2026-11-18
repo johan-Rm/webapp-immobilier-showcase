@@ -207,3 +207,7 @@ Sur demande humaine, `verifiers-tests-integration` remplace `third-party-tests-i
 ### Renommage des tests de mutation — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-mutation` remplace `third-party-tests-mutation` dans Make, sa présentation, la documentation et les tests de routage. Stryker reste le moteur tiers et réexécute les scénarios internes existants ; le module pilote, les assertions et le score informatif sont inchangés. Le préfixe suit le classement provisoire retenu, sans affirmer que ces scénarios testent exclusivement des vérificateurs.
+
+### Renommage des tests de charge — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-load` remplace `third-party-tests-load` dans Make, sa présentation, la documentation et les tests. k6 reste le moteur tiers ; scénario, paramètres, prérequis d’URL locale et latences informatives restent inchangés. Le classement suit le préfixe provisoire retenu pour les scénarios internes, sans limiter leur objet aux vérificateurs.

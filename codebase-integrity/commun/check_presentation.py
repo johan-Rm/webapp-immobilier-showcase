@@ -28,7 +28,7 @@ META = {
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
     'third-party-tests-code': ('Code', 'Outils tiers', 'Lint, formatage et types', 'ESLint / Prettier / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
-    'third-party-tests-load': ('Charge', 'Outils tiers', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
+    'verifiers-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
     'third-party-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
     'conventions-all': ('Frontend', 'Conventions', 'Conventions Nuxt regroupées', 'Vérificateurs spécifiques', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
@@ -73,7 +73,7 @@ DESCRIPTIONS = {
     'third-party-tests-security': (
         'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
-    'third-party-tests-load': (
+    'verifiers-tests-load': (
         'Envoie un nombre borné de requêtes au serveur de test local avec k6 et mesure les temps de réponse ainsi que les erreurs rencontrées.'
     ),
     'third-party-tests-lighthouse': (
@@ -120,7 +120,7 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 def precondition(command, env):
     if command == 'third-party-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command in ('third-party-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
+    if command in ('verifiers-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
         return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
     if command == 'third-party-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
         return 'Le pilote de composants est disponible uniquement avec GD_TARGET=dashboard.'
