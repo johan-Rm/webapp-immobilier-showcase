@@ -215,3 +215,7 @@ Sur demande humaine, `verifiers-tests-load` remplace `third-party-tests-load` da
 ### Renommage des tests navigateur — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-browser` remplace `third-party-tests-browser` dans Make, sa présentation, la documentation et les tests de routage et de prérequis. Playwright et axe-core restent les outils tiers ; les parcours et assertions internes sont inchangés, ainsi que l’exigence de `PLAYWRIGHT_BASE_URL`. Le classement suit le préfixe provisoire retenu pour les scénarios internes. Le passage navigateur réussi précédemment reste une preuve historique ; aucun nouveau parcours n’est exécuté pour ce seul renommage.
+
+### Renommage des tests de composants — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-components` remplace `third-party-tests-components` dans Make, sa présentation, la documentation et les tests de routage et de prérequis. Nuxt Test Utils et Vitest restent les outils tiers ; le scénario interne du formulaire Dashboard, ses assertions et la restriction à cette cible sont inchangés. Le classement suit le préfixe provisoire retenu pour les scénarios internes. Le défaut de préparation connu reste ouvert ; ce renommage ne relance ni ne valide le scénario de composants.

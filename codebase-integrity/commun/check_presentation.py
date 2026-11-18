@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 META = {
     'verifiers-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
     'verifiers-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
-    'third-party-tests-components': ('Composants', 'Outils tiers', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
+    'verifiers-tests-components': ('Composants', 'Tests internes', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
     'verifiers-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
     'verifiers-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
@@ -49,7 +49,7 @@ DESCRIPTIONS = {
     'verifiers-tests-integration': (
         'Vérifie les échanges entre modules, les réponses HTTP simulées et le fonctionnement des commandes de préparation et de contrôle.'
     ),
-    'third-party-tests-components': (
+    'verifiers-tests-components': (
         'Monte le formulaire pilote Dashboard dans un environnement Nuxt et vérifie ses champs, ses interactions et ses états.'
     ),
     'verifiers-tests-browser': (
@@ -122,7 +122,7 @@ def precondition(command, env):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
     if command in ('verifiers-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
         return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command == 'third-party-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
+    if command == 'verifiers-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
         return 'Le pilote de composants est disponible uniquement avec GD_TARGET=dashboard.'
     if command == 'conventions-devbook' and not env.get('BASE'):
         return 'BASE absente ; fournir le SHA de départ des traces à vérifier.'

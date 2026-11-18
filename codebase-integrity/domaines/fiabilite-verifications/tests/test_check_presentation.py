@@ -78,10 +78,10 @@ class PresentationTest(unittest.TestCase):
         self.assertEqual(result['exit_code'], 2)
 
     def test_all_missing_prerequisites_are_explicit(self):
-        for name in ('verifiers-tests-load', 'third-party-tests-lighthouse', 'third-party-tests-components', 'conventions-devbook'):
+        for name in ('verifiers-tests-load', 'third-party-tests-lighthouse', 'verifiers-tests-components', 'conventions-devbook'):
             with self.subTest(command=name):
                 self.assertTrue(presentation.precondition(name, {}))
-        self.assertIsNone(presentation.precondition('third-party-tests-components', {'GD_TARGET': 'dashboard'}))
+        self.assertIsNone(presentation.precondition('verifiers-tests-components', {'GD_TARGET': 'dashboard'}))
 
     def test_unavailable_executable_is_not_a_test_failure(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
