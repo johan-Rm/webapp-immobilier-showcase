@@ -1,0 +1,2402 @@
+{
+  "base": "ca571d60c39b8b5932d74cd43dcbe4131c47c578",
+  "method": "git ls-files webapp; vue/compiler-sfc parse, AST elements; no rendered DOM audit",
+  "vue": [
+    {
+      "file": "webapp/base/real-estate/components/screen/Blockquote.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/Contact.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/EssaouiraTheJewel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/Footer.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "footer",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/Footer2.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/Investing.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/PanelMDC.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/PanelScrollDualSynced.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/PropertyDetail.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/PropertyExceptional.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/PropertyList.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/WhyChooseShowcase.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/real-estate/FullImage.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/real-estate/Rounded.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/real-estate/Split.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/base/real-estate/components/screen/real-estate/ThreeColProperties.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/app.vue",
+      "owner": "dashboard",
+      "kind": "entry",
+      "roots": [
+        {
+          "tag": "UApp",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/AccessForm.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UCard",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Administration.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ArticleActions.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "DashboardPanel",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ArticleBlocks.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "DashboardPanel",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ArticleFields.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "DashboardPanel",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ArticleList.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "DashboardPanel",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ArticleResources.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USlideover",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Articles.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Brand.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "span",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/ContextPicker.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "DashboardPanel",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Navigation.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "nav",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Overview.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/Panel.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UCard",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/components/dashboard/RichText.vue",
+      "owner": "dashboard",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/layouts/auth.vue",
+      "owner": "dashboard",
+      "kind": "layout",
+      "roots": [
+        {
+          "tag": "main",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [
+        {
+          "tag": "main",
+          "line": 2
+        }
+      ],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/layouts/default.vue",
+      "owner": "dashboard",
+      "kind": "layout",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/pages/[access].vue",
+      "owner": "dashboard",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/pages/administration.vue",
+      "owner": "dashboard",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/pages/articles.vue",
+      "owner": "dashboard",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/dashboard/app/pages/index.vue",
+      "owner": "dashboard",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/app.vue",
+      "owner": "web",
+      "kind": "entry",
+      "roots": [
+        {
+          "tag": "NuxtPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/components/ArticleView.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "component",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/components/ScreenArticles.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/layouts/editorial.vue",
+      "owner": "web",
+      "kind": "layout",
+      "roots": [
+        {
+          "tag": "main",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [
+        {
+          "tag": "main",
+          "line": 2
+        }
+      ],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/pages/[locale]/articles/[[slug]].vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "NuxtLayout",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/client2-immobilier/app/pages/index.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "main",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [
+        {
+          "tag": "main",
+          "line": 2
+        }
+      ],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/app.vue",
+      "owner": "web",
+      "kind": "entry",
+      "roots": [
+        {
+          "tag": "UApp",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/AppBootShell.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/AppImage.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "NuxtImg",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/AppLink.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "NuxtLink",
+          "native": false,
+          "conditional": true
+        },
+        {
+          "tag": "span",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/AppOverlay.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/CommandPropertySlideover.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USlideover",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/ConstructionModal.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/HelloWorld.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/blockquote/Default.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/blockquote/Oneline.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "blockquote",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/card/Invest.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/card/TitleProperty.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UCard",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/carousel/Panel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/CategoryCodeSelect.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/OfferField.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyAssociatedMediaEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyContentEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyCreatorPanel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyEditorPanel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyEditorSlideover.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USlideover",
+          "native": false,
+          "conditional": false
+        },
+        {
+          "tag": "UModal",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyFieldEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyMediaGallery.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "DashboardPropertyMediaPickerModal",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyMediaPickerModal.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UModal",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyPlaceEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyPreview.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "button",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "button",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "button",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyScreenEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyScreensEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertySidebar.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "DashboardSidebarFilters",
+          "native": false,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/PropertyWorkspace.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/QualitiesEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/ScreenMediaSelector.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/ScreenTemplateSelect.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/ScreenTemplateSkeleton.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "svg",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/SidebarFilters.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/SidebarUserCard.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/dashboard/TiptapEditor.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/form/Contact.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UForm",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/form/ContactProperty.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UForm",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/gallery/Images.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/heading/h1.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "h1",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/heading/h2.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "h2",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/heading/h2Screen.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "HeadingH2",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/heading/h3.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "h3",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/heading/h4.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "h4",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/line/Property.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/link/HeroNav.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "NuxtLink",
+          "native": false,
+          "conditional": true
+        },
+        {
+          "tag": "span",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/logo/ShowcaseFull.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "a",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/logo/ShowcasePicto.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/logo/ShowcaseReduce.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "NuxtLink",
+          "native": false,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/markdown/PanelMdc.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/mdc/Card.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/mdc/Headband.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/mdc/PageIntro.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/mdc/Youtube.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/navigation/LangSwitcher.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "nav",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/navigation/Main.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/navigation/MobileActionsMenu.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "UDropdownMenu",
+          "native": false,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/navigation/QuickActions.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "nav",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/navigation/SocialNetwork.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/panel/ActiveContent.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/panel/EditorialContent.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/panel/ThreeCols.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "article",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/paragraph/Articles.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "article",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/paragraph/Default.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/progress/Bar.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/progress/Counter.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ContentZone.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "p",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "h2",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "p",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/DetailDrawer.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USlideover",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/DetailPanel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalCarousel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "AppImage",
+          "native": false,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalContact.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalDuo.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalFull.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "AppImage",
+          "native": false,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalInfoPanel.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "PropertyDetailDrawer",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalLightbox.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "Transition",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalOverlay.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "AppImage",
+          "native": false,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": true
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        },
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalSplit.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalSummary.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "button",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/ExceptionalTriptych.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/property/OverlayGridList.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/select/CategoryPropertyList.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USelect",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/select/RealEstateListing.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USelect",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/toggle/CinemaMode.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/toggle/ThemeMode.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/toggle/TransitionMode.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/toggle/ViewModeList.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/typewriter/Text.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "span",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/components/udrawer/DesignSystem.vue",
+      "owner": "web",
+      "kind": "component",
+      "roots": [
+        {
+          "tag": "USlideover",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/error.vue",
+      "owner": "web",
+      "kind": "entry",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/layouts/dashboard.vue",
+      "owner": "web",
+      "kind": "layout",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [
+        {
+          "tag": "UMain",
+          "line": 3
+        }
+      ],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/layouts/default.vue",
+      "owner": "web",
+      "kind": "layout",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [
+        {
+          "tag": "UMain",
+          "line": 19
+        }
+      ],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/[...page].vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/contact.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/dashboard/index.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/dashboard/login.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/echo.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "section",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/index.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/properties/[realEstateListing]/[accommodationCategory]/[accommodationSlug].vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/properties/[realEstateListing]/[accommodationCategory]/index.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/properties/[realEstateListing]/index.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "UPage",
+          "native": false,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/villa-des-alizes-content.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/villa-des-alizes-mobile.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    },
+    {
+      "file": "webapp/sites/showcase-immobilier/app/pages/villa-des-alizes.vue",
+      "owner": "web",
+      "kind": "page",
+      "roots": [
+        {
+          "tag": "div",
+          "native": true,
+          "conditional": false
+        }
+      ],
+      "parseErrors": [],
+      "main": [],
+      "markers": []
+    }
+  ],
+  "tests": [
+    "webapp/scripts/build/site-targets.vitest.ts",
+    "webapp/scripts/content-sync.vitest.ts",
+    "webapp/scripts/saas/projector.vitest.ts",
+    "webapp/scripts/setup-local.vitest.ts",
+    "webapp/server/tests/dashboard-media-upload.vitest.ts",
+    "webapp/server/tests/saas-auth.vitest.ts",
+    "webapp/server/tests/saas-editor.vitest.ts",
+    "webapp/server/tests/saas-publication.vitest.ts",
+    "webapp/server/utils/auth/symfonyProjectMember.test.ts",
+    "webapp/server/utils/dashboard/accommodationMapper.vitest.ts",
+    "webapp/server/utils/dashboard/contentProjection.vitest.ts",
+    "webapp/server/utils/projectLocales.vitest.ts",
+    "webapp/services/api/echo.vitest.ts",
+    "webapp/services/infra/resolver/site.vitest.ts",
+    "webapp/services/mapper/accommodation.vitest.ts",
+    "webapp/services/mapper/exceptional.vitest.ts",
+    "webapp/services/saas/articles.vitest.ts",
+    "webapp/sites/client2-immobilier/server/articles.vitest.ts",
+    "webapp/sites/showcase-immobilier/app/composables/dashboard/useDesignationPlaceholder.vitest.ts",
+    "webapp/sites/showcase-immobilier/app/composables/useLongPress.vitest.ts",
+    "webapp/sites/showcase-immobilier/tests/metadata.vitest.ts",
+    "webapp/tests/e2e/client2-articles.spec.ts",
+    "webapp/tests/e2e/client2.smoke.spec.ts",
+    "webapp/tests/e2e/home.smoke.spec.ts",
+    "webapp/tests/e2e/saas-access.spec.ts",
+    "webapp/tests/e2e/saas-editor.spec.ts",
+    "webapp/tests/layers/client2.vitest.ts",
+    "webapp/tests/layers/dashboard.vitest.ts",
+    "webapp/tests/layers/showcase-components.vitest.ts"
+  ]
+}
