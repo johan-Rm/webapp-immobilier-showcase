@@ -28,7 +28,7 @@ const files = [
 
 describe('périmètre applicatif', () => {
   it('préserve les crochets littéraux des routes dans les motifs', () => {
-    expect(escapeGlobPath('server/[id].ts')).toBe('server/\\[id\\].ts')
+    expect(escapeGlobPath('server/[id].ts')).toBe('server/[[]id[]].ts')
   })
   it.each(['showcase-immobilier', 'client2-immobilier', 'dashboard'])(
     'ajoute le partagé et distingue les autres cibles : %s',

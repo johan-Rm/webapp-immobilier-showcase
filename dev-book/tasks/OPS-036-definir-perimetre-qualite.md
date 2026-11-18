@@ -21,6 +21,8 @@ Vérification : `node node_modules/vitest/vitest.mjs run domaines/fiabilite-veri
 
 Correctif : une fonction commune protège les caractères de chemins interprétés comme motifs, notamment les crochets des routes ; 7 tests ciblés réussis.
 
+Second correctif : Stryker normalise les barres obliques ; les crochets sont représentés par des classes littérales compatibles avec les deux moteurs de motifs. Sept tests ciblés réussis.
+
 ## Verdict humain
 
 Aucun verdict humain.
