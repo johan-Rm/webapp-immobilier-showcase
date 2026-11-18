@@ -8,7 +8,10 @@ export type ApplicationTarget = (typeof targets)[number]
 export type SourceKind = 'source' | 'test' | 'types' | 'generated' | 'other'
 
 /** Preserve literal route brackets and other glob metacharacters. */
-export const escapeGlobPath = (path: string): string => path.replace(/[\\*?[\]{}()!+@]/g, '\\$&')
+export const escapeGlobPath = (path: string): string =>
+  path.replace(/[\[\]*?{}()+@]/g, (char) =>
+    char === '[' ? '[[]' : char === ']' ? '[]]' : `[${char}]`,
+  )
 
 const shared = ['webapp/base/real-estate/', 'webapp/server/', 'webapp/services/', 'webapp/shared/']
 const rootFor = (target: ApplicationTarget) =>
