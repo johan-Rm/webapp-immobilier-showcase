@@ -13,7 +13,13 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 
-import { discoverApplicationFiles } from '../../../codebase-integrity/commun/application-scope'
+import { parse as parseBabel } from '@babel/parser'
+import ts from 'typescript'
+
+import {
+  discoverApplicationFiles,
+  escapeGlobPath,
+} from '../../../codebase-integrity/commun/application-scope'
 
 import { assessMutation, runOwned } from './mutation'
 import { webappRoot } from './run'
@@ -24,6 +30,50 @@ export function mutationTempRoot(root: string, candidate: string): string {
   const app = resolve(root)
   const temporary = resolve(candidate)
   return temporary === app || temporary.startsWith(`${app}/`) ? '/tmp' : temporary
+}
+
+export function mutationSnapshotPaths(
+  tracked: string[],
+  scope: { source: string[]; comparison: string[]; excluded: { path: string; reason: string }[] },
+) {
+  return [
+    ...new Set([
+      ...tracked,
+      'webapp/scripts/quality/mutation-test-selection.ts',
+      ...scope.source,
+      ...scope.comparison,
+      ...scope.excluded.filter((item) => item.reason === 'test').map((item) => item.path),
+    ]),
+  ]
+}
+
+export const escapeMutationPath = escapeGlobPath
+
+export function assessInstrumentation(path: string, content: string): string | undefined {
+  const jsx = /\.[jt]sx$/.test(path)
+  const source = ts.createSourceFile(
+    path,
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    jsx ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  )
+  const diagnostics = (source as ts.SourceFile & { parseDiagnostics: readonly ts.Diagnostic[] })
+    .parseDiagnostics
+  if (diagnostics.length) throw new Error(`Source invalide : ${path}`)
+  try {
+    parseBabel(content, {
+      sourceType: 'module',
+      plugins: [
+        ...(/\.[cm]?tsx?$/.test(path) ? ['typescript' as const] : []),
+        ...(jsx ? ['jsx' as const] : []),
+        'decorators-legacy',
+      ],
+    })
+    return undefined
+  } catch (error) {
+    return `Stryker ne peut pas analyser ce fichier : ${error instanceof Error ? error.message : String(error)}`
+  }
 }
 
 export function mutationSelection(sources: string[], requested?: string[]) {
@@ -75,6 +125,7 @@ export async function runExtendedMutation(
   const repo = process.env.VERIFY_GIT_ROOT || resolve(root, '..')
   const scope = discoverApplicationFiles(repo, target)
   const selection = mutationSelection(scope.source, requested)
+  const started = Date.now()
   if (
     pilot &&
     (selection.selected.length !== 1 || selection.selected[0] !== 'webapp/shared/saas/links.ts')
@@ -83,20 +134,22 @@ export async function runExtendedMutation(
   const temporary = mkdtempSync(join(mutationTempRoot(root, tmpdir()), 'application-mutation-'))
   const app = join(temporary, 'webapp')
   try {
+    const unsupported: { path: string; reason: string; status: string }[] = []
+    const measurable = selection.selected.filter((path) => {
+      const source = join(resolve(root, '..'), path)
+      if (!existsSync(source)) throw new Error(`Source sélectionnée absente de l’image : ${path}`)
+      const reason = assessInstrumentation(path, readFileSync(source, 'utf8'))
+      if (reason) unsupported.push({ path, reason, status: 'non-mesurable' })
+      return !reason
+    })
+    if (!measurable.length) throw new Error('Aucune source instrumentable')
     const tracked = execFileSync('git', ['ls-files', '--cached', '--deduplicate', '-z'], {
       cwd: repo,
       encoding: 'utf8',
     })
       .split('\0')
       .filter(Boolean)
-    const paths = [
-      ...new Set([
-        ...tracked,
-        ...scope.source,
-        ...scope.comparison,
-        ...scope.excluded.filter((item) => item.reason === 'test').map((item) => item.path),
-      ]),
-    ]
+    const paths = mutationSnapshotPaths(tracked, scope)
     const sourceRoot = resolve(root, '..')
     for (const path of paths) {
       if (
@@ -114,7 +167,10 @@ export async function runExtendedMutation(
       const source = join(sourceRoot, path),
         dest = join(temporary, path)
       if (!existsSync(source) || !lstatSync(source).isFile()) {
-        if (selection.selected.includes(path))
+        if (
+          selection.selected.includes(path) ||
+          path === 'webapp/scripts/quality/mutation-test-selection.ts'
+        )
           throw new Error(`Source sélectionnée absente de l’image : ${path}`)
         continue
       }
@@ -128,7 +184,7 @@ export async function runExtendedMutation(
       'dir',
     )
     execFileSync('git', ['init', '-q', temporary])
-    const mutate = selection.selected.map((path) => path.slice('webapp/'.length))
+    const mutate = measurable.map((path) => escapeMutationPath(path.slice('webapp/'.length)))
     const config = {
       testRunner: 'vitest',
       plugins: ['@stryker-mutator/vitest-runner'],
@@ -164,7 +220,7 @@ export async function runExtendedMutation(
       'node',
       ['node_modules/@stryker-mutator/core/bin/stryker.js', 'run', 'stryker-dem013.config.json'],
       app,
-      1800000,
+      21600000,
       env,
     )
     const report = JSON.parse(readFileSync(join(app, 'reports/mutation.json'), 'utf8')) as {
@@ -173,8 +229,10 @@ export async function runExtendedMutation(
     const summary = {
       target,
       ...assessMutation(report),
+      durationMs: Date.now() - started,
       files: [
-        ...mutationFiles(selection.selected, report),
+        ...mutationFiles(measurable, report),
+        ...unsupported,
         ...selection.notSelected.map((item) => ({ ...item, status: 'non-mesurable' })),
       ],
       exclusions: scope.excluded,

@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url'
 
 import { configDefaults, defineConfig } from 'vitest/config'
 
+import { mutationTestFiles } from './scripts/quality/mutation-test-selection.ts'
 import { buildPlan, nodeTestFiles, webappRoot } from './scripts/quality/run.ts'
 import { resolveApplicationTarget } from './shared/site/registry.ts'
 
@@ -17,7 +18,7 @@ const nodeIncludes =
         target: target.id as 'showcase-immobilier' | 'client2-immobilier' | 'dashboard',
         list: true,
       }).files.filter((file) => file.endsWith('.vitest.ts'))
-    : nodeTestFiles(
+    : (family === 'mutation' ? mutationTestFiles : nodeTestFiles)(
         webappRoot,
         target.id as 'showcase-immobilier' | 'client2-immobilier' | 'dashboard',
       )
