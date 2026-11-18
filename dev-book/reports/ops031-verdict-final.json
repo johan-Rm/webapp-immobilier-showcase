@@ -1,0 +1,49 @@
+{
+  "demande": "DEM-011",
+  "type": "consolidation",
+  "date": "2026-11-18",
+  "session": "01a1d56d-446b-7931-bf53-7687a7d10912",
+  "decision": "validé",
+  "qualification": "sous réserves explicites",
+  "expression_humaine": "oui validé",
+  "portee": "Les 18 cartes présentées dans le plan de DEM-011, leurs correctifs locaux et le bilan OPS-031 ; aucune CI verte ni livraison déduite.",
+  "cartes": [
+    "OPS-023",
+    "WEB-006",
+    "BFF-005",
+    "DOM-002",
+    "DASH-004",
+    "OPS-024",
+    "OPS-025",
+    "OPS-026",
+    "OPS-027",
+    "OPS-028",
+    "OPS-029",
+    "OPS-030",
+    "OPS-031",
+    "OPS-032",
+    "OPS-033",
+    "OPS-034",
+    "WEB-007",
+    "OPS-035"
+  ],
+  "contenu": {
+    "type": "git",
+    "valeur": "334568daea7ead50d9e324b0fd038a27aa24aaf8"
+  },
+  "preuve": {
+    "fichier": "dev-book/reports/ops031-verification.json",
+    "sha256": "66b04b906f9b97c7d12f1d359ef61bc49f98027df1ca2a85c7613dd88e13cfe5"
+  },
+  "reserves": {
+    "solid": "Quatre écarts reportés dans le brouillon DEM-012 ; contrôle maintenu en échec, aucun seuil modifié ni exemption nouvelle.",
+    "picomatch": "Seul avis GHSA-fc5q-39xc-vjpf exempté sur accord humain jusqu’au 2026-12-02 ; bibliothèque toujours vulnérable.",
+    "signalements": "Avertissements frontend et SOLID, exemptions explicites, gardes suspectes, imports non résolus et mutants survivants laissés ouverts ; aucune conformité individuelle déduite.",
+    "mesures": "Scores Lighthouse et mutation, latences k6 informatifs ; aucun budget de production validé.",
+    "livraison": "Aucune reconstitution, CI distante, publication, PR ou fusion réalisée par ce verdict ; les conditions de livraison restent à vérifier."
+  },
+  "report_solid": {
+    "demande_reservee": "DEM-012",
+    "brouillon_principal": "tmp/demande-consolidation-responsabilites-composables.md"
+  }
+}

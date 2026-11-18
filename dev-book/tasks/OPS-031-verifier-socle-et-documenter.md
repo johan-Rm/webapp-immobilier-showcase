@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : outils implémentés et commités ; quatre erreurs SOLID bloquent la clôture technique, vérification humaine finale à faire.
+- État : validée humainement sous réserves le 2026-11-18 ; reconstitution et livraison non réalisées, contrôle SOLID toujours en échec.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-030, WEB-006, DASH-004, DOM-002, BFF-005 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -35,7 +35,19 @@ Le bilan complet inclut les correctifs WEB-006/007 committés et la métadonnée
 
 ## Verdict humain
 
-Aucun verdict d’implémentation. Le cadrage confirmé n’est pas une validation du code.
+Le verdict global du 2026-11-18 porte sur les cartes et commits identifiés dans le [rapport de verdict](../reports/ops031-verdict-final.json). Les observations historiques ci-dessous conservent leur contexte antérieur.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "Validation globale sous réserves des 18 cartes DEM-011 présentées ; report SOLID vers DEM-012, exception Picomatch bornée et autres signalements ouverts, sans validation de CI ni livraison.",
+  "contenu": {
+    "type": "sha256",
+    "fichier": "dev-book/reports/ops031-verdict-final.json",
+    "valeur": "080c93e30ed7c4787ea1641e9653538c85bd4be5b9e784e102e2d14c222be216"
+  }
+}
+```
 
 ## Commits
 
