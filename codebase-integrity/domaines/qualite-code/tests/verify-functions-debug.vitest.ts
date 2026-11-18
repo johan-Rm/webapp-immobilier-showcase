@@ -26,6 +26,9 @@ describe('fonctions et débogage', () => {
   it('refuse les sources invalides', () => {
     expect(() => inspectSource('app.ts', 'const x = ;')).toThrow('Source invalide')
   })
+  it('analyse les fichiers JSX valides', () => {
+    expect(inspectSource('app.jsx', 'const view = () => <div>ok</div>')).toEqual([])
+  })
   it('accepte seulement une exception exacte, approuvée, non expirée et valide', () => {
     const sources = { 'app.ts': 'debugger;' }
     const item = {

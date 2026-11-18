@@ -19,6 +19,8 @@ Analyse TypeScript et scripts Vue : métriques convenues, instruction `debugger`
 
 Vérifications : 5 tests Vitest ciblés réussis ; vérification TypeScript ciblée réussie avec les types Node du paquet webapp ; formatage Prettier ciblé. Aucune validation humaine.
 
+Correctif : prise en charge des fichiers JSX ; 6 tests ciblés réussis après ajout du cas JSX.
+
 ## Verdict humain
 
 Aucun verdict humain.
