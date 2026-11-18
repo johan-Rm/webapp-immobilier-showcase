@@ -78,6 +78,7 @@ export async function runCoverage(
 ) {
   const repo = process.env.VERIFY_GIT_ROOT || resolve(root, '..')
   const selection = discoverApplicationFiles(repo, target)
+  if (!selection.source.length) throw new Error('Périmètre applicatif vide')
   const temporary = mkdtempSync(join(tmpdir(), 'application-coverage-'))
   const reports: CoverageResult[] = []
   const notRun = [

@@ -27,6 +27,8 @@ Correctif : les chemins de routes à crochets sont échappés dans la sélection
 
 Correctif : le rapport restitue les positions non couvertes, fusionne les instructions par position et conserve les deux rapports bruts ; quatre tests ciblés et lecture du rapport V8 réel du pilote réussis.
 
+Correctif : un périmètre applicatif vide provoque une erreur explicite.
+
 ## Verdict humain
 
 Aucun verdict humain.
