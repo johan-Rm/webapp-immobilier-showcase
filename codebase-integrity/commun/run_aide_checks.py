@@ -15,7 +15,8 @@ STEPS = (
 )
 
 
-PALETTE = {'blue': 34, 'green': 32, 'red': 31, 'yellow': 33, 'gray': 90, 'magenta': 35}
+# Olive clair de la charte Graines Digitales, distinct du vert de réussite.
+PALETTE = {'blue': 34, 'green': 32, 'red': 31, 'yellow': 33, 'gray': 90, 'brand': '38;2;168;185;122'}
 
 
 def supports_color(stream, env):

@@ -157,3 +157,7 @@ L’humain choisit `VERBOSE=1` à la place de `LIVE=1` pour demander la sortie d
 ### Description intégrée au bandeau — 2026-11-18
 
 Sur demande humaine, la description figure en tête du bandeau, avant les métadonnées, avec retour à la ligne et séparateur horizontal. Elle utilise le magenta, réservé à cette présentation descriptive ; la progression reste distincte. La description reste lisible sans couleur et ne se répète pas comme événement après le bandeau. Onze tests ciblés de présentation réussissent, avec vérification de l’ordre et du séparateur ; contrôle documentaire réel réussi. Aucun test applicatif relancé.
+
+### Identité de marque et nom du contrôle — 2026-11-18
+
+Sur instruction humaine, le bandeau utilise désormais l’olive clair Graines Digitales `#A8B97A`, référencé dans la charte officielle du dépôt et dans le thème sombre du Dashboard, à la place du magenta. Cette couleur d’identité est distincte du vert ANSI de réussite ; les statuts conservent leur palette sémantique. Le nom de la commande précède la description, puis le séparateur et les métadonnées. Les 11 tests de présentation passent, avec assertions sur la couleur de marque, la distinction de réussite, le rendu sans couleur et l’ordre nom/description/métadonnées. Le contrôle documentaire réel passe ; aucun test applicatif relancé.

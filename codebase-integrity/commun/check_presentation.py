@@ -153,15 +153,17 @@ def run(command, argv, env=None, report_root=None):
     context = f'{command} | {target}' + (f' | {profile}' if profile else '')
     def say(status, message, tone='blue'):
         print(paint(f'[{context}] {status} — {message}', tone, color), flush=True)
-    print('\n' + paint('═' * 88, 'magenta', color), flush=True)
-    print(paint('DESCRIPTION', 'magenta', color), flush=True)
-    print(paint(textwrap.fill(DESCRIPTIONS[command], width=88), 'magenta', color), flush=True)
+    print('\n' + paint('═' * 88, 'brand', color), flush=True)
+    print(paint(f'NOM — make {command}', 'brand', color), flush=True)
+    print()
+    print(paint('DESCRIPTION', 'brand', color), flush=True)
+    print(paint(textwrap.fill(DESCRIPTIONS[command], width=88), 'brand', color), flush=True)
     print(paint('─' * 88, 'gray', color), flush=True)
     for label, value in zip(('Catégorie', 'Type de contrôle', 'Ce qu’on vérifie', 'Commandes Make', 'Outils', 'Niveau'),
                             (category, kind, subject, f'make {command}', tools, level)):
         print(paint(f'{label:18}', 'gray', color) + ' │ ' + value, flush=True)
     print('Cible              │ ' + target + (f' ; profil {profile}' if profile else ''), flush=True)
-    print(paint('═' * 88, 'magenta', color), flush=True)
+    print(paint('═' * 88, 'brand', color), flush=True)
     directory = Path(report_root) if report_root else ROOT / 'webapp/.tmp/quality/console'
     directory.mkdir(parents=True, exist_ok=True)
     session = Path(tempfile.mkdtemp(prefix=command + '-', dir=directory))

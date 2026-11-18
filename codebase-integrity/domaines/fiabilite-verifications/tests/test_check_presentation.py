@@ -35,6 +35,9 @@ class PresentationTest(unittest.TestCase):
     def test_descriptions_cover_every_command(self):
         self.assertEqual(set(presentation.DESCRIPTIONS), set(presentation.META))
         self.assertTrue(all(presentation.DESCRIPTIONS.values()))
+        self.assertIn('38;2;168;185;122', presentation.paint('marque', 'brand', True))
+        self.assertNotEqual(presentation.paint('x', 'brand', True), presentation.paint('x', 'green', True))
+        self.assertEqual(presentation.paint('marque', 'brand', False), 'marque')
 
     def test_verbose_is_opt_in_and_keeps_full_report_and_failure(self):
         for flag in (None, '0', '1'):
@@ -46,6 +49,8 @@ class PresentationTest(unittest.TestCase):
                 with redirect_stdout(output):
                     result = presentation.run('third-party-tests-unit', argv, env, directory)
                 self.assertEqual(result['exit_code'], 7)
+                self.assertIn('NOM — make third-party-tests-unit', output.getvalue())
+                self.assertLess(output.getvalue().index('NOM —'), output.getvalue().index('DESCRIPTION'))
                 self.assertIn('DESCRIPTION', output.getvalue())
                 self.assertLess(output.getvalue().index('DESCRIPTION'), output.getvalue().index('Catégorie'))
                 self.assertIn('─' * 88, output.getvalue())
