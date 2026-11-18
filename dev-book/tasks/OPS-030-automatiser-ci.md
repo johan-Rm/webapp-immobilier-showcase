@@ -199,3 +199,7 @@ Sur accord humain pour l’analyse recommandée, recherche des origines des moti
 ### Exception Picomatch approuvée — 2026-11-18
 
 L’humain approuve explicitement la proposition du rapport d’exposition : exception du seul couple `picomatch` / `GHSA-fc5q-39xc-vjpf`, commune aux deux inventaires, jusqu’au 2 décembre 2026. Application dans `webapp/scripts/quality/security-exceptions.json` ; seuils inchangés. Cette acceptation temporaire ne corrige pas la dépendance.
+
+### Renommage des tests d’intégration — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-integration` remplace `third-party-tests-integration` dans Make, sa présentation, la documentation et les tests de routage. Les scénarios sont inchangés : ils couvrent les interactions applicatives et les outils internes. Le classement reste provisoire, à affiner ultérieurement selon l’objet testé.
