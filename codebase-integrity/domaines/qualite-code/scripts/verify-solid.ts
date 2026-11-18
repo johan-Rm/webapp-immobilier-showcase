@@ -6,6 +6,7 @@
  * Mode : avertissements, sauf dépassement certain des retours ou erreur de lecture/analyse.
  */
 
+import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, extname, join, relative } from 'node:path'
 
@@ -21,7 +22,7 @@ import {
 
 type LargeComponentRule = { maxLines?: number }
 type LargeTypeRule = { maxFields?: number }
-type ComposableReturnsRule = { maxReturns?: number }
+type ComposableReturnsRule = { maxReturns?: number; exceptions?: unknown }
 
 const LARGE_COMPONENT_RULE = loadValidationRule<
   LargeComponentRule & { name: string; requiresManualReview: boolean }
@@ -38,7 +39,101 @@ const MAX_FIELDS = LARGE_TYPE_RULE.maxFields ?? 8
 const MAX_RETURNS = COMPOSABLE_RETURNS_RULE.maxReturns ?? 8
 
 type FilePath = string
-type Violation = { file: FilePath; rule: string; message: string; severity?: 'error' | 'warning' }
+type Violation = {
+  file: FilePath
+  rule: string
+  message: string
+  severity?: 'error' | 'warning' | 'exemption'
+  composable?: string
+  count?: number
+  complete?: boolean
+}
+
+type SolidException = {
+  file: string
+  composable: string
+  sha256: string
+  count: number
+  demand: string
+  reason: string
+  expires: string
+}
+
+export function applyComposableExceptions(
+  violations: Violation[],
+  raw: unknown,
+  readSource: (file: string) => string,
+  now = new Date(),
+): Violation[] {
+  if (raw === undefined) return violations
+  const invalid = (message: string): Violation => ({
+    file: join(ROOT, '../codebase-integrity/domaines/qualite-code/regles.yaml'),
+    rule: 'app-composable-many-returns',
+    severity: 'error',
+    message: `Exception SOLID refusée : ${message}`,
+  })
+  if (!Array.isArray(raw)) return [...violations, invalid('liste attendue')]
+  const seen = new Set<string>()
+  const exceptions: SolidException[] = []
+  for (const value of raw) {
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      return [...violations, invalid('déclaration invalide')]
+    const e = value as SolidException
+    const expiry = typeof e.expires === 'string' ? Date.parse(e.expires + 'T00:00:00Z') : NaN
+    if (
+      typeof e.file !== 'string' ||
+      !/^sites\/[a-z0-9-]+\/app\/composables\/(?:[A-Za-z0-9_-]+\/)*use[A-Za-z0-9_]+\.ts$/.test(
+        e.file,
+      ) ||
+      typeof e.composable !== 'string' ||
+      !/^use[A-Z0-9_]\w*$/.test(e.composable) ||
+      typeof e.sha256 !== 'string' ||
+      !/^[a-f0-9]{64}$/.test(e.sha256) ||
+      !Number.isInteger(e.count) ||
+      e.count <= MAX_RETURNS ||
+      typeof e.demand !== 'string' ||
+      !/^DEM-\d{3}$/.test(e.demand) ||
+      typeof e.reason !== 'string' ||
+      !e.reason.trim() ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(e.expires) ||
+      !Number.isFinite(expiry) ||
+      new Date(expiry).toISOString().slice(0, 10) !== e.expires ||
+      !Number.isFinite(now.getTime()) ||
+      seen.has(`${e.file}:${e.composable}`)
+    )
+      return [...violations, invalid('champs invalides ou doublon')]
+    seen.add(`${e.file}:${e.composable}`)
+    exceptions.push(e)
+  }
+  const output = [...violations]
+  for (const e of exceptions) {
+    try {
+      if (now.getTime() >= Date.parse(e.expires + 'T00:00:00Z') + 86400000)
+        throw new Error(`échéance dépassée (${e.expires})`)
+      if (createHash('sha256').update(readSource(e.file)).digest('hex') !== e.sha256)
+        throw new Error('empreinte du fichier modifiée')
+      const matches = output.filter(
+        (v) =>
+          v.rule === 'app-composable-many-returns' &&
+          relative(ROOT, v.file) === e.file &&
+          v.composable === e.composable &&
+          v.severity === 'error' &&
+          v.count === e.count &&
+          v.complete === true,
+      )
+      if (matches.length !== 1) throw new Error('écart exact absent ou ambigu')
+      const index = output.indexOf(matches[0])
+      output[index] = {
+        ...matches[0],
+        severity: 'exemption',
+        message: `${matches[0].message} — EXCEPTION ${e.demand}, valable jusqu’au ${e.expires} inclus (UTC) : ${e.reason}`,
+      }
+    } catch (error) {
+      output.push(invalid(`${e.file} : ${String(error)}`))
+    }
+  }
+  return output
+}
 
 function extractScriptContent(content: string): string {
   return content.match(/<script\b[^>]*>([\s\S]*?)<\/script>/i)?.[1] ?? ''
@@ -309,6 +404,9 @@ export function checkComposableManyReturns(): Violation[] {
           violations.push({
             file,
             rule: 'app-composable-many-returns',
+            composable: result.name,
+            count: result.count,
+            complete: result.complete,
             severity: result.count > MAX_RETURNS ? 'error' : 'warning',
             message:
               result.count > MAX_RETURNS
@@ -325,7 +423,9 @@ export function checkComposableManyReturns(): Violation[] {
       })
     }
   }
-  return violations
+  return applyComposableExceptions(violations, COMPOSABLE_RETURNS_RULE.exceptions, (file) =>
+    readFileSync(join(ROOT, file), 'utf-8'),
+  )
 }
 
 function rel(file: FilePath): string {
@@ -340,7 +440,8 @@ const paint = (text: string, color: number) => (colored ? `\x1b[${color}m${text}
 
 function report(violations: Violation[]): void {
   const errors = violations.filter((v) => v.severity === 'error')
-  const warnings = violations.filter((v) => v.severity !== 'error')
+  const exemptions = violations.filter((v) => v.severity === 'exemption')
+  const warnings = violations.filter((v) => v.severity !== 'error' && v.severity !== 'exemption')
   const directory = join(ROOT, '.tmp/quality')
   mkdirSync(directory, { recursive: true })
   const reportPath = join(directory, 'solid.json')
@@ -350,6 +451,7 @@ function report(violations: Violation[]): void {
       {
         errors: errors.length,
         warnings: warnings.length,
+        exemptions: exemptions.length,
         findings: violations.map((v) => ({
           ...v,
           file: rel(v.file),
@@ -369,6 +471,12 @@ function report(violations: Violation[]): void {
   process.stdout.write(
     paint(`  ${warnings.length} avertissements à relire.`, warnings.length ? 33 : 90) + '\n\n',
   )
+  for (const exemption of exemptions) {
+    process.stdout.write(
+      paint(`  EXCEPTION — ${rel(exemption.file)} : ${exemption.message}`, 33) + '\n',
+    )
+  }
+  process.stdout.write(`  ${exemptions.length} exceptions temporaires explicites.\n`)
   const displayed = errors.length
     ? errors.slice(0, diagnosticLimit(errors.length))
     : warnings.slice(0, diagnosticLimit(warnings.length))

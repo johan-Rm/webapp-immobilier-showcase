@@ -142,6 +142,35 @@ rules:
     severity: error
     description: 'Detecte les composables qui exposent plus de 8 valeurs dans leur return.'
     maxReturns: 8
+    exceptions:
+      - file: sites/showcase-immobilier/app/composables/dashboard/useDashboardSave.ts
+        composable: useDashboardSave
+        sha256: f362c9eec5cf701a869936c97c31845e752812a77c5b9eac4446669365ecb736
+        count: 9
+        demand: DEM-012
+        reason: Découpage des responsabilités confirmé, à réaliser dans la consolidation dédiée.
+        expires: '2026-12-02'
+      - file: sites/showcase-immobilier/app/composables/useDeviceDetect.ts
+        composable: useDeviceDetect
+        sha256: 9f692e4eae0b54bf0091529e53e8fdc5291d46d8d5118bef527bfe145db003de
+        count: 10
+        demand: DEM-012
+        reason: Découpage des responsabilités confirmé, à réaliser dans la consolidation dédiée.
+        expires: '2026-12-02'
+      - file: sites/showcase-immobilier/app/composables/useExceptionalRail.ts
+        composable: useExceptionalRail
+        sha256: 3d7439c9f9333c6b0843ddd253a4b805b0242bc2a60bc36ed9c6375233ee4c07
+        count: 27
+        demand: DEM-012
+        reason: Découpage des responsabilités confirmé, à réaliser dans la consolidation dédiée.
+        expires: '2026-12-02'
+      - file: sites/showcase-immobilier/app/composables/useScreenSystem.ts
+        composable: useScreenSystem
+        sha256: 074625f228632de8dd7ba202dd4589472a0a2b92044237073c72e5c2dec29e20
+        count: 11
+        demand: DEM-012
+        reason: Découpage des responsabilités confirmé, à réaliser dans la consolidation dédiée.
+        expires: '2026-12-02'
 
   - name: app-no-redundant-guards
     requiresManualReview: true
