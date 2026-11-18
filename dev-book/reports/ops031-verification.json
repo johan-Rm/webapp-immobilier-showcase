@@ -453,5 +453,171 @@
       "composants Dashboard toujours en échec",
       "aucune CI distante ni validation humaine nouvelle"
     ]
+  },
+  "correction_dependances_securite_2026_11_18": {
+    "carte": "OPS-030",
+    "etat": "correctifs disponibles appliqués ; Picomatch reste bloquant",
+    "avant": {
+      "avis": 179,
+      "high_critical": 85,
+      "critical": 4
+    },
+    "apres": {
+      "avis": 10,
+      "high_critical": 2,
+      "critical": 0
+    },
+    "inventaires": [
+      {
+        "paquet": "webapp",
+        "nombre": 1908,
+        "lock_sha256": "369b4339faeb967c83b5d792d8e26200477a249f0c441c0d8f9878650aebd0a2",
+        "avis": [
+          {
+            "package": "esbuild",
+            "advisory": "GHSA-g7r4-m6w7-qqqr",
+            "severity": "low",
+            "excepted": false
+          },
+          {
+            "package": "glob",
+            "advisory": "GHSA-3g3m-2fjr-6pw4",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "minimatch",
+            "advisory": "GHSA-g3hv-75wg-m249",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "picomatch",
+            "advisory": "GHSA-fc5q-39xc-vjpf",
+            "severity": "high",
+            "excepted": false
+          },
+          {
+            "package": "qs",
+            "advisory": "GHSA-x5fp-wj9c-mxmx",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "qs",
+            "advisory": "GHSA-4mjr-xmp4-gh2g",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "qs",
+            "advisory": "GHSA-q8mj-m7cp-5q26",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "qs",
+            "advisory": "GHSA-6pq8-jhm2-2vcw",
+            "severity": "moderate",
+            "excepted": false
+          }
+        ],
+        "non_analyses": []
+      },
+      {
+        "paquet": "codebase-integrity",
+        "nombre": 179,
+        "lock_sha256": "71211852a5dd31f153d09e04fc0754bfc8228d6ae26057301a65fef192a59621",
+        "avis": [
+          {
+            "package": "minimatch",
+            "advisory": "GHSA-g3hv-75wg-m249",
+            "severity": "moderate",
+            "excepted": false
+          },
+          {
+            "package": "picomatch",
+            "advisory": "GHSA-fc5q-39xc-vjpf",
+            "severity": "high",
+            "excepted": false
+          }
+        ],
+        "non_analyses": []
+      }
+    ],
+    "avis_bloquant": {
+      "paquet": "picomatch",
+      "avis": "GHSA-fc5q-39xc-vjpf",
+      "derniere_version_publiee_verifiee": "4.0.7",
+      "version_corrigee_publiee": null,
+      "source": "https://github.com/advisories/GHSA-fc5q-39xc-vjpf"
+    },
+    "exception_ajoutee": false,
+    "seuil_modifie": false,
+    "image": "sha256:23982a1168282484421f95ba90b8cafe1637be37276a8dd52d60590636f97dc4",
+    "verifications": {
+      "verificateurs": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/verifiers-test-1efoxa3m/output.log"
+      },
+      "unitaires": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/verifiers-tests-unit-ioynjgr7/output.log"
+      },
+      "integration": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/third-party-tests-integration-4rbypyo_/output.log"
+      },
+      "lint_format_types": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/third-party-tests-code-amovej0j/output.log"
+      },
+      "types_dashboard": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/third-party-tests-types-ly0q4eoc/output.log"
+      },
+      "securite": {
+        "etat": "ÉCHEC",
+        "code": 2,
+        "journal": "webapp/.tmp/quality/console/third-party-tests-security-be8b1vrd/output.log"
+      },
+      "contrats": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/conventions-contracts-_r3nwcn7/output.log"
+      },
+      "architecture": {
+        "etat": "RÉUSSI",
+        "code": 0,
+        "journal": "webapp/.tmp/quality/console/conventions-architecture-hkys2yrz/output.log"
+      }
+    },
+    "browser": {
+      "etat": "RÉUSSI",
+      "code": 0,
+      "tests_reussis": 2,
+      "journal": "webapp/.tmp/quality/console/third-party-tests-browser-urbzdy85/output.log",
+      "serveur": "fixtures isolées sur 19859",
+      "build_ssr": "réussi"
+    },
+    "limites": [
+      "aucune CI distante",
+      "aucun verdict humain nouveau",
+      "défaut de préparation du pilote composants toujours ouvert"
+    ],
+    "comptes_tests": {
+      "verificateurs_python": 165,
+      "verificateurs_vitest": 66,
+      "verificateurs_bun": 44,
+      "unitaires_vitest": 126,
+      "unitaires_bun": 7,
+      "integration_vitest": 245,
+      "browser": 2
+    }
   }
 }

@@ -22,8 +22,9 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "8.67.0",
-    "@vue/compiler-sfc": "3.5.41",
-    "vitest": "4.1.10",
+    "@vue/compiler-sfc": "3.5.42",
+    "typescript": "6.0.3",
+    "vitest": "4.1.12",
     "yaml": "2.9.0"
   }
 }
