@@ -477,17 +477,28 @@ QUALITY_FIXTURE_PORT ?= 19856
 CHECKS_FIXTURE_TARGET = $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 CHECKS_FIXTURE_NAME = $(notdir $(CURDIR))-checks-fixture-$(CHECKS_FIXTURE_TARGET)
 .PHONY: checks-fixture-start checks-fixture-stop
-checks-fixture-start:
+checks-fixture-start: _lane-test-up
+
+_lane-test-up:
 	@case "$(CHECKS_FIXTURE_TARGET)" in showcase-immobilier|client2-immobilier|dashboard) ;; *) echo "Cible de fixtures inconnue"; exit 2 ;; esac
 	@python3 -c 'import socket,sys; port=int(sys.argv[1]); 1024 <= port <= 65535 or sys.exit(2); s=socket.socket(); s.bind(("127.0.0.1",port)); s.close()' "$(QUALITY_FIXTURE_PORT)" 2>/dev/null || { echo "Port local invalide ou indisponible : $(QUALITY_FIXTURE_PORT). Aucun conteneur lancé."; exit 2; }
 	@mkdir -p webapp/.tmp/quality/console-tmp
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image absente : lancer make checks-prepare."; exit 2; }
 	@$(QUALITY_INFO) "INFO — Construit le SSR de test, puis sert les fixtures sur http://127.0.0.1:$(QUALITY_FIXTURE_PORT). Attendre « Fixture locale prête ». Aucun serveur utilisateur ni API réelle."
-	@$(QUALITY_INFO) "INFO — Construction détaillée : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log ; arrêt : make checks-fixture-stop GD_TARGET=$(CHECKS_FIXTURE_TARGET)."
+	@$(QUALITY_INFO) "INFO — Construction détaillée : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log ; arrêt : make lane-down LAYER=$${LAYER:-devops} MODE=test GD_TARGET=$(CHECKS_FIXTURE_TARGET)."
 	@$(QUALITY_COMPOSE) -f infra/docker/docker-compose.fixtures.yml run --pull never --no-deps --rm --name "$(CHECKS_FIXTURE_NAME)" -e GD_TARGET="$(CHECKS_FIXTURE_TARGET)" -e QUALITY_FIXTURE_PORT="$(QUALITY_FIXTURE_PORT)" -e QUALITY_BROWSER_FIXTURES=1 -e QUALITY_MEDIA_FIXTURES=1 --entrypoint sh verify -c '{ node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test && node node_modules/nuxt/bin/nuxt.mjs build --dotenv .env.test; } > .tmp/quality/browser-fixture-build-"$$GD_TARGET".log 2>&1 || { tail -40 .tmp/quality/browser-fixture-build-"$$GD_TARGET".log; exit 1; }; exec bun --no-env-file scripts/quality/fixture-server.ts --ssr'
 
-checks-fixture-stop:
+checks-fixture-stop: _lane-test-down
+
+_lane-test-down:
 	@case "$(CHECKS_FIXTURE_TARGET)" in showcase-immobilier|client2-immobilier|dashboard) ;; *) echo "Cible de fixtures inconnue"; exit 2 ;; esac
 	@$(QUALITY_INFO) "INFO — Arrête uniquement le conteneur de fixtures $(CHECKS_FIXTURE_NAME)."
 	@$(QUALITY_DOCKER) stop --timeout 15 "$(CHECKS_FIXTURE_NAME)"
+
+.PHONY: _lane-test-up _lane-test-down _lane-test-logs _lane-test-status
+_lane-test-logs:
+	@$(QUALITY_DOCKER) logs --follow --tail 200 "$(CHECKS_FIXTURE_NAME)"
+
+_lane-test-status:
+	@$(QUALITY_DOCKER) ps --all --filter "name=^/$(CHECKS_FIXTURE_NAME)$$" --format 'table {{.Names}}\t{{.Status}}'

@@ -43,3 +43,12 @@ Les vérifications distinguent la **configuration produite**, la **syntaxe Nginx
 - Exécuter les tests HTTP dans des **conteneurs et réseaux temporaires**, sans volume utilisateur ni accès à l’API externe.
 - Utiliser les **images locales fournies explicitement** sans les reconstruire implicitement.
 - Nettoyer uniquement les ressources créées par le test et ne pas présenter un contrôle de syntaxe comme une preuve du comportement des piles actives.
+
+### Mode test des couches
+
+Les commandes de cycle de vie des couches distinguent les modes **développement** et **test**. Le mode test utilise des données simulées, sans lire les secrets du développement ni contacter l’API réelle.
+
+- Isoler le conteneur par **dépôt, couche et cible**, avec un port distinct du développement.
+- Réutiliser l’image disponible ; réserver sa reconstruction à une action explicite.
+- Conserver les journaux des contrôles et supprimer automatiquement le conteneur de test à son arrêt.
+- Ne jamais arrêter ni supprimer les conteneurs des autres modes ou projets.
