@@ -619,5 +619,52 @@
       "integration_vitest": 245,
       "browser": 2
     }
+  },
+  "analyse_exposition_picomatch_2026_11_18": {
+    "carte": "OPS-030",
+    "rapport": "dev-book/reports/ops030-exposition-picomatch.md",
+    "builds": [
+      {
+        "cible": "showcase-immobilier",
+        "fichiers": 2508,
+        "manifestes": 292,
+        "marqueurs": [
+          {
+            "path": "node_modules/vue-router/package.json",
+            "marker": "picomatch"
+          }
+        ],
+        "liens_externes": [],
+        "paquets_picomatch": []
+      },
+      {
+        "cible": "client2-immobilier",
+        "fichiers": 290,
+        "manifestes": 45,
+        "marqueurs": [
+          {
+            "path": "node_modules/vue-router/package.json",
+            "marker": "picomatch"
+          }
+        ],
+        "liens_externes": [],
+        "paquets_picomatch": []
+      },
+      {
+        "cible": "dashboard",
+        "fichiers": 354,
+        "manifestes": 57,
+        "marqueurs": [
+          {
+            "path": "node_modules/vue-router/package.json",
+            "marker": "picomatch"
+          }
+        ],
+        "liens_externes": [],
+        "paquets_picomatch": []
+      }
+    ],
+    "exception_appliquee": false,
+    "limite": "sources et livrables locaux sous profil de test ; aucune image déployée inspectée"
   }
 }
