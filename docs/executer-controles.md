@@ -64,6 +64,8 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make third-party-tests-types` | Préparation Nuxt puis Vue TSC | Fichiers produits dans le conteneur |
 | `make third-party-tests-security` | Audit des deux lockfiles | Registre accessible ; high/critical bloquants |
 | `make internal-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
+| `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Tests Vitest Node ; fichiers et environnements non mesurables indiqués ; exécution potentiellement longue, limitée à six heures |
+| `make internal-tests-coverage` | Couverture des tests Vitest Node de la cible | Bun, composants Nuxt et navigateur non instrumentés ; résultats informatifs |
 | `make internal-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
 | `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
 | `make conventions-tests-types-placement` | Placement des types | Contrôle individuel issu des conventions documentées |
@@ -74,6 +76,8 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make conventions-tests-code-quality` | Conventions de code | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-solid` | Responsabilités SOLID | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-frontend` | Structure frontend AST | Exécution locale ; limites documentées |
+| `make conventions-tests-functions` | Fonctions, journaux et instructions `debugger` | Signalements à relire ; `debugger` bloquant |
+| `make conventions-tests-duplicates` | Fragments répétés | Comparaison textuelle ; noms modifiés non détectés, résultats à relire |
 | `make conventions-tests-guards` | Gardes potentiellement redondantes | Relecture humaine nécessaire |
 | `make conventions-tests-services` | Indépendance des services | Analyse statique |
 | `make conventions-tests-architecture` | Imports des services avec dependency-cruiser | Imports Nuxt virtuels signalés séparément |

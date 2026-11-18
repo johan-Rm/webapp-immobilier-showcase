@@ -18,6 +18,10 @@ from run_aide_checks import paint, supports_color
 ROOT = Path(__file__).resolve().parents[2]
 # Catégorie, type, objet, outils, niveau : métadonnées d’affichage uniquement.
 META = {
+    'conventions-tests-functions': ('Code', 'Conventions', 'Fonctions et débogage', 'AST TypeScript / Vue', 'Debugger bloquant ; signalements à relire'),
+    'conventions-tests-duplicates': ('Code', 'Conventions', 'Fragments similaires', 'Analyse textuelle', 'Signalements à relire'),
+    'internal-tests-coverage': ('Couverture', 'Tests internes', 'Code exécuté', 'Vitest / V8', 'Exécution bloquante ; résultat informatif'),
+    'internal-tests-mutation-extended': ('Mutation', 'Tests internes', 'Efficacité des tests étendue', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'conventions-tests-types-placement': ('Frontend', 'Conventions', 'Placement des types', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-tests-images': ('Frontend', 'Conventions', 'Images Vue', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-tests-business-logic': ('Frontend', 'Conventions', 'Logique des composants', 'Vérificateur spécifique', 'Erreurs bloquantes ; warnings à relire'),
@@ -49,6 +53,10 @@ META = {
     'checks-rebuild': ('Préparation', 'Environnement', 'Construire explicitement l’image', 'Docker Compose', 'Prérequis'),
 }
 DESCRIPTIONS = {
+    'conventions-tests-functions': 'Signale les fonctions longues ou complexes et les journaux suspects ; bloque les instructions debugger non exemptées.',
+    'conventions-tests-duplicates': 'Signale les fragments similaires entre sources de la cible, code partagé et autres cibles.',
+    'internal-tests-coverage': 'Mesure la couverture Vitest Node et indique les sources non mesurables ainsi que les environnements non exécutés.',
+    'internal-tests-mutation-extended': 'Modifie temporairement les sources compatibles dans une copie isolée et présente les mutants et fichiers non mesurables.',
     'conventions-tests-types-placement': 'Vérifie le placement des types partagés conformément aux conventions du socle.',
     'conventions-tests-images': 'Vérifie les composants et attributs d’image attendus dans les templates Vue.',
     'conventions-tests-business-logic': 'Recherche la logique métier interdite dans les composants selon les conventions documentées.',

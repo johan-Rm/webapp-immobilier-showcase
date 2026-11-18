@@ -44,6 +44,10 @@ Les contrôles appliquent les **conventions techniques des README applicatifs** 
 - **Exceptions bornées** : limiter l’exception du composant image à sa position autorisée à la racine d’une application. Un composant homonyme ailleurs reste contrôlé.
 - **Résolution des types** : résoudre les alias dans l’application du fichier ; utiliser l’application consommatrice désignée pour le catalogue partagé.
 - **Base de création** : refuser la création d’un worktree si la base ne contient pas les fichiers requis par la configuration des couches.
+- **Qualité applicative par cible** : examiner le code de la cible, le catalogue immobilier, le BFF, les services et le code partagé, même si la cible ne les utilise pas. Les scripts d’outillage sont exclus.
+- **Fonctions** : signaler pour revue les fonctions de plus de 50 lignes ou de complexité supérieure à 10 ; les fonctions imbriquées comptent dans la longueur mais pas dans la complexité de leur parent.
+- **Débogage** : bloquer les instructions `debugger` et signaler les journaux susceptibles de contenir des données de requête ou de réponse. Une exception est limitée à un fichier, une ligne et une empreinte ; elle indique justification, référence d’approbation humaine et date d’expiration. Une exception invalide, absente ou expirée est refusée.
+- **Duplication** : signaler les fragments d’au moins 10 lignes non vides et 200 caractères, espaces normalisés, dans la cible et par comparaison aux autres. Une ressemblance demande une revue, sans imposer une mutualisation.
 
 ### Exceptions temporaires des composables
 
@@ -111,12 +115,13 @@ Le graphe contrôle l’**indépendance des services vis-à-vis des frameworks**
 
 ### Mutation ciblée
 
-La mesure de mutation porte sur une **fonction pure et ses tests directs**, dans une copie temporaire isolée. Les tests, contrats générés et suites HTTP ne sont pas mutés.
+La mesure pilote porte sur une **fonction pure et ses tests directs** ; la mesure étendue vise les sources compatibles de la cible et du partagé. Les deux utilisent une copie temporaire isolée. Les tests et contrats générés ne sont pas mutés.
 
 - Refuser des tests initiaux échoués, une mesure vide, incomplète ou interrompue.
 - Présenter les mutants détectés, survivants et non couverts, ainsi que les erreurs et la durée.
 - Conserver le **score informatif** tant qu’aucun budget n’a été choisi après revue humaine.
 - Arrêter les seuls processus possédés et préserver les sources.
+- Signaler les fichiers non mesurables et les environnements non instrumentés ; ne pas les compter comme couverts. La couverture Vitest Node est informative et distingue les fichiers mesurés, non couverts et non mesurables.
 
 ### Charge locale bornée
 
