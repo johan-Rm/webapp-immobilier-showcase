@@ -355,6 +355,9 @@ class TestContainerRecovery(unittest.TestCase):
             self.assertEqual(call.call_count, 1)
 
     def test_distinguishes_absent_container_from_daemon_error(self):
+        with patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'error: no such object: owned')) as call:
+            self.assertFalse(lanes.prepare_test_container(ROOT, 'owned'))
+            self.assertEqual(call.call_count, 1)
         with patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'No such object: owned')):
             self.assertFalse(lanes.prepare_test_container(ROOT, 'owned'))
         with patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'permission denied')):
