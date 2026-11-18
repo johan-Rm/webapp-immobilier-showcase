@@ -212,8 +212,8 @@ _output-verifiers-tests-unit:
 _output-verifiers-tests-integration:
 	$(call run-control,integration)
 
-.PHONY: third-party-tests-components
-_output-third-party-tests-components:
+.PHONY: verifiers-tests-components
+_output-verifiers-tests-components:
 	$(call run-control,components)
 
 .PHONY: verifiers-tests-browser
@@ -316,7 +316,7 @@ test-integration:
 
 .PHONY: test-components
 test-components:
-	@$(MAKE) --no-print-directory third-party-tests-components
+	@$(MAKE) --no-print-directory verifiers-tests-components
 
 .PHONY: test-browser
 test-browser:
@@ -391,9 +391,9 @@ verifiers-tests-unit:
 verifiers-tests-integration:
 	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-integration -- $(MAKE) --no-print-directory _output-verifiers-tests-integration
 
-.PHONY: third-party-tests-components _output-third-party-tests-components
-third-party-tests-components:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-components -- $(MAKE) --no-print-directory _output-third-party-tests-components
+.PHONY: verifiers-tests-components _output-verifiers-tests-components
+verifiers-tests-components:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-components -- $(MAKE) --no-print-directory _output-verifiers-tests-components
 
 .PHONY: verifiers-tests-browser _output-verifiers-tests-browser
 verifiers-tests-browser:

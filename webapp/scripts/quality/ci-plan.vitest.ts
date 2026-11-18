@@ -203,7 +203,7 @@ describe('préparation explicite de l’image qualité', () => {
   it.each([
     ['verifiers-tests-unit', 'unit'],
     ['verifiers-tests-integration', 'integration'],
-    ['third-party-tests-components', 'components'],
+    ['verifiers-tests-components', 'components'],
     ['verifiers-tests-browser', 'browser'],
     ['third-party-tests-security', 'security'],
     ['verifiers-tests-mutation', 'mutation'],
@@ -257,7 +257,7 @@ describe('préparation explicite de l’image qualité', () => {
   it.each([
     ['test-unit', 'verifiers-tests-unit'],
     ['test-integration', 'verifiers-tests-integration'],
-    ['test-components', 'third-party-tests-components'],
+    ['test-components', 'verifiers-tests-components'],
     ['test-browser', 'verifiers-tests-browser'],
     ['test-mutation', 'verifiers-tests-mutation'],
     ['security-check', 'third-party-tests-security'],

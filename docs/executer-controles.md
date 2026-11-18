@@ -58,7 +58,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | --- | --- | --- |
 | `make verifiers-tests-unit` | Suite unitaire existante : logique applicative et outils internes, Vitest et Bun | Sélection mixte ; ne se limite pas aux vérificateurs |
 | `make verifiers-tests-integration` | Interactions entre modules et suites HTTP | Environnement isolé |
-| `make third-party-tests-components GD_TARGET=dashboard` | Formulaire pilote Nuxt | Dashboard uniquement |
+| `make verifiers-tests-components GD_TARGET=dashboard` | Formulaire pilote Nuxt | Dashboard uniquement |
 | `make verifiers-tests-browser` | Parcours Playwright et accessibilité axe-core | `PLAYWRIGHT_BASE_URL` explicite, serveur déjà démarré |
 | `make third-party-tests-lint` | ESLint, application et vérificateurs | Image préparée |
 | `make third-party-tests-format` | Prettier, application et vérificateurs | Aucune correction automatique |
