@@ -7,7 +7,7 @@
   DEM-010 est réservée dans le brouillon des sections Vue (brouillon réservé dans le principal).
 - Session de création : 01a1d56d-446b-7931-bf53-7687a7d10912
 - Date : 2026-11-14
-- État : reconstituée localement et validée sous réserves ; contrôle de contribution en échec, livraison non réalisée.
+- État : reconstituée et validée sous réserves ; scopes corrigés, contrôle de contribution réussi, livraison en cours.
 - Confirmation humaine : « cadrage confirmé », après ajout de la reprise des
   conventions techniques disponibles dans les README de Cap Nour.
 - Priorité humaine : traiter cette consolidation avant de commencer DEM-010.
@@ -141,6 +141,10 @@ Le contrôle de contribution extrait de `develop` refuse deux scopes de commits 
 ## Tentative de livraison — 2026-11-18
 
 La base distante est vérifiée par fetch. Les contrôles frontend, vérificateurs, documentation, traces et les deux parcours navigateur réussissent après préparation de l’environnement local et utilisation d’un dossier neuf de rapports, sans modification des anciens fichiers. Les preuves et limites sont centralisées dans la [trace de reconstitution](../reports/tests-conventions-nuxt-reconstitution.json), entrée `tentative_livraison_2026_11_18`. Le contrôle des scopes de contribution reste en échec ; livraison arrêtée avant push ou PR, sans réécriture des commits ni contournement.
+
+## Correction des scopes — 2026-11-18
+
+L’humain autorise la correction des deux scopes Git refusés. Sur la seule branche de demande non publiée, leurs scopes deviennent `OPS-031` ; les 75 arbres restent identiques et exactement deux messages changent. La correspondance mise à jour et les preuves sont conservées dans la trace de reconstitution, entrée `correction_scopes_2026_11_18`. Le contrôle de contribution réussit ; les refus et états antérieurs décrivent le contexte avant cette correction. Aucun résultat fonctionnel ni règle modifié.
 
 ## Déclaration de contribution
 
