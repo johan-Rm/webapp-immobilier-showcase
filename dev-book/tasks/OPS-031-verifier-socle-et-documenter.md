@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : `/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops`
-- État : outils implémentés et commités ; clôture technique bloquée par sécurité et SOLID, vérification humaine à faire.
+- État : outils implémentés et commités ; quatre erreurs SOLID bloquent la clôture technique, vérification humaine finale à faire.
 - Base locale vérifiée : `ca571d60c39b8b5932d74cd43dcbe4131c47c578` ; aucun fetch.
 - Dépendances : OPS-030, WEB-006, DASH-004, DOM-002, BFF-005 ; SHA à renseigner après validation des cartes amont, aucun SHA inventé.
 - Référence de cadrage : `tmp/demande-consolidation-tests-conventions-nuxt.md`, relatif au principal, hors worktrees ; ne pas copier. Analyse et décisions : `tmp/analyse-tests-conventions-nuxt.md`.
@@ -64,3 +64,7 @@ Le diagnostic et les correctifs de l’image et de la concurrence sont portés p
 ### Défauts ouverts après aide aux commandes — 2026-11-17
 
 Le rapport de référence consigne le défaut de préparation des composants Dashboard et le résultat réel des parcours Showcase sur le serveur de fixtures désormais disponible. Ces derniers échouent sur des erreurs IPX, malgré le prérequis d’URL résolu. Le serveur possédé est arrêté après l’essai. Aucun de ces défauts ne vaut validation ni clôture ; leur qualification reste distincte des correctifs de démarrage portés par OPS-030.
+
+## Bilan avant clôture — 2026-11-18
+
+Résultats consolidés dans `dev-book/reports/ops031-verification.json`, entrée `bilan_avant_cloture_2026_11_18` : défaut de préparation des composants corrigé, mutation isolée du tsconfig Nuxt, couverture des sept conventions supplémentaires rétablie par commandes individuelles. La sécurité bénéficie de la seule exception Picomatch approuvée jusqu’au 2 décembre 2026. Les quatre erreurs SOLID restent bloquantes ; avertissements, exemptions et imports non résolus restent à arbitrer, sans report implicite. Aucun verdict humain global ni livraison déduit des contrôles techniques.

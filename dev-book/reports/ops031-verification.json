@@ -675,5 +675,287 @@
     "tests_securite": 17,
     "journal": "webapp/.tmp/quality/console/third-party-tests-security-4zp66gos/output.log",
     "limite": "Picomatch reste vulnérable ; exception explicite du seul avis GHSA-fc5q-39xc-vjpf."
+  },
+  "bilan_avant_cloture_2026_11_18": {
+    "etat": "clôture non prononcée ; quatre erreurs SOLID ouvertes, arbitrage humain requis",
+    "executions": [
+      {
+        "command": "internal-tests-components",
+        "target": "dashboard",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 22.73,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/internal-tests-components-nrev_cvw/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:43:17.177366+00:00",
+        "journal_sha256": "daa6184d211df7e3ac2326a109609b78f4db0bfb1bc05be2bb947aca8f765782"
+      },
+      {
+        "command": "internal-tests-integration",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 187.24,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/internal-tests-integration-949whyvu/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:48:22.135548+00:00",
+        "journal_sha256": "2a41cf802eccf975b910cefcd96b3d58c9efef0e142b232f06578c77987abc8d"
+      },
+      {
+        "command": "internal-tests-mutation",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 37.5,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/internal-tests-mutation-kl7v6aix/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:48:30.146829+00:00",
+        "journal_sha256": "0ab403076041112cba16a6548239420170b2ceecd26c258f6d5ca3b884ed384b"
+      },
+      {
+        "command": "internal-tests-load",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 3.96,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/internal-tests-load-nmx55obp/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:49:02.290305+00:00",
+        "journal_sha256": "f22af7a83c4b9208afcf9a450e154ef30acc4720b8ad80ea5636a2fc4b992cfe"
+      },
+      {
+        "command": "internal-tests-verifiers",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 55.06,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/internal-tests-verifiers-z0_hxvqn/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:59.897769+00:00",
+        "journal_sha256": "9c8cf69e569b44abc1c61851ef0d804db0b4cabdbd86a86f68d15f8e5f5c3dd9"
+      },
+      {
+        "command": "conventions-tests-types-placement",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 27.33,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-types-placement-kjm7qimg/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:25.368189+00:00",
+        "journal_sha256": "8c3ccb2c5ae86c98a5812f34b120130696e1e5bb4bc58bedfefbf9ca788a777c"
+      },
+      {
+        "command": "conventions-tests-images",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 5.98,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-images-ulqx88fs/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:02.100789+00:00",
+        "journal_sha256": "aadec767f177ec59b9b7369667dafd57bc12b44135206b3b1560b210e1534cb1"
+      },
+      {
+        "command": "conventions-tests-business-logic",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 17.55,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-business-logic-et72x_xh/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:21.888737+00:00",
+        "journal_sha256": "bb5a72a7e654354a3939aae95d85b6144bbe29e9317841f53db318093bd30d5b"
+      },
+      {
+        "command": "conventions-tests-script-setup",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 9.15,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-script-setup-w0svii4k/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:31.294215+00:00",
+        "journal_sha256": "379f8b3147afaf2d4c511bbe790bf5ee47737c62a0a67f80b369d3dbffb8c8f8"
+      },
+      {
+        "command": "conventions-tests-responsibilities",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 9.29,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-responsibilities-5cuolvou/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:35.259392+00:00",
+        "journal_sha256": "acef8afb0464c1962f1b74e411df743b29ec4fce45363f385a255a69f7f9d5d2"
+      },
+      {
+        "command": "conventions-tests-code-quality",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 7.76,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-code-quality-ilu6bg25/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:46:39.543965+00:00",
+        "journal_sha256": "a87d1ca069513d27b0eddc9a3e3f0742139796fc228f0ea7407e671673d198a2"
+      },
+      {
+        "command": "conventions-tests-solid",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "ÉCHEC",
+        "exit_code": 2,
+        "duration_seconds": 13.34,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-solid-td7686kw/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:45:26.391775+00:00",
+        "journal_sha256": "f331cd9a0880b679ec72b318280ea925ecb8d20c3a0ea83b587ec6f9b8c1f031"
+      },
+      {
+        "command": "third-party-tests-lint",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 63.19,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/third-party-tests-lint-45hexur2/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:50:27.312283+00:00",
+        "journal_sha256": "6cedbb59efb1eeb371a979dc9147741a27124397d3f51ccb298a5d84664b9586"
+      },
+      {
+        "command": "third-party-tests-format",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 53.9,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/third-party-tests-format-cpx09qau/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:50:21.247400+00:00",
+        "journal_sha256": "6272f7630ca48a0d90b5173ac8d36d5c050739f6c9a69078671f3da6a4eb4b33"
+      },
+      {
+        "command": "third-party-tests-types",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 59.35,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/third-party-tests-types-r355qhkp/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:50:36.762142+00:00",
+        "journal_sha256": "0c95d8f3fa544f74debeb741ee2970a799cedaefd04a7277b3b4e750b3ffb3fa"
+      },
+      {
+        "command": "conventions-tests-docs",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 0.32,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-docs-ln_5efj5/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:50:48.296141+00:00",
+        "journal_sha256": "ea7c6b55625e33c26e4d19207a9d28a6d720dd396903c98696d0cb292fb88289"
+      },
+      {
+        "command": "conventions-tests-devbook",
+        "target": "dépôt",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 0.37,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/worktree/devops/webapp/.tmp/quality/console/conventions-tests-devbook-09pt918t/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T11:50:48.734631+00:00",
+        "journal_sha256": "349d928e9fe2eac8771caba04c887b5b053fbb3a63b33e3ed28b8304a28d1ed0"
+      }
+    ],
+    "composants_dashboard": {
+      "tests": 2,
+      "defaut_preparation": "corrigé techniquement sans modifier les assertions"
+    },
+    "integration_showcase": {
+      "tests": 254,
+      "fichiers": 24
+    },
+    "verificateurs": {
+      "python": 166,
+      "vitest": 66,
+      "bun": 44
+    },
+    "mutation": {
+      "tests_initiaux": 30,
+      "detectes": 47,
+      "survivants": 5,
+      "non_couverts": 0,
+      "score_informatif": 90.4
+    },
+    "charge": {
+      "profil": "smoke",
+      "requetes": 3,
+      "echecs": 0,
+      "limite": "aucune capacité de production démontrée"
+    },
+    "solid": {
+      "erreurs": 4,
+      "avertissements": 66,
+      "composables": {
+        "useDashboardSave": 9,
+        "useDeviceDetect": 10,
+        "useExceptionalRail": 27,
+        "useScreenSystem": 11
+      },
+      "maximum_retours": 8,
+      "arbitrage": "aucune modification du seuil ou nouvelle exception ; correction ou report explicite requis"
+    },
+    "autres_relectures": {
+      "frontend_avertissements": 410,
+      "frontend_exemptions": 41,
+      "gardes": 47,
+      "imports_non_resolus": 2,
+      "code_quality_todo_fixme": 1,
+      "limite": "décomptes non consolidés ; recouvrements possibles"
+    },
+    "couverture": "sept commandes individuelles réexposent les scripts de l’ancien regroupement supprimé",
+    "livraison": "aucun push, PR, fusion ou validation humaine globale",
+    "environnement": "serveur de test préexistant conservé ; conteneurs de contrôle jetables",
+    "correctifs_locaux": [
+      "2069053",
+      "2a01463",
+      "6bdffe8"
+    ],
+    "conteneurs_jetables_restants": 0,
+    "controleur_ci_distante": "non exécutée ; aucune livraison autorisée à cette étape"
   }
 }
