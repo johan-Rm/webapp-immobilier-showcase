@@ -24,7 +24,7 @@ META = {
     'third-party-tests-browser': ('Navigateur', 'Outils tiers', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
     'third-party-tests-mutation': ('Mutation', 'Outils tiers', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
-    'third-party-tests-format': ('Code', 'Outils tiers', 'Formatage sans correction', 'Prettier', 'Bloquant'),
+    'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
     'third-party-tests-code': ('Code', 'Outils tiers', 'Lint, formatage et types', 'ESLint / Prettier / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
@@ -62,7 +62,7 @@ DESCRIPTIONS = {
         'Analyse le code de l’application Nuxt et des vérificateurs avec ESLint : contrôle le respect des règles configurées et signale les erreurs et avertissements.'
     ),
     'third-party-tests-format': (
-        'Compare la mise en forme au format Prettier attendu, sans modifier les fichiers.'
+        'Vérifie la mise en forme des fichiers de l’application et des vérificateurs selon la configuration Prettier du projet : indentation, guillemets, points-virgules, retours à la ligne et ordre des classes Tailwind.'
     ),
     'third-party-tests-types': (
         'Prépare Nuxt et vérifie la compatibilité des types TypeScript et Vue. Ne teste pas les parcours utilisateur.'
