@@ -25,6 +25,8 @@ Correctif Docker : le chemin du dépôt monté est transmis aux processus de tes
 
 Correctif : les chemins de routes à crochets sont échappés dans la sélection de couverture ; tests ciblés de sélection et de rapport réussis.
 
+Correctif : le rapport restitue les positions non couvertes, fusionne les instructions par position et conserve les deux rapports bruts ; quatre tests ciblés et lecture du rapport V8 réel du pilote réussis.
+
 ## Verdict humain
 
 Aucun verdict humain.
