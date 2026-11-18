@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
@@ -10,7 +10,15 @@ import {
 import { runOwned } from './mutation'
 import { buildPlan, webappRoot } from './run'
 
-type CoverageFile = { path: string; s: Record<string, number> }
+type Location = {
+  start: { line: number; column: number | null }
+  end: { line: number; column: number | null }
+}
+type CoverageFile = {
+  path: string
+  s: Record<string, number>
+  statementMap: Record<string, Location>
+}
 type CoverageResult = Record<string, CoverageFile>
 
 export function coverageEnvironment(
@@ -32,7 +40,17 @@ export function summarizeCoverage(sources: string[], reports: CoverageResult[], 
       if (!counts.every((count) => typeof count === 'number' && Number.isFinite(count)))
         throw new Error(`Couverture invalide : ${relative}`)
       const previous = measured.get(relative) ?? {}
-      for (const [id, count] of Object.entries(entry.s)) previous[id] = (previous[id] ?? 0) + count
+      for (const [id, count] of Object.entries(entry.s)) {
+        const location = entry.statementMap?.[id]
+        if (
+          !location ||
+          !Number.isInteger(location.start?.line) ||
+          !Number.isInteger(location.end?.line)
+        )
+          throw new Error(`Position de couverture absente : ${relative}`)
+        const key = JSON.stringify(location)
+        previous[key] = (previous[key] ?? 0) + count
+      }
       measured.set(relative, previous)
     }
   }
@@ -47,6 +65,9 @@ export function summarizeCoverage(sources: string[], reports: CoverageResult[], 
       status: executed ? 'mesuré' : 'non-couvert',
       statements: counts.length,
       executed,
+      uncovered: Object.entries(statements)
+        .filter(([, count]) => count === 0)
+        .map(([location]) => JSON.parse(location) as Location),
     }
   })
 }
@@ -111,6 +132,11 @@ export async function runCoverage(
     mkdirSync(output, { recursive: true })
     const directory = mkdtempSync(join(output, `${target}-`))
     writeFileSync(join(directory, 'summary.json'), JSON.stringify(result, null, 2) + '\n')
+    for (const family of ['unit', 'integration'])
+      copyFileSync(
+        join(temporary, family, 'coverage-final.json'),
+        join(directory, `${family}.json`),
+      )
     process.stdout.write(`Rapport : ${directory}\n`)
     return result
   } finally {
