@@ -15,7 +15,7 @@ STEPS = (
 )
 
 
-PALETTE = {'blue': 34, 'green': 32, 'red': 31, 'yellow': 33, 'gray': 90}
+PALETTE = {'blue': 34, 'green': 32, 'red': 31, 'yellow': 33, 'gray': 90, 'magenta': 35}
 
 
 def supports_color(stream, env):
