@@ -153,3 +153,7 @@ Preuves : 11 tests ciblés de présentation réussis (couverture des description
 ### Nom du mode verbeux — 2026-11-18
 
 L’humain choisit `VERBOSE=1` à la place de `LIVE=1` pour demander la sortie détaillée en direct. Lanceur, présentateur imbriqué, tests et commande documentaire utilisent ce seul nouveau paramètre ; le résumé reste le mode par défaut. Les preuves antérieures conservent le nom réellement utilisé à leur date. Vérification : 11 tests ciblés de présentation réussis et `make conventions-docs VERBOSE=1` réussi avec affichage direct et rapport conservé. Aucun test applicatif ni serveur lancé pour ce renommage.
+
+### Description intégrée au bandeau — 2026-11-18
+
+Sur demande humaine, la description figure en tête du bandeau, avant les métadonnées, avec retour à la ligne et séparateur horizontal. Elle utilise le magenta, réservé à cette présentation descriptive ; la progression reste distincte. La description reste lisible sans couleur et ne se répète pas comme événement après le bandeau. Onze tests ciblés de présentation réussissent, avec vérification de l’ordre et du séparateur ; contrôle documentaire réel réussi. Aucun test applicatif relancé.

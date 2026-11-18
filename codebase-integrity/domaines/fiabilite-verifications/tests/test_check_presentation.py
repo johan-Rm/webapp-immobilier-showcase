@@ -47,6 +47,8 @@ class PresentationTest(unittest.TestCase):
                     result = presentation.run('third-party-tests-unit', argv, env, directory)
                 self.assertEqual(result['exit_code'], 7)
                 self.assertIn('DESCRIPTION', output.getvalue())
+                self.assertLess(output.getvalue().index('DESCRIPTION'), output.getvalue().index('Catégorie'))
+                self.assertIn('─' * 88, output.getvalue())
                 self.assertEqual('OUTIL — detail-unique' in output.getvalue(), flag == '1')
                 self.assertIn('detail-unique', Path(result['log']).read_text())
                 self.assertIn('erreur-unique', Path(result['log']).read_text())
