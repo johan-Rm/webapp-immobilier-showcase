@@ -148,7 +148,7 @@ def run(command, argv, env=None, report_root=None):
     profile = env.get('PROFILE', '')
     category, kind, subject, tools, level = META[command]
     color = supports_color(sys.stdout, env)
-    live = env.get('LIVE') == '1'
+    verbose = env.get('VERBOSE') == '1'
     context = f'{command} | {target}' + (f' | {profile}' if profile else '')
     def say(status, message, tone='blue'):
         print(paint(f'[{context}] {status} — {message}', tone, color), flush=True)
@@ -171,7 +171,7 @@ def run(command, argv, env=None, report_root=None):
         log.write_text(missing + '\n')
         say('[1/1] NON EXÉCUTÉ', missing, 'yellow')
     else:
-        say('[1/1] EN COURS', 'Sortie en direct ; journal complet conservé.' if live else 'Exécution ; les détails sont conservés dans le journal.')
+        say('[1/1] EN COURS', 'Sortie en direct ; journal complet conservé.' if verbose else 'Exécution ; les détails sont conservés dans le journal.')
         child_env = {**env, 'CHECK_PRESENTATION_ACTIVE': '1', 'NO_COLOR': '1', 'TERM': 'dumb', 'PYTHONUNBUFFERED': '1'}
         # Les journaux temporaires des contrôles imbriqués restent accessibles sur l’hôte.
         child_env['TMPDIR'] = str(session)
@@ -180,7 +180,7 @@ def run(command, argv, env=None, report_root=None):
                 pending = ''
                 def relay(final=False):
                     nonlocal pending
-                    if not live:
+                    if not verbose:
                         return
                     pending += reader.read()
                     lines = pending.split('\n')
@@ -194,7 +194,7 @@ def run(command, argv, env=None, report_root=None):
                 child = subprocess.Popen(argv, cwd=ROOT, env=child_env, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
                 while True:
                     try:
-                        code = child.wait(timeout=0.1 if live else 10)
+                        code = child.wait(timeout=0.1 if verbose else 10)
                         relay(final=True)
                         break
                     except subprocess.TimeoutExpired:
@@ -220,7 +220,7 @@ def run(command, argv, env=None, report_root=None):
             missing = str(error)
     raw = log.read_text(errors='replace')
     log.write_text(ANSI.sub('', raw))
-    for line in ([] if missing or live else details(raw, bool(code))):
+    for line in ([] if missing or verbose else details(raw, bool(code))):
         say('DÉTAIL', line, 'gray')
     # Pas de total d’avertissements inventé à partir des logs des fixtures.
     warnings = [line.strip() for line in raw.splitlines() if re.search(r'\d+ (avertissements à relire|garde\(s\).*revue|occurrence\(s\).*revue)', line)]

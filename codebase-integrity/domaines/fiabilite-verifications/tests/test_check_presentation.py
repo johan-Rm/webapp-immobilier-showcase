@@ -36,10 +36,10 @@ class PresentationTest(unittest.TestCase):
         self.assertEqual(set(presentation.DESCRIPTIONS), set(presentation.META))
         self.assertTrue(all(presentation.DESCRIPTIONS.values()))
 
-    def test_live_is_opt_in_and_keeps_full_report_and_failure(self):
+    def test_verbose_is_opt_in_and_keeps_full_report_and_failure(self):
         for flag in (None, '0', '1'):
             with self.subTest(flag=flag), tempfile.TemporaryDirectory() as directory:
-                env = {} if flag is None else {'LIVE': flag}
+                env = {} if flag is None else {'VERBOSE': flag}
                 output = io.StringIO()
                 argv = [sys.executable, '-u', '-c',
                         'import sys,time;print("detail-unique",flush=True);time.sleep(.2);print("erreur-unique",file=sys.stderr);sys.exit(7)']
@@ -51,9 +51,9 @@ class PresentationTest(unittest.TestCase):
                 self.assertIn('detail-unique', Path(result['log']).read_text())
                 self.assertIn('erreur-unique', Path(result['log']).read_text())
 
-    def test_nested_output_is_not_abbreviated_in_live_mode(self):
+    def test_nested_output_is_not_abbreviated_in_verbose_mode(self):
         import run_check_output
-        with patch.dict(os.environ, {'LIVE': '1', 'CHECK_PRESENTATION_ACTIVE': '1'}), \
+        with patch.dict(os.environ, {'VERBOSE': '1', 'CHECK_PRESENTATION_ACTIVE': '1'}), \
              patch.object(run_check_output.subprocess, 'run') as execute:
             execute.return_value.returncode = 7
             self.assertEqual(run_check_output.run('tests-python', ['fake']), 7)
