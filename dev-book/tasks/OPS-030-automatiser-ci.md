@@ -161,3 +161,7 @@ Sur demande humaine, la description figure en tête du bandeau, avant les métad
 ### Identité de marque et nom du contrôle — 2026-11-18
 
 Sur instruction humaine, le bandeau utilise désormais l’olive clair Graines Digitales `#A8B97A`, référencé dans la charte officielle du dépôt et dans le thème sombre du Dashboard, à la place du magenta. Cette couleur d’identité est distincte du vert ANSI de réussite ; les statuts conservent leur palette sémantique. Le nom de la commande précède la description, puis le séparateur et les métadonnées. Les 11 tests de présentation passent, avec assertions sur la couleur de marque, la distinction de réussite, le rendu sans couleur et l’ordre nom/description/métadonnées. Le contrôle documentaire réel passe ; aucun test applicatif relancé.
+
+### Renommage de la commande unitaire — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-unit` remplace `third-party-tests-unit` dans Make, le bandeau, le catalogue et les tests de routage. Le périmètre exécuté est conservé : il inclut de la logique applicative et des outils internes, ce que la description indique explicitement. Ce renommage ne réalise pas le tri par responsabilité ni la séparation Vitest/Bun discutés ensuite. Les commandes séparées par moteur ne sont pas encore disponibles. Vérifications : 11 tests Python de présentation et 53 tests Vitest de routage réussis ; aucune assertion applicative modifiée.

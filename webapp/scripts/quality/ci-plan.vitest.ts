@@ -201,7 +201,7 @@ describe('préparation explicite de l’image qualité', () => {
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
   it.each([
-    ['third-party-tests-unit', 'unit'],
+    ['verifiers-tests-unit', 'unit'],
     ['third-party-tests-integration', 'integration'],
     ['third-party-tests-components', 'components'],
     ['third-party-tests-browser', 'browser'],
@@ -227,7 +227,7 @@ describe('préparation explicite de l’image qualité', () => {
   })
   it('exécute chaque commande lors d’un appel Make multiple sans FAMILY', () => {
     const { results, recorded } = scenario([
-      'third-party-tests-unit third-party-tests-integration conventions-contracts',
+      'verifiers-tests-unit third-party-tests-integration conventions-contracts',
     ])
     expect(results[0]!.status).toBe(0)
     expect(recorded.filter((args) => args[0] === 'run').map((args) => args[6])).toEqual([
@@ -255,7 +255,7 @@ describe('préparation explicite de l’image qualité', () => {
     expect(before.recorded).toEqual(after.recorded)
   })
   it.each([
-    ['test-unit', 'third-party-tests-unit'],
+    ['test-unit', 'verifiers-tests-unit'],
     ['test-integration', 'third-party-tests-integration'],
     ['test-components', 'third-party-tests-components'],
     ['test-browser', 'third-party-tests-browser'],
