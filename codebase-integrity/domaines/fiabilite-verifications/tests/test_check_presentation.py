@@ -78,7 +78,7 @@ class PresentationTest(unittest.TestCase):
         self.assertEqual(result['exit_code'], 2)
 
     def test_all_missing_prerequisites_are_explicit(self):
-        for name in ('third-party-tests-load', 'third-party-tests-lighthouse', 'third-party-tests-components', 'conventions-devbook'):
+        for name in ('verifiers-tests-load', 'third-party-tests-lighthouse', 'third-party-tests-components', 'conventions-devbook'):
             with self.subTest(command=name):
                 self.assertTrue(presentation.precondition(name, {}))
         self.assertIsNone(presentation.precondition('third-party-tests-components', {'GD_TARGET': 'dashboard'}))

@@ -228,8 +228,8 @@ _output-third-party-tests-security:
 _output-verifiers-tests-mutation:
 	$(call run-control,mutation)
 
-.PHONY: third-party-tests-load
-_output-third-party-tests-load:
+.PHONY: verifiers-tests-load
+_output-verifiers-tests-load:
 	$(call run-control,load)
 
 .PHONY: third-party-tests-lighthouse
@@ -332,7 +332,7 @@ security-check:
 
 .PHONY: load-check
 load-check:
-	@$(MAKE) --no-print-directory third-party-tests-load
+	@$(MAKE) --no-print-directory verifiers-tests-load
 
 .PHONY: lighthouse-check
 lighthouse-check:
@@ -423,9 +423,9 @@ third-party-tests-code:
 third-party-tests-security:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-security -- $(MAKE) --no-print-directory _output-third-party-tests-security
 
-.PHONY: third-party-tests-load _output-third-party-tests-load
-third-party-tests-load:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-load -- $(MAKE) --no-print-directory _output-third-party-tests-load
+.PHONY: verifiers-tests-load _output-verifiers-tests-load
+verifiers-tests-load:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-load -- $(MAKE) --no-print-directory _output-verifiers-tests-load
 
 .PHONY: third-party-tests-lighthouse _output-third-party-tests-lighthouse
 third-party-tests-lighthouse:
