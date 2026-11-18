@@ -6,9 +6,9 @@
 
 Les [conventions du dev-book](../dev-book/README.md#préservation-des-traces) définissent la règle. Le contrôle des demandes existant vérifie déjà leur type ; le contrôle des contributions vérifie les commits et leur déclaration. Le script complémentaire `check_devbook.py` examine les cartes nouvelles ou modifiées du worktree par rapport à une base Git explicite, y compris les modifications indexées et les fichiers non suivis non ignorés. Les cartes inchangées ne sont pas réinterprétées.
 
-Depuis la racine du worktree, lancer `make conventions-devbook BASE=<sha-complet>`, après avoir vérifié le SHA de comparaison. Une base absente, inconnue ou abrégée est refusée. Le script ne fait aucun fetch et ne modifie ni carte ni historique Git.
+Depuis la racine du worktree, lancer `make conventions-tests-devbook BASE=<sha-complet>`, après avoir vérifié le SHA de comparaison. Une base absente, inconnue ou abrégée est refusée. Le script ne fait aucun fetch et ne modifie ni carte ni historique Git.
 
-`make conventions-docs` exécute les tests Python de ce vérificateur. Le contrôle réel des traces reste une commande distincte, car il exige un choix explicite de base ; son absence d’exécution n’établit aucune conformité des traces.
+`make conventions-tests-docs` exécute les tests Python de ce vérificateur. Le contrôle réel des traces reste une commande distincte, car il exige un choix explicite de base ; son absence d’exécution n’établit aucune conformité des traces.
 
 ## Utiliser les modèles
 

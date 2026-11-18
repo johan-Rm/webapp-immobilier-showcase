@@ -80,7 +80,7 @@ demands:
 tasks:
 	@python3 -B infra/scripts/demand_status.py tasks
 
-_output-conventions-docs:
+_output-conventions-tests-docs:
 	@python3 -B codebase-integrity/commun/run_aide_checks.py
 
 contribution-check:
@@ -97,30 +97,30 @@ integrity-domains:
 	python3 codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py --list
 
 .PHONY: devbook-check
-_output-conventions-devbook:
+_output-conventions-tests-devbook:
 	@python3 -B codebase-integrity/commun/run_check_output.py devbook -- python3 -B codebase-integrity/domaines/construction-livraison/scripts/check_devbook.py --base "$${BASE}"
 
-.PHONY: conventions-docs conventions-devbook
+.PHONY: conventions-tests-docs conventions-tests-devbook
 aide-check:
-	@$(MAKE) --no-print-directory conventions-docs
+	@$(MAKE) --no-print-directory conventions-tests-docs
 
 devbook-check:
-	@$(MAKE) --no-print-directory conventions-devbook
+	@$(MAKE) --no-print-directory conventions-tests-devbook
 
 # Compatibilité des noms antérieurs ; ne pas les présenter dans l’aide.
-.PHONY: conventions-docs-check
-conventions-docs-check:
-	@$(MAKE) --no-print-directory conventions-docs
+.PHONY: conventions-tests-docs-check
+conventions-tests-docs-check:
+	@$(MAKE) --no-print-directory conventions-tests-docs
 
-.PHONY: conventions-devbook-check
-conventions-devbook-check:
-	@$(MAKE) --no-print-directory conventions-devbook
+.PHONY: conventions-tests-devbook-check
+conventions-tests-devbook-check:
+	@$(MAKE) --no-print-directory conventions-tests-devbook
 
 # Présentation publique commune ; les alias délèguent aux noms canoniques.
-.PHONY: conventions-docs _output-conventions-docs
-conventions-docs:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-docs -- $(MAKE) --no-print-directory _output-conventions-docs
+.PHONY: conventions-tests-docs _output-conventions-tests-docs
+conventions-tests-docs:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-docs -- $(MAKE) --no-print-directory _output-conventions-tests-docs
 
-.PHONY: conventions-devbook _output-conventions-devbook
-conventions-devbook:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-devbook -- $(MAKE) --no-print-directory _output-conventions-devbook
+.PHONY: conventions-tests-devbook _output-conventions-tests-devbook
+conventions-tests-devbook:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-devbook -- $(MAKE) --no-print-directory _output-conventions-tests-devbook

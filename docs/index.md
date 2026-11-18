@@ -25,7 +25,7 @@ Cette documentation complete les README locaux et centralise les conventions tra
 
 ## Sections disponibles
 
-- [Contrôles frontend AST](controle-conventions-frontend.md) : erreurs, warnings et limites de l’analyse.
+- [Contrôles frontend AST](controle-conventions-tests-frontend.md) : erreurs, warnings et limites de l’analyse.
 
 - [Nginx local](nginx-local.md) : piles serveur, Dashboard et vérifications isolées.
 

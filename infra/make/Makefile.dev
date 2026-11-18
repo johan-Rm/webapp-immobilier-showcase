@@ -84,7 +84,7 @@ quality-lint-fix:
 quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
 
-_output-conventions-frontend:
+_output-conventions-tests-frontend:
 	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
 
 
@@ -198,44 +198,44 @@ define run-control
 
 endef
 
-.PHONY: verifiers-tests-unit
-_output-verifiers-tests-unit:
+.PHONY: internal-tests-unit
+_output-internal-tests-unit:
 	$(call run-control,unit)
 
-.PHONY: verifiers-tests-integration
-_output-verifiers-tests-integration:
+.PHONY: internal-tests-integration
+_output-internal-tests-integration:
 	$(call run-control,integration)
 
-.PHONY: verifiers-tests-components
-_output-verifiers-tests-components:
+.PHONY: internal-tests-components
+_output-internal-tests-components:
 	$(call run-control,components)
 
-.PHONY: verifiers-tests-browser
-_output-verifiers-tests-browser:
+.PHONY: internal-tests-browser
+_output-internal-tests-browser:
 	$(call run-control,browser)
 
 .PHONY: third-party-tests-security
 _output-third-party-tests-security:
 	$(call run-control,security)
 
-.PHONY: verifiers-tests-mutation
-_output-verifiers-tests-mutation:
+.PHONY: internal-tests-mutation
+_output-internal-tests-mutation:
 	$(call run-control,mutation)
 
-.PHONY: verifiers-tests-load
-_output-verifiers-tests-load:
+.PHONY: internal-tests-load
+_output-internal-tests-load:
 	$(call run-control,load)
 
 .PHONY: third-party-tests-lighthouse
 _output-third-party-tests-lighthouse:
 	$(call run-control,lighthouse)
 
-.PHONY: conventions-contracts
-_output-conventions-contracts:
+.PHONY: conventions-tests-contracts
+_output-conventions-tests-contracts:
 	$(call run-control,contracts)
 
-.PHONY: conventions-architecture
-_output-conventions-architecture:
+.PHONY: conventions-tests-architecture
+_output-conventions-tests-architecture:
 	$(call run-control,architecture)
 
 .PHONY: third-party-tests-lint
@@ -250,17 +250,17 @@ _output-third-party-tests-format:
 _output-third-party-tests-types:
 	$(call run-control,types)
 
-.PHONY: conventions-guards
-_output-conventions-guards:
+.PHONY: conventions-tests-guards
+_output-conventions-tests-guards:
 	$(call run-control,guards)
 
-.PHONY: conventions-services
-_output-conventions-services:
+.PHONY: conventions-tests-services
+_output-conventions-tests-services:
 	$(call run-control,services)
 
 
-.PHONY: verifiers-test conventions-guards conventions-services
-_output-verifiers-test:
+.PHONY: internal-tests-verifiers conventions-tests-guards conventions-tests-services
+_output-internal-tests-verifiers:
 	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
 	@bun --no-env-file run --cwd codebase-integrity test
 
@@ -278,40 +278,40 @@ quality-rebuild:
 	@$(MAKE) --no-print-directory checks-rebuild
 
 quality-guards-check:
-	@$(MAKE) --no-print-directory conventions-guards
+	@$(MAKE) --no-print-directory conventions-tests-guards
 
 quality-services-check:
-	@$(MAKE) --no-print-directory conventions-services
+	@$(MAKE) --no-print-directory conventions-tests-services
 
 # Ancienne interface paramétrée, conservée uniquement pour compatibilité.
 .PHONY: check frontend-conventions-check
 check:
-	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make verifiers-tests-unit, par exemple."; exit 1; }
+	@test -n "$(FAMILY)" || { echo "Choisir une commande explicite : make internal-tests-unit, par exemple."; exit 1; }
 	$(call run-control,$(FAMILY))
 
 frontend-conventions-check:
-	@$(MAKE) --no-print-directory conventions-frontend
+	@$(MAKE) --no-print-directory conventions-tests-frontend
 
 # Compatibilité des noms antérieurs ; ne pas les présenter dans l’aide.
 .PHONY: test-unit
 test-unit:
-	@$(MAKE) --no-print-directory verifiers-tests-unit
+	@$(MAKE) --no-print-directory internal-tests-unit
 
 .PHONY: test-integration
 test-integration:
-	@$(MAKE) --no-print-directory verifiers-tests-integration
+	@$(MAKE) --no-print-directory internal-tests-integration
 
 .PHONY: test-components
 test-components:
-	@$(MAKE) --no-print-directory verifiers-tests-components
+	@$(MAKE) --no-print-directory internal-tests-components
 
 .PHONY: test-browser
 test-browser:
-	@$(MAKE) --no-print-directory verifiers-tests-browser
+	@$(MAKE) --no-print-directory internal-tests-browser
 
 .PHONY: test-mutation
 test-mutation:
-	@$(MAKE) --no-print-directory verifiers-tests-mutation
+	@$(MAKE) --no-print-directory internal-tests-mutation
 
 .PHONY: security-check
 security-check:
@@ -319,7 +319,7 @@ security-check:
 
 .PHONY: load-check
 load-check:
-	@$(MAKE) --no-print-directory verifiers-tests-load
+	@$(MAKE) --no-print-directory internal-tests-load
 
 .PHONY: lighthouse-check
 lighthouse-check:
@@ -339,48 +339,48 @@ quality-type-check:
 
 .PHONY: integrity-test
 integrity-test:
-	@$(MAKE) --no-print-directory verifiers-test
+	@$(MAKE) --no-print-directory internal-tests-verifiers
 
-.PHONY: conventions-frontend-check
-conventions-frontend-check:
-	@$(MAKE) --no-print-directory conventions-frontend
+.PHONY: conventions-tests-frontend-check
+conventions-tests-frontend-check:
+	@$(MAKE) --no-print-directory conventions-tests-frontend
 
-.PHONY: conventions-guards-check
-conventions-guards-check:
-	@$(MAKE) --no-print-directory conventions-guards
+.PHONY: conventions-tests-guards-check
+conventions-tests-guards-check:
+	@$(MAKE) --no-print-directory conventions-tests-guards
 
-.PHONY: conventions-services-check
-conventions-services-check:
-	@$(MAKE) --no-print-directory conventions-services
+.PHONY: conventions-tests-services-check
+conventions-tests-services-check:
+	@$(MAKE) --no-print-directory conventions-tests-services
 
-.PHONY: conventions-architecture-check
-conventions-architecture-check:
-	@$(MAKE) --no-print-directory conventions-architecture
+.PHONY: conventions-tests-architecture-check
+conventions-tests-architecture-check:
+	@$(MAKE) --no-print-directory conventions-tests-architecture
 
-.PHONY: conventions-contracts-check
-conventions-contracts-check:
-	@$(MAKE) --no-print-directory conventions-contracts
+.PHONY: conventions-tests-contracts-check
+conventions-tests-contracts-check:
+	@$(MAKE) --no-print-directory conventions-tests-contracts
 
 # Présentation publique commune ; les alias délèguent aux noms canoniques.
-.PHONY: verifiers-tests-unit _output-verifiers-tests-unit
-verifiers-tests-unit:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-unit -- $(MAKE) --no-print-directory _output-verifiers-tests-unit
+.PHONY: internal-tests-unit _output-internal-tests-unit
+internal-tests-unit:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-unit -- $(MAKE) --no-print-directory _output-internal-tests-unit
 
-.PHONY: verifiers-tests-integration _output-verifiers-tests-integration
-verifiers-tests-integration:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-integration -- $(MAKE) --no-print-directory _output-verifiers-tests-integration
+.PHONY: internal-tests-integration _output-internal-tests-integration
+internal-tests-integration:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-integration -- $(MAKE) --no-print-directory _output-internal-tests-integration
 
-.PHONY: verifiers-tests-components _output-verifiers-tests-components
-verifiers-tests-components:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-components -- $(MAKE) --no-print-directory _output-verifiers-tests-components
+.PHONY: internal-tests-components _output-internal-tests-components
+internal-tests-components:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-components -- $(MAKE) --no-print-directory _output-internal-tests-components
 
-.PHONY: verifiers-tests-browser _output-verifiers-tests-browser
-verifiers-tests-browser:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-browser -- $(MAKE) --no-print-directory _output-verifiers-tests-browser
+.PHONY: internal-tests-browser _output-internal-tests-browser
+internal-tests-browser:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-browser -- $(MAKE) --no-print-directory _output-internal-tests-browser
 
-.PHONY: verifiers-tests-mutation _output-verifiers-tests-mutation
-verifiers-tests-mutation:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-mutation -- $(MAKE) --no-print-directory _output-verifiers-tests-mutation
+.PHONY: internal-tests-mutation _output-internal-tests-mutation
+internal-tests-mutation:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-mutation -- $(MAKE) --no-print-directory _output-internal-tests-mutation
 
 .PHONY: third-party-tests-lint _output-third-party-tests-lint
 third-party-tests-lint:
@@ -398,37 +398,37 @@ third-party-tests-types:
 third-party-tests-security:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-security -- $(MAKE) --no-print-directory _output-third-party-tests-security
 
-.PHONY: verifiers-tests-load _output-verifiers-tests-load
-verifiers-tests-load:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-load -- $(MAKE) --no-print-directory _output-verifiers-tests-load
+.PHONY: internal-tests-load _output-internal-tests-load
+internal-tests-load:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-load -- $(MAKE) --no-print-directory _output-internal-tests-load
 
 .PHONY: third-party-tests-lighthouse _output-third-party-tests-lighthouse
 third-party-tests-lighthouse:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-lighthouse -- $(MAKE) --no-print-directory _output-third-party-tests-lighthouse
 
-.PHONY: conventions-frontend _output-conventions-frontend
-conventions-frontend:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-frontend -- $(MAKE) --no-print-directory _output-conventions-frontend
+.PHONY: conventions-tests-frontend _output-conventions-tests-frontend
+conventions-tests-frontend:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-frontend -- $(MAKE) --no-print-directory _output-conventions-tests-frontend
 
-.PHONY: conventions-guards _output-conventions-guards
-conventions-guards:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-guards -- $(MAKE) --no-print-directory _output-conventions-guards
+.PHONY: conventions-tests-guards _output-conventions-tests-guards
+conventions-tests-guards:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-guards -- $(MAKE) --no-print-directory _output-conventions-tests-guards
 
-.PHONY: conventions-services _output-conventions-services
-conventions-services:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-services -- $(MAKE) --no-print-directory _output-conventions-services
+.PHONY: conventions-tests-services _output-conventions-tests-services
+conventions-tests-services:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-services -- $(MAKE) --no-print-directory _output-conventions-tests-services
 
-.PHONY: conventions-architecture _output-conventions-architecture
-conventions-architecture:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-architecture -- $(MAKE) --no-print-directory _output-conventions-architecture
+.PHONY: conventions-tests-architecture _output-conventions-tests-architecture
+conventions-tests-architecture:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-architecture -- $(MAKE) --no-print-directory _output-conventions-tests-architecture
 
-.PHONY: conventions-contracts _output-conventions-contracts
-conventions-contracts:
-	@python3 -B codebase-integrity/commun/check_presentation.py conventions-contracts -- $(MAKE) --no-print-directory _output-conventions-contracts
+.PHONY: conventions-tests-contracts _output-conventions-tests-contracts
+conventions-tests-contracts:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-contracts -- $(MAKE) --no-print-directory _output-conventions-tests-contracts
 
-.PHONY: verifiers-test _output-verifiers-test
-verifiers-test:
-	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-test -- $(MAKE) --no-print-directory _output-verifiers-test
+.PHONY: internal-tests-verifiers _output-internal-tests-verifiers
+internal-tests-verifiers:
+	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-verifiers -- $(MAKE) --no-print-directory _output-internal-tests-verifiers
 
 .PHONY: checks-prepare _output-checks-prepare
 checks-prepare:
