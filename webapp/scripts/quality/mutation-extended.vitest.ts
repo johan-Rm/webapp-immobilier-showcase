@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { mutationFiles, mutationSelection } from './mutation-extended'
+import { mutationFiles, mutationSelection, mutationTempRoot } from './mutation-extended'
 
 describe('périmètre de mutation', () => {
+  it('évite une copie temporaire imbriquée dans l’application', () => {
+    expect(mutationTempRoot('/workspace/webapp', '/workspace/webapp/.tmp')).toBe('/tmp')
+    expect(mutationTempRoot('/workspace/webapp', '/var/tmp')).toBe('/var/tmp')
+  })
   it('sélectionne les sources exécutables et signale Vue', () => {
     const result = mutationSelection(['webapp/shared/a.ts', 'webapp/dashboard/a.vue'])
     expect(result.selected).toEqual(['webapp/shared/a.ts'])

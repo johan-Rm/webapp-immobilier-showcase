@@ -20,6 +20,12 @@ import { webappRoot } from './run'
 
 type Target = 'showcase-immobilier' | 'client2-immobilier' | 'dashboard'
 
+export function mutationTempRoot(root: string, candidate: string): string {
+  const app = resolve(root)
+  const temporary = resolve(candidate)
+  return temporary === app || temporary.startsWith(`${app}/`) ? '/tmp' : temporary
+}
+
 export function mutationSelection(sources: string[], requested?: string[]) {
   const eligible = sources.filter((path) => /\.[cm]?[jt]sx?$/.test(path))
   const selected = requested ?? eligible
@@ -74,7 +80,7 @@ export async function runExtendedMutation(
     (selection.selected.length !== 1 || selection.selected[0] !== 'webapp/shared/saas/links.ts')
   )
     throw new Error('Le pilote est limité au module shared/saas/links.ts')
-  const temporary = mkdtempSync(join(tmpdir(), 'application-mutation-'))
+  const temporary = mkdtempSync(join(mutationTempRoot(root, tmpdir()), 'application-mutation-'))
   const app = join(temporary, 'webapp')
   try {
     const tracked = execFileSync('git', ['ls-files', '--cached', '--deduplicate', '-z'], {
