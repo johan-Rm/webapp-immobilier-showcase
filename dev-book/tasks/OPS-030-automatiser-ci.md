@@ -165,3 +165,7 @@ Sur instruction humaine, le bandeau utilise désormais l’olive clair Graines D
 ### Renommage de la commande unitaire — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-unit` remplace `third-party-tests-unit` dans Make, le bandeau, le catalogue et les tests de routage. Le périmètre exécuté est conservé : il inclut de la logique applicative et des outils internes, ce que la description indique explicitement. Ce renommage ne réalise pas le tri par responsabilité ni la séparation Vitest/Bun discutés ensuite. Les commandes séparées par moteur ne sont pas encore disponibles. Vérifications : 11 tests Python de présentation et 53 tests Vitest de routage réussis ; aucune assertion applicative modifiée.
+
+### Description positive du lint — 2026-11-18
+
+À la demande humaine lors de la revue manuelle, la description ESLint présente uniquement les vérifications effectuées et précise le périmètre application Nuxt et vérificateurs. Les commandes et les assertions restent identiques. Le résultat humain transmis pour le lint est réussi, code 0 ; aucun nouveau lint applicatif exécuté pour cette modification rédactionnelle.

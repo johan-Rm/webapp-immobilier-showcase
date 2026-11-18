@@ -59,7 +59,7 @@ DESCRIPTIONS = {
         'Introduit des modifications volontaires pour mesurer si les tests les détectent. Le score reste informatif.'
     ),
     'third-party-tests-lint': (
-        'Analyse le code avec les règles ESLint configurées. Ne prouve pas que le comportement attendu est correct.'
+        'Analyse le code de l’application Nuxt et des vérificateurs avec ESLint : contrôle le respect des règles configurées et signale les erreurs et avertissements.'
     ),
     'third-party-tests-format': (
         'Compare la mise en forme au format Prettier attendu, sans modifier les fichiers.'
