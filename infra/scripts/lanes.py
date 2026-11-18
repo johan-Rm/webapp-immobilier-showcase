@@ -37,6 +37,34 @@ def resolve_lane(cwd, layer):
     return tree
 
 
+def prepare_test_container(tree, name):
+    """Réparer uniquement une précédente exécution jetable de cette couche."""
+    fields = '{{json .State}}|{{json .HostConfig.AutoRemove}}|{{json .Config.Labels}}'
+    result = subprocess.run(['docker', 'inspect', '--format', fields, name],
+                            capture_output=True, text=True)
+    if result.returncode:
+        if 'No such object' in result.stderr or 'No such container' in result.stderr:
+            return False
+        raise ValueError('État Docker inaccessible ; aucun conteneur modifié')
+    state, automatic, labels = map(json.loads, result.stdout.strip().split('|', 2))
+    if (not automatic or labels.get('com.docker.compose.service') != 'verify'
+            or labels.get('com.docker.compose.oneoff', '').lower() != 'true'
+            or labels.get('com.docker.compose.project.working_dir') != str(tree)):
+        raise ValueError('Nom occupé par un conteneur étranger ; conservé')
+    if state['Status'] == 'running':
+        print('INFO — Serveur de test déjà actif ; conservé. '
+              'Consulter lane-logs MODE=test pour son état de préparation.', flush=True)
+        return True
+    if state['Status'] not in ('created', 'exited', 'dead'):
+        raise ValueError('Conteneur de test en transition ou suspendu ; conservé')
+    # Sans force ni suppression de volume : un démarrage concurrent fait refuser rm.
+    removed = subprocess.run(['docker', 'rm', name], capture_output=True, text=True)
+    if removed.returncode:
+        raise ValueError('Conteneur non supprimé ; état à revérifier, aucune suppression forcée')
+    print('INFO — Ancien conteneur de test incomplet ou arrêté supprimé ; relance.', flush=True)
+    return False
+
+
 def run_test(action, layer, tree):
     """Mode test isolé ; aucune lecture du .env de développement."""
     principal, _ = context(tree)
@@ -53,6 +81,10 @@ def run_test(action, layer, tree):
     name = f"{config['project']}-{fingerprint}-{layer}-test-{target}"
     goals = {'up': '_lane-test-up', 'down': '_lane-test-down',
              'logs': '_lane-test-logs', 'status': '_lane-test-status'}
+    if action in ('up', 'rebuild') and prepare_test_container(tree, name):
+        if action == 'rebuild':
+            raise ValueError('Serveur actif ; arrêter ce mode test avant reconstruction')
+        return 0
     if action == 'rebuild':
         result = subprocess.run(['make', '--no-print-directory', 'checks-rebuild'], cwd=tree)
         if result.returncode:
