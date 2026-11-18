@@ -42,7 +42,7 @@ export function inspectSource(path: string, content: string): Finding[] {
       part.content,
       ts.ScriptTarget.Latest,
       true,
-      path.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+      path.endsWith('.tsx') || path.endsWith('.jsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
     )
     const errors = (file as ts.SourceFile & { parseDiagnostics: readonly ts.Diagnostic[] })
       .parseDiagnostics
