@@ -140,6 +140,7 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
     )
     if (!plan.files.length) throw new Error(`Pilote composants non installé pour ${target}`)
     plan.commands.push(
+      command(['node_modules/nuxt/bin/nuxt.mjs', 'prepare', '--dotenv', '.env.test'], root, 'node'),
       command(['node_modules/vitest/vitest.mjs', 'run', ...plan.files], root, 'node'),
     )
   } else if (family === 'browser') {

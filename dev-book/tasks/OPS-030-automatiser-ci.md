@@ -231,3 +231,7 @@ Sur demande humaine, suppression de `conventions-all`, `third-party-tests-code`,
 ### Préfixes des trois types de contrôles — 2026-11-18
 
 Sur décision humaine, les commandes publiques utilisent `third-party-tests-*`, `conventions-tests-*` et `internal-tests-*`. Les six scénarios internes conservent leur suffixe ; `internal-tests-verifiers` désigne la suite Python/Vitest/Bun des vérificateurs. Mise à jour des recettes, bandeaux, aide, documentation, convention de nommage et workflow documentaire ; les assertions et périmètres ne changent pas. Les preuves historiques gardent les noms réellement exécutés.
+
+### Préparation du pilote composants corrigée — 2026-11-18
+
+Le lanceur prépare désormais Nuxt avec `.env.test` et GD_TARGET=dashboard avant Vitest, afin de produire `dashboard/.nuxt/tsconfig.site.json`. Aucun scénario, assertion ou seuil changé. Après reconstruction explicite de l’image, `make internal-tests-components GD_TARGET=dashboard VERBOSE=1` réussit : 2 tests, code 0, journal `internal-tests-components-nrev_cvw/output.log` sous le répertoire console habituel. Le test de routage de préparation et les 20 autres tests du lanceur réussissent. Le défaut de préparation est techniquement résolu ; aucun verdict humain global déduit.
