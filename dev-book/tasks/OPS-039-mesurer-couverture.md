@@ -23,6 +23,8 @@ Correctif : chaque exécution écrit son résumé dans un dossier neuf afin de p
 
 Correctif Docker : le chemin du dépôt monté est transmis aux processus de test. Le premier essai échouait sur un chemin Git absent ; après correction, `make internal-tests-coverage GD_TARGET=showcase-immobilier` réussit dans l’image reconstruite : 136 tests unitaires et 254 d’intégration. Quatre tests ciblés de rapport réussissent.
 
+Correctif : les chemins de routes à crochets sont échappés dans la sélection de couverture ; tests ciblés de sélection et de rapport réussis.
+
 ## Verdict humain
 
 Aucun verdict humain.

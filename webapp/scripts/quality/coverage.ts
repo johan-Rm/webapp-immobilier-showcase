@@ -2,7 +2,10 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
-import { discoverApplicationFiles } from '../../../codebase-integrity/commun/application-scope'
+import {
+  discoverApplicationFiles,
+  escapeGlobPath,
+} from '../../../codebase-integrity/commun/application-scope'
 
 import { runOwned } from './mutation'
 import { buildPlan, webappRoot } from './run'
@@ -79,7 +82,9 @@ export async function runCoverage(
               `--coverage.reportsDirectory=${directory}`,
               ...selection.source
                 .filter((path) => /\.[cm]?[jt]sx?$/.test(path))
-                .map((path) => `--coverage.include=${path.slice('webapp/'.length)}`),
+                .map(
+                  (path) => `--coverage.include=${escapeGlobPath(path.slice('webapp/'.length))}`,
+                ),
             ]
           : command.args
         await runOwned(
