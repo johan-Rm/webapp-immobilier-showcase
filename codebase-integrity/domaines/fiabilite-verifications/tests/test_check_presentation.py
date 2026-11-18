@@ -32,6 +32,37 @@ class PresentationTest(unittest.TestCase):
                 self.assertEqual(json.loads(log.with_name('result.json').read_text())['exit_code'], status)
                 self.assertIsNone(result['warning_count'])
 
+    def test_descriptions_cover_every_command(self):
+        self.assertEqual(set(presentation.DESCRIPTIONS), set(presentation.META))
+        self.assertTrue(all(presentation.DESCRIPTIONS.values()))
+
+    def test_live_is_opt_in_and_keeps_full_report_and_failure(self):
+        for flag in (None, '0', '1'):
+            with self.subTest(flag=flag), tempfile.TemporaryDirectory() as directory:
+                env = {} if flag is None else {'LIVE': flag}
+                output = io.StringIO()
+                argv = [sys.executable, '-u', '-c',
+                        'import sys,time;print("detail-unique",flush=True);time.sleep(.2);print("erreur-unique",file=sys.stderr);sys.exit(7)']
+                with redirect_stdout(output):
+                    result = presentation.run('third-party-tests-unit', argv, env, directory)
+                self.assertEqual(result['exit_code'], 7)
+                self.assertIn('DESCRIPTION', output.getvalue())
+                self.assertEqual('OUTIL — detail-unique' in output.getvalue(), flag == '1')
+                self.assertIn('detail-unique', Path(result['log']).read_text())
+                self.assertIn('erreur-unique', Path(result['log']).read_text())
+
+    def test_nested_output_is_not_abbreviated_in_live_mode(self):
+        import run_check_output
+        with patch.dict(os.environ, {'LIVE': '1', 'CHECK_PRESENTATION_ACTIVE': '1'}), \
+             patch.object(run_check_output.subprocess, 'run') as execute:
+            execute.return_value.returncode = 7
+            self.assertEqual(run_check_output.run('tests-python', ['fake']), 7)
+            self.assertNotIn('stdout', execute.call_args.kwargs)
+            execute.reset_mock()
+            with redirect_stdout(io.StringIO()):
+                self.assertEqual(run_check_output.run('conventions', ['fake', '--env-file', '/absent-live-fixture.env']), 2)
+            execute.assert_not_called()
+
     def test_missing_prerequisite_never_launches_process_or_succeeds(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, redirect_stdout(io.StringIO()):
             result = presentation.run('third-party-tests-browser', ['unused'], {}, directory)
