@@ -216,8 +216,8 @@ _output-verifiers-tests-integration:
 _output-third-party-tests-components:
 	$(call run-control,components)
 
-.PHONY: third-party-tests-browser
-_output-third-party-tests-browser:
+.PHONY: verifiers-tests-browser
+_output-verifiers-tests-browser:
 	$(call run-control,browser)
 
 .PHONY: third-party-tests-security
@@ -320,7 +320,7 @@ test-components:
 
 .PHONY: test-browser
 test-browser:
-	@$(MAKE) --no-print-directory third-party-tests-browser
+	@$(MAKE) --no-print-directory verifiers-tests-browser
 
 .PHONY: test-mutation
 test-mutation:
@@ -395,9 +395,9 @@ verifiers-tests-integration:
 third-party-tests-components:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-components -- $(MAKE) --no-print-directory _output-third-party-tests-components
 
-.PHONY: third-party-tests-browser _output-third-party-tests-browser
-third-party-tests-browser:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-browser -- $(MAKE) --no-print-directory _output-third-party-tests-browser
+.PHONY: verifiers-tests-browser _output-verifiers-tests-browser
+verifiers-tests-browser:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-browser -- $(MAKE) --no-print-directory _output-verifiers-tests-browser
 
 .PHONY: verifiers-tests-mutation _output-verifiers-tests-mutation
 verifiers-tests-mutation:

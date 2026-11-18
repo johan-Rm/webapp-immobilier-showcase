@@ -21,7 +21,7 @@ META = {
     'verifiers-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
     'verifiers-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
     'third-party-tests-components': ('Composants', 'Outils tiers', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
-    'third-party-tests-browser': ('Navigateur', 'Outils tiers', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
+    'verifiers-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
     'verifiers-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
@@ -52,7 +52,7 @@ DESCRIPTIONS = {
     'third-party-tests-components': (
         'Monte le formulaire pilote Dashboard dans un environnement Nuxt et vérifie ses champs, ses interactions et ses états.'
     ),
-    'third-party-tests-browser': (
+    'verifiers-tests-browser': (
         'Exécute les parcours navigateur de la cible dans Chromium et contrôle les réponses HTTP, les éléments attendus et les erreurs du navigateur selon les assertions de chaque scénario.'
     ),
     'verifiers-tests-mutation': (
@@ -118,7 +118,7 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
 def precondition(command, env):
-    if command == 'third-party-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
+    if command == 'verifiers-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
     if command in ('verifiers-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
         return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
