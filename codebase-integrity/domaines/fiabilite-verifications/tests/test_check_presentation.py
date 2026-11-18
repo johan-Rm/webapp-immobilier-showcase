@@ -72,7 +72,7 @@ class PresentationTest(unittest.TestCase):
 
     def test_missing_prerequisite_never_launches_process_or_succeeds(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, redirect_stdout(io.StringIO()):
-            result = presentation.run('third-party-tests-browser', ['unused'], {}, directory)
+            result = presentation.run('verifiers-tests-browser', ['unused'], {}, directory)
         launch.assert_not_called()
         self.assertEqual(result['status'], 'NON EXÉCUTÉ')
         self.assertEqual(result['exit_code'], 2)
@@ -91,7 +91,7 @@ class PresentationTest(unittest.TestCase):
 
     def test_color_respects_no_color_and_non_terminal(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()) as output:
-            presentation.run('third-party-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
+            presentation.run('verifiers-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
         self.assertNotIn('\033[', output.getvalue())
 
     def test_logs_remain_complete_when_screen_is_short(self):

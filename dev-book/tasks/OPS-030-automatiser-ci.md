@@ -211,3 +211,7 @@ Sur demande humaine, `verifiers-tests-mutation` remplace `third-party-tests-muta
 ### Renommage des tests de charge — 2026-11-18
 
 Sur demande humaine, `verifiers-tests-load` remplace `third-party-tests-load` dans Make, sa présentation, la documentation et les tests. k6 reste le moteur tiers ; scénario, paramètres, prérequis d’URL locale et latences informatives restent inchangés. Le classement suit le préfixe provisoire retenu pour les scénarios internes, sans limiter leur objet aux vérificateurs.
+
+### Renommage des tests navigateur — 2026-11-18
+
+Sur demande humaine, `verifiers-tests-browser` remplace `third-party-tests-browser` dans Make, sa présentation, la documentation et les tests de routage et de prérequis. Playwright et axe-core restent les outils tiers ; les parcours et assertions internes sont inchangés, ainsi que l’exigence de `PLAYWRIGHT_BASE_URL`. Le classement suit le préfixe provisoire retenu pour les scénarios internes. Le passage navigateur réussi précédemment reste une preuve historique ; aucun nouveau parcours n’est exécuté pour ce seul renommage.
