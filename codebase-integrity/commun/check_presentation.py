@@ -44,19 +44,19 @@ META = {
 }
 DESCRIPTIONS = {
     'verifiers-tests-unit': (
-        'Exécute les tests unitaires écrits pour le projet : logique applicative et outils internes. Cette sélection mixte ne se limite pas aux vérificateurs et ne vérifie pas le rendu dans un navigateur.'
+        'Exécute avec Vitest et Bun les tests unitaires de la logique applicative et des outils internes : calculs, transformations de données et gestion des erreurs.'
     ),
     'third-party-tests-integration': (
-        'Teste les échanges entre modules, les outils CLI et les requêtes HTTP simulées. Ne dépend pas d’une API réelle ni d’un serveur à démarrer manuellement.'
+        'Vérifie les échanges entre modules, les réponses HTTP simulées et le fonctionnement des commandes de préparation et de contrôle.'
     ),
     'third-party-tests-components': (
-        'Monte le formulaire pilote Dashboard dans Nuxt pour vérifier ses interactions. Ne couvre pas tous les composants.'
+        'Monte le formulaire pilote Dashboard dans un environnement Nuxt et vérifie ses champs, ses interactions et ses états.'
     ),
     'third-party-tests-browser': (
-        'Ouvre les parcours prévus dans Chromium desktop et mobile et vérifie leurs assertions. Exige un serveur prêt ; ne couvre pas tous les écrans.'
+        'Exécute les parcours navigateur de la cible dans Chromium et contrôle les réponses HTTP, les éléments attendus et les erreurs du navigateur selon les assertions de chaque scénario.'
     ),
     'third-party-tests-mutation': (
-        'Introduit des modifications volontaires pour mesurer si les tests les détectent. Le score reste informatif.'
+        'Modifie volontairement le module pilote et relance ses tests pour mesurer les erreurs détectées, les mutations survivantes et les parties couvertes.'
     ),
     'third-party-tests-lint': (
         'Analyse le code de l’application Nuxt et des vérificateurs avec ESLint : contrôle le respect des règles configurées et signale les erreurs et avertissements.'
@@ -65,52 +65,52 @@ DESCRIPTIONS = {
         'Vérifie la mise en forme des fichiers de l’application et des vérificateurs selon la configuration Prettier du projet : indentation, guillemets, points-virgules, retours à la ligne et ordre des classes Tailwind.'
     ),
     'third-party-tests-types': (
-        'Prépare Nuxt et vérifie la compatibilité des types TypeScript et Vue. Ne teste pas les parcours utilisateur.'
+        'Prépare les fichiers générés par Nuxt, puis vérifie la cohérence des types TypeScript, des composants Vue et de leurs usages pour la cible sélectionnée.'
     ),
     'third-party-tests-code': (
-        'Enchaîne lint, formatage et types ; s’arrête au premier échec.'
+        'Exécute successivement les vérifications ESLint, Prettier et TypeScript/Vue pour contrôler les règles de code, la mise en forme et la cohérence des types.'
     ),
     'third-party-tests-security': (
-        'Recherche les vulnérabilités connues des dépendances. Ne constitue pas un audit de sécurité de toute l’application.'
+        'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
     'third-party-tests-load': (
-        'Envoie une charge locale bornée au serveur indiqué. Les mesures ne prédisent pas la capacité en production.'
+        'Envoie un nombre borné de requêtes au serveur de test local avec k6 et mesure les temps de réponse ainsi que les erreurs rencontrées.'
     ),
     'third-party-tests-lighthouse': (
-        'Audite les pages du serveur indiqué dans Chromium. Les scores sont informatifs ; une erreur d’exécution reste bloquante.'
+        'Audite les pages servies par le serveur de test avec Lighthouse et Chromium et produit les mesures de performance, d’accessibilité, de bonnes pratiques et de référencement.'
     ),
     'conventions-all': (
-        'Regroupe les conventions frontend automatisées. Les avertissements nécessitent une relecture humaine.'
+        'Exécute les vérificateurs des conventions frontend : structure Vue, placement des types, images, sections script setup, responsabilités et organisation du code.'
     ),
     'conventions-frontend': (
-        'Analyse les sources Vue pour contrôler la structure et les marqueurs documentés. Ne vérifie pas le rendu visuel.'
+        'Analyse les sources Vue pour vérifier les marqueurs de pages et de composants, les sections sémantiques et les règles de structure frontend documentées.'
     ),
     'conventions-guards': (
-        'Repère les gardes potentiellement redondantes. Chaque signalement demande une relecture avant correction.'
+        'Repère les conditions de protection potentiellement redondantes et fournit les occurrences à examiner avec leur contexte de code.'
     ),
     'conventions-services': (
-        'Recherche les imports de framework interdits dans les services. Ne prouve pas leur adéquation métier.'
+        'Vérifie que les services respectent leur indépendance vis-à-vis du framework en recherchant les imports interdits par les conventions du projet.'
     ),
     'conventions-architecture': (
-        'Analyse les dépendances des services selon les règles d’imports documentées.'
+        'Construit le graphe des dépendances des services et vérifie les règles d’imports documentées avec dependency-cruiser.'
     ),
     'conventions-contracts': (
-        'Compare deux générations des contrats locaux pour vérifier leur reproductibilité. Ne valide pas une API distante.'
+        'Génère deux fois les contrats YAML locaux dans des environnements isolés et compare les résultats pour vérifier leur reproductibilité.'
     ),
     'conventions-docs': (
-        'Vérifie la cohérence du registre, des demandes et la structure documentaire. La pertinence du contenu reste à relire.'
+        'Vérifie la cohérence du registre des conventions, les métadonnées des demandes et la conformité des documents et README aux règles documentaires du projet.'
     ),
     'conventions-devbook': (
-        'Contrôle les traces des cartes sur la plage Git indiquée par BASE. Ne remplace pas la validation humaine.'
+        'Examine les cartes modifiées depuis la base Git indiquée par BASE et vérifie leurs métadonnées, leur traçabilité et leurs références de verdict.'
     ),
     'verifiers-test': (
-        'Teste nos propres vérificateurs sur des cas conformes, invalides et des exceptions. Ne teste pas l’application.'
+        'Exécute les tests Python, Vitest et Bun de nos vérificateurs sur des exemples conformes, des violations et des exceptions pour contrôler leurs diagnostics et leurs codes de sortie.'
     ),
     'checks-prepare': (
-        'Réutilise l’image des contrôles si elle existe ; la construit sinon. Ne lance pas les tests.'
+        'Vérifie la présence de l’image Docker des contrôles et la construit lorsqu’elle est absente pour préparer les prochaines commandes.'
     ),
     'checks-rebuild': (
-        'Reconstruit explicitement l’image des contrôles avec les sources actuelles. Ne lance pas les tests.'
+        'Reconstruit l’image Docker des contrôles à partir des sources et dépendances actuelles du worktree.'
     ),
 }
 
