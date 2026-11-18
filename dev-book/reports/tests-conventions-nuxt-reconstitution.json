@@ -311,7 +311,29 @@
       ],
       "journal_local": "/tmp/dem011-reconstitution-contribution.log",
       "arbitrage": "Aucun commit validé réécrit, aucune règle assouplie ; correction des scopes à arbitrer avant livraison."
+    },
+    "preparation_image_principal_apres_correctif": {
+      "command": "checks-prepare",
+      "target": "showcase-immobilier",
+      "profile": "",
+      "status": "RÉUSSI",
+      "exit_code": 0,
+      "duration_seconds": 32.52,
+      "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/console/checks-prepare-7mlrku5l/output.log",
+      "warning_count": null,
+      "reason": null,
+      "timestamp": "2026-11-18T12:18:23.186900+00:00",
+      "journal_sha256": "1e1c2c7ec3d0bbd4c89f88d03a5c9d64f933c2439eed9ab2712a21777cab3176",
+      "image": "showcase-immobilier-verify:latest"
     }
   },
-  "etat": "reconstituée localement ; livraison bloquée par le contrôle des scopes de contribution"
+  "etat": "reconstituée localement ; livraison bloquée par le contrôle des scopes de contribution",
+  "correctifs_approuves_apres_reconstitution": [
+    {
+      "source": "595b56265b0f3294f3852c7b802c8f3d87c041ee",
+      "obtenu": "ce0bc9bf7e21c72057ebf55d38693b5ab91b4a63",
+      "motif": "Réinclusion ciblée du seul modèle .env.example suivi, sans lecture des données privées exclues.",
+      "accord_humain": "oui, après présentation du diff et reproduction Docker sur données factices"
+    }
+  ]
 }
