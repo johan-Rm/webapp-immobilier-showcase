@@ -69,6 +69,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
+    "@babel/parser": "8.0.10",
     "@iconify-json/heroicons": "^1.2.3",
     "@modyfi/vite-plugin-yaml": "^1.1.1",
     "@nuxt/hints": "^1.1.4",
