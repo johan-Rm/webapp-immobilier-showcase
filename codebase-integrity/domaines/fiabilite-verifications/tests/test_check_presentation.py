@@ -83,6 +83,35 @@ class PresentationTest(unittest.TestCase):
                 self.assertTrue(presentation.precondition(name, {}))
         self.assertIsNone(presentation.precondition('verifiers-tests-components', {'GD_TARGET': 'dashboard'}))
 
+    def test_devbook_base_resolution_and_override(self):
+        with patch.object(presentation.subprocess, 'run') as execute:
+            execute.return_value.returncode = 0
+            execute.return_value.stdout = 'abc123\n'
+            env = {}
+            self.assertIsNone(presentation.resolve_devbook_base(env))
+            self.assertEqual(env['BASE'], 'abc123')
+            execute.assert_called_once()
+            execute.reset_mock()
+            self.assertIsNone(presentation.resolve_devbook_base({'BASE': 'explicit'}))
+            execute.assert_not_called()
+            execute.return_value.returncode = 1
+            self.assertIn('Impossible', presentation.resolve_devbook_base({}))
+
+    def test_devbook_uses_repository_context_and_passes_computed_base(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(presentation, 'resolve_devbook_base') as resolve:
+            def base(env):
+                env['BASE'] = 'abc123'
+            resolve.side_effect = base
+            output = io.StringIO()
+            with redirect_stdout(output):
+                result = presentation.run('conventions-devbook',
+                    [sys.executable, '-c', 'import os; print(os.environ["BASE"])'],
+                    {'GD_TARGET': 'dashboard'}, directory)
+            self.assertEqual(result['exit_code'], 0)
+            self.assertEqual(result['target'], 'dépôt')
+            self.assertIn('Base Git           │ abc123', output.getvalue())
+            self.assertIn('abc123', Path(result['log']).read_text())
+
     def test_unavailable_executable_is_not_a_test_failure(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
             result = presentation.run('conventions-docs', ['/does-not-exist-presentation'], {}, directory)

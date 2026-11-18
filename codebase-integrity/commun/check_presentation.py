@@ -101,7 +101,7 @@ DESCRIPTIONS = {
         'Vérifie la cohérence du registre des conventions, les métadonnées des demandes et la conformité des documents et README aux règles documentaires du projet.'
     ),
     'conventions-devbook': (
-        'Examine les cartes modifiées depuis la base Git indiquée par BASE et vérifie leurs métadonnées, leur traçabilité et leurs références de verdict.'
+        'Examine les cartes modifiées depuis l’ancêtre commun de develop et HEAD, ou depuis BASE si fourni, et vérifie leurs métadonnées, leur traçabilité et leurs références de verdict.'
     ),
     'verifiers-test': (
         'Exécute les tests Python, Vitest et Bun de nos vérificateurs sur des exemples conformes, des violations et des exceptions pour contrôler leurs diagnostics et leurs codes de sortie.'
@@ -143,9 +143,24 @@ def details(text, failed):
     return list(dict.fromkeys(summary))[-10:]
 
 
+def resolve_devbook_base(env):
+    if env.get('BASE'):
+        return None
+    try:
+        result = subprocess.run(['git', 'merge-base', 'develop', 'HEAD'], cwd=ROOT,
+                                capture_output=True, text=True, check=False)
+    except OSError:
+        return 'Base Git inaccessible ; vérifier Git ou fournir BASE=<SHA>.'
+    if result.returncode or not result.stdout.strip():
+        return 'Impossible de déterminer la base commune de develop et HEAD ; vérifier develop ou fournir BASE=<SHA>.'
+    env['BASE'] = result.stdout.strip()
+    return None
+
+
 def run(command, argv, env=None, report_root=None):
     env = dict(os.environ if env is None else env)
-    target = env.get('GD_TARGET') or 'showcase-immobilier'
+    base_error = resolve_devbook_base(env) if command == 'conventions-devbook' else None
+    target = 'dépôt' if command == 'conventions-devbook' else env.get('GD_TARGET') or 'showcase-immobilier'
     profile = env.get('PROFILE', '')
     category, kind, subject, tools, level = META[command]
     color = supports_color(sys.stdout, env)
@@ -162,6 +177,8 @@ def run(command, argv, env=None, report_root=None):
     for label, value in zip(('Catégorie', 'Type de contrôle', 'Ce qu’on vérifie', 'Commandes Make', 'Outils', 'Niveau'),
                             (category, kind, subject, f'make {command}', tools, level)):
         print(paint(f'{label:18}', 'gray', color) + ' │ ' + value, flush=True)
+    if command == 'conventions-devbook':
+        print('Base Git           │ ' + (env.get('BASE') or 'indisponible'), flush=True)
     print('Cible              │ ' + target + (f' ; profil {profile}' if profile else ''), flush=True)
     print(paint('═' * 88, 'brand', color), flush=True)
     directory = Path(report_root) if report_root else ROOT / 'webapp/.tmp/quality/console'
@@ -169,7 +186,7 @@ def run(command, argv, env=None, report_root=None):
     session = Path(tempfile.mkdtemp(prefix=command + '-', dir=directory))
     log = session / 'output.log'
     start = time.monotonic()
-    missing = precondition(command, env)
+    missing = base_error or precondition(command, env)
     code, state = 2, 'NON EXÉCUTÉ'
     interrupted = False
     if missing:
