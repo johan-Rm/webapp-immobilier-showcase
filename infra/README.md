@@ -51,4 +51,6 @@ Les commandes de cycle de vie des couches distinguent les modes **développement
 - Isoler le conteneur par **dépôt, couche et cible**, avec un port distinct du développement.
 - Réutiliser l’image disponible ; réserver sa reconstruction à une action explicite.
 - Conserver les journaux des contrôles et supprimer automatiquement le conteneur de test à son arrêt.
+- Préserver un serveur de test déjà actif lors d’une relance ; refuser sa reconstruction tant qu’il reste actif.
+- Vérifier l’appartenance et le caractère jetable d’un ancien conteneur avant de libérer son nom ; ne jamais forcer sa suppression.
 - Ne jamais arrêter ni supprimer les conteneurs des autres modes ou projets.

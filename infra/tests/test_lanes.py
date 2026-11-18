@@ -271,6 +271,11 @@ class Lanes(unittest.TestCase):
 
 
 class TestMode(unittest.TestCase):
+    def setUp(self):
+        guard = patch.object(lanes, 'prepare_test_container', return_value=False)
+        guard.start()
+        self.addCleanup(guard.stop)
+
     def test_routes_all_actions_without_reading_private_environment(self):
         for action in ('up', 'down', 'logs', 'status'):
             with self.subTest(action=action), \
@@ -297,6 +302,16 @@ class TestMode(unittest.TestCase):
                     lanes.run_test('up', 'devops', ROOT)
             call.assert_not_called()
 
+    def test_running_server_is_reused_without_rebuild(self):
+        with patch.object(lanes, 'context', return_value=(ROOT, [])), \
+             patch.dict(os.environ, {}, clear=True), \
+             patch.object(lanes, 'prepare_test_container', return_value=True), \
+             patch.object(lanes.subprocess, 'run') as call:
+            self.assertEqual(lanes.run_test('up', 'devops', ROOT), 0)
+            with self.assertRaises(ValueError):
+                lanes.run_test('rebuild', 'devops', ROOT)
+            call.assert_not_called()
+
     def test_default_port_is_specific_to_layer(self):
         with patch.object(lanes, 'context', return_value=(ROOT, [])), \
              patch.dict(os.environ, {}, clear=True), \
@@ -313,6 +328,38 @@ class TestMode(unittest.TestCase):
             self.assertEqual(lanes.run_test('rebuild', 'devops', ROOT), 7)
             self.assertEqual(call.call_count, 1)
             self.assertIn('checks-rebuild', call.call_args.args[0])
+
+
+class TestContainerRecovery(unittest.TestCase):
+    def response(self, status, foreign=False):
+        labels = {'com.docker.compose.service': 'verify',
+                  'com.docker.compose.oneoff': 'True',
+                  'com.docker.compose.project.working_dir': '/foreign' if foreign else str(ROOT)}
+        return subprocess.CompletedProcess([], 0,
+            '|'.join(map(json.dumps, [{'Status': status}, True, labels])), '')
+
+    def test_recovers_created_and_exited_without_force_or_volumes(self):
+        for state in ('created', 'exited', 'dead'):
+            with patch.object(lanes.subprocess, 'run', side_effect=[self.response(state),
+                      subprocess.CompletedProcess([], 0)]) as call:
+                self.assertFalse(lanes.prepare_test_container(ROOT, 'owned'))
+                self.assertEqual(call.call_args.args[0], ['docker', 'rm', 'owned'])
+
+    def test_preserves_running_and_foreign(self):
+        with patch.object(lanes.subprocess, 'run', return_value=self.response('running')) as call:
+            self.assertTrue(lanes.prepare_test_container(ROOT, 'owned'))
+            self.assertEqual(call.call_count, 1)
+        with patch.object(lanes.subprocess, 'run', return_value=self.response('created', True)) as call:
+            with self.assertRaises(ValueError):
+                lanes.prepare_test_container(ROOT, 'owned')
+            self.assertEqual(call.call_count, 1)
+
+    def test_distinguishes_absent_container_from_daemon_error(self):
+        with patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'No such object: owned')):
+            self.assertFalse(lanes.prepare_test_container(ROOT, 'owned'))
+        with patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'permission denied')):
+            with self.assertRaises(ValueError):
+                lanes.prepare_test_container(ROOT, 'owned')
 
 
 if __name__ == '__main__':
