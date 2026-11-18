@@ -41,6 +41,78 @@ META = {
     'checks-prepare': ('Préparation', 'Environnement', 'Réutiliser ou construire l’image', 'Docker Compose', 'Prérequis'),
     'checks-rebuild': ('Préparation', 'Environnement', 'Construire explicitement l’image', 'Docker Compose', 'Prérequis'),
 }
+DESCRIPTIONS = {
+    'third-party-tests-unit': (
+        'Teste des fonctions isolées sur des exemples connus : calculs, données et erreurs. Ne vérifie pas le rendu dans un navigateur.'
+    ),
+    'third-party-tests-integration': (
+        'Teste les échanges entre modules, les outils CLI et les requêtes HTTP simulées. Ne dépend pas d’une API réelle ni d’un serveur à démarrer manuellement.'
+    ),
+    'third-party-tests-components': (
+        'Monte le formulaire pilote Dashboard dans Nuxt pour vérifier ses interactions. Ne couvre pas tous les composants.'
+    ),
+    'third-party-tests-browser': (
+        'Ouvre les parcours prévus dans Chromium desktop et mobile et vérifie leurs assertions. Exige un serveur prêt ; ne couvre pas tous les écrans.'
+    ),
+    'third-party-tests-mutation': (
+        'Introduit des modifications volontaires pour mesurer si les tests les détectent. Le score reste informatif.'
+    ),
+    'third-party-tests-lint': (
+        'Analyse le code avec les règles ESLint configurées. Ne prouve pas que le comportement attendu est correct.'
+    ),
+    'third-party-tests-format': (
+        'Compare la mise en forme au format Prettier attendu, sans modifier les fichiers.'
+    ),
+    'third-party-tests-types': (
+        'Prépare Nuxt et vérifie la compatibilité des types TypeScript et Vue. Ne teste pas les parcours utilisateur.'
+    ),
+    'third-party-tests-code': (
+        'Enchaîne lint, formatage et types ; s’arrête au premier échec.'
+    ),
+    'third-party-tests-security': (
+        'Recherche les vulnérabilités connues des dépendances. Ne constitue pas un audit de sécurité de toute l’application.'
+    ),
+    'third-party-tests-load': (
+        'Envoie une charge locale bornée au serveur indiqué. Les mesures ne prédisent pas la capacité en production.'
+    ),
+    'third-party-tests-lighthouse': (
+        'Audite les pages du serveur indiqué dans Chromium. Les scores sont informatifs ; une erreur d’exécution reste bloquante.'
+    ),
+    'conventions-all': (
+        'Regroupe les conventions frontend automatisées. Les avertissements nécessitent une relecture humaine.'
+    ),
+    'conventions-frontend': (
+        'Analyse les sources Vue pour contrôler la structure et les marqueurs documentés. Ne vérifie pas le rendu visuel.'
+    ),
+    'conventions-guards': (
+        'Repère les gardes potentiellement redondantes. Chaque signalement demande une relecture avant correction.'
+    ),
+    'conventions-services': (
+        'Recherche les imports de framework interdits dans les services. Ne prouve pas leur adéquation métier.'
+    ),
+    'conventions-architecture': (
+        'Analyse les dépendances des services selon les règles d’imports documentées.'
+    ),
+    'conventions-contracts': (
+        'Compare deux générations des contrats locaux pour vérifier leur reproductibilité. Ne valide pas une API distante.'
+    ),
+    'conventions-docs': (
+        'Vérifie la cohérence du registre, des demandes et la structure documentaire. La pertinence du contenu reste à relire.'
+    ),
+    'conventions-devbook': (
+        'Contrôle les traces des cartes sur la plage Git indiquée par BASE. Ne remplace pas la validation humaine.'
+    ),
+    'verifiers-test': (
+        'Teste nos propres vérificateurs sur des cas conformes, invalides et des exceptions. Ne teste pas l’application.'
+    ),
+    'checks-prepare': (
+        'Réutilise l’image des contrôles si elle existe ; la construit sinon. Ne lance pas les tests.'
+    ),
+    'checks-rebuild': (
+        'Reconstruit explicitement l’image des contrôles avec les sources actuelles. Ne lance pas les tests.'
+    ),
+}
+
 ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
@@ -76,6 +148,7 @@ def run(command, argv, env=None, report_root=None):
     profile = env.get('PROFILE', '')
     category, kind, subject, tools, level = META[command]
     color = supports_color(sys.stdout, env)
+    live = env.get('LIVE') == '1'
     context = f'{command} | {target}' + (f' | {profile}' if profile else '')
     def say(status, message, tone='blue'):
         print(paint(f'[{context}] {status} — {message}', tone, color), flush=True)
@@ -85,6 +158,7 @@ def run(command, argv, env=None, report_root=None):
         print(paint(f'{label:18}', 'gray', color) + ' │ ' + value, flush=True)
     print('Cible              │ ' + target + (f' ; profil {profile}' if profile else ''), flush=True)
     print(paint('═' * 88, 'blue', color), flush=True)
+    say('DESCRIPTION', DESCRIPTIONS[command])
     directory = Path(report_root) if report_root else ROOT / 'webapp/.tmp/quality/console'
     directory.mkdir(parents=True, exist_ok=True)
     session = Path(tempfile.mkdtemp(prefix=command + '-', dir=directory))
@@ -97,19 +171,37 @@ def run(command, argv, env=None, report_root=None):
         log.write_text(missing + '\n')
         say('[1/1] NON EXÉCUTÉ', missing, 'yellow')
     else:
-        say('[1/1] EN COURS', 'Exécution ; les détails sont conservés dans le journal.')
+        say('[1/1] EN COURS', 'Sortie en direct ; journal complet conservé.' if live else 'Exécution ; les détails sont conservés dans le journal.')
         child_env = {**env, 'CHECK_PRESENTATION_ACTIVE': '1', 'NO_COLOR': '1', 'TERM': 'dumb', 'PYTHONUNBUFFERED': '1'}
         # Les journaux temporaires des contrôles imbriqués restent accessibles sur l’hôte.
         child_env['TMPDIR'] = str(session)
         try:
-            with log.open('w') as stream:
+            with log.open('w') as stream, log.open(encoding='utf8', errors='replace') as reader:
+                pending = ''
+                def relay(final=False):
+                    nonlocal pending
+                    if not live:
+                        return
+                    pending += reader.read()
+                    lines = pending.split('\n')
+                    pending = lines.pop()
+                    for line in lines:
+                        say('OUTIL', ANSI.sub('', line), 'gray')
+                    if final and pending:
+                        say('OUTIL', ANSI.sub('', pending), 'gray')
+                        pending = ''
+                heartbeat = time.monotonic()
                 child = subprocess.Popen(argv, cwd=ROOT, env=child_env, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
                 while True:
                     try:
-                        code = child.wait(timeout=10)
+                        code = child.wait(timeout=0.1 if live else 10)
+                        relay(final=True)
                         break
                     except subprocess.TimeoutExpired:
-                        say('[1/1] EN COURS', f'{time.monotonic() - start:.0f} s ; journal : {log}')
+                        relay()
+                        if time.monotonic() - heartbeat >= 10:
+                            say('[1/1] EN COURS', f'{time.monotonic() - start:.0f} s ; journal : {log}')
+                            heartbeat = time.monotonic()
                     except KeyboardInterrupt:
                         interrupted = True
                         os.killpg(child.pid, signal.SIGTERM)
@@ -118,6 +210,7 @@ def run(command, argv, env=None, report_root=None):
                         except subprocess.TimeoutExpired:
                             os.killpg(child.pid, signal.SIGKILL)
                             child.wait()
+                        relay(final=True)
                         code = 130
                         break
             state = 'INTERROMPU' if interrupted else 'RÉUSSI' if code == 0 else 'ÉCHEC'
@@ -127,7 +220,7 @@ def run(command, argv, env=None, report_root=None):
             missing = str(error)
     raw = log.read_text(errors='replace')
     log.write_text(ANSI.sub('', raw))
-    for line in ([] if missing else details(raw, bool(code))):
+    for line in ([] if missing or live else details(raw, bool(code))):
         say('DÉTAIL', line, 'gray')
     # Pas de total d’avertissements inventé à partir des logs des fixtures.
     warnings = [line.strip() for line in raw.splitlines() if re.search(r'\d+ (avertissements à relire|garde\(s\).*revue|occurrence\(s\).*revue)', line)]

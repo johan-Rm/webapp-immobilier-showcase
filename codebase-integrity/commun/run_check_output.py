@@ -29,6 +29,17 @@ PROFILES = {
 
 
 def run(profile, command):
+    # Le présentateur parent capture déjà le journal complet et gère le contexte.
+    if os.environ.get('LIVE') == '1' and os.environ.get('CHECK_PRESENTATION_ACTIVE') == '1':
+        try:
+            if profile == 'conventions' and '--env-file' in command:
+                index = command.index('--env-file') + 1
+                if index >= len(command) or not Path(command[index]).is_file():
+                    raise FileNotFoundError('Fichier d’environnement absent ; aucun vérificateur lancé.')
+            return subprocess.run(command, env={**os.environ, 'NO_COLOR': '1', 'TERM': 'dumb'}).returncode
+        except OSError as exc:
+            print(str(exc), flush=True)
+            return 2
     title, description = PROFILES[profile]
     colored = supports_color(sys.stdout, os.environ)
     print(title + '\n', flush=True)
