@@ -243,3 +243,7 @@ Sept commandes individuelles exposent les scripts conservés de l’ancien regro
 ### Isolation TypeScript de la mutation corrigée — 2026-11-18
 
 Le répertoire temporaire Stryker possède un tsconfig autonome pour le module pur ; il ne remonte plus vers le tsconfig Nuxt du parent. Sources applicatives, scénarios et seuils inchangés. Après reconstruction explicite, le pilote réussit : 30 tests initiaux, 52 mutants, 47 détectés, 5 survivants, aucun non couvert, score informatif 90,4 %. Journal `internal-tests-mutation-kl7v6aix/output.log`, rapports sous `.tmp/quality/mutation`. Les neuf tests existants de mesure et arrêt du processus réussissent. Deux liens documentaires altérés par le renommage de commandes sont également rétablis vers le document frontend existant.
+
+### Contexte Docker du principal — 2026-11-18
+
+Sur accord humain explicite après reconstitution, la réinclusion Docker `!**/.env.example` devient `!webapp/.env.example`, seul modèle d’environnement suivi. La réinclusion générale empêchait l’élagage des dossiers `.data` et provoquait un refus de lecture du répertoire local des sessions. Reproduction Docker sur données factices et dossier inaccessible : configuration initiale en échec, réinclusion ciblée réussie. Aucun changement de données, propriétaire ou permissions du projet. Le correctif est destiné à être intégré par cherry-pick dans DEM-011 puis éprouvé par préparation réelle de l’image du principal.

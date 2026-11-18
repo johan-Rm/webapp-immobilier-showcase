@@ -6,7 +6,7 @@
 **/.tmp
 **/.data
 **/.env*
-!**/.env.example
+!webapp/.env.example
 **/__pycache__
 **/*.pyc
 **/*.key
