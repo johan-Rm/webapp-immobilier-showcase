@@ -18,42 +18,42 @@ from run_aide_checks import paint, supports_color
 ROOT = Path(__file__).resolve().parents[2]
 # Catégorie, type, objet, outils, niveau : métadonnées d’affichage uniquement.
 META = {
-    'verifiers-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
-    'verifiers-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
-    'verifiers-tests-components': ('Composants', 'Tests internes', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
-    'verifiers-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
-    'verifiers-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
+    'internal-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
+    'internal-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
+    'internal-tests-components': ('Composants', 'Tests internes', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
+    'internal-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
+    'internal-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
-    'verifiers-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
+    'internal-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
     'third-party-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
-    'conventions-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
-    'conventions-guards': ('Gardes', 'Conventions', 'Gardes suspectes', 'Vérificateur spécifique', 'Relecture humaine'),
-    'conventions-services': ('Services', 'Conventions', 'Indépendance du framework', 'Vérificateur spécifique', 'Bloquant'),
-    'conventions-architecture': ('Architecture', 'Conventions', 'Imports des services', 'dependency-cruiser', 'Bloquant'),
-    'conventions-contracts': ('Contrats', 'Conventions', 'Reproductibilité locale', 'Générateur YAML', 'Bloquant'),
-    'conventions-docs': ('Documentation', 'Conventions', 'Registre, demandes et README', 'Python', 'Bloquant'),
-    'conventions-devbook': ('Traces', 'Conventions', 'Métadonnées et verdicts des cartes', 'Python', 'Bloquant'),
-    'verifiers-test': ('Vérificateurs', 'Fiabilité des outils', 'Fonctionnement des vérificateurs', 'Python / Vitest / Bun', 'Bloquant'),
+    'conventions-tests-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
+    'conventions-tests-guards': ('Gardes', 'Conventions', 'Gardes suspectes', 'Vérificateur spécifique', 'Relecture humaine'),
+    'conventions-tests-services': ('Services', 'Conventions', 'Indépendance du framework', 'Vérificateur spécifique', 'Bloquant'),
+    'conventions-tests-architecture': ('Architecture', 'Conventions', 'Imports des services', 'dependency-cruiser', 'Bloquant'),
+    'conventions-tests-contracts': ('Contrats', 'Conventions', 'Reproductibilité locale', 'Générateur YAML', 'Bloquant'),
+    'conventions-tests-docs': ('Documentation', 'Conventions', 'Registre, demandes et README', 'Python', 'Bloquant'),
+    'conventions-tests-devbook': ('Traces', 'Conventions', 'Métadonnées et verdicts des cartes', 'Python', 'Bloquant'),
+    'internal-tests-verifiers': ('Vérificateurs', 'Fiabilité des outils', 'Fonctionnement des vérificateurs', 'Python / Vitest / Bun', 'Bloquant'),
     'checks-prepare': ('Préparation', 'Environnement', 'Réutiliser ou construire l’image', 'Docker Compose', 'Prérequis'),
     'checks-rebuild': ('Préparation', 'Environnement', 'Construire explicitement l’image', 'Docker Compose', 'Prérequis'),
 }
 DESCRIPTIONS = {
-    'verifiers-tests-unit': (
+    'internal-tests-unit': (
         'Exécute avec Vitest et Bun les tests unitaires de la logique applicative et des outils internes : calculs, transformations de données et gestion des erreurs.'
     ),
-    'verifiers-tests-integration': (
+    'internal-tests-integration': (
         'Vérifie les échanges entre modules, les réponses HTTP simulées et le fonctionnement des commandes de préparation et de contrôle.'
     ),
-    'verifiers-tests-components': (
+    'internal-tests-components': (
         'Monte le formulaire pilote Dashboard dans un environnement Nuxt et vérifie ses champs, ses interactions et ses états.'
     ),
-    'verifiers-tests-browser': (
+    'internal-tests-browser': (
         'Exécute les parcours navigateur de la cible dans Chromium et contrôle les réponses HTTP, les éléments attendus et les erreurs du navigateur selon les assertions de chaque scénario.'
     ),
-    'verifiers-tests-mutation': (
+    'internal-tests-mutation': (
         'Modifie volontairement le module pilote et relance ses tests pour mesurer les erreurs détectées, les mutations survivantes et les parties couvertes.'
     ),
     'third-party-tests-lint': (
@@ -68,34 +68,34 @@ DESCRIPTIONS = {
     'third-party-tests-security': (
         'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
-    'verifiers-tests-load': (
+    'internal-tests-load': (
         'Envoie un nombre borné de requêtes au serveur de test local avec k6 et mesure les temps de réponse ainsi que les erreurs rencontrées.'
     ),
     'third-party-tests-lighthouse': (
         'Audite les pages servies par le serveur de test avec Lighthouse et Chromium et produit les mesures de performance, d’accessibilité, de bonnes pratiques et de référencement.'
     ),
-    'conventions-frontend': (
+    'conventions-tests-frontend': (
         'Analyse les sources Vue pour vérifier les marqueurs de pages et de composants, les sections sémantiques et les règles de structure frontend documentées.'
     ),
-    'conventions-guards': (
+    'conventions-tests-guards': (
         'Repère les conditions de protection potentiellement redondantes et fournit les occurrences à examiner avec leur contexte de code.'
     ),
-    'conventions-services': (
+    'conventions-tests-services': (
         'Vérifie que les services respectent leur indépendance vis-à-vis du framework en recherchant les imports interdits par les conventions du projet.'
     ),
-    'conventions-architecture': (
+    'conventions-tests-architecture': (
         'Construit le graphe des dépendances des services et vérifie les règles d’imports documentées avec dependency-cruiser.'
     ),
-    'conventions-contracts': (
+    'conventions-tests-contracts': (
         'Génère deux fois les contrats YAML locaux dans des environnements isolés et compare les résultats pour vérifier leur reproductibilité.'
     ),
-    'conventions-docs': (
+    'conventions-tests-docs': (
         'Vérifie la cohérence du registre des conventions, les métadonnées des demandes et la conformité des documents et README aux règles documentaires du projet.'
     ),
-    'conventions-devbook': (
+    'conventions-tests-devbook': (
         'Examine les cartes modifiées depuis l’ancêtre commun de develop et HEAD, ou depuis BASE si fourni, et vérifie leurs métadonnées, leur traçabilité et leurs références de verdict.'
     ),
-    'verifiers-test': (
+    'internal-tests-verifiers': (
         'Exécute les tests Python, Vitest et Bun de nos vérificateurs sur des exemples conformes, des violations et des exceptions pour contrôler leurs diagnostics et leurs codes de sortie.'
     ),
     'checks-prepare': (
@@ -110,13 +110,13 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
 def precondition(command, env):
-    if command == 'verifiers-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
+    if command == 'internal-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command in ('verifiers-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
+    if command in ('internal-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
         return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command == 'verifiers-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
+    if command == 'internal-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
         return 'Le pilote de composants est disponible uniquement avec GD_TARGET=dashboard.'
-    if command == 'conventions-devbook' and not env.get('BASE'):
+    if command == 'conventions-tests-devbook' and not env.get('BASE'):
         return 'BASE absente ; fournir le SHA de départ des traces à vérifier.'
     return None
 
@@ -151,8 +151,8 @@ def resolve_devbook_base(env):
 
 def run(command, argv, env=None, report_root=None):
     env = dict(os.environ if env is None else env)
-    base_error = resolve_devbook_base(env) if command == 'conventions-devbook' else None
-    target = 'dépôt' if command == 'conventions-devbook' else env.get('GD_TARGET') or 'showcase-immobilier'
+    base_error = resolve_devbook_base(env) if command == 'conventions-tests-devbook' else None
+    target = 'dépôt' if command == 'conventions-tests-devbook' else env.get('GD_TARGET') or 'showcase-immobilier'
     profile = env.get('PROFILE', '')
     category, kind, subject, tools, level = META[command]
     color = supports_color(sys.stdout, env)
@@ -169,7 +169,7 @@ def run(command, argv, env=None, report_root=None):
     for label, value in zip(('Catégorie', 'Type de contrôle', 'Ce qu’on vérifie', 'Commandes Make', 'Outils', 'Niveau'),
                             (category, kind, subject, f'make {command}', tools, level)):
         print(paint(f'{label:18}', 'gray', color) + ' │ ' + value, flush=True)
-    if command == 'conventions-devbook':
+    if command == 'conventions-tests-devbook':
         print('Base Git           │ ' + (env.get('BASE') or 'indisponible'), flush=True)
     print('Cible              │ ' + target + (f' ; profil {profile}' if profile else ''), flush=True)
     print(paint('═' * 88, 'brand', color), flush=True)

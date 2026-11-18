@@ -145,7 +145,7 @@ describe('préparation explicite de l’image qualité', () => {
   })
   it('prépare une fois puis réutilise l’image pour plusieurs contrôles', () => {
     const { results, recorded } = scenario(
-      ['checks-prepare', 'conventions-contracts', 'conventions-contracts'],
+      ['checks-prepare', 'conventions-tests-contracts', 'conventions-tests-contracts'],
       0,
       1,
     )
@@ -190,32 +190,32 @@ describe('préparation explicite de l’image qualité', () => {
     expect(recorded).toEqual([['build', 'verify']])
   })
   it('préserve un échec du contrôle sans reconstruire automatiquement', () => {
-    const { results, recorded } = scenario(['conventions-contracts'], 42)
+    const { results, recorded } = scenario(['conventions-tests-contracts'], 42)
     expect(results[0]!.status).not.toBe(0)
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image', 'run'])
   })
   it('refuse une image absente sans lancer ni construire un conteneur', () => {
-    const { results, recorded } = scenario(['conventions-contracts'], 0, 1)
+    const { results, recorded } = scenario(['conventions-tests-contracts'], 0, 1)
     expect(results[0]!.status).not.toBe(0)
     expect(results[0]!.stdout).toContain('Image des contrôles absente')
     expect(recorded.map((args) => args[0])).toEqual(['config', 'image'])
   })
   it.each([
-    ['verifiers-tests-unit', 'unit'],
-    ['verifiers-tests-integration', 'integration'],
-    ['verifiers-tests-components', 'components'],
-    ['verifiers-tests-browser', 'browser'],
+    ['internal-tests-unit', 'unit'],
+    ['internal-tests-integration', 'integration'],
+    ['internal-tests-components', 'components'],
+    ['internal-tests-browser', 'browser'],
     ['third-party-tests-security', 'security'],
-    ['verifiers-tests-mutation', 'mutation'],
-    ['verifiers-tests-load', 'load'],
+    ['internal-tests-mutation', 'mutation'],
+    ['internal-tests-load', 'load'],
     ['third-party-tests-lighthouse', 'lighthouse'],
-    ['conventions-contracts', 'contracts'],
-    ['conventions-architecture', 'architecture'],
+    ['conventions-tests-contracts', 'contracts'],
+    ['conventions-tests-architecture', 'architecture'],
     ['third-party-tests-lint', 'lint'],
     ['third-party-tests-format', 'format'],
     ['third-party-tests-types', 'types'],
-    ['conventions-guards', 'guards'],
-    ['conventions-services', 'services'],
+    ['conventions-tests-guards', 'guards'],
+    ['conventions-tests-services', 'services'],
   ])('route %s vers le lanceur commun sans build', (target, family) => {
     const { results, recorded } = scenario([target])
     expect(results[0]!.status).toBe(0)
@@ -224,14 +224,19 @@ describe('préparation explicite de l’image qualité', () => {
     expect(runs[0]).toContain(family)
     expect(recorded.some((args) => args[0] === 'build')).toBe(false)
   })
-  it.each(['conventions-all', 'third-party-tests-code', 'conventions-check', 'quality-conventions-check', 'quality-check', 'checks-run'])(
-    'refuse le regroupement supprimé %s', (name) => {
-      expect(() => scenario([name])).toThrow(/No rule to make target/)
-    },
-  )
+  it.each([
+    'conventions-all',
+    'third-party-tests-code',
+    'conventions-check',
+    'quality-conventions-check',
+    'quality-check',
+    'checks-run',
+  ])('refuse le regroupement supprimé %s', (name) => {
+    expect(() => scenario([name])).toThrow(/No rule to make target/)
+  })
   it('exécute chaque commande lors d’un appel Make multiple sans FAMILY', () => {
     const { results, recorded } = scenario([
-      'verifiers-tests-unit verifiers-tests-integration conventions-contracts',
+      'internal-tests-unit internal-tests-integration conventions-tests-contracts',
     ])
     expect(results[0]!.status).toBe(0)
     expect(recorded.filter((args) => args[0] === 'run').map((args) => args[6])).toEqual([
@@ -241,11 +246,11 @@ describe('préparation explicite de l’image qualité', () => {
     ])
   })
   it.each([
-    ['quality-verify', 'conventions-contracts'],
+    ['quality-verify', 'conventions-tests-contracts'],
     ['quality-prepare', 'checks-prepare'],
     ['quality-rebuild', 'checks-rebuild'],
-    ['quality-guards-check', 'conventions-guards'],
-    ['quality-services-check', 'conventions-services'],
+    ['quality-guards-check', 'conventions-tests-guards'],
+    ['quality-services-check', 'conventions-tests-services'],
   ])('conserve %s comme délégation de compatibilité vers %s', (legacy, canonical) => {
     const before = scenario([legacy])
     const after = scenario([canonical])
@@ -253,21 +258,21 @@ describe('préparation explicite de l’image qualité', () => {
     expect(before.recorded).toEqual(after.recorded)
   })
   it.each([
-    ['test-unit', 'verifiers-tests-unit'],
-    ['test-integration', 'verifiers-tests-integration'],
-    ['test-components', 'verifiers-tests-components'],
-    ['test-browser', 'verifiers-tests-browser'],
-    ['test-mutation', 'verifiers-tests-mutation'],
+    ['test-unit', 'internal-tests-unit'],
+    ['test-integration', 'internal-tests-integration'],
+    ['test-components', 'internal-tests-components'],
+    ['test-browser', 'internal-tests-browser'],
+    ['test-mutation', 'internal-tests-mutation'],
     ['security-check', 'third-party-tests-security'],
-    ['load-check', 'verifiers-tests-load'],
+    ['load-check', 'internal-tests-load'],
     ['lighthouse-check', 'third-party-tests-lighthouse'],
     ['quality-lint-check', 'third-party-tests-lint'],
     ['quality-format-check', 'third-party-tests-format'],
     ['quality-type-check', 'third-party-tests-types'],
-    ['conventions-guards-check', 'conventions-guards'],
-    ['conventions-services-check', 'conventions-services'],
-    ['conventions-architecture-check', 'conventions-architecture'],
-    ['conventions-contracts-check', 'conventions-contracts'],
+    ['conventions-tests-guards-check', 'conventions-tests-guards'],
+    ['conventions-tests-services-check', 'conventions-tests-services'],
+    ['conventions-tests-architecture-check', 'conventions-tests-architecture'],
+    ['conventions-tests-contracts-check', 'conventions-tests-contracts'],
   ])('préserve l’alias %s vers %s', (legacy, canonical) => {
     expect(scenario([legacy]).recorded).toEqual(scenario([canonical]).recorded)
   })

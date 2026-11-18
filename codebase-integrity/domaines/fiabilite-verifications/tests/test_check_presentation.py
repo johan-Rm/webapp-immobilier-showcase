@@ -20,10 +20,10 @@ class PresentationTest(unittest.TestCase):
                 output = io.StringIO()
                 command = [sys.executable, '-c', f'import sys; print("\\x1b[31mError: exemple\\x1b[0m"); sys.exit({status})']
                 with redirect_stdout(output):
-                    result = presentation.run('conventions-docs', command, {'GD_TARGET': 'client2-immobilier'}, directory)
+                    result = presentation.run('conventions-tests-docs', command, {'GD_TARGET': 'client2-immobilier'}, directory)
                 self.assertEqual(result['exit_code'], status)
                 self.assertEqual(result['status'], 'ÉCHEC' if status else 'RÉUSSI')
-                self.assertIn('[conventions-docs | client2-immobilier]', output.getvalue())
+                self.assertIn('[conventions-tests-docs | client2-immobilier]', output.getvalue())
                 for title in ('Catégorie', 'Type de contrôle', 'Ce qu’on vérifie', 'Commandes Make', 'Outils', 'Niveau'):
                     self.assertIn(title, output.getvalue())
                 log = Path(result['log'])
@@ -47,9 +47,9 @@ class PresentationTest(unittest.TestCase):
                 argv = [sys.executable, '-u', '-c',
                         'import sys,time;print("detail-unique",flush=True);time.sleep(.2);print("erreur-unique",file=sys.stderr);sys.exit(7)']
                 with redirect_stdout(output):
-                    result = presentation.run('verifiers-tests-unit', argv, env, directory)
+                    result = presentation.run('internal-tests-unit', argv, env, directory)
                 self.assertEqual(result['exit_code'], 7)
-                self.assertIn('NOM — make verifiers-tests-unit', output.getvalue())
+                self.assertIn('NOM — make internal-tests-unit', output.getvalue())
                 self.assertLess(output.getvalue().index('NOM —'), output.getvalue().index('DESCRIPTION'))
                 self.assertIn('DESCRIPTION', output.getvalue())
                 self.assertLess(output.getvalue().index('DESCRIPTION'), output.getvalue().index('Catégorie'))
@@ -72,16 +72,16 @@ class PresentationTest(unittest.TestCase):
 
     def test_missing_prerequisite_never_launches_process_or_succeeds(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, redirect_stdout(io.StringIO()):
-            result = presentation.run('verifiers-tests-browser', ['unused'], {}, directory)
+            result = presentation.run('internal-tests-browser', ['unused'], {}, directory)
         launch.assert_not_called()
         self.assertEqual(result['status'], 'NON EXÉCUTÉ')
         self.assertEqual(result['exit_code'], 2)
 
     def test_all_missing_prerequisites_are_explicit(self):
-        for name in ('verifiers-tests-load', 'third-party-tests-lighthouse', 'verifiers-tests-components', 'conventions-devbook'):
+        for name in ('internal-tests-load', 'third-party-tests-lighthouse', 'internal-tests-components', 'conventions-tests-devbook'):
             with self.subTest(command=name):
                 self.assertTrue(presentation.precondition(name, {}))
-        self.assertIsNone(presentation.precondition('verifiers-tests-components', {'GD_TARGET': 'dashboard'}))
+        self.assertIsNone(presentation.precondition('internal-tests-components', {'GD_TARGET': 'dashboard'}))
 
     def test_devbook_base_resolution_and_override(self):
         with patch.object(presentation.subprocess, 'run') as execute:
@@ -104,7 +104,7 @@ class PresentationTest(unittest.TestCase):
             resolve.side_effect = base
             output = io.StringIO()
             with redirect_stdout(output):
-                result = presentation.run('conventions-devbook',
+                result = presentation.run('conventions-tests-devbook',
                     [sys.executable, '-c', 'import os; print(os.environ["BASE"])'],
                     {'GD_TARGET': 'dashboard'}, directory)
             self.assertEqual(result['exit_code'], 0)
@@ -114,18 +114,18 @@ class PresentationTest(unittest.TestCase):
 
     def test_unavailable_executable_is_not_a_test_failure(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
-            result = presentation.run('conventions-docs', ['/does-not-exist-presentation'], {}, directory)
+            result = presentation.run('conventions-tests-docs', ['/does-not-exist-presentation'], {}, directory)
         self.assertEqual(result['status'], 'NON EXÉCUTÉ')
         self.assertEqual(result['exit_code'], 2)
 
     def test_color_respects_no_color_and_non_terminal(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()) as output:
-            presentation.run('verifiers-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
+            presentation.run('internal-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
         self.assertNotIn('\033[', output.getvalue())
 
     def test_logs_remain_complete_when_screen_is_short(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()) as output:
-            result = presentation.run('conventions-docs', [sys.executable, '-c', 'print("verbose\\n" * 1000)'], {}, directory)
+            result = presentation.run('conventions-tests-docs', [sys.executable, '-c', 'print("verbose\\n" * 1000)'], {}, directory)
             self.assertEqual(Path(result['log']).read_text().count('verbose'), 1000)
         self.assertLess(output.getvalue().count('verbose'), 10)
 
@@ -133,7 +133,7 @@ class PresentationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, patch.object(presentation.os, 'killpg') as stop, redirect_stdout(io.StringIO()):
             launch.return_value.pid = 12345
             launch.return_value.wait.side_effect = [KeyboardInterrupt, 0]
-            result = presentation.run('conventions-docs', ['fake'], {}, directory)
+            result = presentation.run('conventions-tests-docs', ['fake'], {}, directory)
         stop.assert_called_once_with(12345, presentation.signal.SIGTERM)
         self.assertEqual(result['exit_code'], 130)
         self.assertEqual(result['status'], 'INTERROMPU')

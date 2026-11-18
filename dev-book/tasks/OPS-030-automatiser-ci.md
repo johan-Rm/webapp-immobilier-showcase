@@ -227,3 +227,7 @@ Sur demande humaine, `conventions-devbook` calcule par défaut `git merge-base d
 ### Suppression des regroupements Make — 2026-11-18
 
 Sur demande humaine, suppression de `conventions-all`, `third-party-tests-code`, leurs alias de regroupement et `checks-run`, de leurs recettes, de l’aide et du catalogue public. Les contrôles individuels et les familles internes de CI restent inchangés. La suite des vérificateurs reste une commande de tests ; aucun regroupement général de contrôles n’est proposé.
+
+### Préfixes des trois types de contrôles — 2026-11-18
+
+Sur décision humaine, les commandes publiques utilisent `third-party-tests-*`, `conventions-tests-*` et `internal-tests-*`. Les six scénarios internes conservent leur suffixe ; `internal-tests-verifiers` désigne la suite Python/Vitest/Bun des vérificateurs. Mise à jour des recettes, bandeaux, aide, documentation, convention de nommage et workflow documentaire ; les assertions et périmètres ne changent pas. Les preuves historiques gardent les noms réellement exécutés.

@@ -15,9 +15,9 @@ jobs:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile --cwd codebase-integrity
       - name: Tester la fiabilité des vérificateurs
-        run: make verifiers-test
+        run: make internal-tests-verifiers
       - name: Appliquer les conventions documentaires
-        run: make conventions-docs
+        run: make conventions-tests-docs
   commits:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

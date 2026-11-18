@@ -59,7 +59,7 @@ class AideRunnerTest(unittest.TestCase):
         code, output = self.execute(iter([0, 0, 0]))
         self.assertEqual(code, 0)
         self.assertIn('3/3 étapes réussies', output)
-        self.assertIn('make verifiers-test', output)
+        self.assertIn('make internal-tests-verifiers', output)
         self.assertNotIn('tests réussis', output)
 
     def test_failure_is_not_hidden_and_all_steps_run(self):
