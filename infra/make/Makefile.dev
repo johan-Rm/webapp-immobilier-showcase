@@ -224,8 +224,8 @@ _output-third-party-tests-browser:
 _output-third-party-tests-security:
 	$(call run-control,security)
 
-.PHONY: third-party-tests-mutation
-_output-third-party-tests-mutation:
+.PHONY: verifiers-tests-mutation
+_output-verifiers-tests-mutation:
 	$(call run-control,mutation)
 
 .PHONY: third-party-tests-load
@@ -324,7 +324,7 @@ test-browser:
 
 .PHONY: test-mutation
 test-mutation:
-	@$(MAKE) --no-print-directory third-party-tests-mutation
+	@$(MAKE) --no-print-directory verifiers-tests-mutation
 
 .PHONY: security-check
 security-check:
@@ -399,9 +399,9 @@ third-party-tests-components:
 third-party-tests-browser:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-browser -- $(MAKE) --no-print-directory _output-third-party-tests-browser
 
-.PHONY: third-party-tests-mutation _output-third-party-tests-mutation
-third-party-tests-mutation:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-mutation -- $(MAKE) --no-print-directory _output-third-party-tests-mutation
+.PHONY: verifiers-tests-mutation _output-verifiers-tests-mutation
+verifiers-tests-mutation:
+	@python3 -B codebase-integrity/commun/check_presentation.py verifiers-tests-mutation -- $(MAKE) --no-print-directory _output-verifiers-tests-mutation
 
 .PHONY: third-party-tests-lint _output-third-party-tests-lint
 third-party-tests-lint:

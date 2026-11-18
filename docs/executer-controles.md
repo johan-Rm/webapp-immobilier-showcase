@@ -64,7 +64,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make third-party-tests-format` | Prettier, application et vérificateurs | Aucune correction automatique |
 | `make third-party-tests-types` | Préparation Nuxt puis Vue TSC | Fichiers produits dans le conteneur |
 | `make third-party-tests-security` | Audit des deux lockfiles | Registre accessible ; high/critical bloquants |
-| `make third-party-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
+| `make verifiers-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
 | `make third-party-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
 | `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
 | `make conventions-all` | Conventions Nuxt, responsabilités, types et SOLID | Warnings à relire ; aucune preuve de rendu |
