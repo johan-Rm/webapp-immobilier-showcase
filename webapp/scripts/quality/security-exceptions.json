@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "package": "picomatch",
+    "advisory": "GHSA-fc5q-39xc-vjpf",
+    "reason": "Analyse OPS-030 du 2026-11-18 : motifs observés issus des configurations de compilation et de contrôle ; aucun chemin HTTP identifié vers le motif Picomatch et aucun code Picomatch retrouvé dans les trois livrables SSR locaux examinés. Réexaminer à tout changement de dépendances, configuration ou livraison ; retirer dès correctif disponible et validé.",
+    "expires": "2026-12-02"
+  }
+]
