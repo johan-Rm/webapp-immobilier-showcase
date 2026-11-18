@@ -270,5 +270,50 @@ class Lanes(unittest.TestCase):
         self.assertEqual(changes[0][1], 'Renamed Makefile')
 
 
+class TestMode(unittest.TestCase):
+    def test_routes_all_actions_without_reading_private_environment(self):
+        for action in ('up', 'down', 'logs', 'status'):
+            with self.subTest(action=action), \
+                 patch.object(lanes, 'resolve_lane', return_value=ROOT), \
+                 patch.object(lanes, 'context', return_value=(ROOT, [])), \
+                 patch.object(lanes, 'validate', side_effect=AssertionError('private env')), \
+                 patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0)) as call, \
+                 patch.dict(os.environ, {'GD_TARGET': 'showcase-immobilier', 'QUALITY_FIXTURE_PORT': '19859'}, clear=True):
+                self.assertEqual(lanes.run(action, 'devops', mode='test'), 0)
+                argv = call.call_args.args[0]
+                self.assertIn('_lane-test-' + action, argv)
+                self.assertIn('GD_TARGET=showcase-immobilier', argv)
+                self.assertIn('QUALITY_FIXTURE_PORT=19859', argv)
+                self.assertEqual(call.call_args.kwargs['cwd'], ROOT)
+                self.assertTrue(any('-devops-test-showcase-immobilier' in x for x in argv))
+
+    def test_rejects_invalid_mode_target_and_port_before_launch(self):
+        with patch.object(lanes.subprocess, 'run') as call:
+            with self.assertRaises(ValueError):
+                lanes.run('up', 'devops', mode='invalid')
+            for variables in ({'GD_TARGET': '../foreign'}, {'QUALITY_FIXTURE_PORT': '80'}):
+                with patch.object(lanes, 'context', return_value=(ROOT, [])), \
+                     patch.dict(os.environ, variables, clear=True), self.assertRaises(ValueError):
+                    lanes.run_test('up', 'devops', ROOT)
+            call.assert_not_called()
+
+    def test_default_port_is_specific_to_layer(self):
+        with patch.object(lanes, 'context', return_value=(ROOT, [])), \
+             patch.dict(os.environ, {}, clear=True), \
+             patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0)) as call:
+            lanes.run_test('up', 'devops', ROOT)
+            config = json.loads((ROOT / 'infra/config/layers.json').read_text())
+            self.assertIn('QUALITY_FIXTURE_PORT=' + str(19850 + config['layers']['devops']['id']),
+                          call.call_args.args[0])
+
+    def test_failed_rebuild_does_not_start_server(self):
+        with patch.object(lanes, 'context', return_value=(ROOT, [])), \
+             patch.dict(os.environ, {}, clear=True), \
+             patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 7)) as call:
+            self.assertEqual(lanes.run_test('rebuild', 'devops', ROOT), 7)
+            self.assertEqual(call.call_count, 1)
+            self.assertIn('checks-rebuild', call.call_args.args[0])
+
+
 if __name__ == '__main__':
     unittest.main()

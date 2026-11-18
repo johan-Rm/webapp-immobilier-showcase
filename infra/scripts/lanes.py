@@ -37,8 +37,41 @@ def resolve_lane(cwd, layer):
     return tree
 
 
-def run(action, layer, cwd=None, build=False):
+def run_test(action, layer, tree):
+    """Mode test isolé ; aucune lecture du .env de développement."""
+    principal, _ = context(tree)
+    config = json.loads((tree / 'infra/config/layers.json').read_text())
+    target = os.environ.get('GD_TARGET') or (
+        'dashboard' if layer == 'dashboard' else 'showcase-immobilier')
+    if target not in ('showcase-immobilier', 'client2-immobilier', 'dashboard'):
+        raise ValueError('Cible de test inconnue')
+    port = int(os.environ.get('QUALITY_FIXTURE_PORT') or
+               (config.get('testPortBase', 19850) + config['layers'][layer]['id']))
+    if not 1024 <= port <= 65535:
+        raise ValueError('Port de test invalide')
+    fingerprint = hashlib.sha256(str(principal).encode()).hexdigest()[:8]
+    name = f"{config['project']}-{fingerprint}-{layer}-test-{target}"
+    goals = {'up': '_lane-test-up', 'down': '_lane-test-down',
+             'logs': '_lane-test-logs', 'status': '_lane-test-status'}
+    if action == 'rebuild':
+        result = subprocess.run(['make', '--no-print-directory', 'checks-rebuild'], cwd=tree)
+        if result.returncode:
+            return result.returncode
+        action = 'up'
+    print(f'Mode test | couche : {layer} | cible : {target} | '
+          f'URL : http://127.0.0.1:{port}', flush=True)
+    return subprocess.run([
+        'make', '--no-print-directory', goals[action], f'LAYER={layer}', f'GD_TARGET={target}',
+        f'QUALITY_FIXTURE_PORT={port}', f'CHECKS_FIXTURE_NAME={name}',
+    ], cwd=tree).returncode
+
+
+def run(action, layer, cwd=None, build=False, mode="dev"):
+    if mode not in ('dev', 'test'):
+        raise ValueError('Mode inconnu ; utiliser MODE=dev ou MODE=test')
     tree = resolve_lane(cwd or Path.cwd(), layer)
+    if mode == 'test':
+        return run_test(action, layer, tree)
     try:
         _, values = validate(tree, layer)
     except (OSError, ValueError, KeyError):
@@ -183,13 +216,16 @@ def main():
     parser.add_argument('action', choices=['up', 'down', 'logs', 'rebuild', 'status'])
     parser.add_argument('layer', nargs='?', default=os.environ.get('AIDE_OPERAND') or os.environ.get('LAYER'))
     args = parser.parse_args()
-    if not args.layer and args.action != 'status':
+    mode = os.environ.get('MODE', 'dev')
+    if not args.layer and (args.action != 'status' or mode == 'test'):
         parser.error('Couche requise, par exemple : make lane-up web')
     try:
-        if args.action == 'status':
+        if mode not in ('dev', 'test'):
+            raise ValueError('Mode inconnu ; utiliser MODE=dev ou MODE=test')
+        if args.action == 'status' and mode == 'dev':
             print(status(args.layer))
             return 0
-        return run(args.action, args.layer, build=bool(os.environ.get('BUILD')))
+        return run(args.action, args.layer, build=bool(os.environ.get('BUILD')), mode=mode)
     except (OSError, ValueError, KeyError) as exc:
         parser.exit(1, f'Erreur : {exc}\n')
     except KeyboardInterrupt:

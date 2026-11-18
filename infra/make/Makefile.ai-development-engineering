@@ -1,5 +1,5 @@
 # Commandes du cadre ; aucun service ni worktree créé implicitement.
-export LAYER BASE HEAD IMAGE
+export LAYER BASE HEAD IMAGE MODE GD_TARGET
 export AIDE_REPO := $(CURDIR)
 
 # Un seul verbe et au plus un argument positionnel ; aucune règle attrape-tout.
