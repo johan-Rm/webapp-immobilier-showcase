@@ -469,3 +469,52 @@ _lane-test-logs:
 
 _lane-test-status:
 	@$(QUALITY_DOCKER) ps --all --filter "name=^/$(CHECKS_FIXTURE_NAME)$$" --format 'table {{.Names}}\t{{.Status}}'
+
+.PHONY: conventions-tests-types-placement _output-conventions-tests-types-placement
+conventions-tests-types-placement:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-types-placement -- $(MAKE) --no-print-directory _output-conventions-tests-types-placement
+
+_output-conventions-tests-types-placement:
+	$(call run-control,types-placement)
+
+.PHONY: conventions-tests-images _output-conventions-tests-images
+conventions-tests-images:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-images -- $(MAKE) --no-print-directory _output-conventions-tests-images
+
+_output-conventions-tests-images:
+	$(call run-control,images)
+
+.PHONY: conventions-tests-business-logic _output-conventions-tests-business-logic
+conventions-tests-business-logic:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-business-logic -- $(MAKE) --no-print-directory _output-conventions-tests-business-logic
+
+_output-conventions-tests-business-logic:
+	$(call run-control,business-logic)
+
+.PHONY: conventions-tests-script-setup _output-conventions-tests-script-setup
+conventions-tests-script-setup:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-script-setup -- $(MAKE) --no-print-directory _output-conventions-tests-script-setup
+
+_output-conventions-tests-script-setup:
+	$(call run-control,script-setup)
+
+.PHONY: conventions-tests-responsibilities _output-conventions-tests-responsibilities
+conventions-tests-responsibilities:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-responsibilities -- $(MAKE) --no-print-directory _output-conventions-tests-responsibilities
+
+_output-conventions-tests-responsibilities:
+	$(call run-control,responsibilities)
+
+.PHONY: conventions-tests-code-quality _output-conventions-tests-code-quality
+conventions-tests-code-quality:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-code-quality -- $(MAKE) --no-print-directory _output-conventions-tests-code-quality
+
+_output-conventions-tests-code-quality:
+	$(call run-control,code-quality)
+
+.PHONY: conventions-tests-solid _output-conventions-tests-solid
+conventions-tests-solid:
+	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-solid -- $(MAKE) --no-print-directory _output-conventions-tests-solid
+
+_output-conventions-tests-solid:
+	$(call run-control,solid)

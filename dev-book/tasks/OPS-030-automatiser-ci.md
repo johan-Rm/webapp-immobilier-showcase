@@ -235,3 +235,7 @@ Sur décision humaine, les commandes publiques utilisent `third-party-tests-*`, 
 ### Préparation du pilote composants corrigée — 2026-11-18
 
 Le lanceur prépare désormais Nuxt avec `.env.test` et GD_TARGET=dashboard avant Vitest, afin de produire `dashboard/.nuxt/tsconfig.site.json`. Aucun scénario, assertion ou seuil changé. Après reconstruction explicite de l’image, `make internal-tests-components GD_TARGET=dashboard VERBOSE=1` réussit : 2 tests, code 0, journal `internal-tests-components-nrev_cvw/output.log` sous le répertoire console habituel. Le test de routage de préparation et les 20 autres tests du lanceur réussissent. Le défaut de préparation est techniquement résolu ; aucun verdict humain global déduit.
+
+### Couverture après suppression du regroupement — 2026-11-18
+
+Sept commandes individuelles exposent les scripts conservés de l’ancien regroupement : placement des types, images, logique métier des composants, sections script setup, séparation des responsabilités, conventions de code et SOLID. Chaque commande délègue à son vérificateur existant sans seuil ni assertion modifiés. Le catalogue et l’aide sont actualisés ; aucun regroupement Make réintroduit.

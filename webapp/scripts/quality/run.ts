@@ -20,6 +20,13 @@ export const families = [
   'types',
   'guards',
   'services',
+  'types-placement',
+  'images',
+  'business-logic',
+  'script-setup',
+  'responsibilities',
+  'code-quality',
+  'solid',
 ] as const
 export const targets = ['showcase-immobilier', 'client2-immobilier', 'dashboard'] as const
 type Family = (typeof families)[number]
@@ -97,6 +104,16 @@ export function nodeTestFiles(root: string, target: Target, files = projectFiles
         file.startsWith(prefix),
       ),
   )
+}
+
+const conventionScripts: Partial<Record<Family, string>> = {
+  'types-placement': 'check:app:types',
+  images: 'check:app:images',
+  'business-logic': 'check:app:components:no-business-logic',
+  'script-setup': 'check:app:script-setup-standard',
+  responsibilities: 'check:app:soc',
+  'code-quality': 'check:app:code-quality',
+  solid: 'check:app:solid',
 }
 
 export function buildPlan(options: Options, root = webappRoot, files = projectFiles(root)): Plan {
@@ -182,17 +199,23 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
         'node',
       ),
     )
-  } else if (family === 'conventions' || family === 'guards' || family === 'services') {
+  } else if (
+    family === 'conventions' ||
+    family === 'guards' ||
+    family === 'services' ||
+    conventionScripts[family]
+  ) {
     const integrity = resolve(root, '../codebase-integrity')
     if (!existsSync(join(integrity, 'package.json')))
       throw new Error('Paquet Codebase Integrity absent')
     plan.files = ['../codebase-integrity/package.json']
     const script =
-      family === 'guards'
+      conventionScripts[family] ??
+      (family === 'guards'
         ? 'check:app:guards'
         : family === 'services'
           ? 'check:services:no-framework-imports'
-          : 'check:conventions'
+          : 'check:conventions')
     plan.commands.push(command(['--no-env-file', 'run', script], integrity, 'bun'))
   } else {
     const script = `scripts/quality/${family}.ts`
@@ -216,6 +239,17 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
 }
 
 const explanations: Record<Family, string> = {
+  'types-placement':
+    'Vérifie le placement des types partagés conformément aux conventions du socle.',
+  images: 'Vérifie les composants et attributs d’image attendus dans les templates Vue.',
+  'business-logic':
+    'Recherche la logique métier interdite dans les composants selon les conventions documentées.',
+  'script-setup':
+    'Vérifie les sections documentées du script setup et leurs exceptions explicites.',
+  responsibilities: 'Vérifie la séparation des responsabilités entre pages et composants.',
+  'code-quality': 'Vérifie les conventions de code propres au projet sur les sources frontend.',
+  solid: 'Vérifie les seuils documentés de responsabilités des composables, composants et types.',
+
   lint: 'Vérifie les règles ESLint de l’application Nuxt et des vérificateurs.',
   format:
     'Vérifie la mise en forme des fichiers de l’application et des vérificateurs selon la configuration Prettier.',
