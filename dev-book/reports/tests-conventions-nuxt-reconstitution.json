@@ -446,10 +446,7 @@
     },
     "navigateur": {
       "tests_reussis": 2,
-      "profils": [
-        "chromium-desktop",
-        "chromium-mobile"
-      ],
+      "profils": ["chromium-desktop", "chromium-mobile"],
       "url": "http://127.0.0.1:3000",
       "mode": "serveur de développement déjà actif",
       "rapport_hote": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/livraison-browser-1795006800",
@@ -774,5 +771,16 @@
     "contribution": "75 commits conformes à la règle extraite de origin/develop",
     "journal_local": "/tmp/dem011-scopes-contribution.log",
     "sha256": "c5c306df76ac7e6cadafce08c04760af5bd64cc0266e1471c593ab8985b17aab"
+  },
+  "exception_solid_validee_2026_11_18": {
+    "decision_humaine": "validé",
+    "session": "01a1d56d-446b-7931-bf53-7687a7d10912",
+    "carte": "OPS-030",
+    "source": "11be290adfac8e5e607de77661e3f4b792d80377",
+    "obtenu": "0e86714e277d84d3ba687b33e415e3d8161cc415",
+    "portee": "Exception temporaire limitée aux quatre composables de DEM-012 ; paramètres et empreintes dans app-composable-many-returns ; seuil général inchangé.",
+    "echeance": "2026-12-02 inclus, UTC",
+    "supersede": "Le report initial sans exemption reste historique ; cette décision autorise les seules quatre exceptions bornées.",
+    "tests": "85 tests Vitest réussis, dont 29 SOLID ; lint, formatage et documentation conformes sur la source validée."
   }
 }

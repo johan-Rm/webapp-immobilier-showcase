@@ -185,7 +185,8 @@ L’humain autorise la correction des deux scopes Git refusés. Sur la seule bra
     {
       "convention": "codebase-integrity/README.md#conventions-techniques",
       "controles": [
-        "codebase-integrity/domaines/qualite-code/tests/verify-frontend-conventions.vitest.ts"
+        "codebase-integrity/domaines/qualite-code/tests/verify-frontend-conventions.vitest.ts",
+        "codebase-integrity/domaines/qualite-code/tests/verify-solid.vitest.ts"
       ],
       "chemins": [
         "codebase-integrity/bun.lock",
