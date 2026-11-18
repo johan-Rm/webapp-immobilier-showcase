@@ -30,7 +30,7 @@ PROFILES = {
 
 def run(profile, command):
     # Le présentateur parent capture déjà le journal complet et gère le contexte.
-    if os.environ.get('LIVE') == '1' and os.environ.get('CHECK_PRESENTATION_ACTIVE') == '1':
+    if os.environ.get('VERBOSE') == '1' and os.environ.get('CHECK_PRESENTATION_ACTIVE') == '1':
         try:
             if profile == 'conventions' and '--env-file' in command:
                 index = command.index('--env-file') + 1
