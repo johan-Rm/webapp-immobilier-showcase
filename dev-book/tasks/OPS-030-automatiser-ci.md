@@ -239,3 +239,7 @@ Le lanceur prépare désormais Nuxt avec `.env.test` et GD_TARGET=dashboard avan
 ### Couverture après suppression du regroupement — 2026-11-18
 
 Sept commandes individuelles exposent les scripts conservés de l’ancien regroupement : placement des types, images, logique métier des composants, sections script setup, séparation des responsabilités, conventions de code et SOLID. Chaque commande délègue à son vérificateur existant sans seuil ni assertion modifiés. Le catalogue et l’aide sont actualisés ; aucun regroupement Make réintroduit.
+
+### Isolation TypeScript de la mutation corrigée — 2026-11-18
+
+Le répertoire temporaire Stryker possède un tsconfig autonome pour le module pur ; il ne remonte plus vers le tsconfig Nuxt du parent. Sources applicatives, scénarios et seuils inchangés. Après reconstruction explicite, le pilote réussit : 30 tests initiaux, 52 mutants, 47 détectés, 5 survivants, aucun non couvert, score informatif 90,4 %. Journal `internal-tests-mutation-kl7v6aix/output.log`, rapports sous `.tmp/quality/mutation`. Les neuf tests existants de mesure et arrêt du processus réussissent. Deux liens documentaires altérés par le renommage de commandes sont également rétablis vers le document frontend existant.
