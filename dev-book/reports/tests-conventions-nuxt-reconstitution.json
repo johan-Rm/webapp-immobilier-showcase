@@ -335,5 +335,90 @@
       "motif": "Réinclusion ciblée du seul modèle .env.example suivi, sans lecture des données privées exclues.",
       "accord_humain": "oui, après présentation du diff et reproduction Docker sur données factices"
     }
-  ]
+  ],
+  "tentative_livraison_2026_11_18": {
+    "etat": "bloquée avant push et PR par contrôle requis de contribution en échec",
+    "head_examine": "94795af7665e0b3d12ea1fa7f16b1465f523b4d7",
+    "base_distante_verifiee": "ca571d60c39b8b5932d74cd43dcbe4131c47c578",
+    "remote": "git@github.com:johan-Rm/webapp-immobilier-showcase.git",
+    "controles": [
+      {
+        "command": "internal-tests-verifiers",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 14.03,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/console/internal-tests-verifiers-c9kqjitl/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T12:59:09.220632+00:00",
+        "journal_sha256": "6efce08d238ffec92e6ace4261b46bbba6b0b904811e71abe1b874c9271881dd"
+      },
+      {
+        "command": "conventions-tests-frontend",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 3.48,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/console/conventions-tests-frontend-51h184cr/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T12:59:02.463967+00:00",
+        "journal_sha256": "7e17b52ae9a699277531005a17de1517f3786708fbec19c502603bc63e45b3b4"
+      },
+      {
+        "command": "conventions-tests-docs",
+        "target": "showcase-immobilier",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 0.32,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/console/conventions-tests-docs-7jvgs143/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T13:00:35.882618+00:00",
+        "journal_sha256": "eae586a28cf9d1d8551d1e9528d8a4dd0f3bf9bcecf2cdce170ddc1681cf9ca6"
+      },
+      {
+        "command": "conventions-tests-devbook",
+        "target": "dépôt",
+        "profile": "",
+        "status": "RÉUSSI",
+        "exit_code": 0,
+        "duration_seconds": 0.17,
+        "log": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/console/conventions-tests-devbook-8s0k_gwl/output.log",
+        "warning_count": null,
+        "reason": null,
+        "timestamp": "2026-11-18T13:00:36.094310+00:00",
+        "journal_sha256": "13b64739ad46bec2e810ead97a5f7f6258ecbd11ad0e96c0e6d57959c64de7b9"
+      }
+    ],
+    "environnement": {
+      "dependances_verificateurs": "bun install --frozen-lockfile --ignore-scripts --cwd codebase-integrity ; aucun manifeste ou lockfile modifié",
+      "playwright": "Rapports dans un nouveau dossier monté uniquement sur le répertoire de sortie ; anciens fichiers et permissions conservés"
+    },
+    "navigateur": {
+      "tests_reussis": 2,
+      "profils": [
+        "chromium-desktop",
+        "chromium-mobile"
+      ],
+      "url": "http://127.0.0.1:3000",
+      "mode": "serveur de développement déjà actif",
+      "rapport_hote": "/home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier/webapp/.tmp/quality/livraison-browser-1795006800",
+      "journal_local": "/tmp/dem011-delivery-browser.log",
+      "sha256": "8e6a159e1619ca314ec08e4c2d87e86e5ae8995339b9a0d7bdb4a7edbf107339"
+    },
+    "blocage_contribution": {
+      "journal_local": "/tmp/dem011-delivery-contribution.log",
+      "sha256": "744fde810daeb116d90e1418221276e55a9f3562bbb3758c76186c638a7f400a",
+      "motif": "Deux commits docs(DEM-011) touchent des rapports, refusés par le vérificateur extrait de develop distant. Références détaillées dans controles.contribution.",
+      "recriture": "Aucune réécriture de commits ni modification de règle effectuée."
+    },
+    "autres_limites": "SOLID conserve les quatre erreurs reportées dans DEM-012 ; aucune protection, exception ou seuil modifié pour livrer.",
+    "publication": "Aucun push, PR ni fusion",
+    "alignement": "Non entrepris ; worktree DevOps conserve douze fichiers non suivis préexistants et reste intact."
+  }
 }
