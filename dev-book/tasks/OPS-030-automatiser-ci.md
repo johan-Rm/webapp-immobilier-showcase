@@ -169,3 +169,7 @@ Sur demande humaine, `verifiers-tests-unit` remplace `third-party-tests-unit` da
 ### Description positive du lint — 2026-11-18
 
 À la demande humaine lors de la revue manuelle, la description ESLint présente uniquement les vérifications effectuées et précise le périmètre application Nuxt et vérificateurs. Les commandes et les assertions restent identiques. Le résultat humain transmis pour le lint est réussi, code 0 ; aucun nouveau lint applicatif exécuté pour cette modification rédactionnelle.
+
+### Description positive du formatage — 2026-11-18
+
+Lors de la revue humaine, la description Prettier est précisée positivement : périmètre application et vérificateurs, indentation, guillemets, points-virgules, retours à la ligne et ordre des classes Tailwind. L’objet du bandeau devient « Mise en forme des fichiers ». Le journal humain `third-party-tests-format-c920__si/output.log` signale un écart de formatage dans `codebase-integrity/README.md` ; cet échec reste distinct et n’est pas corrigé par cette évolution rédactionnelle. Contrôle documentaire exécuté ; aucun nouveau formatage global lancé.
