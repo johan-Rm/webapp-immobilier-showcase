@@ -22,7 +22,7 @@ Pour vérifier une contribution Git, suivre la [procédure de contrôle des cont
 
 Les [conventions documentaires](README.md#vérification-et-relecture) précisent le périmètre des README. Les commandes des environnements isolés sont décrites dans le [document des worktrees](worktrees.md).
 
-Les [contrôles frontend AST](controle-conventions-tests-frontend.md) expliquent les erreurs bloquantes, warnings et exemptions de structure, traduction et encapsulation.
+Les [contrôles frontend AST](controle-conventions-frontend.md) expliquent les erreurs bloquantes, warnings et exemptions de structure, traduction et encapsulation.
 
 ## Choisir un contrôle
 

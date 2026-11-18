@@ -114,6 +114,13 @@ export async function runMutation(
       cpSync(join(root, name), join(temporary, name))
     }
     writeFileSync(join(temporary, 'package.json'), '{"type":"module"}\n')
+    // Le pilote pur ne doit pas hériter du tsconfig Nuxt d’un dossier parent.
+    writeFileSync(
+      join(temporary, 'tsconfig.json'),
+      JSON.stringify({
+        compilerOptions: { target: 'ES2022', module: 'ESNext', moduleResolution: 'Bundler' },
+      }) + '\n',
+    )
     symlinkSync(join(root, 'node_modules'), join(temporary, 'node_modules'), 'dir')
     await runOwned(
       'node',
