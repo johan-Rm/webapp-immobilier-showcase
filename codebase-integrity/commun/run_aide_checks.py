@@ -12,6 +12,7 @@ STEPS = (
     ('Registre des conventions', 'Vérifie la cohérence des références et des déclarations des contrôles dans le registre.', 'codebase-integrity/domaines/fiabilite-verifications/scripts/check_registry.py'),
     ('Demandes et cartes', 'Vérifie la déclaration du type des demandes.', 'codebase-integrity/domaines/construction-livraison/scripts/check_demands.py'),
     ('Documentation et README', 'Vérifie les règles documentaires ; les écarts existants font échouer cette étape.', 'codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py'),
+    ('Noms runtime', 'Vérifie les commandes runtime et leurs références actives.', 'codebase-integrity/domaines/fiabilite-verifications/scripts/check_runtime_names.py'),
 )
 
 

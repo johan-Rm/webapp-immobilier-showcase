@@ -33,14 +33,14 @@ META = {
     'internal-tests-unit': ('Tests unitaires', 'Tests internes', 'Logique applicative et outils du projet', 'Vitest / Bun', 'Bloquant'),
     'internal-tests-integration': ('Intégration', 'Tests internes', 'Interactions applicatives et outils internes', 'Vitest', 'Bloquant'),
     'internal-tests-components': ('Composants', 'Tests internes', 'Pilote Dashboard', 'Nuxt / Vitest', 'Bloquant'),
-    'internal-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
+    'runtime-tests-browser': ('Navigateur', 'Tests internes', 'Parcours et accessibilité', 'Playwright / axe-core', 'Assertions bloquantes'),
     'internal-tests-mutation': ('Mutation', 'Tests internes', 'Efficacité des tests', 'Stryker / Vitest', 'Exécution bloquante ; score informatif'),
     'third-party-tests-lint': ('Code', 'Outils tiers', 'Règles de code', 'ESLint', 'Bloquant'),
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
-    'internal-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
-    'third-party-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
+    'runtime-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
+    'runtime-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
     'conventions-tests-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
     'conventions-tests-guards': ('Gardes', 'Conventions', 'Gardes suspectes', 'Vérificateur spécifique', 'Relecture humaine'),
     'conventions-tests-services': ('Services', 'Conventions', 'Indépendance du framework', 'Vérificateur spécifique', 'Bloquant'),
@@ -74,7 +74,7 @@ DESCRIPTIONS = {
     'internal-tests-components': (
         'Monte le formulaire pilote Dashboard dans un environnement Nuxt et vérifie ses champs, ses interactions et ses états.'
     ),
-    'internal-tests-browser': (
+    'runtime-tests-browser': (
         'Exécute les parcours navigateur de la cible dans Chromium et contrôle les réponses HTTP, les éléments attendus et les erreurs du navigateur selon les assertions de chaque scénario.'
     ),
     'internal-tests-mutation': (
@@ -92,10 +92,10 @@ DESCRIPTIONS = {
     'third-party-tests-security': (
         'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
-    'internal-tests-load': (
+    'runtime-tests-load': (
         'Envoie un nombre borné de requêtes au serveur de test local avec k6 et mesure les temps de réponse ainsi que les erreurs rencontrées.'
     ),
-    'third-party-tests-lighthouse': (
+    'runtime-tests-lighthouse': (
         'Audite les pages servies par le serveur de test avec Lighthouse et Chromium et produit les mesures de performance, d’accessibilité, de bonnes pratiques et de référencement.'
     ),
     'conventions-tests-frontend': (
@@ -134,9 +134,9 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
 def precondition(command, env):
-    if command == 'internal-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
+    if command == 'runtime-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command in ('internal-tests-load', 'third-party-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
+    if command in ('runtime-tests-load', 'runtime-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
         return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
     if command == 'internal-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
         return 'Le pilote de composants est disponible uniquement avec GD_TARGET=dashboard.'

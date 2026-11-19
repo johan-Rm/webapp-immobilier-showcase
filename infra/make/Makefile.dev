@@ -210,8 +210,8 @@ _output-internal-tests-integration:
 _output-internal-tests-components:
 	$(call run-control,components)
 
-.PHONY: internal-tests-browser
-_output-internal-tests-browser:
+.PHONY: runtime-tests-browser
+_output-runtime-tests-browser:
 	$(call run-control,browser)
 
 .PHONY: third-party-tests-security
@@ -234,12 +234,12 @@ _output-conventions-tests-functions:
 _output-conventions-tests-duplicates:
 	$(call run-control,duplicates)
 
-.PHONY: internal-tests-load
-_output-internal-tests-load:
+.PHONY: runtime-tests-load
+_output-runtime-tests-load:
 	$(call run-control,load)
 
-.PHONY: third-party-tests-lighthouse
-_output-third-party-tests-lighthouse:
+.PHONY: runtime-tests-lighthouse
+_output-runtime-tests-lighthouse:
 	$(call run-control,lighthouse)
 
 .PHONY: conventions-tests-contracts
@@ -317,10 +317,6 @@ test-integration:
 test-components:
 	@$(MAKE) --no-print-directory internal-tests-components
 
-.PHONY: test-browser
-test-browser:
-	@$(MAKE) --no-print-directory internal-tests-browser
-
 .PHONY: test-mutation
 test-mutation:
 	@$(MAKE) --no-print-directory internal-tests-mutation
@@ -328,14 +324,6 @@ test-mutation:
 .PHONY: security-check
 security-check:
 	@$(MAKE) --no-print-directory third-party-tests-security
-
-.PHONY: load-check
-load-check:
-	@$(MAKE) --no-print-directory internal-tests-load
-
-.PHONY: lighthouse-check
-lighthouse-check:
-	@$(MAKE) --no-print-directory third-party-tests-lighthouse
 
 .PHONY: quality-lint-check
 quality-lint-check:
@@ -386,9 +374,9 @@ internal-tests-integration:
 internal-tests-components:
 	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-components -- $(MAKE) --no-print-directory _output-internal-tests-components
 
-.PHONY: internal-tests-browser _output-internal-tests-browser
-internal-tests-browser:
-	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-browser -- $(MAKE) --no-print-directory _output-internal-tests-browser
+.PHONY: runtime-tests-browser _output-runtime-tests-browser
+runtime-tests-browser:
+	@python3 -B codebase-integrity/commun/check_presentation.py runtime-tests-browser -- $(MAKE) --no-print-directory _output-runtime-tests-browser
 
 .PHONY: internal-tests-mutation _output-internal-tests-mutation
 internal-tests-mutation:
@@ -420,13 +408,13 @@ third-party-tests-types:
 third-party-tests-security:
 	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-security -- $(MAKE) --no-print-directory _output-third-party-tests-security
 
-.PHONY: internal-tests-load _output-internal-tests-load
-internal-tests-load:
-	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-load -- $(MAKE) --no-print-directory _output-internal-tests-load
+.PHONY: runtime-tests-load _output-runtime-tests-load
+runtime-tests-load:
+	@python3 -B codebase-integrity/commun/check_presentation.py runtime-tests-load -- $(MAKE) --no-print-directory _output-runtime-tests-load
 
-.PHONY: third-party-tests-lighthouse _output-third-party-tests-lighthouse
-third-party-tests-lighthouse:
-	@python3 -B codebase-integrity/commun/check_presentation.py third-party-tests-lighthouse -- $(MAKE) --no-print-directory _output-third-party-tests-lighthouse
+.PHONY: runtime-tests-lighthouse _output-runtime-tests-lighthouse
+runtime-tests-lighthouse:
+	@python3 -B codebase-integrity/commun/check_presentation.py runtime-tests-lighthouse -- $(MAKE) --no-print-directory _output-runtime-tests-lighthouse
 
 .PHONY: conventions-tests-frontend _output-conventions-tests-frontend
 conventions-tests-frontend:
