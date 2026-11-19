@@ -93,6 +93,7 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 - Ne jamais annoncer une réussite pour une suite **absente, vide, interrompue ou échouée**.
 - Permettre de consulter la sélection de tests et les commandes **sans les exécuter ni divulguer l’environnement privé**.
 - Exiger une **adresse de test explicite** et un serveur de test préparé pour les vérifications navigateur ; ne démarrer aucune pile utilisateur ni API distante implicitement.
+- Limiter les mesures de charge SaaS aux lectures métier explicitement sélectionnées et à une origine BFF locale ; exécuter manuellement, protéger la session et exclure secrets et contenus privés des rapports. Les temps sont indicatifs et ne distinguent pas Symfony du réseau et du BFF.
 - Utiliser des **environnements de contrôle jetables**, sans injection implicite de secrets, et reconstruire les images après modification des sources.
 
 ### Audit des dépendances

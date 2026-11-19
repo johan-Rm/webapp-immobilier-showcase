@@ -373,6 +373,13 @@
           "mode": "automatique",
           "fichier": "codebase-integrity/domaines/fiabilite-verifications/scripts/check_runtime_names.py",
           "limite": "Références actives identifiées ; ne vérifie pas les usages externes ni les traces historiques."
+        },
+        {
+          "id": "saas-read-load",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "webapp/scripts/quality/saas_api_load.py",
+          "limite": "Deux scénarios GET bornés via BFF local ; origine amont et performances propres à Symfony non attestées ; latences informatives."
         }
       ]
     }
