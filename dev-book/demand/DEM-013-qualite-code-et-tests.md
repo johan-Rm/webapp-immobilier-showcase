@@ -26,11 +26,13 @@ L’[analyse](../reports/qualite-code-et-tests-analyse.md) conserve les décisio
 - [OPS-040](../tasks/OPS-040-etendre-mutation.md) : mutation et états non mesurables ; commits `8bd70b5d2a91c5807e765798732246efccb1e4f7`, `4dead96c9f212749b1e23eeec42b49b6281d5c7d`, `152dcb548652b6fc48cc748fc92766b4fa73f092` et `23af763a2ae329b3eb64e7e10368af3d93fcff47`, validés humainement.
 - [OPS-041](../tasks/OPS-041-documenter-qualite-code-tests.md) : intégration, documentation et bilan ; commit `d577c4c9c39aa55ad6fd03413fa9f4fc83994de5`, validés humainement.
 
-Reconstitution prévue à l’étape 05 dans le worktree principal libre et propre, sur `demands/DEM-013` depuis `develop` vérifié ; aucun transfert de travail non commité.
+Reconstitution sur `demands/DEM-013` depuis `develop` à `e2f6d5ce99d7ad1b4b799e06ce62894f3b7c380f` : les 19 commits sources ont été repris avec `cherry-pick -x`, y compris la trace des verdicts et le brouillon commité sur autorisation humaine. Leur correspondance source → obtenu figure dans les messages Git : `git log --reverse --format='%H %b' develop..db5e7f3de255b3ef1b88f90b63a7220dcdd87fa7`.
 
 ## Vérification et livraison
 
-Validation humaine explicite des six cartes et des limites présentées, sur la révision `23af763a2ae329b3eb64e7e10368af3d93fcff47` ; verdicts structurés dans les cartes. La mutation étendue est inactive, comme indiqué dans OPS-040. Reconstitution et livraison restent à réaliser.
+Validation humaine explicite des six cartes et des limites présentées, sur la révision `23af763a2ae329b3eb64e7e10368af3d93fcff47` ; verdicts structurés dans les cartes. La mutation étendue est inactive, comme indiqué dans OPS-040. La livraison reste à réaliser.
+
+Reconstitution : `make conventions-tests-docs` et `make conventions-tests-devbook` réussis ; la commande de mutation étendue affiche son statut inactif sans exécuter de test. Les autres preuves restent dans les cartes.
 
 ## Déclaration de contribution
 
