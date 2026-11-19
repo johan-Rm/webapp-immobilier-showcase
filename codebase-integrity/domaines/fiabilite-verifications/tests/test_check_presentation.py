@@ -72,13 +72,13 @@ class PresentationTest(unittest.TestCase):
 
     def test_missing_prerequisite_never_launches_process_or_succeeds(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(presentation.subprocess, 'Popen') as launch, redirect_stdout(io.StringIO()):
-            result = presentation.run('internal-tests-browser', ['unused'], {}, directory)
+            result = presentation.run('runtime-tests-browser', ['unused'], {}, directory)
         launch.assert_not_called()
         self.assertEqual(result['status'], 'NON EXÉCUTÉ')
         self.assertEqual(result['exit_code'], 2)
 
     def test_all_missing_prerequisites_are_explicit(self):
-        for name in ('internal-tests-load', 'third-party-tests-lighthouse', 'internal-tests-components', 'conventions-tests-devbook'):
+        for name in ('runtime-tests-load', 'runtime-tests-lighthouse', 'internal-tests-components', 'conventions-tests-devbook'):
             with self.subTest(command=name):
                 self.assertTrue(presentation.precondition(name, {}))
         self.assertIsNone(presentation.precondition('internal-tests-components', {'GD_TARGET': 'dashboard'}))
@@ -120,7 +120,7 @@ class PresentationTest(unittest.TestCase):
 
     def test_color_respects_no_color_and_non_terminal(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()) as output:
-            presentation.run('internal-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
+            presentation.run('runtime-tests-browser', ['unused'], {'NO_COLOR': ''}, directory)
         self.assertNotIn('\033[', output.getvalue())
 
     def test_logs_remain_complete_when_screen_is_short(self):

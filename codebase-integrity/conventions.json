@@ -360,6 +360,21 @@
           "limite": "Base Git explicite, cartes nouvelles ou modifiées, métadonnées et références de verdict ; suppressions et renommages refusés. Ni accord humain, ni pertinence des preuves, ni conservation sémantique de toutes les décisions prouvés."
         }
       ]
+    },
+    {
+      "id": "runtime-public-names",
+      "nom": "Noms publics des contrôles runtime",
+      "domaine": "fiabilite-controles",
+      "source": "codebase-integrity/README.md#exécution-des-contrôles",
+      "controles": [
+        {
+          "id": "runtime-public-names",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "codebase-integrity/domaines/fiabilite-verifications/scripts/check_runtime_names.py",
+          "limite": "Références actives identifiées ; ne vérifie pas les usages externes ni les traces historiques."
+        }
+      ]
     }
   ]
 }

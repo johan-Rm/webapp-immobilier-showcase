@@ -13,7 +13,7 @@ Depuis la racine, `make internal-tests-verifiers` lance les tests des vérificat
 Depuis la racine du worktree :
 
 - `make integrity-domains` affiche les conventions regroupées par domaine.
-- `make conventions-tests-docs` vérifie le registre, les demandes, la documentation et les README. Ses trois étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
+- `make conventions-tests-docs` vérifie le registre, les demandes, la documentation et les README. Ses étapes sont expliquées et un rapport détaillé est conservé pour chacune. Cette commande ne lance pas les tests fonctionnels de l’application.
 - `make internal-tests-verifiers` exécute les tests Python, Vitest et Bun des vérificateurs depuis le dépôt, sans commande Bun à saisir.
 
 Pour contrôler les traces des cartes avec une base explicite, suivre la [procédure de vérification du dev-book](verifier-traces-devbook.md). Les tests Python de ce contrôle sont inclus dans `make internal-tests-verifiers` ; son exécution sur les cartes est distincte.
@@ -58,7 +58,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-unit` | Suite unitaire existante : logique applicative et outils internes, Vitest et Bun | Sélection mixte ; ne se limite pas aux vérificateurs |
 | `make internal-tests-integration` | Interactions entre modules et suites HTTP | Environnement isolé |
 | `make internal-tests-components GD_TARGET=dashboard` | Formulaire pilote Nuxt | Dashboard uniquement |
-| `make internal-tests-browser` | Parcours Playwright et accessibilité axe-core | `PLAYWRIGHT_BASE_URL` explicite, serveur déjà démarré |
+| `make runtime-tests-browser` | Parcours Playwright et accessibilité axe-core | `PLAYWRIGHT_BASE_URL` explicite, serveur déjà démarré |
 | `make third-party-tests-lint` | ESLint, application et vérificateurs | Image préparée |
 | `make third-party-tests-format` | Prettier, application et vérificateurs | Aucune correction automatique |
 | `make third-party-tests-types` | Préparation Nuxt puis Vue TSC | Fichiers produits dans le conteneur |
@@ -66,8 +66,8 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
 | `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Inactif : exécution suspendue en raison de sa durée ; code conservé |
 | `make internal-tests-coverage` | Couverture des tests Vitest Node de la cible | Bun, composants Nuxt et navigateur non instrumentés ; résultats informatifs |
-| `make internal-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
-| `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
+| `make runtime-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
+| `make runtime-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
 | `make conventions-tests-types-placement` | Placement des types | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-images` | Images Vue | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-business-logic` | Logique des composants | Contrôle individuel issu des conventions documentées |
@@ -91,7 +91,7 @@ Les rapports résident dans `webapp/.tmp/quality/`, et ceux du navigateur dans `
 
 ## Nommage des commandes
 
-Les [conventions d’exécution](../codebase-integrity/README.md#exécution-des-contrôles) définissent les trois préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms restent des délégations de compatibilité, hors de l’aide et de la recette canonique. Les preuves historiques conservent les commandes réellement exécutées.
+Les [conventions d’exécution](../codebase-integrity/README.md#exécution-des-contrôles) définissent les préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms runtime sont supprimés ; les autres délégations de compatibilité restent hors de l’aide. Les preuves historiques conservent les commandes réellement exécutées.
 
 ## Lire les sorties et le bilan
 
@@ -106,7 +106,7 @@ Un échec ou un contrôle non exécuté conserve un code non nul. Un score infor
 
 Dans un premier terminal, depuis la racine du worktree, lancer `make lane-up devops MODE=test GD_TARGET=showcase-immobilier`. La commande vérifie que le port local est libre, réutilise l’image des tests, prépare Nuxt puis construit le SSR de fixtures ; elle ne reconstruit pas l’image. La surcharge Compose dédiée retire uniquement le montage temporaire de la sortie Nitro pour permettre sa recréation dans la couche jetable du conteneur. Attendre « Fixture locale prête : http://127.0.0.1:19854 ». Le terminal reste occupé pendant le service. La construction détaillée est conservée dans `webapp/.tmp/quality/browser-fixture-build-showcase-immobilier.log`. Sous activation explicite des fixtures média, les JPEG locaux référencés par les pages d’accueil traduites et la configuration de navigation de Showcase sont simulés par une image décodable par IPX ; les fichiers existants sont conservés. Ces médias simulés ne prouvent pas le rendu des médias réels.
 
-Dans un second terminal du même worktree, lancer `make internal-tests-browser GD_TARGET=showcase-immobilier PLAYWRIGHT_BASE_URL=http://127.0.0.1:19854`. Les deux profils Chromium utilisent ce serveur de test et l’API fictive. Arrêter ensuite le seul conteneur de fixtures avec `make lane-down devops MODE=test GD_TARGET=showcase-immobilier`, ou interrompre son terminal avec Ctrl+C. Le port peut être choisi avec `QUALITY_FIXTURE_PORT` au démarrage ; adapter alors l’URL des tests.
+Dans un second terminal du même worktree, lancer `make runtime-tests-browser GD_TARGET=showcase-immobilier PLAYWRIGHT_BASE_URL=http://127.0.0.1:19854`. Les deux profils Chromium utilisent ce serveur de test et l’API fictive. Arrêter ensuite le seul conteneur de fixtures avec `make lane-down devops MODE=test GD_TARGET=showcase-immobilier`, ou interrompre son terminal avec Ctrl+C. Le port peut être choisi avec `QUALITY_FIXTURE_PORT` au démarrage ; adapter alors l’URL des tests.
 
 Le mode `test` réutilise les commandes des couches : `lane-logs`, `lane-status` et `lane-down` prennent les mêmes couche, mode et cible. Son port par défaut est la base de test augmentée de l’identifiant de couche ; l’URL effective est affichée au lancement. Le mode par défaut reste `dev`. Les anciens noms `checks-fixture-start` et `checks-fixture-stop` restent des alias de compatibilité, hors du catalogue. Le conteneur de test est supprimé automatiquement à l’arrêt ; les journaux restent sur l’hôte. `lane-rebuild` avec `MODE=test` reconstruit explicitement l’image puis démarre le serveur de test.
 
