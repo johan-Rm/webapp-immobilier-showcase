@@ -379,7 +379,7 @@
           "etat": "implémenté",
           "mode": "automatique",
           "fichier": "webapp/scripts/quality/saas_api_load.py",
-          "limite": "Deux scénarios GET bornés via BFF local ; origine amont et performances propres à Symfony non attestées ; latences informatives."
+          "limite": "Contrôle inactif ; scénarios GET conservés, origine amont et performances propres à Symfony non attestées."
         }
       ]
     }

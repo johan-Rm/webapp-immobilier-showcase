@@ -39,7 +39,7 @@ META = {
     'third-party-tests-format': ('Code', 'Outils tiers', 'Mise en forme des fichiers', 'Prettier', 'Bloquant'),
     'third-party-tests-types': ('Code', 'Outils tiers', 'Types de la cible', 'Nuxt / Vue TSC', 'Bloquant'),
     'third-party-tests-security': ('Sécurité', 'Outils tiers', 'Avis des dépendances', 'Bun audit', 'High/critical bloquants'),
-    'runtime-tests-saas-api-load': ('Charge', 'Tests internes', 'Lectures SaaS via BFF', 'k6', 'Réponses bloquantes ; latences informatives'),
+    'runtime-tests-saas-api-load': ('Charge', 'Tests internes', 'Lectures SaaS via BFF', 'k6', 'Inactif ; aucun test exécuté'),
     'runtime-tests-load': ('Charge', 'Tests internes', 'Charge locale bornée', 'k6', 'Exécution bloquante ; latences informatives'),
     'runtime-tests-lighthouse': ('Pages', 'Outils tiers', 'Audit des pages SSR', 'Lighthouse / Chromium', 'Exécution bloquante ; scores informatifs'),
     'conventions-tests-frontend': ('Frontend', 'Conventions', 'Structure et marqueurs', 'AST Vue / TypeScript', 'Erreurs bloquantes ; warnings à relire'),
@@ -94,7 +94,7 @@ DESCRIPTIONS = {
         'Analyse les dépendances de l’application et des vérificateurs à partir de leurs fichiers de verrouillage et recense les vulnérabilités connues par niveau de gravité.'
     ),
     'runtime-tests-saas-api-load': (
-        'Mesure manuellement les lectures authentifiées de liste et de détail via un BFF Dashboard local et son API SaaS configurée ; les latences restent indicatives.'
+        'Contrôle de charge des lectures SaaS conservé mais inactif ; aucun test exécuté.'
     ),
     'runtime-tests-load': (
         'Envoie un nombre borné de requêtes au serveur de test local avec k6 et mesure les temps de réponse ainsi que les erreurs rencontrées.'
@@ -138,9 +138,6 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
 def precondition(command, env):
-    if command == 'runtime-tests-saas-api-load':
-        if env.get('GD_TARGET') != 'dashboard' or any(not env.get(name) for name in ('QUALITY_BASE_URL', 'QUALITY_PROJECT_ID', 'QUALITY_ARTICLE_ID', 'QUALITY_SESSION_FILE')):
-            return 'Dashboard, origine locale, projet, article et fichier de session explicites requis.'
     if command == 'runtime-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
         return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
     if command in ('runtime-tests-load', 'runtime-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
