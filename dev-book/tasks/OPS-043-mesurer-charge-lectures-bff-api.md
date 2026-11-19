@@ -3,7 +3,7 @@
 - Demande : DEM-015 ; type : consolidation.
 - Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : implémentée, à vérifier par l’humain.
+- État : validée par l’humain, à reconstituer.
 - Chemins autorisés : `webapp/scripts/quality/`, `infra/docker/`, `infra/make/Makefile.dev`, `Makefile`, `codebase-integrity/`, `docs/executer-controles.md`, `dev-book/reports/charge-bff-api-analyse.md`, cette carte et le brouillon DEM-015 du principal ; restreindre aux fichiers nécessaires après examen des README.
 - Dépendances : conception indépendante de DEM-014 ; si des fichiers partagés sont modifiés, intégrer préalablement le commit de la carte OPS-042 sur une couche libre et propre. Aucun changement de workflow : DEM-016 ; aucune modification BFF présumée.
 
@@ -23,7 +23,18 @@ Compléter la convention et la déclaration structurée de contribution selon le
 
 ## Verdict humain
 
-Aucun verdict humain sur l’implémentation.
+L’humain valide le 2026-11-19 la demande DEM-015 et la carte OPS-043 présentées, incluant le commit initial `7ab66e71748b288285db36d638e93b7bf7fbdb12` et le correctif de suspension ci-dessous. Le contrôle reste inactif ; sa mesure réelle n’a pas été exécutée.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-015 et OPS-043 présentées, contrôle SaaS inactif et mesure réelle non vérifiée.",
+  "contenu": {
+    "type": "git",
+    "valeur": "b94d4b9f2905ea4499a7fd115200b34f4d00cab4"
+  }
+}
+```
 
 ## Commits
 
