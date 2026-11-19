@@ -528,3 +528,10 @@ conventions-tests-solid:
 
 _output-conventions-tests-solid:
 	$(call run-control,solid)
+
+.PHONY: runtime-tests-saas-api-load _output-runtime-tests-saas-api-load
+runtime-tests-saas-api-load:
+	@python3 -B codebase-integrity/commun/check_presentation.py runtime-tests-saas-api-load -- $(MAKE) --no-print-directory _output-runtime-tests-saas-api-load
+
+_output-runtime-tests-saas-api-load:
+	@python3 -B webapp/scripts/quality/saas_api_load.py

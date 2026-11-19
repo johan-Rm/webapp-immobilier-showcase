@@ -59,6 +59,7 @@ help:
 	@printf "\nContrôles runtime ; serveur requis\n"
 	@printf "  %-32s %s\n" "runtime-tests-browser" "Parcours et accessibilité"
 	@printf "  %-32s %s\n" "runtime-tests-load" "Charge k6"
+	@printf "  %-32s %s\n" "runtime-tests-saas-api-load" "Charge des lectures SaaS via BFF"
 	@printf "  %-32s %s\n" "runtime-tests-lighthouse" "Audit Lighthouse"
 	@printf "\nPréparation et autres opérations\n"
 	@printf "  %-32s %s\n" "checks-prepare" "Préparer si nécessaire ; sinon réutiliser"
