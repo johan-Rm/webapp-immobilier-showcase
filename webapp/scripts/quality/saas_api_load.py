@@ -7,7 +7,6 @@ from pathlib import Path
 import re
 import stat
 import subprocess
-import sys
 import tempfile
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
@@ -106,8 +105,4 @@ def run(env):
 
 
 if __name__ == '__main__':
-    try:
-        run(os.environ)
-    except (ValueError, OSError, subprocess.SubprocessError) as exc:
-        print(f'Charge SaaS non réalisée : {exc}', file=sys.stderr)
-        sys.exit(1)
+    print('INACTIF — Charge des lectures SaaS suspendue ; aucun test exécuté.')

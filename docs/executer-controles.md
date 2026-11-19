@@ -67,7 +67,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Inactif : exécution suspendue en raison de sa durée ; code conservé |
 | `make internal-tests-coverage` | Couverture des tests Vitest Node de la cible | Bun, composants Nuxt et navigateur non instrumentés ; résultats informatifs |
 | `make runtime-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
-| `make runtime-tests-saas-api-load` | Lectures SaaS via BFF Dashboard | Manuel ; session, origine locale, projet et article explicites ; latences informatives |
+| `make runtime-tests-saas-api-load` | Lectures SaaS via BFF Dashboard | Inactif : aucun test exécuté ; scénarios conservés |
 | `make runtime-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
 | `make conventions-tests-types-placement` | Placement des types | Contrôle individuel issu des conventions documentées |
 | `make conventions-tests-images` | Images Vue | Contrôle individuel issu des conventions documentées |
@@ -90,7 +90,9 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 
 Les rapports résident dans `webapp/.tmp/quality/`, et ceux du navigateur dans `webapp/.tmp/playwright/`. Examiner les erreurs et le code de sortie avant les scores. Les budgets et références visuelles exigent un arbitrage humain. Le regroupement général et son bilan final restent en brouillon.
 
-La charge SaaS vise un BFF Dashboard local déjà démarré et configuré par l’humain vers la véritable API SaaS ; vérifier sa configuration avant le lancement, car le contrôle ne prouve pas l’origine amont. Choisir un projet réel et un article existant accessibles à la session. La liste peut provoquer plusieurs lectures amont : tenir compte de la charge sur le VPS. Aucune écriture métier n’est émise ; le BFF peut renouveler son authentification.
+**La charge SaaS est inactive** : sa commande affiche un message et ne lance aucun test. Les informations suivantes décrivent les scénarios conservés pour une éventuelle réactivation ; aucune commande d’installation ou de mesure n’est nécessaire actuellement.
+
+Après réactivation, la charge SaaS vise un BFF Dashboard local déjà démarré et configuré par l’humain vers la véritable API SaaS ; vérifier sa configuration avant le lancement, car le contrôle ne prouve pas l’origine amont. Choisir un projet réel et un article existant accessibles à la session. La liste peut provoquer plusieurs lectures amont : tenir compte de la charge sur le VPS. Aucune écriture métier n’est émise ; le BFF peut renouveler son authentification.
 
 Installer au préalable l’image k6 épinglée si nécessaire : `docker pull grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1`. La commande de mesure ne télécharge aucune image. Copier la seule valeur du cookie `gd_saas` de la session Dashboard dans un fichier privé appartenant à l’utilisateur, accessible en lecture par lui seul (`chmod 600`), sans la saisir dans une commande ou la transmettre. Remplacer les valeurs d’exemple suivantes par les UUID et le chemin réels :
 
@@ -98,7 +100,7 @@ Installer au préalable l’image k6 épinglée si nécessaire : `docker pull gr
 make runtime-tests-saas-api-load GD_TARGET=dashboard QUALITY_BASE_URL=http://127.0.0.1:19305 QUALITY_PROJECT_ID=UUID_PROJET QUALITY_ARTICLE_ID=UUID_ARTICLE QUALITY_SESSION_FILE=/chemin/absolu/session-privee QUALITY_LOAD_PROFILE=smoke
 ```
 
-Depuis la racine du worktree, `smoke` réalise trois requêtes par scénario avec un utilisateur ; `measure` en réalise trente avec trois utilisateurs. Les deux scénarios sont successifs, chaque requête expire après cinq secondes. Les réponses erronées, absentes ou incomplètes échouent ; les repères de 200 et 500 ms sont informatifs. Le rapport ne contient ni session ni contenu privé. Les mesures incluent BFF, réseau et API ; caches, volume et état du VPS influencent les résultats, sans mesure séparée de Symfony ou SQL.
+Après réactivation, depuis la racine du worktree, `smoke` réalise trois requêtes par scénario avec un utilisateur ; `measure` en réalise trente avec trois utilisateurs. Les deux scénarios sont successifs, chaque requête expire après cinq secondes. Les réponses erronées, absentes ou incomplètes échouent ; les repères de 200 et 500 ms sont informatifs. Le rapport ne contient ni session ni contenu privé. Les mesures incluent BFF, réseau et API ; caches, volume et état du VPS influencent les résultats, sans mesure séparée de Symfony ou SQL.
 
 ## Nommage des commandes
 
