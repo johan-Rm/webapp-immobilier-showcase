@@ -56,7 +56,7 @@ help:
 	@printf "  %-32s %s\n" "internal-tests-browser" "Parcours et accessibilité ; serveur requis"
 	@printf "  %-32s %s\n" "internal-tests-mutation" "Efficacité des tests ; score informatif"
 	@printf "  %-32s %s\n" "internal-tests-coverage" "Couverture Node ; résultat informatif"
-	@printf "  %-32s %s\n" "internal-tests-mutation-extended" "Mutation étendue ; score informatif"
+	@printf "  %-32s %s\n" "internal-tests-mutation-extended" "Mutation étendue inactive"
 	@printf "  %-32s %s\n" "internal-tests-load" "Charge k6 ; serveur requis"
 	@printf "  %-32s %s\n" "internal-tests-verifiers" "Tests Python, Vitest et Bun des outils"
 	@printf "\nPréparation et autres opérations\n"

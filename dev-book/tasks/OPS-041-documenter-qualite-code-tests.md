@@ -17,7 +17,7 @@ Vérifier les commandes, les contrôles des vérificateurs, documentation, regis
 
 Commandes publiques raccordées pour les fonctions et le débogage, les duplications, la couverture et la mutation étendue ; registre, documentation et présentation mis à jour. Les signalements restent informatifs, sauf les blocages définis dans l’analyse.
 
-Vérifications : contrôles statiques Showcase exécutés dans Docker, sans blocage ; autres cibles contrôlées localement. `make conventions-tests-docs` et `make conventions-tests-devbook` réussissent ; `make internal-tests-verifiers` réussit (166 tests Python, 102 Vitest et 44 Bun). Quinze tests ciblés et ESLint/Prettier ciblés réussissent. Après reconstruction de l’image, `make internal-tests-coverage GD_TARGET=showcase-immobilier` réussit : 141 tests unitaires et 254 d’intégration. La mesure complète de mutation reste à lancer manuellement, selon OPS-040.
+Vérifications : contrôles statiques Showcase exécutés dans Docker, sans blocage ; autres cibles contrôlées localement. `make conventions-tests-docs` et `make conventions-tests-devbook` réussissent ; `make internal-tests-verifiers` réussit (166 tests Python, 102 Vitest et 44 Bun). Quinze tests ciblés et ESLint/Prettier ciblés réussissent. Après reconstruction de l’image, `make internal-tests-coverage GD_TARGET=showcase-immobilier` réussit : 141 tests unitaires et 254 d’intégration. Statut de la mutation étendue : voir OPS-040.
 
 ## Verdict humain
 

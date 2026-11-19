@@ -226,7 +226,7 @@ _output-internal-tests-coverage:
 	$(call run-control,coverage)
 
 _output-internal-tests-mutation-extended:
-	$(call run-control,mutation-extended)
+	@printf '%s\n' 'INACTIF — Mutation étendue suspendue en raison de sa durée ; aucun test exécuté.'
 
 _output-conventions-tests-functions:
 	$(call run-control,functions-debug)
@@ -398,7 +398,7 @@ internal-tests-mutation:
 internal-tests-coverage:
 	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-coverage -- $(MAKE) --no-print-directory _output-internal-tests-coverage
 internal-tests-mutation-extended:
-	@python3 -B codebase-integrity/commun/check_presentation.py internal-tests-mutation-extended -- $(MAKE) --no-print-directory _output-internal-tests-mutation-extended
+	@$(MAKE) --no-print-directory _output-internal-tests-mutation-extended
 conventions-tests-functions:
 	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-functions -- $(MAKE) --no-print-directory _output-conventions-tests-functions
 conventions-tests-duplicates:

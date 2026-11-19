@@ -64,7 +64,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make third-party-tests-types` | Préparation Nuxt puis Vue TSC | Fichiers produits dans le conteneur |
 | `make third-party-tests-security` | Audit des deux lockfiles | Registre accessible ; high/critical bloquants |
 | `make internal-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
-| `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Tests Vitest Node ; fichiers et environnements non mesurables indiqués ; exécution potentiellement longue, limitée à six heures |
+| `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Inactif : exécution suspendue en raison de sa durée ; code conservé |
 | `make internal-tests-coverage` | Couverture des tests Vitest Node de la cible | Bun, composants Nuxt et navigateur non instrumentés ; résultats informatifs |
 | `make internal-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
 | `make third-party-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |

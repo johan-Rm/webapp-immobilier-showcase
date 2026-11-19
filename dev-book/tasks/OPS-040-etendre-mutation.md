@@ -21,7 +21,11 @@ Vérifications : 13 tests Vitest ciblés réussis, dont erreurs et interruption 
 
 Correctif Docker : la copie temporaire est placée hors de l’arbre applicatif pour éviter l’héritage de sa configuration TypeScript. L’essai initial échouait sur les types Nuxt ; le pilote Docker réussit après correction, avec 47 mutants détectés et 5 survivants. Quatorze tests ciblés réussissent.
 
-La mesure complète a sélectionné 177 fichiers et 12 244 mutants ; les 199 tests initiaux ont réussi, puis la mesure a atteint sa limite de 30 minutes sans résultat final. À la demande humaine, elle sera lancée manuellement ; la limite passe à six heures. Un fichier TypeScript incompatible avec l’analyseur Stryker est signalé non mesurable ; les mutations statiques restent incluses.
+La mesure complète a sélectionné 177 fichiers et 12 244 mutants ; les 199 tests initiaux ont réussi, puis la mesure a atteint sa limite de 30 minutes sans résultat final. La limite a été portée à six heures. Un fichier TypeScript incompatible avec l’analyseur Stryker est signalé non mesurable ; les mutations statiques restent incluses.
+
+Arbitrage ultérieur : à la demande humaine, la commande publique est inactive en raison de sa durée. Le code est conservé ; une tentative affiche ce statut sans lancer la mesure.
+
+Vérification : `make internal-tests-mutation-extended GD_TARGET=showcase-immobilier` affiche « INACTIF » et termine sans lancer de test ; `make conventions-tests-docs` réussit.
 
 ## Verdict humain
 
