@@ -1,9 +1,9 @@
 # OPS-042 — Classer les contrôles runtime
 
 - Demande : DEM-014 ; type : consolidation.
-- Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a.
+- Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : implémentée, à vérifier humainement.
+- État : validée humainement.
 - Chemins autorisés : `Makefile`, `infra/make/Makefile.dev`, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, `codebase-integrity/commun/`, `codebase-integrity/domaines/fiabilite-verifications/`, `docs/executer-controles.md`, `webapp/scripts/quality/ci-plan.vitest.ts`, `dev-book/reports/controles-runtime-analyse.md`, cette carte et le brouillon DEM-014 du principal.
 - Dépendances : aucune de réalisation ; les workflows sont traités séparément par DEM-016, les lectures BFF → API par DEM-015.
 
@@ -23,7 +23,18 @@ Vérification humaine : dans `worktree/devops`, reconstruire l’image avec `mak
 
 ## Verdict humain
 
-Aucun verdict humain sur l’implémentation.
+L’humain indique que les tests sont passés et valide l’implémentation. Les journaux et le détail des commandes exécutées n’ont pas été vérifiés par l’agent.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-042 et la demande DEM-014 présentées, avec leurs limites.",
+  "contenu": {
+    "type": "git",
+    "valeur": "2d80b6a832d312409981e3dc3aafc16b2b3f583d"
+  }
+}
+```
 
 ## Commits
 
