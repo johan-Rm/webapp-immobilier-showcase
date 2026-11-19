@@ -3,7 +3,7 @@
 - Demande : DEM-013 ; type : consolidation
 - Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`
-- État : implémentée, à vérifier humainement
+- État : validée humainement
 - Chemins autorisés : `codebase-integrity/commun/`, `codebase-integrity/domaines/fiabilite-verifications/tests/`, `codebase-integrity/package.json`, `webapp/scripts/quality/run.ts`, `webapp/scripts/quality/run.vitest.ts`, cette carte.
 - Dépendances : aucune.
 
@@ -25,7 +25,18 @@ Second correctif : Stryker normalise les barres obliques ; les crochets sont rep
 
 ## Verdict humain
 
-Aucun verdict humain.
+Validation explicite de la demande et des six cartes avec leurs limites. La désactivation demandée est incluse dans la révision identifiée.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-036 ; validation globale DEM-013 avec limites présentées et mutation étendue inactive.",
+  "contenu": {
+    "type": "git",
+    "valeur": "23af763a2ae329b3eb64e7e10368af3d93fcff47"
+  }
+}
+```
 
 ## Commits
 
