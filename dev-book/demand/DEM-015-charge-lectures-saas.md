@@ -15,9 +15,11 @@ L’humain a ensuite décidé de suspendre le contrôle : sa commande affiche un
 
 Depuis `develop` à `3233caa04a1d7499112855a0f6741e7e8f3d069c` sur `demands/DEM-015` :
 
-- Implémentation : `7ab66e71748b288285db36d638e93b7bf7fbdb12` → `8badcc716e311e19df45ae730a50f0c61210aaa4`.
-- Suspension : `b94d4b9f2905ea4499a7fd115200b34f4d00cab4` → `f291c4554c9e99a7dd1f1c86bd05da465b538901`.
-- Verdict : `4ae8acbe985d512b42e73c7001e6d5af5b6f9007` → `0d0f397bec485f3273f88cd2087ba80ea4814bda`.
+- Implémentation : `7ab66e71748b288285db36d638e93b7bf7fbdb12` → `eabe4dbb15401d49ee7a6dc6c587eb14fed07e40`.
+- Suspension : `b94d4b9f2905ea4499a7fd115200b34f4d00cab4` → `4185c9def2a947d11676855812234d92e0520ea9`.
+- Verdict : `4ae8acbe985d512b42e73c7001e6d5af5b6f9007` → `5887a0fe246d63c1ad610111fff5a5ef1af29d93`.
+
+Les messages des trois commits reconstitués ont été complétés avec `Demande : DEM-015` après constat du contrôle des contributions ; leurs arbres restent identiques et les commits sources sont conservés.
 
 Les brouillons DEM-016 présents dans la couche DevOps restent hors de cette reconstitution. Aucun test de charge ni appel à l’API réelle n’est lancé par l’agent.
 
