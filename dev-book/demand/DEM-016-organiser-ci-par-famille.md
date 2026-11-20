@@ -17,6 +17,8 @@ Depuis `develop` à `b63fee7a3c9426842ab8864d7b57ee930e45eb15` sur `demands/DEM-
 
 - Implémentation : `4c012dfc111c478662741ee02ab93d5278d31980` → `2f503ab2e9f1293c4f217725051aa643f33c1502`.
 - Verdict humain : `16e32106e51761bd2c980683748b101a496e1ba6` → `692405b431ae387c590fa6c736eaad9ebce94bea`.
+- Renommage validé : `f616ac5f194706a57307d5fe06e79cbbdf2e8c54` → `99d32ceaa274b27d2a8740adf6cb16f448617140`.
+- Verdict sur le renommage : `8e5435a826620c868ae1ab60bbc4ba2196052ebd` → `ef1c1c49a7e239f6d9274e86df64779aa1ee3a80`.
 
 La couche DevOps conserve sa branche ; aucun workflow ni test lourd n’a été déclenché par l’agent. Les contrôles de contribution depuis la base, des documents et des cartes réussissent sur la branche reconstituée.
 
