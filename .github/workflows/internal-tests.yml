@@ -1,0 +1,46 @@
+name: internal-tests
+on:
+  pull_request:
+  push:
+    branches: [develop, master]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [showcase-immobilier, client2-immobilier, dashboard]
+    env:
+      GD_TARGET: ${{ matrix.target }}
+      CI: "true"
+      NUXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun install --frozen-lockfile --ignore-scripts --cwd ../codebase-integrity
+      - run: node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test
+      - run: bun --no-env-file run verify -- unit --target "$GD_TARGET"
+      - run: bun --no-env-file run verify -- integration --target "$GD_TARGET"
+      - if: matrix.target == 'dashboard'
+        run: bun --no-env-file run verify -- components --target dashboard
+      - run: bun --no-env-file run verify -- contracts --target "$GD_TARGET"
+      - run: bun --no-env-file run verify -- coverage --target "$GD_TARGET"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: internal-tests-${{ matrix.target }}
+          path: |
+            webapp/.tmp/quality/
+            webapp/.tmp/playwright/
+          if-no-files-found: warn

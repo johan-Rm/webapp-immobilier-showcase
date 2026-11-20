@@ -43,7 +43,9 @@ Reconstruire les images après modification des sources. L’image contient les 
 
 ## Automatisation et limites
 
-Le workflow AIDE exécute séparément `make internal-tests-verifiers` (Python, Vitest et Bun), puis `make conventions-tests-docs`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct ; la demande définitive de consolidation est créée lors de la reconstitution, pas pendant cette implémentation.
+Six workflows distinguent cadre, outils tiers, conventions, tests internes, runtime et SonarQube. Les contrôles automatiques tournent sur PR et sur push vers develop ou master ; les statuts changent et les protections GitHub doivent être coordonnées sans contournement. Le workflow AIDE exécute séparément `make internal-tests-verifiers` (Python, Vitest et Bun), puis `make conventions-tests-docs`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct ; la demande définitive de consolidation est créée lors de la reconstitution, pas pendant cette implémentation.
+
+Fonctions et duplications sont signalées pour chaque cible ; les instructions de débogage restent bloquantes. La couverture est mesurée pour chaque cible avec un résultat informatif, mais une mesure vide ou échouée bloque. Les parcours et charges runtime utilisent uniquement des fixtures locales. Lighthouse, la mutation pilote et la vérification dev-book restent manuels ; la mutation étendue et la charge SaaS sont inactives. Les coûts et protections distants restent à vérifier.
 
 Les versions non livrées des commandes appartiennent au worktree où elles sont implémentées. Une exécution depuis une autre branche peut utiliser une version différente. Les cartes conservent les résultats réellement obtenus et le verdict humain.
 

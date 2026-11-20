@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { coverageEnvironment, summarizeCoverage } from './coverage'
+import { coverageEnvironment, requireCoverage, summarizeCoverage } from './coverage'
 
 describe('bilan de couverture', () => {
   const locations = {
@@ -27,6 +27,13 @@ describe('bilan de couverture', () => {
     )
     expect(result.map((item) => item.status)).toEqual(['mesuré', 'non-couvert', 'non-mesurable'])
     expect(result[0].uncovered).toEqual([locations[1]])
+  })
+  it('refuse une couverture vide tout en acceptant une source non couverte', () => {
+    expect(() => requireCoverage([])).toThrow('Mesure de couverture vide')
+    expect(() => requireCoverage([{ status: 'non-mesurable' }])).toThrow(
+      'Mesure de couverture vide',
+    )
+    expect(() => requireCoverage([{ status: 'non-couvert' }])).not.toThrow()
   })
   it('refuse les mesures non numériques', () => {
     expect(() =>

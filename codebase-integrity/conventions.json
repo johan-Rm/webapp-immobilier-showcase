@@ -380,6 +380,20 @@
           "mode": "automatique",
           "fichier": "webapp/scripts/quality/saas_api_load.py",
           "limite": "Contrôle inactif ; scénarios GET conservés, origine amont et performances propres à Symfony non attestées."
+        },
+        {
+          "id": "ci-family-contract",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "webapp/scripts/quality/ci-plan.vitest.ts",
+          "limite": "Vérification statique des familles et configurations ; ne prouve pas les exécutions ni les protections GitHub."
+        },
+        {
+          "id": "coverage-nonempty",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "webapp/scripts/quality/coverage.ts",
+          "limite": "Bloque une mesure sans instruction applicative mesurée ; le score et les fichiers non mesurables restent informatifs."
         }
       ]
     }

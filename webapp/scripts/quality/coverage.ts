@@ -72,6 +72,11 @@ export function summarizeCoverage(sources: string[], reports: CoverageResult[], 
   })
 }
 
+export function requireCoverage(files: Array<{ status: string }>) {
+  if (!files.some((file) => file.status === 'mesuré' || file.status === 'non-couvert'))
+    throw new Error('Mesure de couverture vide pour les sources applicatives')
+}
+
 export async function runCoverage(
   target: 'showcase-immobilier' | 'client2-immobilier' | 'dashboard',
   root = webappRoot,
@@ -129,6 +134,7 @@ export async function runCoverage(
       exclusions: selection.excluded,
       notRun,
     }
+    requireCoverage(result.files)
     const output = join(root, '.tmp/quality/coverage')
     mkdirSync(output, { recursive: true })
     const directory = mkdtempSync(join(output, `${target}-`))
