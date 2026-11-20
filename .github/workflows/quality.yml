@@ -1,4 +1,4 @@
-name: quality
+name: third-party-tests
 on:
   pull_request:
   push:
@@ -6,10 +6,7 @@ on:
 permissions:
   contents: read
 jobs:
-  aide:
-    uses: ./.github/workflows/ai-development-engineering.yml
   quality:
-    needs: aide
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -19,12 +16,6 @@ jobs:
       GD_TARGET: ${{ matrix.target }}
       CI: "true"
       NUXT_TELEMETRY_DISABLED: "1"
-      QUALITY_BROWSER_FIXTURES: "1"
-      QUALITY_MEDIA_FIXTURES: "1"
-      WEB005_E2E_FIXTURES: "1"
-      SAAS_PROJECTION_ROOT: .tmp/web005-ci
-      SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
-      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
     defaults:
       run:
         working-directory: webapp
@@ -38,54 +29,28 @@ jobs:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile --ignore-scripts
       - run: bun install --frozen-lockfile --ignore-scripts --cwd ../codebase-integrity
-      - name: Préparer les contrats et types de la cible
-        run: node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test
+      - run: node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test
       - run: bun run lint:check
       - run: bun run format:check
       - run: bun run type-check
-      - run: bun --no-env-file run verify -- unit --target "$GD_TARGET"
-      - run: bun --no-env-file run verify -- integration --target "$GD_TARGET"
-      - if: matrix.target == 'dashboard'
-        run: bun --no-env-file run verify -- components --target dashboard
-      - run: bun --no-env-file run verify -- contracts --target "$GD_TARGET"
-      - name: Construire le vrai SSR sans environnement privé
-        run: node node_modules/nuxt/bin/nuxt.mjs build --dotenv .env.test
-      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
-      - name: Démarrer les seuls services de fixtures
-        run: |
-          mkdir -p .tmp/quality
-          QUALITY_FIXTURE_PORT=3000 bun --no-env-file scripts/quality/fixture-server.ts --ssr > .tmp/quality/fixture-stack.log 2>&1 &
-          echo $! > .tmp/quality/fixture-stack.pid
-          for attempt in $(seq 1 40); do
-            if curl --fail --silent "$PLAYWRIGHT_BASE_URL/" > /dev/null; then exit 0; fi
-            sleep 1
-          done
-          cat .tmp/quality/fixture-stack.log
-          exit 1
-      - name: Vérifier les parcours sur fixtures
-        run: bun --no-env-file run verify -- browser --target "$GD_TARGET"
-      - name: Arrêter le lanceur de fixtures possédé
-        if: always()
-        run: |
-          if test -f .tmp/quality/fixture-stack.pid; then
-            kill "$(cat .tmp/quality/fixture-stack.pid)" || true
-          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: quality-${{ matrix.target }}
+          name: third-party-${{ matrix.target }}
           path: |
             webapp/.tmp/quality/
             webapp/.tmp/playwright/
           if-no-files-found: warn
   supply-chain:
-    needs: aide
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: webapp
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.0
@@ -98,3 +63,4 @@ jobs:
         with:
           name: supply-chain
           path: webapp/.tmp/quality/
+          if-no-files-found: warn

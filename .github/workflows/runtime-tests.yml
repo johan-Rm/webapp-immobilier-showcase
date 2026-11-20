@@ -1,0 +1,69 @@
+name: runtime-tests
+on:
+  pull_request:
+  push:
+    branches: [develop, master]
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [showcase-immobilier, client2-immobilier, dashboard]
+    env:
+      GD_TARGET: ${{ matrix.target }}
+      CI: "true"
+      NUXT_TELEMETRY_DISABLED: "1"
+      QUALITY_BROWSER_FIXTURES: "1"
+      QUALITY_MEDIA_FIXTURES: "1"
+      WEB005_E2E_FIXTURES: "1"
+      SAAS_PROJECTION_ROOT: .tmp/web005-ci
+      SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
+      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+      QUALITY_BASE_URL: http://127.0.0.1:3000
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun install --frozen-lockfile --ignore-scripts --cwd ../codebase-integrity
+      - run: node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test
+      - run: node node_modules/nuxt/bin/nuxt.mjs build --dotenv .env.test
+      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - name: Démarrer les fixtures locales
+        run: |
+          mkdir -p .tmp/quality
+          QUALITY_FIXTURE_PORT=3000 bun --no-env-file scripts/quality/fixture-server.ts --ssr > .tmp/quality/fixture-stack.log 2>&1 &
+          echo $! > .tmp/quality/fixture-stack.pid
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent "$PLAYWRIGHT_BASE_URL/" > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat .tmp/quality/fixture-stack.log
+          exit 1
+      - run: bun --no-env-file run verify -- browser --target "$GD_TARGET"
+      - run: docker pull grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1
+      - run: bun --no-env-file run verify -- load --target "$GD_TARGET"
+      - name: Arrêter le lanceur de fixtures possédé
+        if: always()
+        run: |
+          if test -f .tmp/quality/fixture-stack.pid; then
+            kill "$(cat .tmp/quality/fixture-stack.pid)" || true
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: runtime-tests-${{ matrix.target }}
+          path: |
+            webapp/.tmp/quality/
+            webapp/.tmp/playwright/
+          if-no-files-found: warn

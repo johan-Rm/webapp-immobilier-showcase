@@ -4,12 +4,11 @@ on:
   pull_request:
   push:
     branches: [develop, master]
+permissions:
+  contents: read
 
 jobs:
-  aide:
-    uses: ./.github/workflows/ai-development-engineering.yml
   conventions:
-    needs: aide
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -32,3 +31,43 @@ jobs:
       - run: bun run check:app:solid
       - run: bun run check:app:guards
       - run: bun run check:services:no-framework-imports
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: conventions
+          path: webapp/.tmp/quality/
+          if-no-files-found: warn
+  source-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [showcase-immobilier, client2-immobilier, dashboard]
+    env:
+      GD_TARGET: ${{ matrix.target }}
+      CI: "true"
+      NUXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun install --frozen-lockfile --ignore-scripts --cwd ../codebase-integrity
+      - run: node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test
+      - run: bun --no-env-file run verify -- functions-debug --target "$GD_TARGET"
+      - run: bun --no-env-file run verify -- duplicates --target "$GD_TARGET"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-quality-${{ matrix.target }}
+          path: |
+            webapp/.tmp/quality/
+            webapp/.tmp/playwright/
+          if-no-files-found: warn

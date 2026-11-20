@@ -7,10 +7,7 @@ on:
     branches: [develop, master]
 
 jobs:
-  aide:
-    uses: ./.github/workflows/ai-development-engineering.yml
   sonarqube:
-    needs: aide
     runs-on: ubuntu-latest
     defaults:
       run:
