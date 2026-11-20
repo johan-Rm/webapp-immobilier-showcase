@@ -1,4 +1,4 @@
-name: aide
+name: aide-tests
 
 on:
   pull_request:
