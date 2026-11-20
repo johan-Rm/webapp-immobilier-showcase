@@ -13,6 +13,7 @@ const workflow = (name: string) =>
 type Step = { run?: string; uses?: string; if?: string; 'continue-on-error'?: boolean }
 type Job = { steps: Step[]; strategy?: { matrix: { target: string[] }; 'fail-fast': boolean } }
 type Workflow = {
+  name: string
   on: { pull_request?: unknown; push?: { branches: string[] } }
   jobs: Record<string, Job>
 }
@@ -34,6 +35,12 @@ function contract(files: Record<string, Workflow>): string[] {
       errors.push(`famille absente: ${name}`)
       continue
     }
+    const expectedNames: Record<string, string> = {
+      'ai-development-engineering.yml': 'aide-tests',
+      'conventions.yml': 'conventions-tests',
+    }
+    if (expectedNames[name] && file.name !== expectedNames[name])
+      errors.push(`nom incorrect: ${name}`)
     if (
       !Object.hasOwn(file.on, 'pull_request') ||
       JSON.stringify(file.on.push?.branches) !== JSON.stringify(['develop', 'master'])
@@ -116,6 +123,9 @@ describe('contrat des workflows qualité', () => {
     for (const mutate of [
       (x: typeof files) => {
         delete x['runtime-tests.yml']
+      },
+      (x: typeof files) => {
+        x['conventions.yml']!.name = 'conventions'
       },
       (x: typeof files) => {
         x['quality.yml']!.jobs.quality!.strategy!.matrix.target.pop()

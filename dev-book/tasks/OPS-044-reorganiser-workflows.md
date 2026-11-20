@@ -3,7 +3,7 @@
 - Demande : DEM-016 ; type : consolidation.
 - Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : validée par l’humain, à reconstituer.
+- État : correctif implémenté, à vérifier par l’humain.
 - Chemins autorisés : `.github/workflows/`, `webapp/scripts/quality/ci-plan.vitest.ts`, les seuls scripts qualité nécessaires au raccordement, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, les contrôles et tests de fiabilité nécessaires sous `codebase-integrity/`, `docs/executer-controles.md`, `docs/3.application/sonarqube-cloud.md`, `dev-book/reports/organisation-ci-cd-analyse.md`, cette carte et le brouillon DEM-016 du principal.
 - Dépendances : intégrer le commit identifié de OPS-042 (DEM-014) avant toute modification de ses fichiers partagés ; aucune dépendance de réalisation à OPS-043, dont les scénarios réels restent manuels. Vérifier à nouveau les affectations avant intervention.
 
@@ -25,7 +25,7 @@ Les nouveaux statuts et la lecture non modifiante des protections figurent dans 
 
 ## Verdict humain
 
-L’humain valide DEM-016 le 2026-11-20 après avoir exécuté sur Showcase la reconstruction de l’image, les contrôles fonctions, duplications, couverture, vérificateurs et documentation : bilans réussis, code 0. Les autres cibles et l’exécution des workflows GitHub restent non vérifiées à cette étape.
+Verdict initial, antérieur au renommage demandé : l’humain valide DEM-016 le 2026-11-20 après avoir exécuté sur Showcase la reconstruction de l’image, les contrôles fonctions, duplications, couverture, vérificateurs et documentation : bilans réussis, code 0. Les autres cibles et l’exécution des workflows GitHub restent non vérifiées à cette étape.
 
 ```verdict-json
 {
@@ -37,6 +37,8 @@ L’humain valide DEM-016 le 2026-11-20 après avoir exécuté sur Showcase la r
   }
 }
 ```
+
+Le renommage demandé ensuite de `aide` et `conventions` en `aide-tests` et `conventions-tests` a été contrôlé par les 4 tests ciblés de contrat, ESLint et le contrôle documentaire ; il nécessite une nouvelle vérification humaine ; le verdict ci-dessus reste lié au commit initial.
 
 ## Commits
 

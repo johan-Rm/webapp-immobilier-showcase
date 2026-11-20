@@ -1,4 +1,4 @@
-name: conventions
+name: conventions-tests
 
 on:
   pull_request:
