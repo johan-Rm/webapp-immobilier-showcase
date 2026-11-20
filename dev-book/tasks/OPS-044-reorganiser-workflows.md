@@ -3,7 +3,7 @@
 - Demande : DEM-016 ; type : consolidation.
 - Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : correctif implémenté, à vérifier par l’humain.
+- État : validée par l’humain, à reconstituer.
 - Chemins autorisés : `.github/workflows/`, `webapp/scripts/quality/ci-plan.vitest.ts`, les seuls scripts qualité nécessaires au raccordement, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, les contrôles et tests de fiabilité nécessaires sous `codebase-integrity/`, `docs/executer-controles.md`, `docs/3.application/sonarqube-cloud.md`, `dev-book/reports/organisation-ci-cd-analyse.md`, cette carte et le brouillon DEM-016 du principal.
 - Dépendances : intégrer le commit identifié de OPS-042 (DEM-014) avant toute modification de ses fichiers partagés ; aucune dépendance de réalisation à OPS-043, dont les scénarios réels restent manuels. Vérifier à nouveau les affectations avant intervention.
 
@@ -30,15 +30,15 @@ Verdict initial, antérieur au renommage demandé : l’humain valide DEM-016 le
 ```verdict-json
 {
   "decision": "validé",
-  "portee": "DEM-016 et OPS-044 présentées, avec exécution GitHub et autres cibles non vérifiées.",
+  "portee": "DEM-016 et OPS-044, renommage confirmé ; affichage GitHub du correctif non vérifié.",
   "contenu": {
     "type": "git",
-    "valeur": "4c012dfc111c478662741ee02ab93d5278d31980"
+    "valeur": "f616ac5f194706a57307d5fe06e79cbbdf2e8c54"
   }
 }
 ```
 
-Le renommage demandé ensuite de `aide` et `conventions` en `aide-tests` et `conventions-tests` a été contrôlé par les 4 tests ciblés de contrat, ESLint et le contrôle documentaire ; il nécessite une nouvelle vérification humaine ; le verdict ci-dessus reste lié au commit initial.
+L’humain valide ensuite le renommage après avoir vérifié les deux noms dans les fichiers. Quatre tests ciblés de contrat, ESLint et le contrôle documentaire réussissent ; l’affichage GitHub du correctif reste à vérifier. Le verdict initial est conservé dans le commit documentaire `16e32106e51761bd2c980683748b101a496e1ba6`.
 
 ## Commits
 
