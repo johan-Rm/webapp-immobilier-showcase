@@ -394,6 +394,13 @@
           "mode": "automatique",
           "fichier": "webapp/scripts/quality/coverage.ts",
           "limite": "Bloque une mesure sans instruction applicative mesurée ; le score et les fichiers non mesurables restent informatifs."
+        },
+        {
+          "id": "sonar-preview-scope",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "webapp/scripts/quality/sonar_scope.py",
+          "limite": "Sélection et copie locales seulement ; ne détecte pas les secrets dans les sources et ne confine pas un scanner."
         }
       ]
     }
