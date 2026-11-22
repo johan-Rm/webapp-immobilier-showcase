@@ -1,6 +1,6 @@
 # OPS-085 — Réécrire le README racine
 
-- Demande : DEM-021, [brouillon du principal](../../../../tmp/demande-reecrire-readme.md) ; demande définitive prévue à la reconstitution.
+- Demande : DEM-021, [demande reconstituée](../demand/DEM-021-reecrire-readme-racine.md).
 - Type : développement.
 - Session de création : `01a20297-2846-7532-a284-d2b995cbbc41`.
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
