@@ -19,7 +19,7 @@ it('prépare la vraie layer dashboard sans charger Showcase ni ses routes métie
   const root = join(workspace, 'webapp')
   mkdirSync(root)
   try {
-    cpSync(resolve(webapp, '../resources'), join(workspace, 'resources'), { recursive: true })
+    cpSync(resolve(webapp, '../design'), join(workspace, 'design'), { recursive: true })
     symlinkSync(join(webapp, 'node_modules'), join(root, 'node_modules'), 'dir')
     for (const folder of ['shared', 'services', 'schemas/source', 'dashboard', 'server']) {
       cpSync(join(webapp, folder), join(root, folder), {

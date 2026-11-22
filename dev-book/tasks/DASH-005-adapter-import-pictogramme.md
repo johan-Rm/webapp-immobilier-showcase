@@ -3,8 +3,8 @@
 - Demande : DEM-022, [demande reconstituée](../demand/DEM-022-placer-ressources-design-racine.md).
 - Type : développement ; session de création : `01a20294-5e96-7f03-8096-cd1653e7508b` ; date : 2026-11-22.
 - Couche : dashboard ; branche : `layers/dashboard` ; worktree : `worktree/dashboard`.
-- État : validée humainement ; reconstitution à réaliser.
-- Chemins autorisés : `webapp/dashboard/app/components/dashboard/Brand.vue`, `webapp/dashboard/app/assets/css/main.css` et cette carte.
+- État : correctif implémenté, à vérifier humainement.
+- Chemins autorisés : `webapp/dashboard/app/components/dashboard/Brand.vue`, `webapp/dashboard/app/assets/css/main.css`, `webapp/tests/layers/dashboard.vitest.ts` et cette carte.
 - Dépendances de réalisation : aucune. La résolution effective de l’import et les builds se vérifient après réunion du commit OPS-086 `6339cae99bebede15a4cb6d85c67e0b64e46cc42` et de cette tâche.
 
 ## Résultat et critères
@@ -31,3 +31,7 @@ L’import et la référence CSS pointent vers `design/`. Le fichier cible exist
   }
 }
 ```
+
+## Correctif après échec CI
+
+Les trois jobs d’intégration de la PR #16 échouent sur ce test : sa fixture copiait encore `resources/`, absent après le déplacement. Elle copie désormais `design/` au même niveau que `webapp/`, conformément au nouvel import. Le verdict précédent reste limité au commit initial ; ce correctif attend une nouvelle vérification humaine. Le test lance une préparation et une compilation Nuxt avec un délai maximal de 180 secondes : il relève d’une exécution manuelle.
