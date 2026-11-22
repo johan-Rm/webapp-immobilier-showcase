@@ -41,7 +41,7 @@
   font-display: swap;
 }
 
-/* Brand source: resources/design/Brand Guidelines - Graines Digitales (standalone).html.
+/* Brand source: design/Brand Guidelines - Graines Digitales (standalone).html.
    Intermediate shades support Nuxt UI states; named anchor colors come from the charter. */
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
