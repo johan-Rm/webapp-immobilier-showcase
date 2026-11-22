@@ -43,7 +43,7 @@ RUN if [ "$GD_TARGET" = "showcase-immobilier" ]; then \
       && test -d /opt/app-schemas/webapp; \
     fi
 
-RUN --mount=type=bind,from=design,target=/resources/design,ro \
+RUN --mount=type=bind,from=design,target=/design,ro \
     node ./node_modules/nuxt/bin/nuxt.mjs build \
     && if [ "$GD_TARGET" = "dashboard" ]; then mv dashboard/.output .output; fi
 
