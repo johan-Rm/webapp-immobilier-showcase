@@ -12,7 +12,7 @@ et de l’espagnol.
 - `codebase-integrity/` : conventions techniques et contrôles du projet.
 - `docs/` : documentation du projet.
 - `dev-book/` : demandes, cartes et suivi des travaux.
-- `resources/` : ressources du projet, notamment les éléments de design.
+- `design/` : ressources de création graphique et références visuelles.
 - `worktree/` : espaces de travail associés aux couches.
 - `.github/` : automatisations GitHub.
 - `Makefile` : point d’entrée des commandes du projet.
