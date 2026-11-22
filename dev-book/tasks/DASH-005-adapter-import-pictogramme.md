@@ -21,16 +21,8 @@ L’import et la référence CSS pointent vers `design/`. Le fichier cible exist
 
 ## Verdict humain
 
-```verdict-json
-{
-  "decision": "validé",
-  "portee": "DEM-022, OPS-086 et DASH-005, avec les limites présentées : résolution de l’import, builds et dashboard non vérifiés ; documentation à intégrer et README à coordonner",
-  "contenu": {
-    "type": "git",
-    "valeur": "92a199cf81eb548849fc3c62aca37e17a5bab33e"
-  }
-}
-```
+Verdict initial : validation humaine du commit `92a199cf81eb548849fc3c62aca37e17a5bab33e`, avec les limites précédemment présentées.
+
 
 
 ```verdict-json
