@@ -1,6 +1,6 @@
 # OPS-086 — Déplacer les ressources design et adapter l’infrastructure
 
-- Demande : DEM-022, [brouillon du principal](../../../../tmp/demande-design-racine.md) ; demande définitive prévue à la reconstitution.
+- Demande : DEM-022, [demande reconstituée](../demand/DEM-022-placer-ressources-design-racine.md).
 - Type : développement ; session de création : `01a20294-5e96-7f03-8096-cd1653e7508b` ; date : 2026-11-22.
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
 - État : validée humainement ; reconstitution à réaliser.
@@ -23,7 +23,7 @@ Contrôle manuel après réunion des tâches : depuis la racine du worktree, ave
 
 ## Verdict humain
 
-```json
+```verdict-json
 {
   "decision": "validé",
   "portee": "DEM-022, OPS-086 et DASH-005, avec les limites présentées : résolution de l’import, builds et dashboard non vérifiés ; documentation à intégrer et README à coordonner",
