@@ -6,29 +6,90 @@ on:
   push:
     branches: [develop, master]
 
+permissions:
+  contents: read
+
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: webapp
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Prévisualiser le périmètre
+        id: preview
+        run: |
+          if python3 webapp/scripts/quality/sonar_scope.py; then
+            echo 'ok=true' >> "$GITHUB_OUTPUT"
+          else
+            echo '::warning::Analyse SonarQube non réalisée : sélection refusée.'
+            echo 'ok=false' >> "$GITHUB_OUTPUT"
+          fi
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.0
-
-      - run: bun install
-
-      - name: SonarQube Cloud scan
-        uses: SonarSource/sonarqube-scan-action@v7
+      - name: Vérifier le token disponible
+        id: credentials
+        if: steps.preview.outputs.ok == 'true' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' && github.event.pull_request.user.login != 'dependabot[bot]'))
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.host.url=https://sonarcloud.io
+        run: |
+          if [ -z "$SONAR_TOKEN" ]; then
+            echo 'Analyse SonarQube non réalisée : token absent.'
+            echo 'available=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Préparer les outils d’isolation
+        id: isolation
+        if: steps.credentials.outputs.available == 'true'
+        run: |
+          if command -v bwrap >/dev/null && command -v socat >/dev/null; then
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+          elif timeout 90s sudo -n apt-get update && timeout 90s sudo -n apt-get install -y bubblewrap socat; then
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'Analyse SonarQube non réalisée : outils d’isolation indisponibles.'
+            echo 'available=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Installer le scanner vérifié
+        if: steps.isolation.outputs.available == 'true'
+        env:
+          SCANNER_VERSION: 8.4.0.16527
+          SCANNER_SHA256: 2a28f118e2e9375dfd36eb27b803e1d37f93daba4db068aca6eef9853041bb24
+        run: |
+          scanner_temp="$(mktemp -d "$RUNNER_TEMP/sonar-scanner.XXXXXX")"
+          archive="$scanner_temp/scanner.zip"
+          if curl --fail --silent --show-error --location "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SCANNER_VERSION}-linux-x64.zip" --output "$archive" &&
+             printf '%s  %s\n' "$SCANNER_SHA256" "$archive" | sha256sum --check &&
+             unzip -q "$archive" -d "$scanner_temp"; then
+            echo 'Scanner téléchargé et vérifié.'
+            printf 'SONAR_SCANNER_HOME=%s/sonar-scanner-%s-linux-x64\n' "$scanner_temp" "$SCANNER_VERSION" >> "$GITHUB_ENV"
+          else
+            echo 'Analyse SonarQube non réalisée : installation du scanner impossible.'
+          fi
+
+      - name: Analyser dans un environnement isolé
+        if: steps.isolation.outputs.available == 'true'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+          SONAR_PR_KEY: ${{ github.event.pull_request.number }}
+          SONAR_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SONAR_PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SONAR_PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          SONAR_PR_BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+        run: |
+          if make third-party-tests-sonar; then
+            echo 'Soumission SonarQube effectuée ; résultat distant à vérifier.'
+          else
+            echo '::warning::Analyse SonarQube non réalisée : journal privé sur le runner, non publié.'
+          fi
+
+      - name: Signaler l’analyse PR externe non réalisée
+        if: github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.actor == 'dependabot[bot]' || github.event.pull_request.user.login == 'dependabot[bot]')
+        run: |
+          echo 'Analyse SonarQube non réalisée : contexte de PR non fiable.'

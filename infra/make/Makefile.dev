@@ -69,6 +69,13 @@ dev-analyze:
 
 dev-analyse: dev-analyze
 
+.PHONY: third-party-tests-sonar-preview third-party-tests-sonar
+third-party-tests-sonar-preview:
+	@python3 webapp/scripts/quality/sonar_scope.py
+
+third-party-tests-sonar:
+	@python3 webapp/scripts/quality/sonar_run.py
+
 dev-playwright: dev-env
 	@mkdir -p webapp/.tmp/playwright
 	$(PLAYWRIGHT_RUN)

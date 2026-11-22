@@ -89,6 +89,7 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 - **Présentation** : annoncer catégorie, type, objet, commande, outils et niveau dans un bandeau ; rattacher progression et résultat à la commande et à la cible. Ajouter une **description pédagogique** de ce qui est vérifié, avec une formulation positive et un périmètre précis. Afficher les sorties des outils en direct uniquement sur activation explicite, en conservant leur contexte. Conserver les journaux détaillés sur l’hôte, sans couleur, avec code de sortie fidèle.
 - **Bilan** : distinguer réussites, échecs, prérequis manquants et interruptions. Ne pas inventer un total d’avertissements depuis les journaux des scénarios de test ; signaler tout décompte non consolidé.
 - **Prévisualisation Sonar** : sélectionner les seuls fichiers applicatifs suivis de la cible, du catalogue immobilier, du serveur, des services et du code partagé. Exclure tests, contenus, médias, secrets et fichiers générés ; refuser les liens symboliques et une sélection vide. La copie préparée ne constitue pas à elle seule une preuve de confinement du scanner.
+- **Sortie Sonar** : isoler l'accès réseau du scanner et limiter sa sortie aux destinations approuvées. Refuser les adresses locales et privées ; ne pas transmettre de secret aux contributions non fiables.
 
 - Sélectionner explicitement la **famille de contrôle** et la **cible applicative** lorsque le contrôle les distingue.
 - Séparer les tests selon leur **moteur** et leur **environnement**, notamment les tests Bun, Vitest Node et Nuxt.

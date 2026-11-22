@@ -401,6 +401,13 @@
           "mode": "automatique",
           "fichier": "webapp/scripts/quality/sonar_scope.py",
           "limite": "Sélection et copie locales seulement ; ne détecte pas les secrets dans les sources et ne confine pas un scanner."
+        },
+        {
+          "id": "sonar-egress-policy",
+          "etat": "implémenté",
+          "mode": "automatique",
+          "fichier": "webapp/scripts/quality/sonar_egress_policy.py",
+          "limite": "Validation des noms et adresses uniquement ; confinement et relais nécessitent une vérification distincte."
         }
       ]
     }
