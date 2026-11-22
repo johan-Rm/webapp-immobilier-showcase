@@ -18,8 +18,8 @@ sans réorganisation des usages existants.
 
 Références visuelles uniques :
 
-- [Charte officielle](<../../resources/design/Brand Guidelines - Graines Digitales (standalone).html>).
-- [Pictogramme fourni](../../resources/design/Picto-fond-noir-1000x1000.svg).
+- [Charte officielle](<../../design/Brand Guidelines - Graines Digitales (standalone).html>).
+- [Pictogramme fourni](../../design/Picto-fond-noir-1000x1000.svg).
 
 Appliquer la charte aux couleurs, au logo, aux polices et à l’apparence des composants :
 boutons, champs, tableaux et autres composants présents. Inclure tous les écrans,
