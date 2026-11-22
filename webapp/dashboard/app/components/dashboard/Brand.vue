@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 // 1. Imports
-import brandMark from '../../../../../resources/design/Picto-fond-noir-1000x1000.svg?url'
+import brandMark from '../../../../../design/Picto-fond-noir-1000x1000.svg?url'
 
 // 2. Types et constantes statiques
 // Vite may return an absolute asset URL in the browser and a relative URL during SSR.
