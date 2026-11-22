@@ -64,3 +64,8 @@ Base `develop` : `980616b09a0ae9e1791b47ab768b0589788f47c3`. Reprise par cherry-
 Les deux guides ont été actualisés depuis le brouillon validé. Le README issu de DEM-021 est coordonné ici : sa référence à `resources/` devient `design/`. Les tests de build et du dashboard restent à réaliser manuellement. Après livraison, le principal doit retrouver `develop`.
 
 Contrôles de reconstitution : contenu des deux ressources identique à `develop`, ancien dossier absent, chemin d’import résolu, configuration Compose dev et dashboard valide sans lancement de services et `git diff --check` réussi. Builds et exécution du dashboard non vérifiés. Les modifications documentaires de reconstitution restent non commitées pour l’étape de livraison.
+
+
+## Contrôles de livraison
+
+Sur le contenu `6b148ec7825b729174ba2b39123c5242f58ec2f9`, l’humain a exécuté avec succès `make dev-build-dashboard-ssr`, `make dev-dashboard-ssr` et `make dev-check-dashboard-ssr` ; il a confirmé voir le pictogramme. Les contrôles `make conventions-tests-docs`, `make internal-tests-verifiers`, `make checks-rebuild` et les contrôles lint, format et types pour `GD_TARGET=dashboard` ont réussi. Le contrôle local de contribution et celui des traces ont réussi sur la base `980616b09a0ae9e1791b47ab768b0589788f47c3`. Une exécution `VERBOSE=1` de `internal-tests-verifiers` a échoué ; l’exécution normale ultérieure a réussi.
