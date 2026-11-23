@@ -69,3 +69,11 @@ Contrôles de reconstitution : contenu des deux ressources identique à `develop
 ## Contrôles de livraison
 
 Sur le contenu `6b148ec7825b729174ba2b39123c5242f58ec2f9`, l’humain a exécuté avec succès `make dev-build-dashboard-ssr`, `make dev-dashboard-ssr` et `make dev-check-dashboard-ssr` ; il a confirmé voir le pictogramme. Les contrôles `make conventions-tests-docs`, `make internal-tests-verifiers`, `make checks-rebuild` et les contrôles lint, format et types pour `GD_TARGET=dashboard` ont réussi. Le contrôle local de contribution et celui des traces ont réussi sur la base `980616b09a0ae9e1791b47ab768b0589788f47c3`. Une exécution `VERBOSE=1` de `internal-tests-verifiers` a échoué ; l’exécution normale ultérieure a réussi.
+
+
+## Correctif reconstitué
+
+Après échec des trois jobs CI sur l’ancien chemin `resources/`, le correctif DASH-005 `f2fc96536d172b2e160a4f14b12a50869325ba3c` a été validé humainement avec réserve : test corrigé non exécuté sur les commits réunis. Reprise avec provenance : `f2fc965` → `4dcea77c9b51ad54028f111a206917ace8071223`, verdict `5661454` → `9cb5f8e8223967fb56c8ac8083f978d731f6399a`, correction de format `1ccaf9f` → `72754937468617f96b4ca0d2dd924c115b3fb7ce`. Le conflit de carte a été résolu en conservant le lien vers la demande définitive, les chemins corrigés et les verdicts. Test d’intégration à lancer manuellement ; aucune mise à jour distante à cette étape.
+
+
+Le test manuel `make internal-tests-integration GD_TARGET=showcase-immobilier`, exécuté après reconstruction de l’image avec le correctif réuni, a réussi : 24 fichiers et 256 tests. Les suites Client 2 et Dashboard corrigées restent à vérifier en CI.
