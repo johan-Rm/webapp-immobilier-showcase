@@ -51,6 +51,8 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Commandes manuelles
 
+Pour exécuter la suite complète de Showcase Immobilier lors de la reconstitution, suivre [la procédure en deux terminaux](../TEST.md).
+
 Depuis la racine du worktree, lancer **`make checks-prepare`**. Une image existante est réutilisée ; aucune commande de contrôle ne reconstruit implicitement. Après modification des sources, dépendances ou outils, lancer **`make checks-rebuild`** : la fraîcheur de l’image n’est pas détectée automatiquement.
 
 Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_TARGET=dashboard`. La première cible est utilisée par défaut. Aucun `.env` privé n’est injecté.

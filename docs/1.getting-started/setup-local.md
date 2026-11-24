@@ -52,28 +52,7 @@ restent à préparer.
 
 ### 3. Reconstruire et préparer le frontend
 
-```bash
-cd /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier
-
-test -f webapp/.env || cp webapp/.env.example webapp/.env
-
-make dev-build-localhost-no-cache
-
-docker compose --project-directory . --env-file webapp/.env -f infra/docker/docker-compose.dev.yml run --rm --no-deps \
-  webapp-localhost bun run setup:local
-
-make dev-webapp-localhost
-```
-
-Le `webapp/.env` existant est conservé et monté en lecture seule dans le conteneur de
-développement ; `env_file` seul transmet les variables sans monter le fichier.
-Les fixtures versionnées sont également montées en lecture seule. Si le modèle vient d’être copié, remplacer la
-valeur d’exemple `NUXT_SESSION_PASSWORD` par un secret aléatoire d’au moins
-32 caractères avant de démarrer le serveur.
-
-Ouvrir `http://localhost:3000/fr`, `/en` ou `/es`. La dernière commande reste
-active et affiche les logs. Les biens, galeries et localisations du catalogue
-sont préparés sans appel à l’API Symfony.
+Suivre [la préparation du frontend et le démarrage](../../SETUP.md) depuis la racine du dépôt. Conserver le `webapp/.env` existant. Le conteneur monte ce fichier et les fixtures versionnées en lecture seule. Utiliser `make dev-build-localhost-no-cache` à la place de la construction standard pour la remise à zéro décrite ici.
 
 ### 4. Vérifier dans un autre terminal
 
@@ -176,7 +155,7 @@ Les chemins ci-dessus concernent le client historique. Voir
 
 ## Deux sites SSR locaux
 
-Après préparation de Showcase, `make dev-webapp-ssr BUILD=1` démarre les deux
+Après [le premier démarrage de Showcase](../../SETUP.md), `make dev-webapp-ssr BUILD=1` démarre les deux
 services et Nginx. Les domaines, l’isolation des cibles et `make dev-check-ssr`
 sont décrits dans [le guide des layers](../2.architecture/14.site-layers.md).
 Client 2 ne nécessite pas le setup des données ou les identifiants Showcase.
