@@ -28,6 +28,30 @@ class DocumentsTest(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.paths = []
 
+    def test_root_guides_check_commands_and_links(self):
+        self.write('Makefile', 'setup:\nchecks-fixture-start:\nruntime-tests-browser:\n')
+        recipe = (
+            " [Référence](SETUP.md)\n\n"
+            "```bash\n"
+            "make checks-fixture-start QUALITY_FIXTURE_PORT=19856\n"
+            "make runtime-tests-browser PLAYWRIGHT_BASE_URL=http://127.0.0.1:19856\n"
+            "# make inactive\n"
+            "```\n"
+        )
+        self.write('SETUP.md', '```bash\nmake setup\n```\n')
+        guide = self.write('TEST.md', recipe)
+        self.assertEqual(docs.check(self.root, self.paths), ([], []))
+        for original, replacement, message in (
+            ('SETUP.md', 'absent.md', 'absent.md'),
+            ('make runtime-tests-browser', 'make ancienne-cible', 'cible Make inconnue'),
+            ('http://127.0.0.1:19856', 'http://127.0.0.1:8080', 'origine des fixtures'),
+            ('# make inactive', 'if true; then', 'bloc Bash invalide'),
+        ):
+            with self.subTest(message=message):
+                guide.write_text(recipe.replace(original, replacement))
+                errors, _ = docs.check(self.root, self.paths)
+                self.assertTrue(any(message in error for error in errors), errors)
+
     def write(self, name, text):
         relative = Path(name)
         path = self.root / relative

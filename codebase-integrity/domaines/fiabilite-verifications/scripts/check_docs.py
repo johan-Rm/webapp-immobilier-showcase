@@ -14,6 +14,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import os
 import re
+import shlex
 import subprocess
 import sys
 import unicodedata
@@ -170,6 +171,46 @@ def structure(path, text):
     return errors
 
 
+ROOT_GUIDES = ('TEST.md', 'SETUP.md')
+RUNTIME_URLS = {
+    'runtime-tests-browser': 'PLAYWRIGHT_BASE_URL',
+    'runtime-tests-load': 'QUALITY_BASE_URL',
+    'runtime-tests-lighthouse': 'QUALITY_BASE_URL',
+}
+
+
+def check_recipe(root, name, text):
+    errors, commands = [], []
+    for block in re.findall(r'^`{3}bash[ \t]*\n(.*?)^`{3}[ \t]*$', text, re.MULTILINE | re.DOTALL):
+        syntax = subprocess.run(['bash', '-n'], input=block, text=True, capture_output=True)
+        if syntax.returncode:
+            errors.append('bloc Bash invalide : ' + syntax.stderr.strip())
+            continue
+        for line in block.splitlines():
+            if re.match(r'^\s*make\s+', line):
+                words = shlex.split(line, comments=True)
+                if len(words) < 2:
+                    errors.append('cible Make explicite requise')
+                    continue
+                commands.append((words[1], dict(word.split('=', 1) for word in words[2:] if '=' in word)))
+    makefiles = [root / 'Makefile', *sorted((root / 'infra/make').glob('Makefile*'))]
+    targets = {
+        target for path in makefiles if path.is_file()
+        for target in re.findall(r'^([\w-]+):', path.read_text(encoding='utf-8'), re.MULTILINE)
+    }
+    errors.extend(f'cible Make inconnue : {target}' for target, _ in commands if target not in targets)
+    if name == 'TEST.md':
+        ports = [args.get('QUALITY_FIXTURE_PORT', '') for target, args in commands if target == 'checks-fixture-start']
+        if len(ports) != 1 or not re.fullmatch(r'[0-9]{1,5}', ports[0]) or not 1024 <= int(ports[0]) <= 65535:
+            errors.append('un port explicite de fixtures est requis')
+        else:
+            origin = f'http://127.0.0.1:{ports[0]}'
+            for target, args in commands:
+                if target in RUNTIME_URLS and args.get(RUNTIME_URLS[target]) != origin:
+                    errors.append(f'{target} : origine des fixtures attendue {origin}')
+    return errors
+
+
 def check(root, paths):
     root = root.resolve()
     errors, notices = [], []
@@ -195,6 +236,8 @@ def check(root, paths):
             text = path.read_text(encoding='utf-8')
             if relative.parts[0] == 'docs':
                 errors.extend(f'{relative} : {e}' for e in structure(relative, text))
+            if relative.as_posix() in ROOT_GUIDES:
+                errors.extend(f'{relative} : {e}' for e in check_recipe(root, relative.name, text))
             for target in links(text):
                 if re.search(r'\$|\{\{|<[^>]+>', target):
                     notices.append(f'{relative} : cible dynamique à examiner : {target}')
@@ -234,7 +277,7 @@ def main():
         # Les liens hors README conservent leur adoption bornée.
         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
             'README.md', 'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
-            'worktree/README.md', 'dev-book/README.md') or
+            'worktree/README.md', 'dev-book/README.md', *ROOT_GUIDES) or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)
