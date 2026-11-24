@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Dépendances : aucune dépendance de réalisation.
 - Chemins autorisés : `codebase-integrity/commun/check_presentation.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_check_presentation.py` et cette carte.
 
@@ -30,8 +30,19 @@ Pour l’essai humain, démarrer les fixtures de Showcase sur `127.0.0.1:19856`,
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite de l’humain : « ok les 2 commits validé ».
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-023, OPS-088 — présentation Lighthouse. Audits réels mobile et desktop avec le rendu final à vérifier.",
+  "contenu": {
+    "type": "git",
+    "valeur": "ca3444153b073c309f3c7341ddb3e532d2c92adb"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `ca3444153b073c309f3c7341ddb3e532d2c92adb`.
