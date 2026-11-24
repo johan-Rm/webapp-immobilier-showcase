@@ -1,7 +1,7 @@
 # OPS-087 — Documenter les vérifications et le premier démarrage
 
 - Demande : DEM-023 · consolidation.
-- Brouillon au principal : `tmp/demande-consolidation-parcours-local.md`. Lien vers la demande définitive à la reconstitution.
+- Demande définitive : [DEM-023](../demand/DEM-023-verifications-et-demarrage-local.md).
 - Session de création : 01a20c4d-bb03-77c1-a236-d39379aa3c1a
 - Couche : devops
 - Branche : layers/devops
