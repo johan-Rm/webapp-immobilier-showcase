@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Dépendances : aucune dépendance de réalisation.
 - Chemins autorisés : `TEST.md`, `SETUP.md`, `docs/executer-controles.md`, `docs/1.getting-started/setup-local.md`, `codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py` et cette carte. Les deux chemins racine sont autorisés ponctuellement pour cette demande.
 
@@ -44,8 +44,19 @@ Dans le même guide, remplacer « Après préparation de Showcase » par `Après
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite de l’humain : « ok les 2 commits validé ».
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-023, OPS-087 — guides et contrôle documentaire. Premier démarrage sur clone neuf et suite complète à vérifier. Quatre liens hors dépôt préexistants.",
+  "contenu": {
+    "type": "git",
+    "valeur": "7b76a952c831a9735b0927b2724a05ea436a9b2e"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `7b76a952c831a9735b0927b2724a05ea436a9b2e`.
