@@ -14,6 +14,42 @@ import check_presentation as presentation
 
 
 class PresentationTest(unittest.TestCase):
+    def test_lighthouse_displays_scores_from_the_current_successful_report(self):
+        for profile in ('mobile', 'desktop'):
+            for mode in ('valid', 'missing', 'invalid', 'failed'):
+                with self.subTest(profile=profile, mode=mode), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    report = root / 'webapp/.tmp/quality/lighthouse' / f'showcase-immobilier-{profile}-123'
+                    report.mkdir(parents=True)
+                    data = {
+                        'target': 'showcase-immobilier', 'profile': profile,
+                        'results': [{'route': {'path': '/fr'}, 'median': {'scores': {
+                            'performance': 1, 'accessibility': .96, 'best-practices': .42, 'seo': .69,
+                        }}}],
+                    }
+                    if mode != 'missing':
+                        (report / 'summary.json').write_text(json.dumps(data) if mode != 'invalid' else '{')
+                    announced = f'Rapports : /workspace/{report.relative_to(root)}'
+                    status = 7 if mode == 'failed' else 0
+                    argv = [sys.executable, '-c', f'import sys; print({announced!r}); sys.exit({status})']
+                    env = {'PROFILE': profile, 'QUALITY_BASE_URL': 'http://127.0.0.1:19856', 'NO_COLOR': '1'}
+                    output = io.StringIO()
+                    with patch.object(presentation, 'ROOT', root), redirect_stdout(output):
+                        result = presentation.run('runtime-tests-lighthouse', argv, env)
+                        if mode == 'valid':
+                            rendered, = presentation.lighthouse_scores(announced, 'showcase-immobilier', profile, True)
+                            for color, score in ((32, '100'), (31, ' 42'), (33, ' 69')):
+                                self.assertIn(f'\x1b[{color}m{score}/100', rendered)
+                    self.assertEqual(result['exit_code'], status)
+                    terminal = output.getvalue()
+                    self.assertNotIn('\x1b', terminal)
+                    self.assertEqual('SCORES MÉDIANS' in terminal, mode == 'valid')
+                    self.assertEqual('Scores médians indisponibles' in terminal, mode in ('missing', 'invalid'))
+                    if mode == 'valid':
+                        for line in ('Performance       100/100', 'Accessibilité      96/100',
+                                     'Bonnes pratiques   42/100', 'SEO                69/100'):
+                            self.assertIn(line, terminal)
+
     def test_status_code_context_and_persistent_plain_report(self):
         for status in (0, 7):
             with self.subTest(status=status), tempfile.TemporaryDirectory() as directory:
