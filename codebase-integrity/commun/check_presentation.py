@@ -177,6 +177,44 @@ def resolve_devbook_base(env):
     return None
 
 
+LIGHTHOUSE_CATEGORIES = (
+    ('performance', 'Performance'),
+    ('accessibility', 'Accessibilité'),
+    ('best-practices', 'Bonnes pratiques'),
+    ('seo', 'SEO'),
+)
+
+
+def lighthouse_scores(log, target, profile, color):
+    prefix = re.escape(f'{target}-{profile}')
+    match = re.search(rf'^Rapports : [^\r\n]*/\.tmp/quality/lighthouse/({prefix}-[0-9]+)[ \t]*$', log, re.MULTILINE)
+    if not match:
+        raise ValueError('chemin du rapport absent du journal')
+    directory = (ROOT / 'webapp/.tmp/quality/lighthouse').resolve()
+    report_path = (directory / match[1] / 'summary.json').resolve()
+    if not report_path.is_relative_to(directory):
+        raise ValueError('rapport hors du répertoire Lighthouse')
+    report = json.loads(report_path.read_text(encoding='utf-8'))
+    if report['target'] != target or report['profile'] != profile or not report['results']:
+        raise ValueError('rapport sans résultat pour la cible et le profil courants')
+
+    blocks = []
+    for result in report['results']:
+        route = result['route']['path']
+        if not isinstance(route, str) or not route.startswith('/') or not route.isprintable():
+            raise ValueError('route illisible dans le rapport')
+        lines = [paint(f'SCORES MÉDIANS — {route}', 'brand', color)]
+        for key, label in LIGHTHOUSE_CATEGORIES:
+            value = result['median']['scores'][key]
+            if type(value) not in (float, int) or not 0 <= value <= 1:
+                raise ValueError(f'score invalide : {key}')
+            score = round(value * 100)
+            tone = 'green' if score >= 90 else 'yellow' if score >= 50 else 'red'
+            lines.append(f"  {label:<17} {paint(f'{score:>3}/100', tone, color)}")
+        blocks.append('\n'.join(lines))
+    return blocks
+
+
 def run(command, argv, env=None, report_root=None):
     env = dict(os.environ if env is None else env)
     base_error = resolve_devbook_base(env) if command == 'conventions-tests-devbook' else None
@@ -270,6 +308,13 @@ def run(command, argv, env=None, report_root=None):
         say('À RELIRE', line, 'yellow')
     elapsed = round(time.monotonic() - start, 2)
     say('BILAN ' + state, f'{elapsed:.1f} s ; code {code}', 'green' if code == 0 else 'yellow' if missing or interrupted else 'red')
+    if command == 'runtime-tests-lighthouse' and code == 0:
+        try:
+            blocks = lighthouse_scores(ANSI.sub('', raw), target, profile, color)
+        except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+            say('INFO', 'Scores médians indisponibles dans le rapport Lighthouse courant.', 'gray')
+        else:
+            print('\n' + '\n\n'.join(blocks) + '\n', flush=True)
     if warnings:
         say('AVERTISSEMENTS', 'Signalements à relire ; décompte global non consolidé.', 'yellow')
     say('RAPPORT', str(log), 'gray')
