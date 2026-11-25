@@ -55,6 +55,8 @@ la couche. Un conteneur arrêté reste visible ; un projet absent et un daemon
 inaccessible sont distingués. Les conteneurs portant un nom de projet personnalisé
 hors de cette convention ne sont pas attribués automatiquement à une couche.
 
+Le mode test démarre le service `app-test` du Compose commun, avec une image préparée depuis la couche et un port propre à celle-ci.
+
 Depuis le worktree affecté :
 
 ```bash
