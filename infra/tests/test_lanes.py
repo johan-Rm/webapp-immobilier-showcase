@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -330,9 +331,57 @@ class TestMode(unittest.TestCase):
             self.assertIn('checks-rebuild', call.call_args.args[0])
 
 
+class TestPrincipalStartup(unittest.TestCase):
+    def test_make_prepares_image_and_routes_only_to_app_test(self):
+        with tempfile.TemporaryDirectory() as directory:
+            fake = Path(directory) / 'docker'
+            fake.write_text(
+                '#!/bin/sh\n'
+                'echo "$*" >> "$DOCKER_LOG"\n'
+                'case "$1 $2" in\n'
+                '  "info --format") test "$DOCKER_STATE" != inaccessible ;;\n'
+                '  "image inspect") test "$DOCKER_STATE" != absent || test -f "$DOCKER_LOG.built" ;;\n'
+                '  "compose --project-directory")\n'
+                '    case " $* " in\n'
+                '      *" config "*) echo \'{"name":"test","services":{"verify":{"image":"test-verify"}}}\' ;;\n'
+                '      *" build verify "*) touch "$DOCKER_LOG.built" ;;\n'
+                '    esac ;;\n'
+                '  *) exit 7 ;;\n'
+                'esac\n'
+            )
+            fake.chmod(0o755)
+            log = Path(directory) / 'calls'
+            for state in ('present', 'absent', 'inaccessible', 'occupied'):
+                with self.subTest(state=state), socket.socket() as probe:
+                    probe.bind(('127.0.0.1', 0))
+                    port = probe.getsockname()[1]
+                    if state != 'occupied':
+                        probe.close()
+                    log.unlink(missing_ok=True)
+                    log.with_suffix('.built').unlink(missing_ok=True)
+                    run = subprocess.run(
+                        ['make', '--no-print-directory', 'test-up', f'QUALITY_DOCKER={fake}',
+                         f'QUALITY_FIXTURE_PORT={port}'], cwd=ROOT, capture_output=True, text=True,
+                        env={**os.environ, 'DOCKER_LOG': str(log), 'DOCKER_STATE': state}, timeout=10,
+                    )
+                    calls = log.read_text().splitlines()
+                    launches = [call for call in calls if ' run ' in call]
+                    if state in ('present', 'absent'):
+                        self.assertEqual(run.returncode, 0, run.stderr)
+                        launch, = launches
+                        self.assertIn('docker-compose.test.yml', launch)
+                        self.assertTrue(launch.endswith(' app-test'), launch)
+                        self.assertIn(f'QUALITY_FIXTURE_PORT={port}', launch)
+                        self.assertIn('Démarrage de l’environnement de test', run.stdout)
+                    else:
+                        self.assertNotEqual(run.returncode, 0)
+                        self.assertFalse(launches)
+                    self.assertEqual(any(' build verify' in call for call in calls), state == 'absent')
+
+
 class TestContainerRecovery(unittest.TestCase):
-    def response(self, status, foreign=False):
-        labels = {'com.docker.compose.service': 'verify',
+    def response(self, status, foreign=False, service='verify'):
+        labels = {'com.docker.compose.service': service,
                   'com.docker.compose.oneoff': 'True',
                   'com.docker.compose.project.working_dir': '/foreign' if foreign else str(ROOT)}
         return subprocess.CompletedProcess([], 0,
@@ -349,7 +398,10 @@ class TestContainerRecovery(unittest.TestCase):
         with patch.object(lanes.subprocess, 'run', return_value=self.response('running')) as call:
             self.assertTrue(lanes.prepare_test_container(ROOT, 'owned'))
             self.assertEqual(call.call_count, 1)
-        with patch.object(lanes.subprocess, 'run', return_value=self.response('created', True)) as call:
+        with patch.object(lanes.subprocess, 'run', return_value=self.response('running', service='app-test')) as call:
+            self.assertTrue(lanes.prepare_test_container(ROOT, 'owned'))
+            self.assertEqual(call.call_count, 1)
+        with patch.object(lanes.subprocess, 'run', return_value=self.response('created', True, 'app-test')) as call:
             with self.assertRaises(ValueError):
                 lanes.prepare_test_container(ROOT, 'owned')
             self.assertEqual(call.call_count, 1)

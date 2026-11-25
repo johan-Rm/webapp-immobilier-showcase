@@ -49,7 +49,7 @@ Les vérifications distinguent la **configuration produite**, la **syntaxe Nginx
 Les commandes de cycle de vie des couches distinguent les modes **développement** et **test**. Le mode test utilise des données simulées, sans lire les secrets du développement ni contacter l’API réelle.
 
 - Isoler le conteneur par **dépôt, couche et cible**, avec un port distinct du développement.
-- Réutiliser l’image disponible ; réserver sa reconstruction à une action explicite.
+- Partager une configuration Compose et une image entre l’application de test et les contrôles, avec des services et des montages adaptés à chaque usage. Réutiliser l’image disponible et réserver sa reconstruction à une action explicite.
 - Conserver les journaux des contrôles et supprimer automatiquement le conteneur de test à son arrêt.
 - Préserver un serveur de test déjà actif lors d’une relance ; refuser sa reconstruction tant qu’il reste actif.
 - Vérifier l’appartenance et le caractère jetable d’un ancien conteneur avant de libérer son nom ; ne jamais forcer sa suppression.

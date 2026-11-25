@@ -1,6 +1,0 @@
-# Le build Nitro doit pouvoir recréer sa sortie dans la couche jetable du conteneur.
-services:
-  verify:
-    tmpfs: !override
-      - /workspace/webapp/.nuxt
-      - /workspace/webapp/dashboard/.nuxt

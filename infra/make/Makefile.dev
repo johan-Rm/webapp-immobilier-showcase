@@ -171,7 +171,7 @@ dev-saas-project-watch:
 
 # La préparation réutilise une image existante ; la reconstruction est explicite.
 QUALITY_DOCKER ?= docker
-QUALITY_COMPOSE = QUALITY_BASE_URL="$(QUALITY_BASE_URL)" PLAYWRIGHT_BASE_URL="$(PLAYWRIGHT_BASE_URL)" QUALITY_REPO_ROOT="$(CURDIR)" QUALITY_GIT_COMMON_DIR="$(GIT_COMMON_DIR)" $(QUALITY_DOCKER) compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality
+QUALITY_COMPOSE = QUALITY_BASE_URL="$(QUALITY_BASE_URL)" PLAYWRIGHT_BASE_URL="$(PLAYWRIGHT_BASE_URL)" QUALITY_REPO_ROOT="$(CURDIR)" QUALITY_GIT_COMMON_DIR="$(GIT_COMMON_DIR)" $(QUALITY_DOCKER) compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.test.yml --profile quality
 QUALITY_INFO = python3 -c 'import os,sys; sys.path.insert(0,"codebase-integrity/commun"); from run_aide_checks import paint,supports_color; print(paint(sys.argv[1],"blue",supports_color(sys.stdout,os.environ)))'
 
 .PHONY: checks-prepare checks-rebuild check
@@ -453,7 +453,12 @@ checks-rebuild:
 QUALITY_FIXTURE_PORT ?= 19856
 CHECKS_FIXTURE_TARGET = $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 CHECKS_FIXTURE_NAME = $(notdir $(CURDIR))-checks-fixture-$(CHECKS_FIXTURE_TARGET)
-.PHONY: checks-fixture-start checks-fixture-stop
+.PHONY: test-up checks-fixture-start checks-fixture-stop
+test-up:
+	@$(QUALITY_DOCKER) info --format '{{.ServerVersion}}' >/dev/null
+	@$(MAKE) --no-print-directory checks-prepare
+	@$(MAKE) --no-print-directory _lane-test-up
+
 checks-fixture-start: _lane-test-up
 
 _lane-test-up:
@@ -462,9 +467,10 @@ _lane-test-up:
 	@mkdir -p webapp/.tmp/quality/console-tmp
 	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image absente : lancer make checks-prepare."; exit 2; }
-	@$(QUALITY_INFO) "INFO — Construit le SSR de test, puis sert les fixtures sur http://127.0.0.1:$(QUALITY_FIXTURE_PORT). Attendre « Fixture locale prête ». Aucun serveur utilisateur ni API réelle."
-	@$(QUALITY_INFO) "INFO — Construction détaillée : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log ; arrêt : make lane-down LAYER=$${LAYER:-devops} MODE=test GD_TARGET=$(CHECKS_FIXTURE_TARGET)."
-	@$(QUALITY_COMPOSE) -f infra/docker/docker-compose.fixtures.yml run --pull never --no-deps --rm --name "$(CHECKS_FIXTURE_NAME)" -e GD_TARGET="$(CHECKS_FIXTURE_TARGET)" -e QUALITY_FIXTURE_PORT="$(QUALITY_FIXTURE_PORT)" -e QUALITY_BROWSER_FIXTURES=1 -e QUALITY_MEDIA_FIXTURES=1 --entrypoint sh verify -c '{ node node_modules/nuxt/bin/nuxt.mjs prepare --dotenv .env.test && node node_modules/nuxt/bin/nuxt.mjs build --dotenv .env.test; } > .tmp/quality/browser-fixture-build-"$$GD_TARGET".log 2>&1 || { tail -40 .tmp/quality/browser-fixture-build-"$$GD_TARGET".log; exit 1; }; exec bun --no-env-file scripts/quality/fixture-server.ts --ssr'
+	@$(QUALITY_INFO) "Démarrage de l’environnement de test — $(CHECKS_FIXTURE_TARGET)"
+	@printf '%s\n' '  Image Docker des contrôles   Prête' '  Conteneur de test            Application Nuxt en mode SSR' '  Données de test              Catalogue et médias de démonstration' '  API de test                  Réponses simulées'
+	@$(QUALITY_INFO) "Construction : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log"
+	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm --name "$(CHECKS_FIXTURE_NAME)" -e GD_TARGET="$(CHECKS_FIXTURE_TARGET)" -e QUALITY_FIXTURE_PORT="$(QUALITY_FIXTURE_PORT)" -e QUALITY_BROWSER_FIXTURES=1 -e QUALITY_MEDIA_FIXTURES=1 app-test
 
 checks-fixture-stop: _lane-test-down
 

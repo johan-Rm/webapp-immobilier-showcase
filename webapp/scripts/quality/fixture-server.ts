@@ -243,5 +243,5 @@ if (import.meta.main) {
       void pending.then((fixture) => fixture.close()).catch(() => undefined)
     })
   const fixture = await pending
-  process.stdout.write(`Fixture locale prête : ${fixture.origin}\n`)
+  process.stdout.write(`Environnement de test prêt : ${fixture.origin}\n`)
 }
