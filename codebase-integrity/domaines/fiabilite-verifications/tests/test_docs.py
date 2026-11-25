@@ -31,15 +31,15 @@ class DocumentsTest(unittest.TestCase):
     def test_root_guides_check_commands_and_links(self):
         self.write('Makefile', 'setup:\n')
         makefile = self.write('infra/make/Makefile.dev', 'test-up:\nruntime-tests-browser:\n'
-                              'runtime-tests-load:\nruntime-tests-lighthouse:\nQUALITY_FIXTURE_PORT ?= 19856\n')
+                              'runtime-tests-load:\nruntime-tests-lighthouse:\nWEBAPP_TEST_PORT ?= 19856\n')
         recipe = (
             " [Référence](SETUP.md)\n\n"
             "```bash\n"
             "make test-up\n"
-            "make runtime-tests-browser PLAYWRIGHT_BASE_URL=http://127.0.0.1:19856\n"
-            "make runtime-tests-load QUALITY_BASE_URL=http://127.0.0.1:19856\n"
-            "make runtime-tests-lighthouse QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile\n"
-            "make runtime-tests-lighthouse QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop\n"
+            "make runtime-tests-browser WEBAPP_BASE_URL=http://127.0.0.1:19856\n"
+            "make runtime-tests-load WEBAPP_BASE_URL=http://127.0.0.1:19856\n"
+            "make runtime-tests-lighthouse WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile\n"
+            "make runtime-tests-lighthouse WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop\n"
             "# make inactive\n"
             "```\n"
         )
@@ -50,8 +50,9 @@ class DocumentsTest(unittest.TestCase):
             ('SETUP.md', 'absent.md', 'absent.md'),
             ('make runtime-tests-browser', 'make ancienne-cible', 'cible Make inconnue'),
             ('http://127.0.0.1:19856', 'http://127.0.0.1:8080', 'origine des fixtures'),
+            ('WEBAPP_BASE_URL=', 'OLD_BASE_URL=', 'origine des fixtures'),
             ('# make inactive', 'if true; then', 'bloc Bash invalide'),
-            ('make test-up', 'make test-up QUALITY_FIXTURE_PORT=19856', 'sans paramètre'),
+            ('make test-up', 'make test-up WEBAPP_TEST_PORT=19856', 'sans paramètre'),
         ):
             with self.subTest(message=message):
                 guide.write_text(recipe.replace(original, replacement))
@@ -62,7 +63,7 @@ class DocumentsTest(unittest.TestCase):
         makefile.write_text(declaration.replace('19856', '19854'))
         errors, _ = docs.check(self.root, self.paths)
         self.assertEqual(sum('origine des fixtures attendue' in error for error in errors), 4)
-        makefile.write_text(declaration.replace('QUALITY_FIXTURE_PORT ?= 19856', ''))
+        makefile.write_text(declaration.replace('WEBAPP_TEST_PORT ?= 19856', ''))
         errors, _ = docs.check(self.root, self.paths)
         self.assertTrue(any('port par défaut des fixtures introuvable' in error for error in errors))
 
