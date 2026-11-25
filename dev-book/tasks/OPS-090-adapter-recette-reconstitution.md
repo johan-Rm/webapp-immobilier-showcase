@@ -1,7 +1,7 @@
 # OPS-090 — Adapter la recette de reconstitution au point d’entrée test
 
 - Demande : DEM-024
-- Brouillon au principal : `tmp/demande-consolidation-environnement-test.md`. Lien vers la demande définitive à la reconstitution.
+- Demande définitive : [DEM-024](../demand/DEM-024-simplifier-environnement-test.md).
 - Session de création : 01a20c4d-bb03-77c1-a236-d39379aa3c1a
 - Couche : devops
 - Branche : layers/devops
