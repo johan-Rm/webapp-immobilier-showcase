@@ -1,7 +1,7 @@
 # OPS-091 — Renommer les variables des contrôles d’exécution
 
 - Demande : DEM-018 · consolidation.
-- Brouillon au principal : `tmp/demande-consolidation-noms-variables-tests.md`. Lien vers la demande définitive à la reconstitution.
+- Brouillon au principal : `tmp/demande-consolidation-noms-variables-tests.md`. [Demande définitive](../demand/DEM-018-clarifier-noms-variables-controle.md).
 - Session de création : 01a211b5-0ab6-7733-9516-b83103d91b22
 - Couche : devops
 - Branche : layers/devops
