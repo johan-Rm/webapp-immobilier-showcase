@@ -8,20 +8,17 @@ deux terminaux.
 Le catalogue et les rapports sont décrits dans le
 [guide des contrôles](docs/executer-controles.md).
 
-## Terminal 1 — Préparer les contrôles
+## Terminal 1 — Démarrer l’environnement de test
 
-Prérequis sur l’hôte : Git, Make, Python 3 et Docker avec le plugin Compose.
-Exécuter les trois commandes dans l’ordre et vérifier que chacune aboutit.
+Prérequis sur l’hôte : Git, Make, Python 3 et Docker avec le plugin Compose.
+Si les sources, les dépendances ou les outils ont changé depuis la construction
+de l’image, lancer `make checks-rebuild` avant le démarrage.
 
 ```bash
-docker info --format '{{.ServerVersion}}'
-make checks-prepare
-make checks-fixture-start GD_TARGET=showcase-immobilier QUALITY_FIXTURE_PORT=19856
+make test-up
 ```
 
-Si les sources, les dépendances ou les outils ont changé depuis la construction
-de l’image, utiliser `make checks-rebuild` à la place de `make checks-prepare`.
-Attendre « Fixture locale prête » et laisser le terminal ouvert.
+Attendre « Environnement de test prêt » puis laisser le terminal ouvert.
 
 ## Terminal 2 — Lancer la suite complète
 
