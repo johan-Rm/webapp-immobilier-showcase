@@ -29,12 +29,17 @@ class DocumentsTest(unittest.TestCase):
         self.paths = []
 
     def test_root_guides_check_commands_and_links(self):
-        self.write('Makefile', 'setup:\nchecks-fixture-start:\nruntime-tests-browser:\n')
+        self.write('Makefile', 'setup:\n')
+        makefile = self.write('infra/make/Makefile.dev', 'test-up:\nruntime-tests-browser:\n'
+                              'runtime-tests-load:\nruntime-tests-lighthouse:\nQUALITY_FIXTURE_PORT ?= 19856\n')
         recipe = (
             " [Référence](SETUP.md)\n\n"
             "```bash\n"
-            "make checks-fixture-start QUALITY_FIXTURE_PORT=19856\n"
+            "make test-up\n"
             "make runtime-tests-browser PLAYWRIGHT_BASE_URL=http://127.0.0.1:19856\n"
+            "make runtime-tests-load QUALITY_BASE_URL=http://127.0.0.1:19856\n"
+            "make runtime-tests-lighthouse QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile\n"
+            "make runtime-tests-lighthouse QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop\n"
             "# make inactive\n"
             "```\n"
         )
@@ -46,11 +51,20 @@ class DocumentsTest(unittest.TestCase):
             ('make runtime-tests-browser', 'make ancienne-cible', 'cible Make inconnue'),
             ('http://127.0.0.1:19856', 'http://127.0.0.1:8080', 'origine des fixtures'),
             ('# make inactive', 'if true; then', 'bloc Bash invalide'),
+            ('make test-up', 'make test-up QUALITY_FIXTURE_PORT=19856', 'sans paramètre'),
         ):
             with self.subTest(message=message):
                 guide.write_text(recipe.replace(original, replacement))
                 errors, _ = docs.check(self.root, self.paths)
                 self.assertTrue(any(message in error for error in errors), errors)
+        guide.write_text(recipe)
+        declaration = makefile.read_text()
+        makefile.write_text(declaration.replace('19856', '19854'))
+        errors, _ = docs.check(self.root, self.paths)
+        self.assertEqual(sum('origine des fixtures attendue' in error for error in errors), 4)
+        makefile.write_text(declaration.replace('QUALITY_FIXTURE_PORT ?= 19856', ''))
+        errors, _ = docs.check(self.root, self.paths)
+        self.assertTrue(any('port par défaut des fixtures introuvable' in error for error in errors))
 
     def write(self, name, text):
         relative = Path(name)

@@ -200,9 +200,17 @@ def check_recipe(root, name, text):
     }
     errors.extend(f'cible Make inconnue : {target}' for target, _ in commands if target not in targets)
     if name == 'TEST.md':
-        ports = [args.get('QUALITY_FIXTURE_PORT', '') for target, args in commands if target == 'checks-fixture-start']
-        if len(ports) != 1 or not re.fullmatch(r'[0-9]{1,5}', ports[0]) or not 1024 <= int(ports[0]) <= 65535:
-            errors.append('un port explicite de fixtures est requis')
+        start_commands = [args for target, args in commands if target == 'test-up']
+        if start_commands != [{}]:
+            errors.append('une commande make test-up sans paramètre est requise')
+        fixture_makefile = root / 'infra/make/Makefile.dev'
+        ports = re.findall(
+            r'^QUALITY_FIXTURE_PORT[ \t]*\?=[ \t]*([0-9]{1,5})[ \t]*$',
+            fixture_makefile.read_text(encoding='utf-8') if fixture_makefile.is_file() else '',
+            re.MULTILINE,
+        )
+        if len(ports) != 1 or not 1024 <= int(ports[0]) <= 65535:
+            errors.append('port par défaut des fixtures introuvable ou invalide dans Makefile.dev')
         else:
             origin = f'http://127.0.0.1:{ports[0]}'
             for target, args in commands:
