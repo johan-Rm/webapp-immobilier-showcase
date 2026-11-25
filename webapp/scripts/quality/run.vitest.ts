@@ -3,7 +3,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { buildPlan, executePlan, isIntegration, parseOptions, webappRoot } from './run'
 
@@ -24,6 +24,18 @@ describe('commande de vérification', () => {
     const plan = buildPlan(parseOptions(['browser', '--target', target as string, '--list']))
     expect(plan.files).toEqual(files)
     expect(plan.commands[0]!.executable).toBe('node')
+  })
+
+  it('exige une origine explicite pour exécuter les parcours navigateur', () => {
+    const options = parseOptions(['browser', '--target', 'showcase-immobilier'])
+    vi.stubEnv('WEBAPP_BASE_URL', undefined)
+    try {
+      expect(() => buildPlan(options)).toThrow('WEBAPP_BASE_URL explicite requis')
+      vi.stubEnv('WEBAPP_BASE_URL', 'http://127.0.0.1:19856')
+      expect(buildPlan(options).files).toContain('tests/e2e/home.smoke.spec.ts')
+    } finally {
+      vi.unstubAllEnvs()
+    }
   })
 
   it.each([
@@ -171,10 +183,10 @@ it('prouve que le lanceur ne charge pas le dotenv de sa fixture', async () => {
   const root = mkdtempSync(join(tmpdir(), 'verify-dotenv-'))
   temporary.push(root)
   mkdirSync(join(root, 'scripts/quality'), { recursive: true })
-  writeFileSync(join(root, '.env'), 'QUALITY_DOTENV_PROBE=fixture-only\n')
+  writeFileSync(join(root, '.env'), 'DOTENV_TEST_PROBE=fixture-only\n')
   writeFileSync(
     join(root, 'scripts/quality/security.ts'),
-    'process.exitCode = process.env.QUALITY_DOTENV_PROBE === "fixture-only" ? 7 : 0',
+    'process.exitCode = process.env.DOTENV_TEST_PROBE === "fixture-only" ? 7 : 0',
   )
   const plan = buildPlan({ family: 'security', target: 'dashboard', list: true }, root, [])
   expect(await executePlan(plan)).toBe(0)

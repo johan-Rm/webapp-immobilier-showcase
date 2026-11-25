@@ -5,28 +5,27 @@ x-test-common: &test-common
   working_dir: /workspace/webapp
   environment:
     CI: "true"
-    QUALITY_CONTAINER: "1"
+    CHECKS_CONTAINER: "1"
     TMPDIR: /workspace/webapp/.tmp/quality/console-tmp
-    QUALITY_BASE_URL: ${QUALITY_BASE_URL:-}
-    QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
+    LOAD_PROFILE: ${LOAD_PROFILE:-smoke}
     NUXT_TELEMETRY_DISABLED: "1"
-    AIDE_GIT_ROOT: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
-    VERIFY_GIT_ROOT: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
-    PLAYWRIGHT_BASE_URL: ${PLAYWRIGHT_BASE_URL:-}
+    AIDE_GIT_ROOT: ${CHECKS_REPO_ROOT:?Racine absolue du worktree requise}
+    VERIFY_GIT_ROOT: ${CHECKS_REPO_ROOT:?Racine absolue du worktree requise}
+    WEBAPP_BASE_URL: ${WEBAPP_BASE_URL:-}
     WEB005_E2E_FIXTURES: "1"
     SAAS_PROJECTION_ROOT: .tmp/web005-ci
     SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
   volumes:
     - type: bind
-      source: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
-      target: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}
+      source: ${CHECKS_REPO_ROOT:?Racine absolue du worktree requise}
+      target: ${CHECKS_REPO_ROOT:?Racine absolue du worktree requise}
       read_only: true
     - type: bind
-      source: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
-      target: ${QUALITY_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
+      source: ${CHECKS_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
+      target: ${CHECKS_GIT_COMMON_DIR:?Dossier Git commun absolu requis}
       read_only: true
     - type: bind
-      source: ${QUALITY_REPO_ROOT:?Racine absolue du worktree requise}/webapp/.tmp
+      source: ${CHECKS_REPO_ROOT:?Racine absolue du worktree requise}/webapp/.tmp
       target: /workspace/webapp/.tmp
 
 services:
@@ -37,8 +36,8 @@ services:
       context: .
       dockerfile: infra/docker/Dockerfile.playwright
       args:
-        QUALITY_UID: ${DOCKER_UID:-1000}
-        QUALITY_GID: ${DOCKER_GID:-1000}
+        CHECKS_UID: ${DOCKER_UID:-1000}
+        CHECKS_GID: ${DOCKER_GID:-1000}
     entrypoint: [bun, --no-env-file, run, verify, --]
     command: [unit, --target, showcase-immobilier]
     tmpfs:
@@ -71,9 +70,9 @@ services:
     network_mode: host
     user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
     environment:
-      QUALITY_BASE_URL: ${QUALITY_BASE_URL:-}
-      QUALITY_ROUTE: ${QUALITY_ROUTE:-}
-      QUALITY_LOAD_PROFILE: ${QUALITY_LOAD_PROFILE:-smoke}
+      WEBAPP_BASE_URL: ${WEBAPP_BASE_URL:-}
+      LOAD_ROUTE: ${LOAD_ROUTE:-}
+      LOAD_PROFILE: ${LOAD_PROFILE:-smoke}
     volumes:
       - ./webapp/scripts/quality/load:/scripts:ro
     command: [run, /scripts/scenarios.js]

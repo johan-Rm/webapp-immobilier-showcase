@@ -67,7 +67,7 @@ services:
     environment:
       CI: "true"
       HOME: /tmp
-      PLAYWRIGHT_BASE_URL: http://webapp-localhost:3000
+      WEBAPP_BASE_URL: http://webapp-localhost:3000
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     volumes:
       - ./webapp/.tmp/playwright:/app/.tmp/playwright

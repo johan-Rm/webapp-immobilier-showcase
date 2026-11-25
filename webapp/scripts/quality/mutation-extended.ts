@@ -259,12 +259,12 @@ if (import.meta.main) {
   const target = process.env.GD_TARGET
   if (target !== 'showcase-immobilier' && target !== 'client2-immobilier' && target !== 'dashboard')
     throw new Error('GD_TARGET invalide')
-  const requested = process.env.QUALITY_MUTATION_FILES?.split(',').filter(Boolean)
+  const requested = process.env.MUTATION_FILES?.split(',').filter(Boolean)
   runExtendedMutation(
     target,
     requested,
     webappRoot,
-    process.env.QUALITY_MUTATION_PILOT === '1',
+    process.env.MUTATION_PILOT === '1',
   ).catch((error) => {
     console.error(error)
     process.exitCode = 1

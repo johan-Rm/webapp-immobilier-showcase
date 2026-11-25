@@ -71,7 +71,7 @@ export default {extends:'lighthouse:default',settings:{...${JSON.stringify(profi
 export async function runLighthouse(
   root = resolve(dirname(fileURLToPath(import.meta.url)), '../..'),
 ) {
-  const origin = localOrigin(process.env.QUALITY_BASE_URL),
+  const origin = localOrigin(process.env.WEBAPP_BASE_URL),
     target = process.env.GD_TARGET || 'showcase-immobilier',
     profile =
       process.argv[2] === '--profile' && process.argv.length === 4 ? process.argv[3] : undefined
@@ -92,7 +92,7 @@ export async function runLighthouse(
           ? [{ name: 'accueil', path: '/fr', contains: 'Essaouira', private: false }]
           : null
   if (!routes) throw new Error('Cible inconnue')
-  const local = process.env.QUALITY_CONTAINER === '1'
+  const local = process.env.CHECKS_CONTAINER === '1'
   const chromePath = '/ms-playwright/chromium-1234/chrome-linux64/chrome'
   const chrome = local
     ? spawnSync(chromePath, ['--version'], { encoding: 'utf8', timeout: 15000 })

@@ -170,31 +170,31 @@ dev-saas-project-watch:
 	$(DASHBOARD_COMPOSE) run --rm --no-deps saas-projector bun --no-env-file scripts/saas/project.ts --watch
 
 # La préparation réutilise une image existante ; la reconstruction est explicite.
-QUALITY_DOCKER ?= docker
-QUALITY_COMPOSE = QUALITY_BASE_URL="$(QUALITY_BASE_URL)" PLAYWRIGHT_BASE_URL="$(PLAYWRIGHT_BASE_URL)" QUALITY_REPO_ROOT="$(CURDIR)" QUALITY_GIT_COMMON_DIR="$(GIT_COMMON_DIR)" $(QUALITY_DOCKER) compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.test.yml --profile quality
-QUALITY_INFO = python3 -c 'import os,sys; sys.path.insert(0,"codebase-integrity/commun"); from run_aide_checks import paint,supports_color; print(paint(sys.argv[1],"blue",supports_color(sys.stdout,os.environ)))'
+CHECKS_DOCKER ?= docker
+CHECKS_COMPOSE = WEBAPP_BASE_URL="$(WEBAPP_BASE_URL)" CHECKS_REPO_ROOT="$(CURDIR)" CHECKS_GIT_COMMON_DIR="$(GIT_COMMON_DIR)" $(CHECKS_DOCKER) compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.test.yml --profile quality
+CHECKS_INFO = python3 -c 'import os,sys; sys.path.insert(0,"codebase-integrity/commun"); from run_aide_checks import paint,supports_color; print(paint(sys.argv[1],"blue",supports_color(sys.stdout,os.environ)))'
 
 .PHONY: checks-prepare checks-rebuild check
 _output-checks-prepare:
-	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
-	  if $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1; then \
-	    $(QUALITY_INFO) "INFO — Image déjà prête : préparation ignorée, aucun build. Après modification des sources ou dépendances, lancer make checks-rebuild."; \
+	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
+	  if $(CHECKS_DOCKER) image inspect "$$image" >/dev/null 2>&1; then \
+	    $(CHECKS_INFO) "INFO — Image déjà prête : préparation ignorée, aucun build. Après modification des sources ou dépendances, lancer make checks-rebuild."; \
 	  else \
 	    $(MAKE) --no-print-directory checks-rebuild; \
 	  fi
 
 _output-checks-rebuild:
-	@$(QUALITY_INFO) "INFO — Construit l’image des tests avec les sources et dépendances actuelles ; aucun serveur web démarré."
-	@$(QUALITY_COMPOSE) build verify
-	@$(QUALITY_INFO) "INFO — Image prête. Les commandes de contrôle peuvent maintenant la réutiliser sans reconstruction."
+	@$(CHECKS_INFO) "INFO — Construit l’image des tests avec les sources et dépendances actuelles ; aucun serveur web démarré."
+	@$(CHECKS_COMPOSE) build verify
+	@$(CHECKS_INFO) "INFO — Image prête. Les commandes de contrôle peuvent maintenant la réutiliser sans reconstruction."
 
 # Chaque commande exécute sa propre recette, même lors d’un appel Make multiple.
 define run-control
-	@$(QUALITY_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque, lancer make checks-prepare ; après modification des sources, lancer make checks-rebuild."
+	@$(CHECKS_INFO) "INFO — Utilise l’image existante, sans build ni téléchargement. Si elle manque, lancer make checks-prepare ; après modification des sources, lancer make checks-rebuild."
 	@mkdir -p webapp/.tmp/quality/console-tmp
-	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
-	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
-	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm verify $(1) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
+	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
+	  $(CHECKS_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
+	@$(CHECKS_COMPOSE) run --pull never --no-deps --rm verify $(1) --target $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier) $(if $(PROFILE),--profile $(PROFILE),)
 
 endef
 
@@ -273,7 +273,7 @@ _output-conventions-tests-services:
 
 .PHONY: internal-tests-verifiers conventions-tests-guards conventions-tests-services
 _output-internal-tests-verifiers:
-	@$(QUALITY_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
+	@$(CHECKS_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
 	@bun --no-env-file run --cwd codebase-integrity test
 
 
@@ -450,12 +450,12 @@ checks-rebuild:
 
 
 # Serveur de fixtures explicite : construction SSR et service dans le même conteneur.
-QUALITY_FIXTURE_PORT ?= 19856
+WEBAPP_TEST_PORT ?= 19856
 CHECKS_FIXTURE_TARGET = $(if $(GD_TARGET),$(GD_TARGET),showcase-immobilier)
 CHECKS_FIXTURE_NAME = $(notdir $(CURDIR))-checks-fixture-$(CHECKS_FIXTURE_TARGET)
 .PHONY: test-up checks-fixture-start checks-fixture-stop
 test-up:
-	@$(QUALITY_DOCKER) info --format '{{.ServerVersion}}' >/dev/null
+	@$(CHECKS_DOCKER) info --format '{{.ServerVersion}}' >/dev/null
 	@$(MAKE) --no-print-directory checks-prepare
 	@$(MAKE) --no-print-directory _lane-test-up
 
@@ -463,28 +463,28 @@ checks-fixture-start: _lane-test-up
 
 _lane-test-up:
 	@case "$(CHECKS_FIXTURE_TARGET)" in showcase-immobilier|client2-immobilier|dashboard) ;; *) echo "Cible de fixtures inconnue"; exit 2 ;; esac
-	@python3 -c 'import socket,sys; port=int(sys.argv[1]); 1024 <= port <= 65535 or sys.exit(2); s=socket.socket(); s.bind(("127.0.0.1",port)); s.close()' "$(QUALITY_FIXTURE_PORT)" 2>/dev/null || { echo "Port local invalide ou indisponible : $(QUALITY_FIXTURE_PORT). Aucun conteneur lancé."; exit 2; }
+	@python3 -c 'import socket,sys; port=int(sys.argv[1]); 1024 <= port <= 65535 or sys.exit(2); s=socket.socket(); s.bind(("127.0.0.1",port)); s.close()' "$(WEBAPP_TEST_PORT)" 2>/dev/null || { echo "Port local invalide ou indisponible : $(WEBAPP_TEST_PORT). Aucun conteneur lancé."; exit 2; }
 	@mkdir -p webapp/.tmp/quality/console-tmp
-	@image=$$($(QUALITY_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
-	  $(QUALITY_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image absente : lancer make checks-prepare."; exit 2; }
-	@$(QUALITY_INFO) "Démarrage de l’environnement de test — $(CHECKS_FIXTURE_TARGET)"
+	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
+	  $(CHECKS_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image absente : lancer make checks-prepare."; exit 2; }
+	@$(CHECKS_INFO) "Démarrage de l’environnement de test — $(CHECKS_FIXTURE_TARGET)"
 	@printf '%s\n' '  Image Docker des contrôles   Prête' '  Conteneur de test            Application Nuxt en mode SSR' '  Données de test              Catalogue et médias de démonstration' '  API de test                  Réponses simulées'
-	@$(QUALITY_INFO) "Construction : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log"
-	@$(QUALITY_COMPOSE) run --pull never --no-deps --rm --name "$(CHECKS_FIXTURE_NAME)" -e GD_TARGET="$(CHECKS_FIXTURE_TARGET)" -e QUALITY_FIXTURE_PORT="$(QUALITY_FIXTURE_PORT)" -e QUALITY_BROWSER_FIXTURES=1 -e QUALITY_MEDIA_FIXTURES=1 app-test
+	@$(CHECKS_INFO) "Construction : webapp/.tmp/quality/browser-fixture-build-$(CHECKS_FIXTURE_TARGET).log"
+	@$(CHECKS_COMPOSE) run --pull never --no-deps --rm --name "$(CHECKS_FIXTURE_NAME)" -e GD_TARGET="$(CHECKS_FIXTURE_TARGET)" -e WEBAPP_TEST_PORT="$(WEBAPP_TEST_PORT)" -e BROWSER_FIXTURES=1 -e MEDIA_FIXTURES=1 app-test
 
 checks-fixture-stop: _lane-test-down
 
 _lane-test-down:
 	@case "$(CHECKS_FIXTURE_TARGET)" in showcase-immobilier|client2-immobilier|dashboard) ;; *) echo "Cible de fixtures inconnue"; exit 2 ;; esac
-	@$(QUALITY_INFO) "INFO — Arrête uniquement le conteneur de fixtures $(CHECKS_FIXTURE_NAME)."
-	@$(QUALITY_DOCKER) stop --timeout 15 "$(CHECKS_FIXTURE_NAME)"
+	@$(CHECKS_INFO) "INFO — Arrête uniquement le conteneur de fixtures $(CHECKS_FIXTURE_NAME)."
+	@$(CHECKS_DOCKER) stop --timeout 15 "$(CHECKS_FIXTURE_NAME)"
 
 .PHONY: _lane-test-up _lane-test-down _lane-test-logs _lane-test-status
 _lane-test-logs:
-	@$(QUALITY_DOCKER) logs --follow --tail 200 "$(CHECKS_FIXTURE_NAME)"
+	@$(CHECKS_DOCKER) logs --follow --tail 200 "$(CHECKS_FIXTURE_NAME)"
 
 _lane-test-status:
-	@$(QUALITY_DOCKER) ps --all --filter "name=^/$(CHECKS_FIXTURE_NAME)$$" --format 'table {{.Names}}\t{{.Status}}'
+	@$(CHECKS_DOCKER) ps --all --filter "name=^/$(CHECKS_FIXTURE_NAME)$$" --format 'table {{.Names}}\t{{.Status}}'
 
 .PHONY: conventions-tests-types-placement _output-conventions-tests-types-placement
 conventions-tests-types-placement:

@@ -74,7 +74,7 @@ def run_test(action, layer, tree):
         'dashboard' if layer == 'dashboard' else 'showcase-immobilier')
     if target not in ('showcase-immobilier', 'client2-immobilier', 'dashboard'):
         raise ValueError('Cible de test inconnue')
-    port = int(os.environ.get('QUALITY_FIXTURE_PORT') or
+    port = int(os.environ.get('WEBAPP_TEST_PORT') or
                (config.get('testPortBase', 19850) + config['layers'][layer]['id']))
     if not 1024 <= port <= 65535:
         raise ValueError('Port de test invalide')
@@ -95,7 +95,7 @@ def run_test(action, layer, tree):
           f'URL : http://127.0.0.1:{port}', flush=True)
     return subprocess.run([
         'make', '--no-print-directory', goals[action], f'LAYER={layer}', f'GD_TARGET={target}',
-        f'QUALITY_FIXTURE_PORT={port}', f'CHECKS_FIXTURE_NAME={name}',
+        f'WEBAPP_TEST_PORT={port}', f'CHECKS_FIXTURE_NAME={name}',
     ], cwd=tree).returncode
 
 

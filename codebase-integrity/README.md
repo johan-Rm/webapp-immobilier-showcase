@@ -94,6 +94,7 @@ Chaque contrôle indique son **périmètre**, ses **prérequis** et ses **limite
 - Ne jamais annoncer une réussite pour une suite **absente, vide, interrompue ou échouée**.
 - Permettre de consulter la sélection de tests et les commandes **sans les exécuter ni divulguer l’environnement privé**.
 - Exiger une **adresse de test explicite** et un serveur de test préparé pour les vérifications navigateur ; ne démarrer aucune pile utilisateur ni API distante implicitement.
+- Utiliser `WEBAPP_BASE_URL` pour l’origine commune des contrôles navigateur, charge et Lighthouse, en tenant compte du réseau d’exécution. Configurer le port des fixtures avec `WEBAPP_TEST_PORT` et réserver le préfixe `CHECKS_` aux paramètres internes des contrôles.
 - Limiter les mesures de charge SaaS aux lectures métier explicitement sélectionnées et à une origine BFF locale ; exécuter manuellement, protéger la session et exclure secrets et contenus privés des rapports. Les temps sont indicatifs et ne distinguent pas Symfony du réseau et du BFF.
 - Utiliser des **environnements de contrôle jetables**, sans injection implicite de secrets, et reconstruire les images après modification des sources.
 

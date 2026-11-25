@@ -111,14 +111,14 @@ export async function startFixtureStack(
   const origin = `http://127.0.0.1:${port}`
   const projectId = '10000000-0000-4000-8000-000000000001'
   try {
-    if (target === 'client2-immobilier' && process.env.QUALITY_BROWSER_FIXTURES !== '1') {
+    if (target === 'client2-immobilier' && process.env.BROWSER_FIXTURES !== '1') {
       const stage = join(temporary, 'projection/client2-immobilier/.stage-initial')
       await mkdir(join(stage, 'media'), { recursive: true })
       const config = projectionConfig({
         SAAS_PROJECTION_PROJECT_ID: projectId,
         SAAS_PROJECTION_SECRET: 'fixture-only-secret-32-characters-minimum',
         SAAS_PROJECTION_ROOT:
-          process.env.QUALITY_BROWSER_FIXTURES === '1'
+          process.env.BROWSER_FIXTURES === '1'
             ? join(root, '.tmp/web005-ci')
             : join(temporary, 'projection'),
         SAAS_DASHBOARD_URL: origin,
@@ -142,7 +142,7 @@ export async function startFixtureStack(
     }
     const output = target === 'dashboard' ? 'dashboard/.output' : '.output'
     if (target === 'showcase-immobilier') {
-      if (process.env.QUALITY_MEDIA_FIXTURES === '1') {
+      if (process.env.MEDIA_FIXTURES === '1') {
         await prepareShowcaseMediaFixtures(root, join(root, output, 'public'))
       }
 
@@ -170,7 +170,7 @@ export async function startFixtureStack(
         SAAS_SESSION_DIR: join(temporary, 'sessions'),
         SAAS_PROJECTION_PROJECT_ID: projectId,
         SAAS_PROJECTION_ROOT:
-          process.env.QUALITY_BROWSER_FIXTURES === '1'
+          process.env.BROWSER_FIXTURES === '1'
             ? join(root, '.tmp/web005-ci')
             : join(temporary, 'projection'),
         SAAS_PREVIEW_SECRET: 'fixture-only-secret-32-characters-minimum',
@@ -235,9 +235,9 @@ if (import.meta.main) {
   const pending = process.argv.includes('--ssr')
     ? startFixtureStack(
         process.env.GD_TARGET || 'showcase-immobilier',
-        Number(process.env.QUALITY_FIXTURE_PORT || 3000),
+        Number(process.env.WEBAPP_TEST_PORT || 3000),
       )
-    : startFixtureServer(Number(process.env.QUALITY_FIXTURE_PORT || 19852))
+    : startFixtureServer(Number(process.env.WEBAPP_TEST_PORT || 19852))
   for (const signal of ['SIGINT', 'SIGTERM'] as const)
     process.once(signal, () => {
       void pending.then((fixture) => fixture.close()).catch(() => undefined)
