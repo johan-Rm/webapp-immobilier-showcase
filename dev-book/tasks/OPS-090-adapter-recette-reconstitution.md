@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Dépendances : commit d’OPS-089 `f8c2f7bc9ad7cc898440f0ee8e1a58889c454bd7`. La base fonctionnelle de DEM-023 (`eae991a`) a pour équivalent patch sur DevOps `7b76a95`. Vérifier la présence et la concordance de `TEST.md` et de son contrôle avant modification.
 - Chemins autorisés : `TEST.md`, `codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py` et cette carte. Le chemin racine `TEST.md` est autorisé ponctuellement pour DEM-024.
 
@@ -27,8 +27,19 @@ Depuis le worktree DevOps, exécuter `timeout 55s python3 -B -m unittest discove
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite : « validé ».
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-024, OPS-090 — Recette et contrôle documentaire. Suite complète à exécuter et quatre liens historiques hors dépôt sur la couche.",
+  "contenu": {
+    "type": "git",
+    "valeur": "57831174e85cd218d98c304149390c3d2cd95105"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `57831174e85cd218d98c304149390c3d2cd95105`.

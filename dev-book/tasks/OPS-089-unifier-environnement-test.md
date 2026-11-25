@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Dépendances : aucune dépendance de réalisation. Comparer le guide à la version de DEM-023 intégrée dans `9a254d9` avant de préparer le brouillon documentaire.
 - Chemins autorisés : `infra/docker/docker-compose.test.yml`, `infra/docker/docker-compose.quality.yml`, `infra/docker/docker-compose.fixtures.yml`, `infra/make/Makefile.dev`, `infra/scripts/lanes.py`, `infra/tests/test_lanes.py`, `infra/README.md`, `webapp/scripts/quality/fixture-server.ts`, `docs/executer-controles.md`, `docs/worktrees.md` et cette carte.
 
@@ -49,8 +49,19 @@ préparée depuis la couche et un port propre à celle-ci.
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite : « validé ».
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-024, OPS-089 — Compose commun, démarrage et compatibilité des couches. Démarrages réels et intégration des guides à la reconstitution.",
+  "contenu": {
+    "type": "git",
+    "valeur": "f8c2f7bc9ad7cc898440f0ee8e1a58889c454bd7"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `f8c2f7bc9ad7cc898440f0ee8e1a58889c454bd7`.
