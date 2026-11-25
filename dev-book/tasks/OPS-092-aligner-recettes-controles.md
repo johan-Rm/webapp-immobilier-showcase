@@ -6,9 +6,11 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 
-- Dépendance : commit d’OPS-091 `d09b4841487ab154d8483889eb99026171133987`. Les assertions et recettes prennent pour référence le contrat d’exécution livré par ce commit.
+- Dépendances : commit d’OPS-091 `d09b4841487ab154d8483889eb99026171133987`. Les assertions et recettes prennent pour référence le contrat d’exécution livré par ce commit.
+
+- Périmètre autorisé : limité aux fichiers énumérés ci-dessous.
 
 ## Chemins autorisés
 
@@ -68,3 +70,18 @@ Les variables d’environnement précédentes ont été retirées sans alias. Po
 - Le vérificateur documentaire ciblé accepte `TEST.md` et la carte. Une projection du brouillon sur le guide de `develop` conserve ses titres, résout les liens et retire les anciens noms. L’intégration dans le guide est prévue à la reconstitution.
 - `timeout 55s make conventions-tests-docs` : 3 étapes sur 4 réussies. Les quatre liens hors dépôt préexistants d’OPS-045, OPS-046, OPS-085 et OPS-086 restent signalés.
 - Vérification d’ensemble des noms après intégration du brouillon et parcours runtime réels à la reconstitution.
+
+## Verdict humain
+
+Verdict explicite « valider » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-018, OPS-092 — Recette, contrôle documentaire et brouillon du guide. Intégration du guide et recherche bloquante des anciens noms à la reconstitution. Quatre liens hors dépôt préexistants restent signalés sur la couche.",
+  "contenu": {
+    "type": "git",
+    "valeur": "3cc067a6199f3ecbbef3612c634dd0697aaff2a7"
+  }
+}
+```
