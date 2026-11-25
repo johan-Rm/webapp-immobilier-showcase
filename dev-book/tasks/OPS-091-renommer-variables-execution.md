@@ -6,9 +6,11 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 
 - Dépendances : les commits de base DEM-024 `f8c2f7bc9ad7cc898440f0ee8e1a58889c454bd7` et `57831174e85cd218d98c304149390c3d2cd95105` sont déjà présents sur DevOps.
+
+- Périmètre autorisé : limité aux fichiers énumérés ci-dessous.
 
 ## Chemins autorisés
 
@@ -54,3 +56,18 @@ Depuis le worktree DevOps, résoudre les configurations sans démarrer de servic
 - Depuis `webapp`, `timeout 55s ./node_modules/.bin/vitest run scripts/quality/load.vitest.ts -t 'refuse une origine'` : 6 réussites et 7 hors filtre. Ce validateur est partagé par Lighthouse.
 - Résolution `docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.<pile>.yml --profile <profil> config --no-env-resolution --format json` depuis la racine, avec le profil `quality` de `test` et le profil `e2e` de `dev`. Les trois services de test résolvent l’origine de boucle locale fournie et le réseau hôte, Playwright en développement conserve le nom de service Docker, et les arguments UID/GID suivent les valeurs fournies. Aucun serveur ou conteneur démarré.
 - Le vérificateur de structure accepte le README Codebase Integrity. Les audits runtime et les requêtes réelles restent à vérifier selon la recette.
+
+## Verdict humain
+
+Verdict explicite « valider » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-018, OPS-091 — Migration des variables, origines et garde-fous. Les parcours Playwright, k6 et Lighthouse restent à vérifier.",
+  "contenu": {
+    "type": "git",
+    "valeur": "d09b4841487ab154d8483889eb99026171133987"
+  }
+}
+```
