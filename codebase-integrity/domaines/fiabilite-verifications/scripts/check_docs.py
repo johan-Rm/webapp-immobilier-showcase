@@ -172,11 +172,7 @@ def structure(path, text):
 
 
 ROOT_GUIDES = ('TEST.md', 'SETUP.md')
-RUNTIME_URLS = {
-    'runtime-tests-browser': 'PLAYWRIGHT_BASE_URL',
-    'runtime-tests-load': 'QUALITY_BASE_URL',
-    'runtime-tests-lighthouse': 'QUALITY_BASE_URL',
-}
+RUNTIME_TARGETS = {'runtime-tests-browser', 'runtime-tests-load', 'runtime-tests-lighthouse'}
 
 
 def check_recipe(root, name, text):
@@ -205,7 +201,7 @@ def check_recipe(root, name, text):
             errors.append('une commande make test-up sans paramètre est requise')
         fixture_makefile = root / 'infra/make/Makefile.dev'
         ports = re.findall(
-            r'^QUALITY_FIXTURE_PORT[ \t]*\?=[ \t]*([0-9]{1,5})[ \t]*$',
+            r'^WEBAPP_TEST_PORT[ \t]*\?=[ \t]*([0-9]{1,5})[ \t]*$',
             fixture_makefile.read_text(encoding='utf-8') if fixture_makefile.is_file() else '',
             re.MULTILINE,
         )
@@ -214,7 +210,7 @@ def check_recipe(root, name, text):
         else:
             origin = f'http://127.0.0.1:{ports[0]}'
             for target, args in commands:
-                if target in RUNTIME_URLS and args.get(RUNTIME_URLS[target]) != origin:
+                if target in RUNTIME_TARGETS and args.get('WEBAPP_BASE_URL') != origin:
                     errors.append(f'{target} : origine des fixtures attendue {origin}')
     return errors
 

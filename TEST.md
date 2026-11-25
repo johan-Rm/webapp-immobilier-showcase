@@ -61,10 +61,10 @@ make internal-tests-coverage GD_TARGET=showcase-immobilier
 # Suspendu — make internal-tests-mutation-extended GD_TARGET=showcase-immobilier
 
 # 5. Tests runtime
-make runtime-tests-browser GD_TARGET=showcase-immobilier PLAYWRIGHT_BASE_URL=http://127.0.0.1:19856
-make runtime-tests-load GD_TARGET=showcase-immobilier QUALITY_BASE_URL=http://127.0.0.1:19856
-make runtime-tests-lighthouse GD_TARGET=showcase-immobilier QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop
-make runtime-tests-lighthouse GD_TARGET=showcase-immobilier QUALITY_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile
+make runtime-tests-browser GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856
+make runtime-tests-load GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856
+make runtime-tests-lighthouse GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop
+make runtime-tests-lighthouse GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile
 
 # 6. SonarQube — cible Make illustrative
 # make sonarqube-tests GD_TARGET=showcase-immobilier
