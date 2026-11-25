@@ -30,7 +30,7 @@ Chaque contrôle possède une commande Make explicite, sans paramètre de sélec
 
 ## Exécuter dans un conteneur jetable
 
-Le fichier `infra/docker/docker-compose.test.yml` fournit le service `verify`. Depuis la racine, définir `QUALITY_REPO_ROOT` avec le chemin absolu du dépôt du worktree et `QUALITY_GIT_COMMON_DIR` avec celui du répertoire Git commun, pour permettre la lecture de l’inventaire Git. Aucun secret `.env` n’est injecté.
+Le fichier `infra/docker/docker-compose.test.yml` fournit le service `verify`. Depuis la racine, définir `CHECKS_REPO_ROOT` avec le chemin absolu du dépôt du worktree et `CHECKS_GIT_COMMON_DIR` avec celui du répertoire Git commun, pour permettre la lecture de l’inventaire Git. Aucun secret `.env` n’est injecté.
 
 Lancer ensuite :
 
@@ -62,7 +62,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-unit` | Suite unitaire existante : logique applicative et outils internes, Vitest et Bun | Sélection mixte ; ne se limite pas aux vérificateurs |
 | `make internal-tests-integration` | Interactions entre modules et suites HTTP | Environnement isolé |
 | `make internal-tests-components GD_TARGET=dashboard` | Formulaire pilote Nuxt | Dashboard uniquement |
-| `make runtime-tests-browser` | Parcours Playwright et accessibilité axe-core | `PLAYWRIGHT_BASE_URL` explicite, serveur déjà démarré |
+| `make runtime-tests-browser` | Parcours Playwright et accessibilité axe-core | `WEBAPP_BASE_URL` explicite, serveur déjà démarré |
 | `make third-party-tests-lint` | ESLint, application et vérificateurs | Image préparée |
 | `make third-party-tests-format` | Prettier, application et vérificateurs | Aucune correction automatique |
 | `make third-party-tests-types` | Préparation Nuxt puis Vue TSC | Fichiers produits dans le conteneur |
@@ -70,7 +70,7 @@ Ajouter `GD_TARGET=showcase-immobilier`, `GD_TARGET=client2-immobilier` ou `GD_T
 | `make internal-tests-mutation` | Efficacité des tests avec Stryker | Module pilote ; score informatif |
 | `make internal-tests-mutation-extended` | Mutation des sources compatibles de la cible | Inactif : exécution suspendue en raison de sa durée ; code conservé |
 | `make internal-tests-coverage` | Couverture des tests Vitest Node de la cible | Bun, composants Nuxt et navigateur non instrumentés ; résultats informatifs |
-| `make runtime-tests-load` | Charge k6 | `QUALITY_BASE_URL` local explicite ; latences informatives |
+| `make runtime-tests-load` | Charge k6 | `WEBAPP_BASE_URL` local explicite ; latences informatives |
 | `make runtime-tests-saas-api-load` | Lectures SaaS via BFF Dashboard | Inactif : aucun test exécuté ; scénarios conservés |
 | `make runtime-tests-lighthouse PROFILE=desktop` | Audits Lighthouse et Chromium | Même origine explicite ; scores informatifs, profil mobile disponible |
 | `make conventions-tests-types-placement` | Placement des types | Contrôle individuel issu des conventions documentées |
@@ -101,7 +101,7 @@ Après réactivation, la charge SaaS vise un BFF Dashboard local déjà démarr�
 Installer au préalable l’image k6 épinglée si nécessaire : `docker pull grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1`. La commande de mesure ne télécharge aucune image. Copier la seule valeur du cookie `gd_saas` de la session Dashboard dans un fichier privé appartenant à l’utilisateur, accessible en lecture par lui seul (`chmod 600`), sans la saisir dans une commande ou la transmettre. Remplacer les valeurs d’exemple suivantes par les UUID et le chemin réels :
 
 ```sh
-make runtime-tests-saas-api-load GD_TARGET=dashboard QUALITY_BASE_URL=http://127.0.0.1:19305 QUALITY_PROJECT_ID=UUID_PROJET QUALITY_ARTICLE_ID=UUID_ARTICLE QUALITY_SESSION_FILE=/chemin/absolu/session-privee QUALITY_LOAD_PROFILE=smoke
+make runtime-tests-saas-api-load GD_TARGET=dashboard WEBAPP_BASE_URL=http://127.0.0.1:19305 SAAS_PROJECT_ID=UUID_PROJET SAAS_ARTICLE_ID=UUID_ARTICLE SAAS_SESSION_FILE=/chemin/absolu/session-privee LOAD_PROFILE=smoke
 ```
 
 Après réactivation, depuis la racine du worktree, `smoke` réalise trois requêtes par scénario avec un utilisateur ; `measure` en réalise trente avec trois utilisateurs. Les deux scénarios sont successifs, chaque requête expire après cinq secondes. Les réponses erronées, absentes ou incomplètes échouent ; les repères de 200 et 500 ms sont informatifs. Le rapport ne contient ni session ni contenu privé. Les mesures incluent BFF, réseau et API ; caches, volume et état du VPS influencent les résultats, sans mesure séparée de Symfony ou SQL.
@@ -109,6 +109,8 @@ Après réactivation, depuis la racine du worktree, `smoke` réalise trois requ�
 ## Nommage des commandes
 
 Les [conventions d’exécution](../codebase-integrity/README.md#exécution-des-contrôles) définissent les préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms runtime sont supprimés ; les autres délégations de compatibilité restent hors de l’aide. Les preuves historiques conservent les commandes réellement exécutées.
+
+Les variables d’environnement précédentes ont été retirées sans alias. Pour mettre à jour un script ou un appel Compose, consulter la [correspondance de migration](../dev-book/tasks/OPS-092-aligner-recettes-controles.md#correspondance-de-migration). Pour chaque exécution navigateur, charge ou Lighthouse, utiliser l’origine annoncée par le serveur de fixtures lorsqu’il est prêt.
 
 ## Lire les sorties et le bilan
 
@@ -123,7 +125,7 @@ Un échec ou un contrôle non exécuté conserve un code non nul. Un score infor
 
 Dans un premier terminal, depuis la racine du worktree, lancer `make lane-up devops MODE=test GD_TARGET=showcase-immobilier`. La commande vérifie que le port local est libre, réutilise l’image des tests, prépare Nuxt puis construit le SSR de fixtures ; elle ne reconstruit pas l’image. Le service `app-test` de la configuration de test commune utilise la même image que `verify`. La sortie Nitro est recréée dans sa couche jetable. Attendre « Environnement de test prêt : http://127.0.0.1:19854 ». Le terminal reste occupé pendant le service. La construction détaillée est conservée dans `webapp/.tmp/quality/browser-fixture-build-showcase-immobilier.log`. Sous activation explicite des fixtures média, les JPEG locaux référencés par les pages d’accueil traduites et la configuration de navigation de Showcase sont simulés par une image décodable par IPX ; les fichiers existants sont conservés. Ces médias simulés ne prouvent pas le rendu des médias réels.
 
-Dans un second terminal du même worktree, lancer `make runtime-tests-browser GD_TARGET=showcase-immobilier PLAYWRIGHT_BASE_URL=http://127.0.0.1:19854`. Les deux profils Chromium utilisent ce serveur de test et l’API fictive. Arrêter ensuite le seul conteneur de fixtures avec `make lane-down devops MODE=test GD_TARGET=showcase-immobilier`, ou interrompre son terminal avec Ctrl+C. Le port peut être choisi avec `QUALITY_FIXTURE_PORT` au démarrage ; adapter alors l’URL des tests.
+Dans un second terminal du même worktree, lancer `make runtime-tests-browser GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19854`. Les deux profils Chromium utilisent ce serveur de test et l’API fictive. Arrêter ensuite le seul conteneur de fixtures avec `make lane-down devops MODE=test GD_TARGET=showcase-immobilier`, ou interrompre son terminal avec Ctrl+C. Le port peut être choisi avec `WEBAPP_TEST_PORT` au démarrage ; adapter alors l’URL des tests.
 
 Le mode `test` réutilise les commandes des couches : `lane-logs`, `lane-status` et `lane-down` prennent les mêmes couche, mode et cible. Son port par défaut est la base de test augmentée de l’identifiant de couche ; l’URL effective est affichée au lancement. Le mode par défaut reste `dev`. Les anciens noms `checks-fixture-start` et `checks-fixture-stop` restent des alias de compatibilité, hors du catalogue. Le conteneur de test est supprimé automatiquement à l’arrêt ; les journaux restent sur l’hôte. `lane-rebuild` avec `MODE=test` reconstruit explicitement l’image puis démarre le serveur de test.
 
