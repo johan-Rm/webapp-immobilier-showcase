@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test'
 import { resolveApplicationTarget } from './shared/site/registry'
 
 const target = resolveApplicationTarget(process.env.GD_TARGET)
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000'
+const baseURL = process.env.WEBAPP_BASE_URL ?? 'http://127.0.0.1:3000'
 
 export default defineConfig({
   testDir: './tests/e2e',

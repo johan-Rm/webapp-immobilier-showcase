@@ -174,8 +174,8 @@ export function buildPlan(options: Options, root = webappRoot, files = projectFi
       (file) => file.startsWith('tests/e2e/') && file.endsWith('.spec.ts') && matchesTarget(file),
     )
     if (!plan.files.length) throw new Error(`Aucun parcours navigateur pour ${target}`)
-    if (!options.list && !process.env.PLAYWRIGHT_BASE_URL)
-      throw new Error('PLAYWRIGHT_BASE_URL explicite requis ; démarrer un serveur fixture isolé')
+    if (!options.list && !process.env.WEBAPP_BASE_URL)
+      throw new Error('WEBAPP_BASE_URL explicite requis ; démarrer un serveur fixture isolé')
     plan.commands.push(
       command(['node_modules/@playwright/test/cli.js', 'test', ...plan.files], root, 'node'),
     )

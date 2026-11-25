@@ -32,7 +32,7 @@ class PresentationTest(unittest.TestCase):
                     announced = f'Rapports : /workspace/{report.relative_to(root)}'
                     status = 7 if mode == 'failed' else 0
                     argv = [sys.executable, '-c', f'import sys; print({announced!r}); sys.exit({status})']
-                    env = {'PROFILE': profile, 'QUALITY_BASE_URL': 'http://127.0.0.1:19856', 'NO_COLOR': '1'}
+                    env = {'PROFILE': profile, 'WEBAPP_BASE_URL': 'http://127.0.0.1:19856', 'NO_COLOR': '1'}
                     output = io.StringIO()
                     with patch.object(presentation, 'ROOT', root), redirect_stdout(output):
                         result = presentation.run('runtime-tests-lighthouse', argv, env)
@@ -118,6 +118,13 @@ class PresentationTest(unittest.TestCase):
             with self.subTest(command=name):
                 self.assertTrue(presentation.precondition(name, {}))
         self.assertIsNone(presentation.precondition('internal-tests-components', {'GD_TARGET': 'dashboard'}))
+
+    def test_runtime_commands_accept_the_same_origin_parameter(self):
+        for command in ('runtime-tests-browser', 'runtime-tests-load', 'runtime-tests-lighthouse'):
+            with self.subTest(command=command):
+                self.assertIsNone(presentation.precondition(
+                    command, {'WEBAPP_BASE_URL': 'http://127.0.0.1:19856'},
+                ))
 
     def test_devbook_base_resolution_and_override(self):
         with patch.object(presentation.subprocess, 'run') as execute:

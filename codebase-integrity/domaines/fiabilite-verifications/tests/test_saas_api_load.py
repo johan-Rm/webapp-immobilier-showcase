@@ -21,15 +21,15 @@ class SaasLoadTest(unittest.TestCase):
         self.session = self.root / 'session'
         self.session.write_text('A' * 43)
         self.session.chmod(0o600)
-        self.env = {'GD_TARGET': 'dashboard', 'QUALITY_BASE_URL': 'http://127.0.0.1:19305',
-                    'QUALITY_PROJECT_ID': '11111111-1111-4111-8111-111111111111',
-                    'QUALITY_ARTICLE_ID': '22222222-2222-4222-8222-222222222222',
-                    'QUALITY_SESSION_FILE': str(self.session)}
+        self.env = {'GD_TARGET': 'dashboard', 'WEBAPP_BASE_URL': 'http://127.0.0.1:19305',
+                    'SAAS_PROJECT_ID': '11111111-1111-4111-8111-111111111111',
+                    'SAAS_ARTICLE_ID': '22222222-2222-4222-8222-222222222222',
+                    'SAAS_SESSION_FILE': str(self.session)}
 
     def test_refuses_missing_or_unexpected_configuration(self):
-        for key, value in [('GD_TARGET', 'showcase-immobilier'), ('QUALITY_BASE_URL', 'http://example.com:80'),
-                           ('QUALITY_BASE_URL', 'http://127.0.0.1:3000/path'), ('QUALITY_PROJECT_ID', ''),
-                           ('QUALITY_ARTICLE_ID', 'bad'), ('QUALITY_SESSION_FILE', ''), ('QUALITY_LOAD_PROFILE', 'heavy')]:
+        for key, value in [('GD_TARGET', 'showcase-immobilier'), ('WEBAPP_BASE_URL', 'http://example.com:80'),
+                           ('WEBAPP_BASE_URL', 'http://127.0.0.1:3000/path'), ('SAAS_PROJECT_ID', ''),
+                           ('SAAS_ARTICLE_ID', 'bad'), ('SAAS_SESSION_FILE', ''), ('LOAD_PROFILE', 'heavy')]:
             with self.subTest(key=key, value=value), self.assertRaises(ValueError):
                 load.configuration({**self.env, key: value})
         self.session.chmod(0o644)
@@ -72,7 +72,7 @@ class SaasLoadTest(unittest.TestCase):
         self.assertEqual(len([c for c in calls if c[1] == 'run']), 2)
         self.assertNotIn('A' * 43, repr(calls))
         exported = next((self.root / '.tmp/quality/saas-api-load').glob('*/summary.json')).read_text()
-        for secret in ('A' * 43, self.env['QUALITY_PROJECT_ID'], self.env['QUALITY_ARTICLE_ID']):
+        for secret in ('A' * 43, self.env['SAAS_PROJECT_ID'], self.env['SAAS_ARTICLE_ID']):
             self.assertNotIn(secret, exported)
         source = load.SCRIPT.read_text()
         self.assertIn('http.get(', source)

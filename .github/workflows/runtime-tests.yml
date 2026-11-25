@@ -16,13 +16,12 @@ jobs:
       GD_TARGET: ${{ matrix.target }}
       CI: "true"
       NUXT_TELEMETRY_DISABLED: "1"
-      QUALITY_BROWSER_FIXTURES: "1"
-      QUALITY_MEDIA_FIXTURES: "1"
+      BROWSER_FIXTURES: "1"
+      MEDIA_FIXTURES: "1"
       WEB005_E2E_FIXTURES: "1"
       SAAS_PROJECTION_ROOT: .tmp/web005-ci
       SAAS_PREVIEW_SECRET: fixture-only-secret-32-characters-minimum
-      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
-      QUALITY_BASE_URL: http://127.0.0.1:3000
+      WEBAPP_BASE_URL: http://127.0.0.1:3000
     defaults:
       run:
         working-directory: webapp
@@ -42,10 +41,10 @@ jobs:
       - name: Démarrer les fixtures locales
         run: |
           mkdir -p .tmp/quality
-          QUALITY_FIXTURE_PORT=3000 bun --no-env-file scripts/quality/fixture-server.ts --ssr > .tmp/quality/fixture-stack.log 2>&1 &
+          WEBAPP_TEST_PORT=3000 bun --no-env-file scripts/quality/fixture-server.ts --ssr > .tmp/quality/fixture-stack.log 2>&1 &
           echo $! > .tmp/quality/fixture-stack.pid
           for attempt in $(seq 1 40); do
-            if curl --fail --silent "$PLAYWRIGHT_BASE_URL/" > /dev/null; then exit 0; fi
+            if curl --fail --silent "$WEBAPP_BASE_URL/" > /dev/null; then exit 0; fi
             sleep 1
           done
           cat .tmp/quality/fixture-stack.log

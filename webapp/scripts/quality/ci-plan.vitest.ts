@@ -210,10 +210,9 @@ describe('préparation explicite de l’image qualité', () => {
             ...action.split(' '),
             ...(action === 'quality-verify' ? ['FAMILY=contracts'] : []),
             `GD_TARGET=${action.includes('components') ? 'dashboard' : 'showcase-immobilier'}`,
-            'PLAYWRIGHT_BASE_URL=http://127.0.0.1:19856',
-            'QUALITY_BASE_URL=http://127.0.0.1:19856',
-            `QUALITY_COMPOSE=node ${docker}`,
-            `QUALITY_DOCKER=node ${docker}`,
+            'WEBAPP_BASE_URL=http://127.0.0.1:19856',
+            `CHECKS_COMPOSE=node ${docker}`,
+            `CHECKS_DOCKER=node ${docker}`,
           ],
           { cwd: resolve(webappRoot, '..'), encoding: 'utf8' },
         )

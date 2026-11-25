@@ -10,22 +10,22 @@ RUN bun install --frozen-lockfile --ignore-scripts
 WORKDIR /workspace/codebase-integrity
 COPY codebase-integrity/package.json codebase-integrity/bun.lock ./
 RUN bun install --frozen-lockfile --ignore-scripts
-ARG QUALITY_UID=1000
-ARG QUALITY_GID=1000
+ARG CHECKS_UID=1000
+ARG CHECKS_GID=1000
 WORKDIR /workspace
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} webapp ./webapp
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} codebase-integrity ./codebase-integrity
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} infra ./infra
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} docs ./docs
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} dev-book ./dev-book
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} design ./design
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} .github ./.github
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} README.md AGENTS.md Makefile ./
-COPY --chown=${QUALITY_UID}:${QUALITY_GID} worktree/README.md ./worktree/README.md
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} webapp ./webapp
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} codebase-integrity ./codebase-integrity
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} infra ./infra
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} docs ./docs
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} dev-book ./dev-book
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} design ./design
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} .github ./.github
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} README.md AGENTS.md Makefile ./
+COPY --chown=${CHECKS_UID}:${CHECKS_GID} worktree/README.md ./worktree/README.md
 RUN mkdir -p webapp/node_modules/.cache webapp/node_modules/.vite codebase-integrity/node_modules/.cache codebase-integrity/node_modules/.vite \
-    && chown ${QUALITY_UID}:${QUALITY_GID} /workspace /workspace/webapp /workspace/codebase-integrity \
+    && chown ${CHECKS_UID}:${CHECKS_GID} /workspace /workspace/webapp /workspace/codebase-integrity \
       webapp/node_modules/.cache webapp/node_modules/.vite codebase-integrity/node_modules/.cache codebase-integrity/node_modules/.vite
-USER ${QUALITY_UID}:${QUALITY_GID}
+USER ${CHECKS_UID}:${CHECKS_GID}
 WORKDIR /workspace/webapp
 ENV CI=true
 ENV HOME=/tmp

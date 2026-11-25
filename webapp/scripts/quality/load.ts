@@ -10,7 +10,7 @@ import { runOwned } from './mutation'
 export const k6Image =
   'grafana/k6:1.6.1@sha256:a5ad6bc089a08d77c3ec49f3db8c6fa7a148e4073efcac44c675dbaf3568d8e1'
 export function localOrigin(value: string | undefined) {
-  if (!value) throw new Error('QUALITY_BASE_URL explicite requis')
+  if (!value) throw new Error('WEBAPP_BASE_URL explicite requis')
   const url = new URL(value)
   if (
     url.protocol !== 'http:' ||
@@ -63,8 +63,8 @@ export function assessLoad(value: unknown) {
   }
 }
 export async function runLoad(root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')) {
-  const origin = localOrigin(process.env.QUALITY_BASE_URL),
-    profile = loadProfile(process.env.QUALITY_LOAD_PROFILE)
+  const origin = localOrigin(process.env.WEBAPP_BASE_URL),
+    profile = loadProfile(process.env.LOAD_PROFILE)
   const target = process.env.GD_TARGET || 'showcase-immobilier'
   if (!['showcase-immobilier', 'client2-immobilier', 'dashboard'].includes(target))
     throw new Error('Cible inconnue')
@@ -77,7 +77,7 @@ export async function runLoad(root = resolve(dirname(fileURLToPath(import.meta.u
       : [{ path: target === 'showcase-immobilier' ? '/fr' : '/', status: 200, contains: '<main' }]
   const directory = join(root, '.tmp/quality/load', target + '-' + profile + '-' + Date.now())
   mkdirSync(directory, { recursive: true })
-  const local = process.env.QUALITY_CONTAINER === '1'
+  const local = process.env.CHECKS_CONTAINER === '1'
   if (local) {
     const version = spawnSync('k6', ['version'], { encoding: 'utf8', timeout: 5000 })
     if (version.status !== 0 || !version.stdout.includes('v1.6.1'))
@@ -96,11 +96,11 @@ export async function runLoad(root = resolve(dirname(fileURLToPath(import.meta.u
             '--summary-export',
             join(directory, `${index}.json`),
             '-e',
-            `QUALITY_BASE_URL=${origin}`,
+            `WEBAPP_BASE_URL=${origin}`,
             '-e',
-            `QUALITY_LOAD_PROFILE=${profile}`,
+            `LOAD_PROFILE=${profile}`,
             '-e',
-            `QUALITY_ROUTE=${JSON.stringify(route)}`,
+            `LOAD_ROUTE=${JSON.stringify(route)}`,
             join(root, 'scripts/quality/load/scenarios.js'),
           ],
           root,
@@ -123,11 +123,11 @@ export async function runLoad(root = resolve(dirname(fileURLToPath(import.meta.u
             '-v',
             `${directory}:/reports`,
             '-e',
-            `QUALITY_BASE_URL=${origin}`,
+            `WEBAPP_BASE_URL=${origin}`,
             '-e',
-            `QUALITY_LOAD_PROFILE=${profile}`,
+            `LOAD_PROFILE=${profile}`,
             '-e',
-            `QUALITY_ROUTE=${JSON.stringify(route)}`,
+            `LOAD_ROUTE=${JSON.stringify(route)}`,
             k6Image,
             'run',
             '--summary-export',

@@ -284,12 +284,12 @@ class TestMode(unittest.TestCase):
                  patch.object(lanes, 'context', return_value=(ROOT, [])), \
                  patch.object(lanes, 'validate', side_effect=AssertionError('private env')), \
                  patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0)) as call, \
-                 patch.dict(os.environ, {'GD_TARGET': 'showcase-immobilier', 'QUALITY_FIXTURE_PORT': '19859'}, clear=True):
+                 patch.dict(os.environ, {'GD_TARGET': 'showcase-immobilier', 'WEBAPP_TEST_PORT': '19859'}, clear=True):
                 self.assertEqual(lanes.run(action, 'devops', mode='test'), 0)
                 argv = call.call_args.args[0]
                 self.assertIn('_lane-test-' + action, argv)
                 self.assertIn('GD_TARGET=showcase-immobilier', argv)
-                self.assertIn('QUALITY_FIXTURE_PORT=19859', argv)
+                self.assertIn('WEBAPP_TEST_PORT=19859', argv)
                 self.assertEqual(call.call_args.kwargs['cwd'], ROOT)
                 self.assertTrue(any('-devops-test-showcase-immobilier' in x for x in argv))
 
@@ -297,7 +297,7 @@ class TestMode(unittest.TestCase):
         with patch.object(lanes.subprocess, 'run') as call:
             with self.assertRaises(ValueError):
                 lanes.run('up', 'devops', mode='invalid')
-            for variables in ({'GD_TARGET': '../foreign'}, {'QUALITY_FIXTURE_PORT': '80'}):
+            for variables in ({'GD_TARGET': '../foreign'}, {'WEBAPP_TEST_PORT': '80'}):
                 with patch.object(lanes, 'context', return_value=(ROOT, [])), \
                      patch.dict(os.environ, variables, clear=True), self.assertRaises(ValueError):
                     lanes.run_test('up', 'devops', ROOT)
@@ -319,7 +319,7 @@ class TestMode(unittest.TestCase):
              patch.object(lanes.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0)) as call:
             lanes.run_test('up', 'devops', ROOT)
             config = json.loads((ROOT / 'infra/config/layers.json').read_text())
-            self.assertIn('QUALITY_FIXTURE_PORT=' + str(19850 + config['layers']['devops']['id']),
+            self.assertIn('WEBAPP_TEST_PORT=' + str(19850 + config['layers']['devops']['id']),
                           call.call_args.args[0])
 
     def test_failed_rebuild_does_not_start_server(self):
@@ -360,8 +360,8 @@ class TestPrincipalStartup(unittest.TestCase):
                     log.unlink(missing_ok=True)
                     log.with_suffix('.built').unlink(missing_ok=True)
                     run = subprocess.run(
-                        ['make', '--no-print-directory', 'test-up', f'QUALITY_DOCKER={fake}',
-                         f'QUALITY_FIXTURE_PORT={port}'], cwd=ROOT, capture_output=True, text=True,
+                        ['make', '--no-print-directory', 'test-up', f'CHECKS_DOCKER={fake}',
+                         f'WEBAPP_TEST_PORT={port}'], cwd=ROOT, capture_output=True, text=True,
                         env={**os.environ, 'DOCKER_LOG': str(log), 'DOCKER_STATE': state}, timeout=10,
                     )
                     calls = log.read_text().splitlines()
@@ -371,7 +371,7 @@ class TestPrincipalStartup(unittest.TestCase):
                         launch, = launches
                         self.assertIn('docker-compose.test.yml', launch)
                         self.assertTrue(launch.endswith(' app-test'), launch)
-                        self.assertIn(f'QUALITY_FIXTURE_PORT={port}', launch)
+                        self.assertIn(f'WEBAPP_TEST_PORT={port}', launch)
                         self.assertIn('Démarrage de l’environnement de test', run.stdout)
                     else:
                         self.assertNotEqual(run.returncode, 0)

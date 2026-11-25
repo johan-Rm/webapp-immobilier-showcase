@@ -21,17 +21,17 @@ def configuration(env):
     if env.get('GD_TARGET') != 'dashboard':
         raise ValueError('GD_TARGET=dashboard requis pour le BFF SaaS')
     try:
-        u = urlsplit(env.get('QUALITY_BASE_URL', ''))
+        u = urlsplit(env.get('WEBAPP_BASE_URL', ''))
         if u.scheme != 'http' or u.hostname not in ('127.0.0.1', '::1') or u.username or u.password or u.path not in ('', '/') or u.query or u.fragment or not u.port:
             raise ValueError()
         origin = f'http://{u.netloc}'
     except ValueError:
         raise ValueError('Origine HTTP locale explicite avec port requise') from None
-    profile = env.get('QUALITY_LOAD_PROFILE') or 'smoke'
+    profile = env.get('LOAD_PROFILE') or 'smoke'
     if profile not in ('smoke', 'measure'):
         raise ValueError('Profil smoke ou measure requis')
     ids = []
-    for name in ('QUALITY_PROJECT_ID', 'QUALITY_ARTICLE_ID'):
+    for name in ('SAAS_PROJECT_ID', 'SAAS_ARTICLE_ID'):
         try:
             value = env.get(name, '')
             parsed = UUID(value)
@@ -40,9 +40,9 @@ def configuration(env):
             ids.append(str(parsed))
         except (ValueError, AttributeError):
             raise ValueError(f'{name} doit être un UUID canonique') from None
-    file_name = env.get('QUALITY_SESSION_FILE')
+    file_name = env.get('SAAS_SESSION_FILE')
     if not file_name:
-        raise ValueError('QUALITY_SESSION_FILE requis')
+        raise ValueError('SAAS_SESSION_FILE requis')
     path = Path(file_name)
     try:
         info = path.lstat()

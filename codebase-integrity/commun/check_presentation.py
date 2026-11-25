@@ -138,10 +138,8 @@ ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
 
 
 def precondition(command, env):
-    if command == 'runtime-tests-browser' and not env.get('PLAYWRIGHT_BASE_URL'):
-        return 'PLAYWRIGHT_BASE_URL absente ; préparer un serveur de test séparément.'
-    if command in ('runtime-tests-load', 'runtime-tests-lighthouse') and not env.get('QUALITY_BASE_URL'):
-        return 'QUALITY_BASE_URL absente ; préparer un serveur de test séparément.'
+    if command in ('runtime-tests-browser', 'runtime-tests-load', 'runtime-tests-lighthouse') and not env.get('WEBAPP_BASE_URL'):
+        return 'WEBAPP_BASE_URL absente ; préparer un serveur de test séparément.'
     if command == 'internal-tests-components' and env.get('GD_TARGET', 'showcase-immobilier') != 'dashboard':
         return 'Le pilote de composants est disponible uniquement avec GD_TARGET=dashboard.'
     if command == 'conventions-tests-devbook' and not env.get('BASE'):
