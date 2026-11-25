@@ -71,3 +71,9 @@ Verdict explicite « valider » dans la session `01a211b5-0ab6-7733-9516-b83103d
   }
 }
 ```
+
+## Correctif de format
+
+ESLint et Prettier ont signalé la mise en forme de l’appel à `runExtendedMutation` après le renommage de `MUTATION_PILOT`. Le correctif applique uniquement le format attendu à cet appel. Le verdict ci-dessus reste rattaché au SHA initial.
+
+Depuis `webapp`, `./node_modules/.bin/prettier --check scripts/quality/mutation-extended.ts` et `./node_modules/.bin/eslint --max-warnings 0 scripts/quality/mutation-extended.ts` réussissent. Correctif à vérifier avant reprise sur la branche de demande.
