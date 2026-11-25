@@ -30,13 +30,13 @@ Chaque contrôle possède une commande Make explicite, sans paramètre de sélec
 
 ## Exécuter dans un conteneur jetable
 
-Le fichier `infra/docker/docker-compose.quality.yml` fournit le service `verify`. Depuis la racine, définir `QUALITY_REPO_ROOT` avec le chemin absolu du dépôt du worktree et `QUALITY_GIT_COMMON_DIR` avec celui du répertoire Git commun, pour permettre la lecture de l’inventaire Git. Aucun secret `.env` n’est injecté.
+Le fichier `infra/docker/docker-compose.test.yml` fournit le service `verify`. Depuis la racine, définir `QUALITY_REPO_ROOT` avec le chemin absolu du dépôt du worktree et `QUALITY_GIT_COMMON_DIR` avec celui du répertoire Git commun, pour permettre la lecture de l’inventaire Git. Aucun secret `.env` n’est injecté.
 
 Lancer ensuite :
 
 ```sh
-docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality build verify
-docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.quality.yml --profile quality run --pull never --no-deps --rm verify <famille> --target <cible>
+docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.test.yml --profile quality build verify
+docker compose --project-directory . --env-file /dev/null -f infra/docker/docker-compose.test.yml --profile quality run --pull never --no-deps --rm verify <famille> --target <cible>
 ```
 
 Reconstruire les images après modification des sources. L’image contient les deux paquets et leurs dépendances verrouillées. Make et Python sont installés explicitement pour exécuter les recettes Make et leur présentation dans le conteneur ; les tests de routage utilisent un simulateur de Docker, sans socket Docker. Seuls les rapports `.tmp` sont montés en écriture ; les sources hôtes restent en lecture seule. Le socket Docker n’est pas monté. Les outils de charge et Lighthouse sont aussi installés dans l’image.
@@ -121,7 +121,7 @@ Un échec ou un contrôle non exécuté conserve un code non nul. Un score infor
 
 ## Préparer le serveur pour les parcours navigateur
 
-Dans un premier terminal, depuis la racine du worktree, lancer `make lane-up devops MODE=test GD_TARGET=showcase-immobilier`. La commande vérifie que le port local est libre, réutilise l’image des tests, prépare Nuxt puis construit le SSR de fixtures ; elle ne reconstruit pas l’image. La surcharge Compose dédiée retire uniquement le montage temporaire de la sortie Nitro pour permettre sa recréation dans la couche jetable du conteneur. Attendre « Fixture locale prête : http://127.0.0.1:19854 ». Le terminal reste occupé pendant le service. La construction détaillée est conservée dans `webapp/.tmp/quality/browser-fixture-build-showcase-immobilier.log`. Sous activation explicite des fixtures média, les JPEG locaux référencés par les pages d’accueil traduites et la configuration de navigation de Showcase sont simulés par une image décodable par IPX ; les fichiers existants sont conservés. Ces médias simulés ne prouvent pas le rendu des médias réels.
+Dans un premier terminal, depuis la racine du worktree, lancer `make lane-up devops MODE=test GD_TARGET=showcase-immobilier`. La commande vérifie que le port local est libre, réutilise l’image des tests, prépare Nuxt puis construit le SSR de fixtures ; elle ne reconstruit pas l’image. Le service `app-test` de la configuration de test commune utilise la même image que `verify`. La sortie Nitro est recréée dans sa couche jetable. Attendre « Environnement de test prêt : http://127.0.0.1:19854 ». Le terminal reste occupé pendant le service. La construction détaillée est conservée dans `webapp/.tmp/quality/browser-fixture-build-showcase-immobilier.log`. Sous activation explicite des fixtures média, les JPEG locaux référencés par les pages d’accueil traduites et la configuration de navigation de Showcase sont simulés par une image décodable par IPX ; les fichiers existants sont conservés. Ces médias simulés ne prouvent pas le rendu des médias réels.
 
 Dans un second terminal du même worktree, lancer `make runtime-tests-browser GD_TARGET=showcase-immobilier PLAYWRIGHT_BASE_URL=http://127.0.0.1:19854`. Les deux profils Chromium utilisent ce serveur de test et l’API fictive. Arrêter ensuite le seul conteneur de fixtures avec `make lane-down devops MODE=test GD_TARGET=showcase-immobilier`, ou interrompre son terminal avec Ctrl+C. Le port peut être choisi avec `QUALITY_FIXTURE_PORT` au démarrage ; adapter alors l’URL des tests.
 
