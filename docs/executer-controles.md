@@ -51,6 +51,8 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Commandes manuelles
 
+Les commandes de prévisualisation et d’analyse SonarQube ainsi que leurs prérequis sont décrits dans le [guide SonarQube Cloud](3.application/sonarqube-cloud.md).
+
 Pour exécuter la suite complète de Showcase Immobilier lors de la reconstitution, suivre [la procédure en deux terminaux](../TEST.md).
 
 Depuis la racine du worktree, lancer **`make checks-prepare`**. Une image existante est réutilisée ; aucune commande de contrôle ne reconstruit implicitement. Après modification des sources, dépendances ou outils, lancer **`make checks-rebuild`** : la fraîcheur de l’image n’est pas détectée automatiquement.
