@@ -8,9 +8,9 @@ Depuis la racine du worktree, `make third-party-tests-sonar-preview` affiche les
 
 ## Analyse réelle
 
-Ouvrir le dossier racine du dépôt dans VS Code. Depuis l’éditeur, renseigner `SONAR_ORGANIZATION`, `SONAR_PROJECT_KEY` et `SONAR_TOKEN` dans `webapp/.env`, à partir des champs de `webapp/.env.example`. Conserver les autres valeurs du fichier local. La branche courante est lue depuis Git.
+Renseigner `SONAR_ORGANIZATION`, `SONAR_PROJECT_KEY` et `SONAR_TOKEN` dans `webapp/.env` à partir du modèle `webapp/.env.example`. Conserver les autres valeurs du fichier local. La branche courante est lue depuis Git.
 
-Dans la palette de commandes, choisir **Tâches : Exécuter la tâche**, puis **Analyser avec SonarQube**. Prérequis sur Linux x64, Git, Make, Python 3, Bubblewrap, `socat`, Curl, Unzip, `sha256sum` et l’accès réseau au service. Le projet SonarQube Cloud doit accepter les analyses par scanner. La tâche vérifie la configuration, télécharge le scanner officiel dans un dossier privé, vérifie son empreinte et lance l’analyse. Elle supprime le scanner temporaire en fin d’exécution.
+Depuis la racine du dépôt, lancer `make third-party-tests-sonar`. Prérequis sur Linux x64, Git, Make, Python 3, Bubblewrap, `socat`, `curl`, `unzip`, `sha256sum` et l’accès réseau au service. Le projet SonarQube Cloud doit accepter les analyses par scanner. La commande vérifie la configuration avant de télécharger le scanner officiel, contrôle son empreinte puis l’exécute. Elle supprime le scanner temporaire en fin d’exécution. Un scanner déjà installé hors du dépôt peut être fourni via `SONAR_SCANNER_HOME`.
 
 Les sources sont copiées puis montées en lecture seule dans un environnement isolé. Un relais éphémère limite les connexions aux destinations Sonar Cloud UE prévues et refuse les adresses non publiques. Les fichiers temporaires et la socket sont supprimés à la fin.
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Vérification manuelle : télécharge le scanner officiel, puis contacte SonarQube.
+# Prépare le scanner officiel pour la cible Make SonarQube locale.
 set -eu
 umask 077
 
-for binary in curl unzip sha256sum bwrap socat python3 git make; do
+for binary in curl unzip sha256sum bwrap socat python3 git; do
   command -v "$binary" >/dev/null || { printf 'Prérequis absent : %s\n' "$binary" >&2; exit 1; }
 done
 
@@ -19,4 +19,4 @@ curl --fail --silent --show-error --location \
   --output "$archive"
 printf '%s  %s\n' "$checksum" "$archive" | sha256sum --check
 unzip -q "$archive" -d "$scanner_temp"
-SONAR_SCANNER_HOME="$scanner_temp/sonar-scanner-${version}-linux-x64" make third-party-tests-sonar
+SONAR_SCANNER_HOME="$scanner_temp/sonar-scanner-${version}-linux-x64" python3 -B webapp/scripts/quality/sonar_run.py

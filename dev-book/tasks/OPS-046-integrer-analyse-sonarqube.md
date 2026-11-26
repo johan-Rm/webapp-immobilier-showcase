@@ -73,3 +73,9 @@ Le correctif approuvé pour implémentation ajoute une tâche VS Code qui lance 
 Chemins ponctuellement autorisés pour cet ajout : `.vscode/tasks.json` et `webapp/.env.example`, en plus des scripts, tests et brouillon documentaire déjà rattachés à la carte.
 
 Depuis la racine DevOps, les suites ciblées `test_sonar_run.py`, `test_sonar_scope.py`, `test_sonar_egress.py` et `test_sonar_egress_policy.py` réussissent leurs 22 tests avec `python3 -B -m unittest`, dont le scanner factice en isolation. Le JSON de la tâche, les champs du modèle et la syntaxe Bash ont été vérifiés. L’exécution depuis VS Code avec le scanner réel reste à vérifier. Verdict humain « validé » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`, pour le correctif `7879cc627d092edd1f2c103cbc48e18c102b105a`.
+
+## Lancement local par Make
+
+L’humain choisit `make third-party-tests-sonar` pour l’analyse réelle. La cible réutilise les trois champs du fichier local et la détection de la branche Git. En local, elle prépare le scanner officiel si aucun scanner n’est fourni. En CI, elle utilise le scanner préparé par le workflow. Le modèle et le brouillon du guide décrivent le parcours Make. La tâche VS Code introduite par le correctif précédent est retirée.
+
+Depuis la racine DevOps, les quatre fichiers de tests Sonar déjà ciblés réussissent leurs 23 tests avec `python3 -B -m unittest`. Le nouveau cas utilise deux scripts factices et vérifie le routage Make pour le poste local, le scanner préinstallé et GitHub Actions. `bash -n webapp/scripts/quality/manual_sonar_cloud.sh` et `make -n third-party-tests-sonar` réussissent. L’essai réel de la cible reste à effectuer. Le correctif attend son verdict.

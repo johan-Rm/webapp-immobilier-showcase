@@ -77,6 +77,33 @@ class LocalConfiguration(unittest.TestCase):
         self.assertNotIn("synthetic-token", output.getvalue())
 
 
+class MakeEntryPoint(unittest.TestCase):
+    def test_provisions_only_local_scans_without_an_installed_scanner(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            scripts = root / "webapp/scripts/quality"
+            scripts.mkdir(parents=True)
+            (scripts / "manual_sonar_cloud.sh").write_text('printf "%s\\n" "local provisioning"\n')
+            (scripts / "sonar_run.py").write_text('print("direct scanner")\n')
+            environment = {
+                key: value for key, value in os.environ.items()
+                if key not in {"GITHUB_EVENT_NAME", "SONAR_SCANNER_HOME", "MAKEFLAGS"}
+            }
+            for overrides, expected in (
+                ({}, "local provisioning"),
+                ({"SONAR_SCANNER_HOME": "/scanner"}, "direct scanner"),
+                ({"GITHUB_EVENT_NAME": "pull_request"}, "direct scanner"),
+            ):
+                with self.subTest(overrides=overrides):
+                    output = subprocess.check_output(
+                        ["make", "--no-print-directory", "-f", str(ROOT / "infra/make/Makefile.dev"),
+                         "third-party-tests-sonar"],
+                        cwd=root, env={**environment, **overrides}, text=True, timeout=5,
+                    )
+                    self.assertEqual(output.strip(), expected)
+
+
 class IsolatedScan(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
