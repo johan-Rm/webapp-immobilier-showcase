@@ -4,7 +4,7 @@
 - État : reconstituée, suite manuelle en attente
 - Session de création : 01a211b5-0ab6-7733-9516-b83103d91b22
 - Branche : `demands/DEM-027-maintenir-test-md`
-- Espace documentaire : `worktree/DEM-027`
+- Dossier de reconstitution : dépôt principal
 
 ## Constat
 
@@ -36,9 +36,9 @@ Le 26 novembre 2026, l’humain a répondu « validé » pour [OPS-099](../tasks
 
 ## Reconstitution
 
-La reconstitution a réuni les commits dans l’espace documentaire de la demande depuis `develop` vérifié à `af673dae1a23267b33918a732fab505c1a5c917f`. Les deux commits du journal sont repris sur la base intégrant DEM-026. Le lien vers le guide des contrôles suit son déplacement.
+La reconstitution a réuni les commits depuis `develop` vérifié à `af673dae1a23267b33918a732fab505c1a5c917f`. Les deux commits du journal sont repris sur la base intégrant DEM-026. Le lien vers le guide des contrôles suit son déplacement.
 
-L’humain a validé le nom `demands/DEM-027-maintenir-test-md`. La branche ouverte sous `demands/DEM-027` a été renommée dans le même worktree, avec ses commits conservés. La commande locale `demand-release` attend toujours le nom court. La procédure de clôture devra tenir compte de ce nom validé.
+L’humain a validé le nom `demands/DEM-027-maintenir-test-md`, puis demandé de retirer `worktree/DEM-027` et de revenir au dépôt principal. La branche renommée est extraite dans le dépôt principal. Les commits et les rapports locaux ont été préservés. La commande `demand-release` attend un espace dédié et le nom court. La clôture de cette demande devra tenir compte de son emplacement et de son nom validés.
 
 | Portée | SHA source | SHA obtenu |
 | --- | --- | --- |
