@@ -1,0 +1,141 @@
+diff --git a/codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py b/codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py
+--- a/codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py
++++ b/codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py
+@@ -320,14 +320,16 @@
+         paths = [Path(os.fsdecode(name)) for name in output.split(b'\0') if name]
+         from check_readmes import check_readmes
+         readme_errors, readme_count = check_readmes(root, paths)
+-        # Les liens hors README conservent leur adoption bornée.
++        tree_errors, tree_notices = check_documentation_tree(root, paths)
++        # Les liens hors README et hors guides conservent leur adoption bornée.
+         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
+-            'README.md', 'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
++            'README.md', 'AGENTS.md', 'codebase-integrity/README.md',
+             'worktree/README.md', 'dev-book/README.md', *ROOT_GUIDES) or
+             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
+              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
+         errors, notices = check(root, paths)
+-        errors.extend(readme_errors)
++        errors.extend(readme_errors + tree_errors)
++        notices = sorted(set(notices + tree_notices))
+     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
+         print(f'Contrôle documentaire impossible : {exc}', file=sys.stderr)
+         return 1
+diff --git a/docs/README.md b/docs/README.md
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -74,5 +74,5 @@
+ - Réserver les fichiers de la racine documentaire au README et à l’index.
+ - Ranger chaque document dans une thématique, relier les thématiques depuis le sommaire principal et répertorier les pages dans le sommaire de leur thématique.
+ 
+-- Le contrôle des **liens et de la structure** des autres documents porte sur la gouvernance, les modèles, les demandes et les cartes.
++- Le contrôle documentaire bloque les fichiers inattendus à la racine documentaire, les pages absentes des sommaires et les liens locaux invalides. Les métadonnées, les ressources, les README et les sommaires sont dispensés d’une entrée comme page de sujet. La relecture humaine apprécie la durabilité du contenu.
+ - Toute évolution des **règles ou du périmètre de contrôle** passe par une consolidation explicite.
+diff --git a/dev-book/demand/DEM-004-vhosts-locaux.md b/dev-book/demand/DEM-004-vhosts-locaux.md
+--- a/dev-book/demand/DEM-004-vhosts-locaux.md
++++ b/dev-book/demand/DEM-004-vhosts-locaux.md
+@@ -25,7 +25,7 @@
+ 
+ Créer seulement le dossier vide `worktree/design`, sans couche configurée, branche,
+ pile Docker ni vhost design. Git ne transporte pas ce dossier vide ; sa présence
+-locale et cette limite sont décrites dans le [guide des worktrees](../../docs/worktrees.md).
++locale et cette limite sont décrites dans le [guide des worktrees](../../docs/1.getting-started/worktrees.md).
+ Aucun changement sur VPS, préproduction distante ou production. Préserver les .env,
+ les données et les services utilisateur. Aucune question de besoin ouverte.
+ 
+diff --git a/dev-book/demand/DEM-006-commandes-lanes.md b/dev-book/demand/DEM-006-commandes-lanes.md
+--- a/dev-book/demand/DEM-006-commandes-lanes.md
++++ b/dev-book/demand/DEM-006-commandes-lanes.md
+@@ -56,7 +56,7 @@
+ ## Contraintes et exclusions
+ 
+ Préserver les commandes existantes, l’isolation des couches, les données, les `.env`
+-et les travaux en cours. Respecter le [guide des worktrees](../../docs/worktrees.md).
++et les travaux en cours. Respecter le [guide des worktrees](../../docs/1.getting-started/worktrees.md).
+ Aucune simplification SSR, préparation automatique, création de worktree ou modification
+ du workflow AIDE dans cette demande. Les conventions et contrôles Codebase Integrity
+ ne sont pas modifiés hors consolidation déclarée.
+diff --git a/dev-book/demand/DEM-007-couche-dashboard.md b/dev-book/demand/DEM-007-couche-dashboard.md
+--- a/dev-book/demand/DEM-007-couche-dashboard.md
++++ b/dev-book/demand/DEM-007-couche-dashboard.md
+@@ -43,7 +43,7 @@
+ 
+ Préserver travaux existants, historique des cartes, branches, worktrees, données,
+ secrets et `.env`. Aucun transfert de travail non commité. Respecter les conditions
+-d’affectation et de disponibilité du [guide des worktrees](../../docs/worktrees.md).
++d’affectation et de disponibilité du [guide des worktrees](../../docs/1.getting-started/worktrees.md).
+ Pas de nouvelle responsabilité BFF ou Domaine, de nouveaux vhosts Showcase/Client 2
+ sur cette lane, de changement distant ou de déploiement de production.
+ 
+diff --git a/dev-book/demand/DEM-013-qualite-code-et-tests.md b/dev-book/demand/DEM-013-qualite-code-et-tests.md
+--- a/dev-book/demand/DEM-013-qualite-code-et-tests.md
++++ b/dev-book/demand/DEM-013-qualite-code-et-tests.md
+@@ -7,7 +7,7 @@
+ 
+ ## Besoin et décisions
+ 
+-La revue d’une checklist de contrôle a fait ressortir deux besoins de même priorité : repérer le code difficile à maintenir et renforcer la confiance dans les tests. Les contrôles existants et leurs limites sont référencés dans le [registre](../../codebase-integrity/conventions.json) et le [catalogue d’exécution](../../docs/executer-controles.md).
++La revue d’une checklist de contrôle a fait ressortir deux besoins de même priorité : repérer le code difficile à maintenir et renforcer la confiance dans les tests. Les contrôles existants et leurs limites sont référencés dans le [registre](../../codebase-integrity/conventions.json) et le [catalogue d’exécution](../../docs/controles/executer-controles.md).
+ 
+ Examiner quatre pistes : fonctions longues, duplication, débogage oublié et qualité des tests. Pour cette dernière, rechercher les parties insuffisamment testées et évaluer la capacité des tests existants à détecter une modification incorrecte.
+ 
+diff --git a/dev-book/demand/DEM-018-clarifier-noms-variables-controle.md b/dev-book/demand/DEM-018-clarifier-noms-variables-controle.md
+--- a/dev-book/demand/DEM-018-clarifier-noms-variables-controle.md
++++ b/dev-book/demand/DEM-018-clarifier-noms-variables-controle.md
+@@ -30,7 +30,7 @@
+ | Correctif de format | `0e1175f49758f93a68995333c5854230ed0e0e8b` | `a6c7f5be058d12de077b7275f9c66bc864252525` |
+ | Verdict du correctif | `c1b49355878fb7178ae80add2e2a03c929d2ebc1` | `9ccce00fb81fada9055ecef7f9a59c304f421203` |
+ 
+-Le brouillon approuvé d’OPS-092 est intégré au [guide des contrôles](../../docs/executer-controles.md#nommage-des-commandes). La vérification d’absence des anciens noms porte sur les fichiers suivis hors journal historique. Commande de clôture depuis la racine après le commit documentaire, avec code retour 1 et sortie vide attendus :
++Le brouillon approuvé d’OPS-092 est intégré au [guide des contrôles](../../docs/controles/executer-controles.md#nommage-des-commandes). La vérification d’absence des anciens noms porte sur les fichiers suivis hors journal historique. Commande de clôture depuis la racine après le commit documentaire, avec code retour 1 et sortie vide attendus :
+ 
+ ```bash
+ git grep -n -E '(^|[^[:alnum:]_]|\\[nrt])(PLAYWRIGHT_BASE_URL|QUALITY_(BASE_URL|FIXTURE_PORT|BROWSER_FIXTURES|MEDIA_FIXTURES|LOAD_PROFILE|ROUTE|PROJECT_ID|ARTICLE_ID|SESSION_FILE|MUTATION_FILES|MUTATION_PILOT|CONTAINER|UID|GID|REPO_ROOT|GIT_COMMON_DIR|COMPOSE|DOCKER|INFO|DOTENV_PROBE))([^[:alnum:]_]|$)' HEAD -- ':!dev-book'
+diff --git a/dev-book/tasks/OPS-008-router-vhosts-par-pile.md b/dev-book/tasks/OPS-008-router-vhosts-par-pile.md
+--- a/dev-book/tasks/OPS-008-router-vhosts-par-pile.md
++++ b/dev-book/tasks/OPS-008-router-vhosts-par-pile.md
+@@ -40,7 +40,7 @@
+ - `infra/docker/docker-compose.dev.yml` : noms et URL SSR calculés par pile, sans reprendre SITE_URL/PUBLIC_HOST historiques ; montage du gabarit et de son entrée Nginx.
+ - `infra/nginx/vhost.conf` : deux hôtes explicites, refus HTTP 421 par défaut.
+ - Nouveaux fichiers : `infra/nginx/19-local-vhosts.sh` (exécutable), `infra/nginx/test-local-vhosts.py`, `infra/nginx/README.md`.
+-- Documentation technique et commande reproductible : [Documentation Nginx](../../docs/nginx-local.md).
++- Documentation technique et commande reproductible : [Documentation Nginx](../../docs/1.getting-started/nginx-local.md).
+ 
+ Vérifications depuis le worktree DevOps :
+ 
+diff --git a/dev-book/tasks/OPS-012-servir-dashboard-et-projeter-articles.md b/dev-book/tasks/OPS-012-servir-dashboard-et-projeter-articles.md
+--- a/dev-book/tasks/OPS-012-servir-dashboard-et-projeter-articles.md
++++ b/dev-book/tasks/OPS-012-servir-dashboard-et-projeter-articles.md
+@@ -45,7 +45,7 @@
+ Les commandes historiques conservent leurs deux sites. La sortie `dashboard/.output`
+ est normalisée vers `.output` uniquement dans le stage Docker. Activation Nginx limitée
+ à un booléen validé et à un hôte dérivé de la couche, sans substitution des variables Nginx.
+-Commandes et usage : [Documentation Nginx](../../docs/nginx-local.md), source unique de cette partie.
++Commandes et usage : [Documentation Nginx](../../docs/1.getting-started/nginx-local.md), source unique de cette partie.
+ 
+ État présenté : HEAD `a2fc20b21a54531b0db014a6ca3d52e2a65a33dd`, `layers/devops`, index vide.
+ Sept fichiers suivis modifiés : `infra/docker/Dockerfile`, `infra/make/Makefile.dev`,
+diff --git a/dev-book/tasks/OPS-043-mesurer-charge-lectures-bff-api.md b/dev-book/tasks/OPS-043-mesurer-charge-lectures-bff-api.md
+--- a/dev-book/tasks/OPS-043-mesurer-charge-lectures-bff-api.md
++++ b/dev-book/tasks/OPS-043-mesurer-charge-lectures-bff-api.md
+@@ -17,7 +17,7 @@
+ 
+ Base : `95000d59f12e77b1163f80a2f86330ad61344f89`, incluant le commit OPS-042 de DEM-014. Tests Python ciblés sans réseau ni Docker : configuration et métriques invalides, deux scénarios simulés, échec et rapport sans données privées ; tests du registre et de présentation. `git diff --check` exécuté. Les vérifications statiques des méthodes GET ne constituent pas une preuve d’exécution k6.
+ 
+-Arbitrage de vérification : l’humain demande la suspension du contrôle. La commande et le lancement direct affichent un statut inactif sans exécuter de test ; les scénarios sont conservés. Vérifié avec `make runtime-tests-saas-api-load GD_TARGET=dashboard` et le lancement direct du script : message INACTIF, code 0. Aucun serveur ni appel VPS ne fut lancé. La mesure réelle et sa connectivité restent inconnues ; depuis `worktree/devops`, après réactivation uniquement, suivre la commande et les prérequis de [l’exécution des contrôles](../../docs/executer-controles.md). Attendu : deux scénarios réussis et rapport des latences informatives. La configuration de l’API réelle doit être vérifiée par l’humain ; elle n’est pas attestée automatiquement.
++Arbitrage de vérification : l’humain demande la suspension du contrôle. La commande et le lancement direct affichent un statut inactif sans exécuter de test ; les scénarios sont conservés. Vérifié avec `make runtime-tests-saas-api-load GD_TARGET=dashboard` et le lancement direct du script : message INACTIF, code 0. Aucun serveur ni appel VPS ne fut lancé. La mesure réelle et sa connectivité restent inconnues ; depuis `worktree/devops`, après réactivation uniquement, suivre la commande et les prérequis de [l’exécution des contrôles](../../docs/controles/executer-controles.md). Attendu : deux scénarios réussis et rapport des latences informatives. La configuration de l’API réelle doit être vérifiée par l’humain ; elle n’est pas attestée automatiquement.
+ 
+ Compléter la convention et la déclaration structurée de contribution selon les règles du projet. Préserver les `.env`, secrets, worktrees et changements étrangers ; aucun accès au VPS ou lancement de charge pendant l’analyse.
+ 
+diff --git a/dev-book/tasks/OPS-044-reorganiser-workflows.md b/dev-book/tasks/OPS-044-reorganiser-workflows.md
+--- a/dev-book/tasks/OPS-044-reorganiser-workflows.md
++++ b/dev-book/tasks/OPS-044-reorganiser-workflows.md
+@@ -19,7 +19,7 @@
+ 
+ Les deux fichiers de tests ciblés `ci-plan.vitest.ts` et `coverage.vitest.ts` ont réussi : 68 tests avec Docker simulé ; après derniers changements du contrat, 9 tests ciblés ont réussi. Cas conformes et absences de famille, cible, couverture, erreurs masquées ou appels runtime externes sont contrôlés. ESLint ciblé, registre et vérifications documentaires ont réussi ; `git diff --check` est conforme. Le contrôle statique ne prouve pas l’exécution GitHub, les coûts ou les protections futures.
+ 
+-Aucun workflow, suite complète ou service n’a été lancé par l’agent. Pour la vérification humaine, depuis `worktree/devops`, exécuter les contrôles du [catalogue](../../docs/executer-controles.md) sur les trois cibles, notamment fonctions, duplications et couverture ; pour les parcours et la charge, préparer les fixtures locales comme indiqué dans ce guide. Les suites complètes, navigateurs et exécution GitHub restent à effectuer par l’humain ; elles sont inconnues. Aucun appel au VPS ni audit Lighthouse n’est prévu en CI.
++Aucun workflow, suite complète ou service n’a été lancé par l’agent. Pour la vérification humaine, depuis `worktree/devops`, exécuter les contrôles du [catalogue](../../docs/controles/executer-controles.md) sur les trois cibles, notamment fonctions, duplications et couverture ; pour les parcours et la charge, préparer les fixtures locales comme indiqué dans ce guide. Les suites complètes, navigateurs et exécution GitHub restent à effectuer par l’humain ; elles sont inconnues. Aucun appel au VPS ni audit Lighthouse n’est prévu en CI.
+ 
+ Les nouveaux statuts et la lecture non modifiante des protections figurent dans l’analyse. Ne pas modifier les protections GitHub ; faire coordonner leurs éventuels statuts requis avant livraison.
+ 

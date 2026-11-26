@@ -28,6 +28,25 @@ class DocumentsTest(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.paths = []
 
+    def test_documentation_tree_checks_navigation_and_local_links(self):
+        self.write('docs/README.md', '# Documentation')
+        self.write('docs/index.md', '[Guide](1.guide/index.md)')
+        self.write('docs/1.guide/index.md', '[Page](nested/page.md)')
+        self.write('docs/1.guide/nested/page.md', '# Page\n[Lien](#page)')
+        self.write('docs/1.guide/.navigation.yml', 'title: Guide')
+        self.write('docs/1.guide/nested/README.md', '# Notes')
+        self.write('docs/1.guide/nested/index.md', '# Sommaire')
+        self.assertEqual(docs.check_documentation_tree(self.root, self.paths), ([], []))
+
+        self.write('docs/supplement.txt', 'écart')
+        self.write('docs/autre/index.md', '# Autre')
+        self.write('docs/1.guide/omise.md', '[Cible](absente.md)\n[Ancre](#absente)')
+        errors, _ = docs.check_documentation_tree(self.root, self.paths)
+        self.assertEqual(len(errors), 5)
+        for diagnostic in ('fichier inattendu', 'index absent du sommaire principal',
+                           'page absente du sommaire', 'cible absente', 'ancre absente'):
+            self.assertTrue(any(diagnostic in error for error in errors), errors)
+
     def test_root_guides_check_commands_and_links(self):
         self.write('Makefile', 'setup:\n')
         makefile = self.write('infra/make/Makefile.dev', 'test-up:\nruntime-tests-browser:\n'

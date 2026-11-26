@@ -215,7 +215,7 @@ def check_recipe(root, name, text):
     return errors
 
 
-def check(root, paths):
+def check(root, paths, *, legacy_structure=True):
     root = root.resolve()
     errors, notices = [], []
     cache = {}
@@ -233,12 +233,12 @@ def check(root, paths):
         if not path.is_file():
             continue
         if relative.suffix != '.md':
-            if relative.parts[0] == 'docs':
+            if legacy_structure and relative.parts[0] == 'docs':
                 errors.extend(f'{relative} : {e}' for e in structure(relative, ''))
             continue
         try:
             text = path.read_text(encoding='utf-8')
-            if relative.parts[0] == 'docs':
+            if legacy_structure and relative.parts[0] == 'docs':
                 errors.extend(f'{relative} : {e}' for e in structure(relative, text))
             if relative.as_posix() in ROOT_GUIDES:
                 errors.extend(f'{relative} : {e}' for e in check_recipe(root, relative.name, text))
@@ -267,6 +267,48 @@ def check(root, paths):
         except (OSError, UnicodeError, ValueError) as exc:
             errors.append(f'{relative} : analyse impossible : {exc}')
     return errors, sorted(set(notices))
+
+
+def check_documentation_tree(root, paths):
+    """Check the published documentation without adopting legacy style rules."""
+    root = root.resolve()
+    docs_paths = {
+        path for path in paths
+        if path.parts[0] == 'docs' and ((root / path).exists() or (root / path).is_symlink())
+    }
+    errors, notices = check(root, docs_paths, legacy_structure=False)
+    root_index = Path('docs/index.md')
+    readme = Path('docs/README.md')
+    for path in sorted({root_index, readme} - docs_paths):
+        errors.append(f'{path} : fichier requis')
+    for path in sorted(docs_paths):
+        if len(path.parts) == 2 and path not in (root_index, readme):
+            errors.append(f'{path} : fichier inattendu à la racine de docs/')
+
+    def local_targets(index):
+        if index not in docs_paths or (root / index).is_symlink():
+            return set()
+        try:
+            targets = (urlsplit(target) for target in links((root / index).read_text(encoding='utf-8')))
+            return {
+                (root / index.parent / unquote(url.path)).resolve()
+                for url in targets if not url.scheme and not url.netloc and url.path
+            }
+        except (OSError, UnicodeError, ValueError):
+            return set()  # Link validation already reports unreadable or invalid indexes.
+
+    theme_links = local_targets(root_index)
+    themes = {Path(*path.parts[:2]) for path in docs_paths if len(path.parts) > 2}
+    for theme in sorted(themes):
+        index = theme / 'index.md'
+        if index not in docs_paths or root / index not in theme_links:
+            errors.append(f'{theme} : index absent du sommaire principal')
+        indexed = local_targets(index)
+        for path in sorted(docs_paths):
+            if (path.is_relative_to(theme) and path.suffix.lower() == '.md'
+                    and path.name not in ('README.md', 'index.md') and root / path not in indexed):
+                errors.append(f'{path} : page absente du sommaire de sa thématique')
+    return errors, notices
 
 
 def main():
