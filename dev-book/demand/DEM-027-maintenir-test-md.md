@@ -1,7 +1,7 @@
 # DEM-027 — Tenir TEST.md à jour lors des changements de tests CI/CD
 
 - Type : consolidation
-- État : reconstituée, suite manuelle en attente
+- État : reconstituée, suite manuelle réussie
 - Session de création : 01a211b5-0ab6-7733-9516-b83103d91b22
 - Branche : `demands/DEM-027-maintenir-test-md`
 - Dossier de reconstitution : dépôt principal
@@ -47,9 +47,13 @@ L’humain a validé le nom `demands/DEM-027-maintenir-test-md`, puis demandé d
 | OPS-099 | `2d9f85a6009640ad361dcbfb78e0f9032ce19306` | `3f835f02e9ed540076996cae47d4cd806473dc12` |
 | Verdict dans la carte | `715c3a56fd0684babe0a15d8de6b94737078e363` | `2fe6adb86d695a25b6ba45bcdc53796d67b86951` |
 
-Le diff confirme que `AGENTS.md`, `TEST.md` et la carte reconstituée correspondent au résultat validé sur DevOps. Les 29 commandes de la suite manuelle de `TEST.md` attendent le résultat humain sur le HEAD reconstitué. SonarQube reste une analyse manuelle facultative.
+Le diff confirme que `AGENTS.md`, `TEST.md` et la carte reconstituée correspondent au résultat validé sur DevOps. SonarQube reste une analyse manuelle facultative.
 
 `git diff --check`, `make conventions-tests-docs` et `make conventions-tests-devbook` avec la base de reconstitution réussissent.
+
+### Suite manuelle
+
+Le 26 novembre 2026, l’humain a exécuté les 29 commandes actives de `TEST.md` dans le dépôt principal au SHA `3c8de176ffe5f09f8528fb90bec4b789ec56c5c7`. Le journal transmis et les 29 rapports locaux concordent. Chaque commande a renvoyé le code `0`. Les rapports ont été enregistrés entre 20 h 09 et 20 h 19, heure de Paris.
 
 ## Déclaration de contribution
 
