@@ -127,8 +127,8 @@ conventions-tests-devbook:
 
 .PHONY: demand-open
 demand-open:
-	@test -n "$${DEMAND}" -a -n "$${BASE}" || { echo 'DEMAND et BASE explicites requis'; exit 1; }
-	python3 -B infra/scripts/demand_worktree.py "$${DEMAND}" --base "$${BASE}"
+	@test -n "$${DEMAND}" -a -n "$${BASE}" -a -n "$${SUBJECT}" || { echo 'DEMAND, SUBJECT et BASE explicites requis'; exit 1; }
+	python3 -B infra/scripts/demand_worktree.py "$${DEMAND}" --base "$${BASE}" --subject "$${SUBJECT}"
 
 .PHONY: demand-publication-check demand-release
 demand-publication-check:

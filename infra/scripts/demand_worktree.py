@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Gérer les espaces documentaires de demande."""
 import argparse
+import fcntl
+import os
 from pathlib import Path
 import re
 import sys
@@ -9,17 +11,28 @@ from demand_status import context, scan
 from worktrees import git
 
 
-def demand_branch(identifier):
+def demand_branch(identifier, subject=None):
     if not re.fullmatch(r'DEM-[0-9]{3,}', identifier):
         raise ValueError('Identifiant DEM-NNN requis')
-    return f'demands/{identifier}'
+    if subject is not None and not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', subject):
+        raise ValueError('Sujet descriptif invalide')
+    return f'demands/{identifier}' + (f'-{subject}' if subject else '')
 
 
-def open_demand(cwd, identifier, base):
-    branch = demand_branch(identifier)
-    root, records = context(cwd)
+def open_demand(cwd, identifier, base, subject=None):
+    branch = demand_branch(identifier, subject)
+    root, _ = context(cwd)
+    lock_path = root / '.git' / ('aide-' + identifier + '.lock')
+    flags = os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW
+    with os.fdopen(os.open(lock_path, flags, 0o600), 'r+') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _open_demand(root, identifier, base, branch, subject)
+
+
+def _open_demand(root, identifier, base, branch, subject):
+    root, records = context(root)
     parent = root / 'worktree'
-    destination = parent / identifier
+    destination = parent / (identifier + (f'-{subject}' if subject else ''))
     if parent.is_symlink() or destination.is_symlink():
         raise ValueError('Destination symbolique refusée')
     for record in records:
@@ -33,7 +46,10 @@ def open_demand(cwd, identifier, base):
             return destination
     demands, _, _ = scan(root)
     refs = git(root, 'for-each-ref', '--format=%(refname)', 'refs/heads', 'refs/remotes', 'refs/demands')
-    if identifier in demands or any(ref.endswith('/' + branch) for ref in refs.splitlines()):
+    existing = demands.get(identifier, [])
+    reserved_drafts = [doc for doc in existing if doc.source.parent == root / 'tmp']
+    if (len(reserved_drafts) > 1 or len(reserved_drafts) != len(existing)
+            or any(re.search(r'/demands/' + re.escape(identifier) + r'(?:-|$)', ref) for ref in refs.splitlines())):
         raise ValueError('Identifiant déjà attribué')
     sha = git(root, 'rev-parse', '--verify', '--end-of-options', base + '^{commit}')
     if sha != git(root, 'rev-parse', 'refs/heads/develop'):
@@ -49,9 +65,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('identifier')
     parser.add_argument('--base', required=True)
+    parser.add_argument('--subject', required=True)
     args = parser.parse_args()
     try:
-        print(open_demand(Path.cwd(), args.identifier, args.base))
+        print(open_demand(Path.cwd(), args.identifier, args.base, args.subject))
     except (ValueError, OSError) as error:
         print(error, file=sys.stderr)
         return 1

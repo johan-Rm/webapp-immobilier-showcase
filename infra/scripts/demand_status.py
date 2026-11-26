@@ -72,7 +72,9 @@ def scan(cwd=None):
     for record in records:
         branch = record.get('branch', '')
         if branch.startswith('refs/heads/demands/'):
-            active_sources[branch.rsplit('/', 1)[-1]] = Path(record['worktree']) / 'dev-book/demand'
+            match = re.fullmatch(r'refs/heads/demands/(DEM-[0-9]{3,})(?:-[a-z0-9-]+)?', branch)
+            if match:
+                active_sources[match[1]] = Path(record['worktree']) / 'dev-book/demand'
     seen = set()
     for directory, task in locations:
         if not directory.is_dir():
