@@ -31,6 +31,7 @@ un lien plutôt qu’une copie. Ne créer du contenu que s’il apporte une info
 ## Contrôles et fin du travail
 
 - Appliquer les [conventions Codebase Integrity](codebase-integrity/README.md). Leur évolution et celle des contrôles passent par une consolidation déclarée.
+- Toute modification des tests CI/CD de Showcase Immobilier doit mettre à jour [TEST.md](TEST.md) dans le même changement. La revue de PR vérifie que les commandes, leurs paramètres, les prérequis et les résultats attendus reflètent les tests modifiés.
 - Exécuter les contrôles proportionnés au changement depuis le worktree affecté ; avant PR, vérifier la plage complète par rapport à la cible d’intégration vérifiée et lancer les contrôles qualité, conventions et tests adaptés.
 - Présenter le résultat, les vérifications et leurs limites, avec documentation à jour et preuves dans la carte. Un résultat inconnu ne vaut pas réussite ; une implémentation ne vaut pas validation humaine.
 
