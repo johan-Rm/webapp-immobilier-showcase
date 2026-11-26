@@ -65,13 +65,13 @@ make runtime-tests-browser GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://
 make runtime-tests-load GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856
 make runtime-tests-lighthouse GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=desktop
 make runtime-tests-lighthouse GD_TARGET=showcase-immobilier WEBAPP_BASE_URL=http://127.0.0.1:19856 PROFILE=mobile
-
-# 6. SonarQube — cible Make illustrative
-# make sonarqube-tests GD_TARGET=showcase-immobilier
 ```
 
 Vérifier le bilan de chaque commande. L’audit des dépendances requiert l’accès
 aux registres. Les rapports sont conservés sous `webapp/.tmp/quality/console/`.
 
-Mettre à jour ce parcours dans le même changement que toute évolution des
-commandes Showcase, de leurs paramètres ou de leurs prérequis.
+## Analyse SonarQube Cloud facultative
+
+Depuis la racine du dépôt, lancer séparément `make third-party-tests-sonar`.
+Suivre le [guide SonarQube Cloud](docs/3.application/sonarqube-cloud.md#analyse-réelle)
+pour les prérequis et la vérification du traitement distant.
