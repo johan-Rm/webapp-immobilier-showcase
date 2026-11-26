@@ -2,7 +2,7 @@
 
 - Type : consolidation
 - Date : 2026-11-26
-- État : correctif reconstitué, nouvelle suite manuelle en attente
+- État : suite complète manuelle réussie, livraison en attente
 - Session de création : `01a217b7-1feb-7220-9163-1c0926b26aa6`
 
 ## Constat
@@ -129,3 +129,7 @@ L’humain rapporte l’exécution sur `8980dca704f9dc061312fa07c4d4ae29dfd6e645
 ### Reconstitution du correctif OPS-098
 
 L’humain répond « oui » à la validation du correctif Dashboard. Le commit source `d66ba4b6d7437abcf1cc7e298e45c3aac4e58bf5` est repris en `13dcc5ebb59280094e3c691f595b6f585f66f191`. Le verdict source `81e207e` est repris en `6f96f9da538056f269c4b9342c2332e3fb5f887a`. Les deux tests Python ciblés réussissent sur la branche reconstituée. L’ancienne suite reste tracée sur son propre SHA. La nouvelle suite complète de `TEST.md` attend l’exécution humaine.
+
+### Suite complète manuelle après correction — 2026-11-26
+
+L’humain rapporte l’exécution sur `10c53a9ccc952612fc0b9743885080c192421de5`. Le journal fourni confirme 29 bilans réussis sur les 29 commandes actives de `TEST.md`, tous avec le code 0. `make internal-tests-verifiers` réussit, avec 201 tests Python exécutés. Les contrôles documentaire et dev-book et les quatre contrôles runtime réussissent également.
