@@ -14,7 +14,9 @@ Depuis la racine du dépôt, lancer `make third-party-tests-sonar`. Prérequis s
 
 Les sources sont copiées puis montées en lecture seule dans un environnement isolé. Un relais éphémère limite les connexions aux destinations Sonar Cloud UE prévues et refuse les adresses non publiques. Les fichiers temporaires et la socket sont supprimés à la fin.
 
-Le résultat « soumise » doit être confirmé dans SonarQube Cloud. L’état « non réalisée » indique un échec ou un prérequis manquant.
+Le scanner inspecte localement la copie sélectionnée et envoie un rapport contenant le code source analysé. SonarQube Cloud traite ce rapport et calcule les résultats visibles dans le tableau de bord. [Centre de confiance SonarSource](https://www.sonarsource.com/trust-center/)
+
+La sortie locale affiche le projet, la branche, le nombre de fichiers préparés, le tableau de bord et le lien de suivi de la tâche. « Analyse SonarQube soumise » confirme le dépôt du rapport. Le statut du traitement se vérifie dans SonarQube Cloud. L’affichage des résultats des branches secondaires dépend de l’abonnement. [Offres SonarQube Cloud](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans)
 
 Un journal privé par exécution reste sous `webapp/.tmp/sonarqube/` avec permissions limitées ; le token connu est masqué et le journal est tronqué à 4 Mio. Ces journaux restent sur l'hôte jusqu'à leur suppression manuelle ciblée. Leur contenu peut comprendre des métadonnées du projet. Un rapport de soumission ne prouve ni la réussite distante ni l'exhaustivité des fichiers analysés.
 

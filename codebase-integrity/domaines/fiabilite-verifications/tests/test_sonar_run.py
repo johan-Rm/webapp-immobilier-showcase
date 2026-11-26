@@ -132,8 +132,24 @@ class IsolatedScan(unittest.TestCase):
         self.fake_scanner('test -f /project/webapp/server/api/example.ts || exit 2\n'
                           'test ! -e /home/johan && test ! -e /project/.git || exit 3\n'
                           'mkdir -p /work/scanner && echo ceTaskId=fake > /work/scanner/report-task.txt')
-        result = runner.run(self.root, self.scanner, "fake-token", "org", "project", "develop")
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            result = runner.run(
+                self.root, self.scanner, "fake-token", "org", "project", "demands/DEM-017",
+                show_details=True,
+            )
+        self.assertIn("project, branche demands/DEM-017 (1 fichiers préparés)", output.getvalue())
         self.assertIn("soumise", result)
+        self.assertIn("https://sonarcloud.io/dashboard?id=project&branch=demands%2FDEM-017", result)
+        self.assertIn("https://sonarcloud.io/api/ce/task?id=fake", result)
+        self.assertNotIn("fake-token", output.getvalue() + result)
+
+    def test_report_requires_an_id_instead_of_an_arbitrary_url(self):
+        report = self.root / "scanner/report-task.txt"
+        report.parent.mkdir()
+        report.write_text("ceTaskId=https://foreign.invalid/\n")
+        self.assertIsNone(runner.report_task_id(self.root))
+        report.write_text("ceTaskId=Aa01234_-Ab\n")
+        self.assertEqual(runner.report_task_id(self.root), "Aa01234_-Ab")
 
     @unittest.skipUnless(isolated_network_available(), "isolation réseau indisponible")
     def test_no_report_does_not_claim_success(self):

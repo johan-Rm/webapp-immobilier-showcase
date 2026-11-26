@@ -79,3 +79,9 @@ Depuis la racine DevOps, les suites ciblées `test_sonar_run.py`, `test_sonar_sc
 L’humain choisit `make third-party-tests-sonar` pour l’analyse réelle. La cible réutilise les trois champs du fichier local et la détection de la branche Git. En local, elle prépare le scanner officiel si aucun scanner n’est fourni. En CI, elle utilise le scanner préparé par le workflow. Le modèle et le brouillon du guide décrivent le parcours Make. La tâche VS Code introduite par le correctif précédent est retirée.
 
 Depuis la racine DevOps, les quatre fichiers de tests Sonar déjà ciblés réussissent leurs 23 tests avec `python3 -B -m unittest`. Le nouveau cas utilise deux scripts factices et vérifie le routage Make pour le poste local, le scanner préinstallé et GitHub Actions. `bash -n webapp/scripts/quality/manual_sonar_cloud.sh` et `make -n third-party-tests-sonar` réussissent. L’essai réel de la cible reste à effectuer. Verdict humain « validé » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`, pour le correctif `b513e232b3a0106fa1266955241e1830a8261324`.
+
+## Suivi de la soumission SonarQube
+
+La sortie locale annonce le téléchargement du scanner, le projet, la branche et le nombre de fichiers préparés. Après dépôt du rapport, elle affiche le tableau de bord ciblé et le lien de suivi de la tâche SonarQube Cloud, à partir de l’identifiant lu dans le rapport. L’identifiant ne peut contenir que les caractères admis par le format attendu. Le journal détaillé reste privé.
+
+Les quatre fichiers de tests ciblés réussissent leurs 24 tests avec `python3 -B -m unittest` sur DevOps, avec scanner factice. Les cas du rapport absent, du lien symbolique, de l’identifiant non conforme et du masquage du token restent couverts. La syntaxe du lanceur Bash et le diff passent. Correctif d’affichage à vérifier humainement.
