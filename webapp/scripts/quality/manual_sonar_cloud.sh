@@ -3,12 +3,11 @@
 set -eu
 umask 077
 
-: "${SONAR_ORGANIZATION:?Renseigner SONAR_ORGANIZATION}"
-: "${SONAR_PROJECT_KEY:?Renseigner SONAR_PROJECT_KEY}"
-: "${SONAR_BRANCH:?Renseigner SONAR_BRANCH}"
 for binary in curl unzip sha256sum bwrap socat python3 git make; do
   command -v "$binary" >/dev/null || { printf 'Prérequis absent : %s\n' "$binary" >&2; exit 1; }
 done
+
+python3 -B webapp/scripts/quality/sonar_run.py --check-config
 
 scanner_temp="$(mktemp -d "${TMPDIR:-/tmp}/sonar-cli.XXXXXXXX")"
 trap 'rm -rf -- "$scanner_temp"' EXIT

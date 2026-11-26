@@ -28,6 +28,55 @@ def isolated_network_available():
     return probe.returncode == 0
 
 
+class LocalConfiguration(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        (self.root / "webapp").mkdir()
+        self.env_file = self.root / "webapp/.env"
+        self.env_file.write_text(
+            'SONAR_ORGANIZATION=local-org\nSONAR_PROJECT_KEY="local-project"\n'
+            "SONAR_TOKEN='synthetic-token'\nOTHER_SETTING=ignored\n"
+        )
+
+    def test_loads_local_settings_with_explicit_environment_priority(self):
+        self.assertEqual(runner.scanner_settings(self.root, {"SONAR_PROJECT_KEY": "override"}), {
+            "SONAR_ORGANIZATION": "local-org",
+            "SONAR_PROJECT_KEY": "override",
+            "SONAR_TOKEN": "synthetic-token",
+        })
+
+    def test_ci_uses_only_explicit_configuration_and_its_git_ref(self):
+        environment = {"GITHUB_EVENT_NAME": "push", "GITHUB_REF_NAME": "develop", "SONAR_TOKEN": "ci-token"}
+        self.assertEqual(runner.scanner_settings(self.root, environment), {
+            "SONAR_ORGANIZATION": "", "SONAR_PROJECT_KEY": "", "SONAR_TOKEN": "ci-token",
+        })
+        self.assertEqual(runner.scanner_branch(self.root, environment, None), "develop")
+        self.assertEqual(runner.scanner_branch(self.root, environment, {"branch": "feature"}), "feature")
+
+    def test_local_launcher_detects_current_branch_and_preflights_without_scanner(self):
+        branch = "demands/DEM-017-analyse-sonarqube"
+        subprocess.run(["git", "init", "-q", "-b", branch], cwd=self.root, check=True)
+        with patch.dict(os.environ, {}, clear=True), patch.object(runner, "ROOT", self.root), \
+             patch.object(runner, "run", return_value="Analyse SonarQube soumise") as scan, \
+             contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(runner.main(check_config=True), 0)
+            scan.assert_not_called()
+            self.assertEqual(runner.main(), 0)
+            self.assertEqual(scan.call_args.args[2:6], ("synthetic-token", "local-org", "local-project", branch))
+            self.assertNotIn("synthetic-token", output.getvalue())
+
+    def test_missing_local_settings_fail_preflight_without_printing_values(self):
+        self.env_file.write_text("SONAR_TOKEN=synthetic-token\n")
+        with patch.dict(os.environ, {}, clear=True), patch.object(runner, "ROOT", self.root), \
+             patch.object(runner, "run") as scan, contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(runner.main(check_config=True), 1)
+        scan.assert_not_called()
+        self.assertIn("SONAR_ORGANIZATION, SONAR_PROJECT_KEY", output.getvalue())
+        self.assertNotIn("synthetic-token", output.getvalue())
+
+
 class IsolatedScan(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
