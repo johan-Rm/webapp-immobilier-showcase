@@ -8,6 +8,20 @@ Depuis la racine du worktree concerné, la commande `make contribution-check BAS
 
 Les [conventions de contribution](../codebase-integrity/README.md#contributions) définissent les exigences applicables. Les résultats du contrôle ne remplacent pas le verdict humain.
 
+## Publication et clôture d’un espace de demande
+
+Après vérification de la cible distante, exécuter depuis la racine du dépôt
+`make demand-publication-check DEMAND=DEM-NNN TARGET=<sha-cible> HEAD=<sha-candidat>`
+en plus du contrôle de contribution. Un échec bloque la publication. Les cartes
+historiques conservées sont exemptées du nouveau contrôle de rattachement.
+
+Après preuve du squash par l’humain, confirmer que l’espace a cessé d’être
+utilisé. Depuis le dossier principal, exécuter
+`make demand-release DEMAND=DEM-NNN TARGET=<sha-develop> SQUASH=<sha-intégré>`.
+L’outil refuse les espaces verrouillés et ceux qui contiennent des changements
+ou des fichiers locaux. Il compare l’arbre attendu à celui du commit intégré
+et archive localement la tête de demande avant de libérer son espace.
+
 ## Amorçage initial
 
 L’option `--bootstrap-policy-sha` du lanceur `codebase-integrity/domaines/construction-livraison/scripts/contribution.py` permet de charger un contenu de politique explicitement approuvé lorsque la base d’intégration initiale ne porte pas encore le contrôle.

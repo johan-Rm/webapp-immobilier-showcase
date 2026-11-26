@@ -124,3 +124,15 @@ conventions-tests-docs:
 .PHONY: conventions-tests-devbook _output-conventions-tests-devbook
 conventions-tests-devbook:
 	@python3 -B codebase-integrity/commun/check_presentation.py conventions-tests-devbook -- $(MAKE) --no-print-directory _output-conventions-tests-devbook
+
+.PHONY: demand-open
+demand-open:
+	@test -n "$${DEMAND}" -a -n "$${BASE}" || { echo 'DEMAND et BASE explicites requis'; exit 1; }
+	python3 -B infra/scripts/demand_worktree.py "$${DEMAND}" --base "$${BASE}"
+
+.PHONY: demand-publication-check demand-release
+demand-publication-check:
+	python3 -B infra/scripts/demand_delivery.py publication "$${DEMAND}" --target "$${TARGET}" --head "$${HEAD}"
+
+demand-release:
+	python3 -B infra/scripts/demand_delivery.py release "$${DEMAND}" --target "$${TARGET}" --squash "$${SQUASH}"

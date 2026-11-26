@@ -68,6 +68,11 @@ def scan(cwd=None):
             warnings.append(f'Worktree inaccessible : {tree}')
             continue
         locations.extend([(tree / 'dev-book/demand', False), (tree / 'dev-book/tasks', True)])
+    active_sources = {}
+    for record in records:
+        branch = record.get('branch', '')
+        if branch.startswith('refs/heads/demands/'):
+            active_sources[branch.rsplit('/', 1)[-1]] = Path(record['worktree']) / 'dev-book/demand'
     seen = set()
     for directory, task in locations:
         if not directory.is_dir():
@@ -91,6 +96,13 @@ def scan(cwd=None):
                 (tasks if task else demands)[doc.identifier].append(doc)
             elif re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-\d+', path.name):
                 warnings.append(f'Identifiant non interprétable : {path}')
+    for identifier, directory in active_sources.items():
+        canonical = [doc for doc in demands.get(identifier, []) if doc.source.parent == directory]
+        if len(canonical) == 1:
+            demands[identifier] = [
+                doc for doc in demands[identifier]
+                if doc.source.parent != principal / 'tmp' or doc.title != canonical[0].title
+            ]
     return dict(demands), dict(tasks), warnings
 
 
