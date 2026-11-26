@@ -1,9 +1,9 @@
 # OPS-045 — Préparer le périmètre SonarQube vérifiable
 
-- Demande : DEM-017, [brouillon du principal](../../../../tmp/demande-consolidation-sonarqube.md) ; demande définitive prévue à la reconstitution.
+- Demande : DEM-017, brouillon au principal `tmp/demande-consolidation-sonarqube.md` ; demande définitive prévue à la reconstitution.
 - Session de création : 01a1fed8-cd9a-7561-9aa0-6c26f1125293
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : implémentée et commitée, à vérifier.
+- État : validée humainement.
 - Chemins autorisés : `codebase-integrity/commun/application-scope.ts`, `codebase-integrity/domaines/fiabilite-verifications/`, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, `webapp/scripts/quality/`, `infra/make/`, `Makefile`, cette carte et le brouillon du principal.
 - Dépendances : aucune.
 
@@ -23,8 +23,19 @@ Prévisualisation locale : `python3 webapp/scripts/quality/sonar_scope.py` ; 305
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite « validé » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-017, OPS-045 — Sélection, copie temporaire et prévisualisation du périmètre SonarQube.",
+  "contenu": {
+    "type": "git",
+    "valeur": "aee94c98a7c7a8da62d6f3e52a4f9b9561e5f060"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `aee94c98a7c7a8da62d6f3e52a4f9b9561e5f060`.
