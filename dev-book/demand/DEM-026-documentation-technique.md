@@ -2,7 +2,7 @@
 
 - Type : consolidation
 - Date : 2026-11-26
-- État : reconstituée, suite complète manuelle en échec
+- État : correctif reconstitué, nouvelle suite manuelle en attente
 - Session de création : `01a217b7-1feb-7220-9163-1c0926b26aa6`
 
 ## Constat
@@ -125,3 +125,7 @@ Le contrôle ciblé `make conventions-tests-docs` réussit sur la reconstitution
 ### Suite complète manuelle — 2026-11-26
 
 L’humain rapporte l’exécution sur `8980dca704f9dc061312fa07c4d4ae29dfd6e645`. Le journal fourni contient 28 bilans réussis et un échec bloquant. `make internal-tests-verifiers` retourne le code 2. Son rapport Python indique 201 tests exécutés, dont un en échec : `test_dashboard_cards_are_discovered_by_cli`. Le test attend le code 0 de `check_docs.main()` et reçoit 1. Les quatre contrôles runtime et le contrôle documentaire d’ensemble réussissent. La livraison reste bloquée.
+
+### Reconstitution du correctif OPS-098
+
+L’humain répond « oui » à la validation du correctif Dashboard. Le commit source `d66ba4b6d7437abcf1cc7e298e45c3aac4e58bf5` est repris en `13dcc5ebb59280094e3c691f595b6f585f66f191`. Le verdict source `81e207e` est repris en `6f96f9da538056f269c4b9342c2332e3fb5f887a`. Les deux tests Python ciblés réussissent sur la branche reconstituée. L’ancienne suite reste tracée sur son propre SHA. La nouvelle suite complète de `TEST.md` attend l’exécution humaine.
