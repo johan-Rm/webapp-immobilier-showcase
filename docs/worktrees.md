@@ -55,6 +55,20 @@ la couche. Un conteneur arrêté reste visible ; un projet absent et un daemon
 inaccessible sont distingués. Les conteneurs portant un nom de projet personnalisé
 hors de cette convention ne sont pas attribués automatiquement à une couche.
 
+## Espaces documentaires de demande
+
+À l’ouverture, résoudre la base locale sur `develop` et lancer
+`make demand-open DEMAND=DEM-NNN BASE=<sha-develop>`. La commande réserve
+l’identifiant localement et ouvre l’espace dédié sous `worktree/`. Les couches
+gardent leurs espaces techniques. L’espace documentaire ne démarre aucun
+service et ne prépare aucun secret.
+
+Consigner les étapes terminées dans le journal par des commits locaux.
+Voir le [contrôle des contributions](controle-contributions.md#publication-et-clôture-dun-espace-de-demande)
+pour les contrôles de publication, la preuve du squash et l’archivage local.
+
+## Environnements de test et couches
+
 Le mode test démarre le service `app-test` du Compose commun, avec une image préparée depuis la couche et un port propre à celle-ci.
 
 Depuis le worktree affecté :
