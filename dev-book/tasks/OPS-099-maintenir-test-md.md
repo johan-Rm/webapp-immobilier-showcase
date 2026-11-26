@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : `layers/devops`
 - Worktree : `worktree/devops`
-- État : implémentée et commitée, à vérifier
+- État : validée humainement, à reconstituer
 - Chemins autorisés : `AGENTS.md`, `TEST.md` et cette carte.
 - Dépendances : aucune dépendance de réalisation.
 
@@ -31,4 +31,15 @@ La revue humaine vérifie la concordance de la règle et de la recette avec le c
 
 ## Verdict humain
 
-En attente de vérification à l’étape 04.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-027, carte OPS-099 et contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "2d9f85a6009640ad361dcbfb78e0f9032ce19306"
+  }
+}
+```
+
+Verdict formulé dans le chat le 26 novembre 2026 dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`. La suite manuelle reste à exécuter après reconstitution.
