@@ -14,13 +14,14 @@ import stat
 import subprocess
 import sys
 import tempfile
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 
 from sonar_scope import ROOT, copy_selection, select
 from sonar_git_preview import build_filtered_git, git
 from sonar_egress import start_relay
 
 
+SONAR_URL = "https://sonarcloud.io"
 SONAR_IDENTIFIER = re.compile(r"[A-Za-z0-9_.:/-]+")
 SONAR_SETTINGS = ("SONAR_ORGANIZATION", "SONAR_PROJECT_KEY", "SONAR_TOKEN")
 
@@ -67,7 +68,7 @@ def run_logged(command: list[str], env: dict[str, str], root: Path, token: str) 
         return result, log_path
 
 
-def has_report(work: Path) -> bool:
+def report_task_id(work: Path) -> str | None:
     try:
         directory = os.open(work, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
         try:
@@ -75,19 +76,21 @@ def has_report(work: Path) -> bool:
             try:
                 descriptor = os.open("report-task.txt", os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=scanner)
                 with os.fdopen(descriptor, "rb") as report:
-                    return stat.S_ISREG(os.fstat(report.fileno()).st_mode) and bool(
-                        re.search(rb"(?m)^ceTaskId=\S+", report.read(65536))
-                    )
+                    if not stat.S_ISREG(os.fstat(report.fileno()).st_mode):
+                        return None
+                    task = re.search(rb"(?m)^ceTaskId=([A-Za-z0-9_-]{1,128})\r?$", report.read(65536))
+                    return task[1].decode("ascii") if task else None
             finally:
                 os.close(scanner)
         finally:
             os.close(directory)
     except OSError:
-        return False
+        return None
 
 
 def run(root: Path, scanner: Path, token: str, organization: str, project: str, branch: str,
-        pull_request: dict[str, str] | None = None, use_relay: bool = False) -> str:
+        pull_request: dict[str, str] | None = None, use_relay: bool = False,
+        show_details: bool = False) -> str:
     if not token:
         return "Analyse SonarQube non réalisée : token absent."
     if not all(SONAR_IDENTIFIER.fullmatch(value or "") for value in (organization, project, branch)):
@@ -139,7 +142,7 @@ def run(root: Path, scanner: Path, token: str, organization: str, project: str, 
             command += ["--dir", "/run", "--ro-bind", str(proxy_socket), "/run/sonar-egress.sock"]
         scanner_command = [
             "/opt/sonar/bin/sonar-scanner", "-Dsonar.projectBaseDir=/project", "-Dsonar.sources=.",
-            "-Dsonar.working.directory=/work/scanner", "-Dsonar.host.url=https://sonarcloud.io",
+            "-Dsonar.working.directory=/work/scanner", f"-Dsonar.host.url={SONAR_URL}",
             "-Dsonar.sca.enabled=false", "-Dsonar.exclusions=**/.git/**",
             f"-Dsonar.organization={organization}", f"-Dsonar.projectKey={project}",
         ]
@@ -159,11 +162,29 @@ def run(root: Path, scanner: Path, token: str, organization: str, project: str, 
             command += ["/bin/sh", "-c", launcher, "sonar-relay", *scanner_command]
         else:
             command += scanner_command
+        token_forms = {token, quote(token, safe=""), base64.b64encode(token.encode()).decode("ascii")}
+        show_target = show_details and not any(
+            secret in value for secret in token_forms for value in (project, branch)
+        )
+        if show_target:
+            print(
+                f"SonarQube : analyse locale de {project}, branche {branch} "
+                f"({len(manifest)} fichiers préparés).",
+                flush=True,
+            )
         with start_relay(proxy_socket) if use_relay else nullcontext():
             result, log_path = run_logged(command, env, root, token)
-        if result or not has_report(work):
+        task_id = report_task_id(work) if not result else None
+        if not task_id:
             return f"Analyse SonarQube non réalisée : échec technique ou rapport absent. Journal privé : {log_path}"
-        return f"Analyse SonarQube soumise ; traitement et résultat distants non vérifiés. Journal privé : {log_path}"
+
+        summary = f"Analyse SonarQube soumise. Traitement distant à vérifier. Journal privé : {log_path}"
+        if show_target:
+            dashboard = urlencode({"id": project, "branch": branch})
+            summary += f"\nTableau de bord : {SONAR_URL}/dashboard?{dashboard}"
+            if not any(secret in task_id for secret in token_forms):
+                summary += f"\nSuivi du traitement : {SONAR_URL}/api/ce/task?id={task_id}"
+        return summary
 
 
 def scanner_settings(root: Path, environment: dict[str, str]) -> dict[str, str]:
@@ -228,7 +249,10 @@ def main(check_config: bool = False) -> int:
                 return 1
             return 0
         scanner = Path(os.environ.get("SONAR_SCANNER_HOME", "/nonexistent"))
-        result = run(ROOT, scanner, settings["SONAR_TOKEN"], organization, project, branch, pull_request, use_relay=True)
+        result = run(
+            ROOT, scanner, settings["SONAR_TOKEN"], organization, project, branch, pull_request,
+            use_relay=True, show_details=not event,
+        )
         print(result)
         return 0 if result.startswith("Analyse SonarQube soumise") else 1
     except (OSError, ValueError, KeyError, subprocess.SubprocessError):
