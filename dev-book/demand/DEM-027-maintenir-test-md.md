@@ -1,7 +1,7 @@
 # DEM-027 — Tenir TEST.md à jour lors des changements de tests CI/CD
 
 - Type : consolidation
-- État : cadrage confirmé, analyse à engager
+- État : validée humainement, à reconstituer
 - Session de création : 01a211b5-0ab6-7733-9516-b83103d91b22
 - Branche : `demands/DEM-027`
 - Espace documentaire : `worktree/DEM-027`
@@ -30,3 +30,7 @@ Le périmètre est documentaire. Les workflows et les contrôles automatisés so
 
 - Quels documents, consignes et usages de revue couvrent déjà la maintenance de `TEST.md` ?
 - Où faire apparaître la vérification en revue de PR pour qu’elle soit visible sans dupliquer la règle ?
+
+## Verdict humain
+
+Le 26 novembre 2026, l’humain a répondu « validé » au périmètre présenté pour OPS-099, unique carte de la demande, au commit `2d9f85a6009640ad361dcbfb78e0f9032ce19306`. Le verdict structuré est porté par `dev-book/tasks/OPS-099-maintenir-test-md.md` sur `layers/devops`, dans le commit `715c3a56fd0684babe0a15d8de6b94737078e363`. La suite manuelle de `TEST.md` reste à exécuter après reconstitution.
