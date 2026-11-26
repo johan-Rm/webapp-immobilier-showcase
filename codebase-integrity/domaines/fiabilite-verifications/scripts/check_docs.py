@@ -320,14 +320,16 @@ def main():
         paths = [Path(os.fsdecode(name)) for name in output.split(b'\0') if name]
         from check_readmes import check_readmes
         readme_errors, readme_count = check_readmes(root, paths)
-        # Les liens hors README conservent leur adoption bornée.
+        tree_errors, tree_notices = check_documentation_tree(root, paths)
+        # Les liens hors README et hors guides conservent leur adoption bornée.
         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
-            'README.md', 'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
+            'README.md', 'AGENTS.md', 'codebase-integrity/README.md',
             'worktree/README.md', 'dev-book/README.md', *ROOT_GUIDES) or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)
-        errors.extend(readme_errors)
+        errors.extend(readme_errors + tree_errors)
+        notices = sorted(set(notices + tree_notices))
     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f'Contrôle documentaire impossible : {exc}', file=sys.stderr)
         return 1

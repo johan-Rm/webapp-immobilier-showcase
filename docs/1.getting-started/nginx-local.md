@@ -2,13 +2,13 @@
 
 > Préparer les piles serveur locales et distinguer les vérifications de configuration des tests HTTP isolés.
 
-Les [conventions d’infrastructure](../infra/README.md#conventions-techniques) définissent les exigences de routage et de vérification.
+Les [conventions d’infrastructure](../../infra/README.md#conventions-techniques) définissent les exigences de routage et de vérification.
 
 ## Configuration des hôtes
 
 Le gabarit `infra/nginx/vhost.conf` est rendu au démarrage par `19-local-vhosts.sh`. Une valeur vide de `AIDE_LAYER` sélectionne le principal ; les valeurs `web`, `bff`, `domaine` et `devops` sélectionnent leurs piles. La lane Dashboard possède sa composition de développement séparée.
 
-Le rendu utilise les variables des hôtes et de la correspondance Dashboard ; les expressions Nginx sont conservées. Compose calcule les URL SSR depuis `AIDE_LAYER` et `PUBLIC_PORT`, indépendamment des valeurs `SITE_URL` et `PUBLIC_HOST` d’un fichier `.env`. Les [accès par pile](2.architecture/14.site-layers.md#construire-et-déployer) permettent de choisir les URL et ports adaptés.
+Le rendu utilise les variables des hôtes et de la correspondance Dashboard ; les expressions Nginx sont conservées. Compose calcule les URL SSR depuis `AIDE_LAYER` et `PUBLIC_PORT`, indépendamment des valeurs `SITE_URL` et `PUBLIC_HOST` d’un fichier `.env`. Les [accès par pile](../2.architecture/14.site-layers.md#construire-et-déployer) permettent de choisir les URL et ports adaptés.
 
 ## Vérifications de configuration et tests HTTP
 
@@ -18,7 +18,7 @@ Ajouter `--showcase-image <image-locale> --client2-image <image-locale>` pour te
 
 ## Activer le Dashboard serveur
 
-L’extension `infra/docker/docker-compose.dashboard.yml` active le service et le domaine `dashboard.<suffixe>.localhost` sur le port public de la pile, avec ses données privées séparées. Préparer le volume publié selon la [procédure de projection](3.application/scripts-application.md#projection-publiée-saas--client-2).
+L’extension `infra/docker/docker-compose.dashboard.yml` active le service et le domaine `dashboard.<suffixe>.localhost` sur le port public de la pile, avec ses données privées séparées. Préparer le volume publié selon la [procédure de projection](../3.application/scripts-application.md#projection-publiée-saas--client-2).
 
 Depuis la racine, lancer `make dev-dashboard-ssr BUILD=1`, puis `make dev-check-dashboard-ssr`. Dans une couche, utiliser son environnement et son port isolés. Les commandes à deux sites restent disponibles sans réécriture des fichiers `.env` par l’extension.
 
@@ -26,7 +26,7 @@ Depuis la racine, lancer `make dev-dashboard-ssr BUILD=1`, puis `make dev-check-
 
 Pour vérifier l’extension dans les cinq piles, lancer `python3 infra/nginx/test-local-vhosts.py --dashboard`. Fournir les trois options `--showcase-image`, `--client2-image` et `--dashboard-image` pour les tests HTTP isolés avec images locales. Une activation invalide est refusée avant démarrage.
 
-Les endpoints SaaS et la synchronisation des articles sont des dépendances distinctes ; l’accès à l’interface ne simule pas leur réussite. Le [document d’utilisation SaaS](1.getting-started/dashboard-saas.md) précise les parcours et leurs limites.
+Les endpoints SaaS et la synchronisation des articles sont des dépendances distinctes ; l’accès à l’interface ne simule pas leur réussite. Le [document d’utilisation SaaS](dashboard-saas.md) précise les parcours et leurs limites.
 
 ## Développement du Dashboard
 

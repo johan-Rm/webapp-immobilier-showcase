@@ -18,3 +18,5 @@ Cette section couvre la configuration Tailwind, le système de tokens, les palet
 - Les classes `dark:` Tailwind ne sont pas utilisées — le système repose sur des variables CSS pilotées par sélecteurs CSS (`:root`, `.dark`, `.theme-kasbah`).
 - `themes.yaml` est l'unique source de vérité pour les couleurs et polices.
 - `useDesignSystem()` est le seul point d'entrée pour modifier le thème actif à l'exécution.
+
+- [🎨 Design System — Définition](references/design-system-definitions-blueprint.md)

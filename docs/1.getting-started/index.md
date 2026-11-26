@@ -14,3 +14,9 @@ et workflow des assistants IA.
   gouvernance, dans quel ordre, et comment ils livrent.
 
 - [Médias préprod VPS](preprod-media-vps.md) : montages, Nginx et validation des uploads.
+
+- [Utiliser et exploiter le dashboard SaaS](dashboard-saas.md)
+
+- [Nginx local](nginx-local.md)
+
+- [Worktrees de couche](worktrees.md)

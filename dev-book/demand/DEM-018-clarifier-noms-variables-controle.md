@@ -30,7 +30,7 @@ Branche `demands/DEM-018` depuis `develop` local à `c5a81ce0dc163a9f3918ec3ed8d
 | Correctif de format | `0e1175f49758f93a68995333c5854230ed0e0e8b` | `a6c7f5be058d12de077b7275f9c66bc864252525` |
 | Verdict du correctif | `c1b49355878fb7178ae80add2e2a03c929d2ebc1` | `9ccce00fb81fada9055ecef7f9a59c304f421203` |
 
-Le brouillon approuvé d’OPS-092 est intégré au [guide des contrôles](../../docs/executer-controles.md#nommage-des-commandes). La vérification d’absence des anciens noms porte sur les fichiers suivis hors journal historique. Commande de clôture depuis la racine après le commit documentaire, avec code retour 1 et sortie vide attendus :
+Le brouillon approuvé d’OPS-092 est intégré au [guide des contrôles](../../docs/controles/executer-controles.md#nommage-des-commandes). La vérification d’absence des anciens noms porte sur les fichiers suivis hors journal historique. Commande de clôture depuis la racine après le commit documentaire, avec code retour 1 et sortie vide attendus :
 
 ```bash
 git grep -n -E '(^|[^[:alnum:]_]|\\[nrt])(PLAYWRIGHT_BASE_URL|QUALITY_(BASE_URL|FIXTURE_PORT|BROWSER_FIXTURES|MEDIA_FIXTURES|LOAD_PROFILE|ROUTE|PROJECT_ID|ARTICLE_ID|SESSION_FILE|MUTATION_FILES|MUTATION_PILOT|CONTAINER|UID|GID|REPO_ROOT|GIT_COMMON_DIR|COMPOSE|DOCKER|INFO|DOTENV_PROBE))([^[:alnum:]_]|$)' HEAD -- ':!dev-book'

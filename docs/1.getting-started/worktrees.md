@@ -11,7 +11,7 @@ make worktree-list
 
 Le créateur ne lance pas de services et ne copie aucun secret. Une relance réutilise la branche déjà sortie et conserve les fichiers. Les dossiers occupés ou étrangers sont refusés.
 
-Le routage des missions est défini dans [AGENTS.md](../AGENTS.md#conventions-de-workflow).
+Le routage des missions est défini dans [AGENTS.md](../../AGENTS.md#conventions-de-workflow).
 
 Depuis la racine, sans changer de dossier :
 
@@ -28,7 +28,7 @@ make tasks DEM-006
 ```
 
 Les commandes de services ciblent le worktree Git enregistré de la couche déclarée
-selon [la configuration des couches](../infra/config/layers.json). `up` démarre le
+selon [la configuration des couches](../../infra/config/layers.json). `up` démarre le
 serveur avec rechargement automatique ; `rebuild` reconstruit et recrée ce service.
 Un environnement absent ou incohérent provoque un diagnostic avec la préparation
 à lancer : aucune création automatique. Une seule action et un seul argument sont
@@ -64,10 +64,8 @@ gardent leurs espaces techniques. L’espace documentaire ne démarre aucun
 service et ne prépare aucun secret.
 
 Consigner les étapes terminées dans le journal par des commits locaux.
-Voir le [contrôle des contributions](controle-contributions.md#publication-et-clôture-dun-espace-de-demande)
+Voir le [contrôle des contributions](../controles/controle-contributions.md#publication-et-clôture-dun-espace-de-demande)
 pour les contrôles de publication, la preuve du squash et l’archivage local.
-
-## Environnements de test et couches
 
 Le mode test démarre le service `app-test` du Compose commun, avec une image préparée depuis la couche et un port propre à celle-ci.
 
@@ -106,7 +104,7 @@ compare leurs réponses et écritures, puis arrête ses conteneurs. Il conserve 
 en cas d’échec pour diagnostic et le supprime en cas de succès.
 
 Les deux sites SSR d’une couche utilisent son même port public isolé, distingués
-par les domaines du [guide des layers](2.architecture/14.site-layers.md).
+par les domaines du [guide des layers](../2.architecture/14.site-layers.md).
 `make dev-check-ssr` découvre ce port auprès du Nginx de la pile courante.
 
 Pour le SSR, après `lane-env` et `lane-setup`, lancer depuis le worktree affecté :
@@ -135,7 +133,7 @@ et le service `webapp-localhost`.
 
 La composition Dashboard démarre uniquement Nuxt et Nginx ; sa configuration de
 proxy relaie les WebSockets, conserve le Host et refuse les autres hôtes (421).
-Les URL sont dans le [guide des sites](2.architecture/14.site-layers.md#construire-et-déployer).
+Les URL sont dans le [guide des sites](../2.architecture/14.site-layers.md#construire-et-déployer).
 Les sorties `dashboard/.nuxt`, `dashboard/.output`, les caches et sessions locaux
 sont vérifiés contre les liens symboliques avant préparation ou démarrage.
 `lane-env LAYER=dashboard` prépare ces destinations et conserve tout `.env` existant.

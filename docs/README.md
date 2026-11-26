@@ -2,7 +2,8 @@
 
 ## Rôle et responsabilités
 
-- Conserver les **explications durables** du projet.
+- Décrire l’**architecture**, le fonctionnement des fonctionnalités, leurs responsabilités, flux, contrats et règles métier.
+- Conserver les guides durables de démarrage, d’exploitation et de vérification. Le dev-book porte les demandes, les plans ponctuels, les preuves et les verdicts.
 - Définir les **conventions de rédaction** et leur périmètre.
 - Expliquer les sujets avec **pédagogie et concision**.
 
@@ -68,7 +69,10 @@ Le **contrôle déterministe** vérifie la forme des README ; la **relecture hum
 
 ### Autres documents
 
-La **documentation du projet** explique les standards et leur mise en œuvre.
+La **documentation du projet** explique les standards et leur mise en œuvre. Rédiger au présent et à la voix active, mettre à jour les explications avec le code et illustrer les flux lorsque cela aide le lecteur.
 
-- Le contrôle des **liens et de la structure** des autres documents porte sur la gouvernance, les modèles, les demandes et les cartes.
+- Réserver les fichiers de la racine documentaire au README et à l’index.
+- Ranger chaque document dans une thématique, relier les thématiques depuis le sommaire principal et répertorier les pages dans le sommaire de leur thématique.
+
+- Le contrôle documentaire bloque les fichiers inattendus à la racine documentaire, les pages absentes des sommaires et les liens locaux invalides. Les métadonnées, les ressources, les README et les sommaires sont dispensés d’une entrée comme page de sujet. La relecture humaine apprécie la durabilité du contenu.
 - Toute évolution des **règles ou du périmètre de contrôle** passe par une consolidation explicite.

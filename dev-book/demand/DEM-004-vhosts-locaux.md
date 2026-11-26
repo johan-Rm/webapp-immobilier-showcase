@@ -25,7 +25,7 @@ Actualiser configurations, sondes et documentation active ; conserver les traces
 
 Créer seulement le dossier vide `worktree/design`, sans couche configurée, branche,
 pile Docker ni vhost design. Git ne transporte pas ce dossier vide ; sa présence
-locale et cette limite sont décrites dans le [guide des worktrees](../../docs/worktrees.md).
+locale et cette limite sont décrites dans le [guide des worktrees](../../docs/1.getting-started/worktrees.md).
 Aucun changement sur VPS, préproduction distante ou production. Préserver les .env,
 les données et les services utilisateur. Aucune question de besoin ouverte.
 
