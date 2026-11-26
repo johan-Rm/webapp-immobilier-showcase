@@ -1,9 +1,9 @@
 # OPS-046 — Raccorder l’analyse SonarQube et présenter ses limites
 
-- Demande : DEM-017, [brouillon du principal](../../../../tmp/demande-consolidation-sonarqube.md) ; demande définitive prévue à la reconstitution.
+- Demande : DEM-017, brouillon au principal `tmp/demande-consolidation-sonarqube.md` ; demande définitive prévue à la reconstitution.
 - Session de création : 01a1fed8-cd9a-7561-9aa0-6c26f1125293
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
-- État : implémentée et commitée, à vérifier.
+- État : validée humainement.
 - Chemins autorisés : `.github/workflows/sonarqube.yml`, `sonar-project.properties`, `webapp/scripts/quality/`, `codebase-integrity/domaines/fiabilite-verifications/`, `codebase-integrity/README.md`, `codebase-integrity/conventions.json`, `infra/make/`, `Makefile`, `dev-book/reports/sonarqube-documentation.md`, `docs/3.application/sonarqube-cloud.md`, `docs/executer-controles.md`, cette carte et le brouillon du principal. Le rapport prépare la documentation à intégrer à la reconstitution.
 - Dépendances : commit OPS-045 `aee94c98a7c7a8da62d6f3e52a4f9b9561e5f060` présent dans cette couche.
 
@@ -49,8 +49,19 @@ Contrôle négatif local avec scanner absent et token factice : message « analy
 
 ## Verdict humain
 
-Aucun verdict humain.
+Verdict explicite « validé » dans la session `01a211b5-0ab6-7733-9516-b83103d91b22`.
+
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-017, OPS-046 — Raccordement local et CI, confinement et preuves sur scanner simulé et relais factice. Scanner officiel, exécution GitHub et réglages distants à vérifier. Le Git filtré conserve des métadonnées et l’historique des fichiers retenus. Les PR du même dépôt sont traitées comme fiables.",
+  "contenu": {
+    "type": "git",
+    "valeur": "f2408017336398fb53fe42accb84597186a96912"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation examinée : `f2408017336398fb53fe42accb84597186a96912`.
