@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain
 - Chemins autorisés : codebase-integrity/README.md, codebase-integrity/domaines/construction-livraison/, infra/scripts/, infra/tests/, infra/make/Makefile.ai-development-engineering, docs/controle-contributions.md, `dev-book/tasks/OPS-095-controler-contribution-et-cloture.md`
 - Dépendances : OPS-094 : 598226c3f010d8b5b6f4edc0d0b48ee09246bebe (contrat des espaces documentaires).
 
@@ -24,7 +24,20 @@ Contrôles locaux de publication et de clôture, exercés en dépôts Git tempor
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-020, carte OPS-095, contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "0b3074d724406a5af5073ee2aae8ca1d851e8d80"
+  }
+}
+```
+
+Verdict global formulé dans le chat le 26 novembre 2026 : « validé ».
+
+Écart présenté lors de la vérification : une réservation distante déjà connue peut passer le contrôle avant publication si son document est absent de la cible.
 
 ## Commits
 

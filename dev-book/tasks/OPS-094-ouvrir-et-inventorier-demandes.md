@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain
 - Chemins autorisés : infra/scripts/, infra/make/Makefile.ai-development-engineering, infra/tests/, `dev-book/tasks/OPS-094-ouvrir-et-inventorier-demandes.md`
 - Dépendances : Règle OPS-093 à appliquer. Aucune dépendance de code.
 
@@ -24,7 +24,18 @@ Commande `make demand-open DEMAND=DEM-NNN BASE=<sha-develop>`. Tests locaux sans
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-020, carte OPS-094, contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "598226c3f010d8b5b6f4edc0d0b48ee09246bebe"
+  }
+}
+```
+
+Verdict global formulé dans le chat le 26 novembre 2026 : « validé ».
 
 ## Commits
 

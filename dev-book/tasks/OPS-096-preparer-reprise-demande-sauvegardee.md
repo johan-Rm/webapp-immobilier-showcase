@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain
 - Chemins autorisés : dev-book/runbooks/, `dev-book/tasks/OPS-096-preparer-reprise-demande-sauvegardee.md`
 - Dépendances : OPS-094 : `598226c3f010d8b5b6f4edc0d0b48ee09246bebe` pour la réservation. La clôture ne fait pas partie de la reprise. Reprise effective après adoption de la convention.
 
@@ -24,7 +24,18 @@ Procédure dans [Reprendre une demande sauvegardée](../runbooks/2026-11-26-repr
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-020, carte OPS-096, contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "c9cf53c0db96b406dc0c1cb750e06c37b3eb7718"
+  }
+}
+```
+
+Verdict global formulé dans le chat le 26 novembre 2026 : « validé ».
 
 ## Commits
 

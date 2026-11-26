@@ -8,7 +8,7 @@
 - Couche : devops
 - Branche : layers/devops
 - Worktree : worktree/devops
-- État : implémentée et commitée, à vérifier
+- État : validée par l’humain
 - Chemins autorisés : AGENTS.md, docs/worktrees.md, docs/1.getting-started/ai-workflow.md, `dev-book/tasks/OPS-093-documenter-journal-demandes.md`
 - Dépendances : Aucune.
 
@@ -24,7 +24,18 @@ Règle de gouvernance et brouillon documentaire intégrés au commit initial. Le
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-020, carte OPS-093, contenu présenté à la vérification du 26 novembre 2026. Commit initial cf791bdebe9e26892087a742fa30264529891080 inclus.",
+  "contenu": {
+    "type": "git",
+    "valeur": "564ccfb3c39759cfedbf2d3ba3c9dc5e174ef464"
+  }
+}
+```
+
+Verdict global formulé dans le chat le 26 novembre 2026 : « validé ».
 
 ## Commits
 
