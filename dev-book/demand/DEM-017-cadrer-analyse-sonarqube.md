@@ -1,7 +1,7 @@
 # DEM-017 — Cadrer l’analyse SonarQube
 
 - Type : consolidation
-- État : reconstituée, suite complète à vérifier.
+- État : reconstituée, suite complète réussie.
 - Session de création : 01a1ee70-2dc4-7331-992b-b24155dfd09a
 - Sessions intervenantes : 01a1fed8-cd9a-7561-9aa0-6c26f1125293, 01a211b5-0ab6-7733-9516-b83103d91b22
 
@@ -46,7 +46,7 @@ Après reprise du correctif Make, les 23 tests ciblés passent sur le principal,
 
 ### Suite complète manuelle
 
-La suite complète attend le retour humain sur le HEAD final de `demands/DEM-017-analyse-sonarqube`, après les commits documentaires. Suivre [TEST.md](../../TEST.md) depuis la racine du dépôt principal. Les 29 commandes actives doivent réussir.
+Le 26 novembre 2026, l’exécution manuelle de [TEST.md](../../TEST.md) dans le dépôt principal sur `bb201e7389a1df42716e05c8a0077bc64b104484` a réussi. Les 29 rapports locaux concordent avec le journal transmis et indiquent tous un code de sortie `0`.
 
 ### Essai réel SonarQube du 26 novembre 2026
 
