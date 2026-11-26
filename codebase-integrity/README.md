@@ -13,6 +13,7 @@
 Les contributions respectent leur **boucle de travail**, leur **périmètre** et la **traçabilité des validations**.
 
 - **Branches** : l’intégration utilise `develop` et la production `master`. Toute contribution utilise une branche dédiée.
+- **Journal des demandes** : vérifier les collisions d’identifiant et le rattachement des nouvelles cartes avant publication. Préserver les cartes historiques. Vérifier le changement effectivement intégré et conserver une archive locale avant de libérer un espace de demande.
 - **Type de demande** : chaque demande déclare un seul type, `développement` ou `consolidation`.
 - **Traçabilité des commits** : une carte validée produit un commit `type(CARTE-NNN): résultat`, avec `Demande : DEM-NNN` dans le corps. Le scope `DEM-NNN` est réservé aux traces documentaires de type `docs`.
 - **Protection des contrôles** : une contribution de développement ne modifie pas l’outillage Codebase Integrity. Les modifications des conventions et des contrôles passent par une consolidation.
