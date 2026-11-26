@@ -2,7 +2,7 @@
 
 - Type : consolidation
 - Date : 2026-11-26
-- État : reconstituée, suite complète manuelle en attente
+- État : reconstituée, suite complète manuelle en échec
 - Session de création : `01a217b7-1feb-7220-9163-1c0926b26aa6`
 
 ## Constat
@@ -120,3 +120,8 @@ Le contrôle ciblé `make conventions-tests-docs` réussit sur la reconstitution
   "sans_correction": ""
 }
 ```
+
+
+### Suite complète manuelle — 2026-11-26
+
+L’humain rapporte l’exécution sur `8980dca704f9dc061312fa07c4d4ae29dfd6e645`. Le journal fourni contient 28 bilans réussis et un échec bloquant. `make internal-tests-verifiers` retourne le code 2. Son rapport Python indique 201 tests exécutés, dont un en échec : `test_dashboard_cards_are_discovered_by_cli`. Le test attend le code 0 de `check_docs.main()` et reçoit 1. Les quatre contrôles runtime et le contrôle documentaire d’ensemble réussissent. La livraison reste bloquée.
