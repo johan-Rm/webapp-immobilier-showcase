@@ -3,7 +3,7 @@
 - Type : consolidation
 - Session de création : 01a1fee3-80c9-7002-97e7-f1b8be1aee50
 - Session intervenante : 01a2175b-509d-76f2-8a98-746661b2e1fa
-- État : reconstituée, suite complète manuelle en attente
+- État : reconstituée, suite complète manuelle réussie
 
 ## Besoin et décisions
 
@@ -88,5 +88,10 @@ Les six cherry-picks ont produit le même arbre que la couche source avant
 l’intégration des brouillons documentaires validés. Les 15 tests ciblés
 (`python3 -B -m unittest discover -s infra/tests -p 'test_demand*.py'`),
 `make conventions-tests-docs` et `make conventions-tests-devbook` ont réussi
-dans le principal. Suite complète manuelle selon [TEST.md](../../TEST.md)
-en attente sur le commit documentaire de reconstitution.
+dans le principal.
+
+Le 26 novembre 2026, l’humain a exécuté la suite complète de
+[TEST.md](../../TEST.md) et confirmé le SHA testé
+`66fdb75fa039363c5018b7693faa7f169e35016a` par `git rev-parse HEAD`.
+Le journal transmis contient 29 bilans réussis, avec un code de sortie 0
+pour chacun, dont navigateur, charge et Lighthouse desktop et mobile.
