@@ -20,7 +20,7 @@
 
 ## Réalisation et preuves
 
-Règle locale et brouillon documentaire intégrés au commit de cette carte.
+Règle de gouvernance et brouillon documentaire intégrés au commit initial. Le correctif retire la mention nominative du projet et réserve toute modification des fichiers `AGENTS.md` aux demandes de consolidation.
 
 ## Verdict humain
 
