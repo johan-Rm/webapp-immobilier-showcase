@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run a separately provisioned scanner against a filtered, confined snapshot."""
 
+import argparse
 import base64
 import hashlib
 from contextlib import nullcontext
@@ -18,6 +19,10 @@ from urllib.parse import quote
 from sonar_scope import ROOT, copy_selection, select
 from sonar_git_preview import build_filtered_git, git
 from sonar_egress import start_relay
+
+
+SONAR_IDENTIFIER = re.compile(r"[A-Za-z0-9_.:/-]+")
+SONAR_SETTINGS = ("SONAR_ORGANIZATION", "SONAR_PROJECT_KEY", "SONAR_TOKEN")
 
 
 def create_log(root: Path) -> tuple[int, Path]:
@@ -85,7 +90,7 @@ def run(root: Path, scanner: Path, token: str, organization: str, project: str, 
         pull_request: dict[str, str] | None = None, use_relay: bool = False) -> str:
     if not token:
         return "Analyse SonarQube non réalisée : token absent."
-    if not all(re.fullmatch(r"[A-Za-z0-9_.:/-]+", value or "") for value in (organization, project, branch)):
+    if not all(SONAR_IDENTIFIER.fullmatch(value or "") for value in (organization, project, branch)):
         return "Analyse SonarQube non réalisée : configuration absente ou invalide."
     bwrap = shutil.which("bwrap")
     if not bwrap or (use_relay and not shutil.which("socat")) or not scanner.is_dir() or not (scanner / "bin/sonar-scanner").is_file():
@@ -161,19 +166,49 @@ def run(root: Path, scanner: Path, token: str, organization: str, project: str, 
         return f"Analyse SonarQube soumise ; traitement et résultat distants non vérifiés. Journal privé : {log_path}"
 
 
-def main() -> int:
-    token = os.environ.get("SONAR_TOKEN", "")
-    if not token and (ROOT / "webapp/.env").is_file():
-        try:
-            for line in (ROOT / "webapp/.env").read_text().splitlines():
-                key, separator, value = line.partition("=")
-                if separator and key.strip() == "SONAR_TOKEN":
-                    token = value.strip().strip("\"'")
-        except OSError:
-            print("Analyse SonarQube non réalisée : lecture du token impossible.")
-            return 1
-    scanner = Path(os.environ.get("SONAR_SCANNER_HOME", "/nonexistent"))
+def scanner_settings(root: Path, environment: dict[str, str]) -> dict[str, str]:
+    settings = {name: environment.get(name, "") for name in SONAR_SETTINGS}
+    if environment.get("GITHUB_EVENT_NAME") or all(settings.values()):
+        return settings
+
     try:
+        lines = (root / "webapp/.env").read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return settings
+
+    local = {}
+    for line in lines:
+        key, separator, value = line.partition("=")
+        key = key.strip()
+        if separator and key in settings:
+            local[key] = value.strip().strip("\"'")
+    return {name: value or local.get(name, "") for name, value in settings.items()}
+
+
+def scanner_branch(root: Path, environment: dict[str, str], pull_request: dict[str, str] | None) -> str:
+    if pull_request:
+        return pull_request["branch"]
+    explicit = environment.get("SONAR_BRANCH", "")
+    if explicit:
+        return explicit
+    event = environment.get("GITHUB_EVENT_NAME")
+    if event:
+        return environment.get("GITHUB_REF_NAME", "") if event == "push" else ""
+    branch = subprocess.run(
+        ["git", "symbolic-ref", "--quiet", "--short", "HEAD"],
+        cwd=root, capture_output=True, text=True, check=False,
+    )
+    return branch.stdout.strip() if branch.returncode == 0 else ""
+
+
+def main(check_config: bool = False) -> int:
+    try:
+        settings = scanner_settings(ROOT, os.environ)
+        missing = [name for name, value in settings.items() if not value]
+        if missing:
+            source = "la configuration GitHub" if os.environ.get("GITHUB_EVENT_NAME") else "webapp/.env"
+            print(f"Analyse SonarQube non réalisée : renseigner {', '.join(missing)} dans {source}.")
+            return 1
         event = os.environ.get("GITHUB_EVENT_NAME", "")
         pull_request = None
         if event == "pull_request":
@@ -181,8 +216,19 @@ def main() -> int:
                 "key": "SONAR_PR_KEY", "head": "SONAR_PR_HEAD_SHA", "base": "SONAR_PR_BASE_SHA",
                 "branch": "SONAR_PR_BRANCH", "base_branch": "SONAR_PR_BASE_BRANCH",
             }.items()}
-        branch = pull_request["branch"] if pull_request else os.environ.get("SONAR_BRANCH", "") or (os.environ.get("GITHUB_REF_NAME", "") if event == "push" else "")
-        result = run(ROOT, scanner, token, os.environ.get("SONAR_ORGANIZATION", ""), os.environ.get("SONAR_PROJECT_KEY", ""), branch, pull_request, use_relay=True)
+        branch = scanner_branch(ROOT, os.environ, pull_request)
+        if not branch:
+            print("Analyse SonarQube non réalisée : branche Git introuvable. Ouvrir une branche ou renseigner SONAR_BRANCH.")
+            return 1
+        organization = settings["SONAR_ORGANIZATION"]
+        project = settings["SONAR_PROJECT_KEY"]
+        if check_config:
+            if not all(SONAR_IDENTIFIER.fullmatch(value or "") for value in (organization, project, branch)):
+                print("Analyse SonarQube non réalisée : organisation, projet ou branche invalide.")
+                return 1
+            return 0
+        scanner = Path(os.environ.get("SONAR_SCANNER_HOME", "/nonexistent"))
+        result = run(ROOT, scanner, settings["SONAR_TOKEN"], organization, project, branch, pull_request, use_relay=True)
         print(result)
         return 0 if result.startswith("Analyse SonarQube soumise") else 1
     except (OSError, ValueError, KeyError, subprocess.SubprocessError):
@@ -191,4 +237,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check-config", action="store_true", help="Vérifier les paramètres sans lancer le scanner")
+    sys.exit(main(parser.parse_args().check_config))

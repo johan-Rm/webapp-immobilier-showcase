@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Analyser avec SonarQube",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "webapp/scripts/quality/manual_sonar_cloud.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

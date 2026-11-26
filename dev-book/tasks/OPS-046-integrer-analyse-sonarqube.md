@@ -65,3 +65,11 @@ Verdict explicite « validé » dans la session `01a211b5-0ab6-7733-9516-b83103d
 ## Commits
 
 - Implémentation examinée : `f2408017336398fb53fe42accb84597186a96912`.
+
+## Configuration locale dans VS Code
+
+Le correctif approuvé pour implémentation ajoute une tâche VS Code qui lance le scanner depuis la racine ouverte dans l’éditeur. Les champs `SONAR_ORGANIZATION`, `SONAR_PROJECT_KEY` et `SONAR_TOKEN` sont déclarés dans `webapp/.env.example`. Le lanceur lit leur valeur dans `webapp/.env` en local et déduit la branche Git courante. Les variables explicites conservent la priorité et GitHub Actions utilise sa configuration dédiée. Les fichiers d’environnement privés restent intacts.
+
+Chemins ponctuellement autorisés pour cet ajout : `.vscode/tasks.json` et `webapp/.env.example`, en plus des scripts, tests et brouillon documentaire déjà rattachés à la carte.
+
+Depuis la racine DevOps, les suites ciblées `test_sonar_run.py`, `test_sonar_scope.py`, `test_sonar_egress.py` et `test_sonar_egress_policy.py` réussissent leurs 22 tests avec `python3 -B -m unittest`, dont le scanner factice en isolation. Le JSON de la tâche, les champs du modèle et la syntaxe Bash ont été vérifiés. L’exécution depuis VS Code avec le scanner réel reste à vérifier. Ce correctif attend un verdict distinct de celui du commit initial.
