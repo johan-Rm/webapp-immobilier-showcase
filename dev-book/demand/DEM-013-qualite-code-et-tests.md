@@ -7,7 +7,7 @@
 
 ## Besoin et décisions
 
-La revue d’une checklist de contrôle a fait ressortir deux besoins de même priorité : repérer le code difficile à maintenir et renforcer la confiance dans les tests. Les contrôles existants et leurs limites sont référencés dans le [registre](../../codebase-integrity/conventions.json) et le [catalogue d’exécution](../../docs/executer-controles.md).
+La revue d’une checklist de contrôle a fait ressortir deux besoins de même priorité : repérer le code difficile à maintenir et renforcer la confiance dans les tests. Les contrôles existants et leurs limites sont référencés dans le [registre](../../codebase-integrity/conventions.json) et le [catalogue d’exécution](../../docs/controles/executer-controles.md).
 
 Examiner quatre pistes : fonctions longues, duplication, débogage oublié et qualité des tests. Pour cette dernière, rechercher les parties insuffisamment testées et évaluer la capacité des tests existants à détecter une modification incorrecte.
 

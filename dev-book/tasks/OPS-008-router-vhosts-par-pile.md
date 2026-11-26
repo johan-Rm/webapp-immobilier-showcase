@@ -40,7 +40,7 @@ Implémentation du 2026-11-11, session de création inchangée, base HEAD
 - `infra/docker/docker-compose.dev.yml` : noms et URL SSR calculés par pile, sans reprendre SITE_URL/PUBLIC_HOST historiques ; montage du gabarit et de son entrée Nginx.
 - `infra/nginx/vhost.conf` : deux hôtes explicites, refus HTTP 421 par défaut.
 - Nouveaux fichiers : `infra/nginx/19-local-vhosts.sh` (exécutable), `infra/nginx/test-local-vhosts.py`, `infra/nginx/README.md`.
-- Documentation technique et commande reproductible : [Documentation Nginx](../../docs/nginx-local.md).
+- Documentation technique et commande reproductible : [Documentation Nginx](../../docs/1.getting-started/nginx-local.md).
 
 Vérifications depuis le worktree DevOps :
 

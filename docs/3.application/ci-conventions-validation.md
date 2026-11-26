@@ -6,7 +6,7 @@
 
 Les conventions communes Nuxt résident dans le [README du socle](../../webapp/base/README.md). Les README locaux portent les responsabilités et règles propres à leur dossier. Le [contrat documentaire](../README.md) définit leur structure et leur périmètre ; ils ne contiennent aucun lien, historique ni information temporaire.
 
-La documentation explique les règles sans les recopier. Le [catalogue des commandes](../executer-controles.md) constitue la référence pour préparer et exécuter les vérifications.
+La documentation explique les règles sans les recopier. Le [catalogue des commandes](../controles/executer-controles.md) constitue la référence pour préparer et exécuter les vérifications.
 
 ## Règles et contrôles
 

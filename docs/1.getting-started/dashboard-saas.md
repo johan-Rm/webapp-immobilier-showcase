@@ -9,7 +9,7 @@ Les résultats de recette et l’environnement utilisé restent dans la carte OP
 ## Préparer l’environnement
 
 Utiliser un assemblage des commits validés et la couche affectée, avec ses ports et
-données isolés ; voir [les worktrees](../worktrees.md). Aucun secret d’une
+données isolés ; voir [les worktrees](worktrees.md). Aucun secret d’une
 pile existante ne doit être copié automatiquement. Ne pas lancer de parcours d’écriture
 contre Symfony sans organisations, projets et comptes de test explicitement affectés.
 
@@ -21,7 +21,7 @@ restent dans le [guide du projecteur](../3.application/scripts-application.md#pr
 et le [README Client 2](../../webapp/sites/client2-immobilier/README.md).
 
 Préparer le volume avec `make dev-saas-project-prepare`, puis construire/lancer
-explicitement la [pile dashboard](../nginx-local.md). Les commandes
+explicitement la [pile dashboard](nginx-local.md). Les commandes
 historiques à deux sites restent disponibles. Le worker est optionnel : le lancer
 séparément après configuration, sinon les publications peuvent rester en attente.
 Le dry-run valide sans écrire de projection, télécharger d’image ou accuser la file.

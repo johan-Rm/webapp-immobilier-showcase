@@ -28,6 +28,25 @@ class DocumentsTest(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.paths = []
 
+    def test_documentation_tree_checks_navigation_and_local_links(self):
+        self.write('docs/README.md', '# Documentation')
+        self.write('docs/index.md', '[Guide](1.guide/index.md)')
+        self.write('docs/1.guide/index.md', '[Page](nested/page.md)')
+        self.write('docs/1.guide/nested/page.md', '# Page\n[Lien](#page)')
+        self.write('docs/1.guide/.navigation.yml', 'title: Guide')
+        self.write('docs/1.guide/nested/README.md', '# Notes')
+        self.write('docs/1.guide/nested/index.md', '# Sommaire')
+        self.assertEqual(docs.check_documentation_tree(self.root, self.paths), ([], []))
+
+        self.write('docs/supplement.txt', 'écart')
+        self.write('docs/autre/index.md', '# Autre')
+        self.write('docs/1.guide/omise.md', '[Cible](absente.md)\n[Ancre](#absente)')
+        errors, _ = docs.check_documentation_tree(self.root, self.paths)
+        self.assertEqual(len(errors), 5)
+        for diagnostic in ('fichier inattendu', 'index absent du sommaire principal',
+                           'page absente du sommaire', 'cible absente', 'ancre absente'):
+            self.assertTrue(any(diagnostic in error for error in errors), errors)
+
     def test_root_guides_check_commands_and_links(self):
         self.write('Makefile', 'setup:\n')
         makefile = self.write('infra/make/Makefile.dev', 'test-up:\nruntime-tests-browser:\n'
@@ -80,9 +99,10 @@ class DocumentsTest(unittest.TestCase):
 
     def test_dashboard_cards_are_discovered_by_cli(self):
         self.write('docs/README.md', '# Documentation\n\n## Rôle et responsabilités\n\n- Expliquer.\n\n## Conventions techniques\n\n### Sources\n\nUne référence par règle.\n')
+        self.write('docs/index.md', '# Sommaire\n')
         card = self.write('dev-book/tasks/DASH-001-exemple.md',
                           '# Carte\n[Documentation](../../docs/README.md#documentation)')
-        listing = b'docs/README.md\0dev-book/tasks/DASH-001-exemple.md\0'
+        listing = b''.join(path.as_posix().encode() + b'\0' for path in self.paths)
         with patch.object(docs, 'REPO_ROOT', self.root), \
              patch.object(docs.subprocess, 'check_output', return_value=listing), \
              redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):

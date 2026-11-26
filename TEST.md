@@ -6,7 +6,7 @@ Immobilier après avoir réuni les commits validés sur la branche de demande
 deux terminaux.
 
 Le catalogue et les rapports sont décrits dans le
-[guide des contrôles](docs/executer-controles.md).
+[guide des contrôles](docs/controles/executer-controles.md).
 
 ## Terminal 1 — Démarrer l’environnement de test
 

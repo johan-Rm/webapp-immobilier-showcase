@@ -5,7 +5,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[4]
-FILES = ('Makefile', 'infra/make/Makefile.dev', 'codebase-integrity/commun/check_presentation.py', 'docs/executer-controles.md')
+FILES = ('Makefile', 'infra/make/Makefile.dev', 'codebase-integrity/commun/check_presentation.py', 'docs/controles/executer-controles.md')
 CURRENT = ('runtime-tests-browser', 'runtime-tests-load', 'runtime-tests-lighthouse')
 OBSOLETE = ('internal-tests-browser', 'internal-tests-load', 'third-party-tests-lighthouse', 'test-browser', 'load-check', 'lighthouse-check')
 

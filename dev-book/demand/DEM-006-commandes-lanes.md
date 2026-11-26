@@ -56,7 +56,7 @@ Aucun registre supplémentaire ni modification des états par ces commandes.
 ## Contraintes et exclusions
 
 Préserver les commandes existantes, l’isolation des couches, les données, les `.env`
-et les travaux en cours. Respecter le [guide des worktrees](../../docs/worktrees.md).
+et les travaux en cours. Respecter le [guide des worktrees](../../docs/1.getting-started/worktrees.md).
 Aucune simplification SSR, préparation automatique, création de worktree ou modification
 du workflow AIDE dans cette demande. Les conventions et contrôles Codebase Integrity
 ne sont pas modifiés hors consolidation déclarée.

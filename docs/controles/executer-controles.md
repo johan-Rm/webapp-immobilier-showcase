@@ -4,7 +4,7 @@
 
 ## Organisation des outils
 
-Les [conventions Codebase Integrity](../codebase-integrity/README.md#organisation) définissent la répartition des responsabilités. Dans `codebase-integrity/`, chaque domaine porte ses scripts sous `domaines/<domaine>/scripts/`, leurs tests sous `tests/` et les paramètres déclaratifs dans `regles.yaml` lorsqu’ils existent. Les utilitaires communs résident dans `commun/`. Les tests des fonctionnalités Nuxt restent dans `webapp/`.
+Les [conventions Codebase Integrity](../../codebase-integrity/README.md#organisation) définissent la répartition des responsabilités. Dans `codebase-integrity/`, chaque domaine porte ses scripts sous `domaines/<domaine>/scripts/`, leurs tests sous `tests/` et les paramètres déclaratifs dans `regles.yaml` lorsqu’ils existent. Les utilitaires communs résident dans `commun/`. Les tests des fonctionnalités Nuxt restent dans `webapp/`.
 
 ## Préparer et tester les vérificateurs
 
@@ -20,7 +20,7 @@ Pour contrôler les traces des cartes avec une base explicite, suivre la [procé
 
 Pour vérifier une contribution Git, suivre la [procédure de contrôle des contributions](controle-contributions.md), qui définit la commande et l’amorçage initial.
 
-Les [conventions documentaires](README.md#vérification-et-relecture) précisent le périmètre des README. Les commandes des environnements isolés sont décrites dans le [document des worktrees](worktrees.md).
+Les [conventions documentaires](../README.md#vérification-et-relecture) précisent le périmètre des README. Les commandes des environnements isolés sont décrites dans le [document des worktrees](../1.getting-started/worktrees.md).
 
 Les [contrôles frontend AST](controle-conventions-frontend.md) expliquent les erreurs bloquantes, warnings et exemptions de structure, traduction et encapsulation.
 
@@ -51,9 +51,9 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 ## Commandes manuelles
 
-Les commandes de prévisualisation et d’analyse SonarQube ainsi que leurs prérequis sont décrits dans le [guide SonarQube Cloud](3.application/sonarqube-cloud.md).
+Les commandes de prévisualisation et d’analyse SonarQube ainsi que leurs prérequis sont décrits dans le [guide SonarQube Cloud](../3.application/sonarqube-cloud.md).
 
-Pour exécuter la suite complète de Showcase Immobilier lors de la reconstitution, suivre [la procédure en deux terminaux](../TEST.md).
+Pour exécuter la suite complète de Showcase Immobilier lors de la reconstitution, suivre [la procédure en deux terminaux](../../TEST.md).
 
 Depuis la racine du worktree, lancer **`make checks-prepare`**. Une image existante est réutilisée ; aucune commande de contrôle ne reconstruit implicitement. Après modification des sources, dépendances ou outils, lancer **`make checks-rebuild`** : la fraîcheur de l’image n’est pas détectée automatiquement.
 
@@ -110,9 +110,9 @@ Après réactivation, depuis la racine du worktree, `smoke` réalise trois requ�
 
 ## Nommage des commandes
 
-Les [conventions d’exécution](../codebase-integrity/README.md#exécution-des-contrôles) définissent les préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms runtime sont supprimés ; les autres délégations de compatibilité restent hors de l’aide. Les preuves historiques conservent les commandes réellement exécutées.
+Les [conventions d’exécution](../../codebase-integrity/README.md#exécution-des-contrôles) définissent les préfixes. Le catalogue ci-dessus fournit les commandes directes ; aucun paramètre `FAMILY` n’est nécessaire. Les anciens noms runtime sont supprimés ; les autres délégations de compatibilité restent hors de l’aide. Les preuves historiques conservent les commandes réellement exécutées.
 
-Les variables d’environnement précédentes ont été retirées sans alias. Pour mettre à jour un script ou un appel Compose, consulter la [correspondance de migration](../dev-book/tasks/OPS-092-aligner-recettes-controles.md#correspondance-de-migration). Pour chaque exécution navigateur, charge ou Lighthouse, utiliser l’origine annoncée par le serveur de fixtures lorsqu’il est prêt.
+Les variables d’environnement précédentes ont été retirées sans alias. Pour mettre à jour un script ou un appel Compose, consulter la [correspondance de migration](../../dev-book/tasks/OPS-092-aligner-recettes-controles.md#correspondance-de-migration). Pour chaque exécution navigateur, charge ou Lighthouse, utiliser l’origine annoncée par le serveur de fixtures lorsqu’il est prêt.
 
 ## Lire les sorties et le bilan
 

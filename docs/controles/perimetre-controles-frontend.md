@@ -4,7 +4,7 @@
 
 ## Découverte des fichiers
 
-Les [conventions de périmètre](../codebase-integrity/README.md#contrôles-existants) sont définies dans le README Codebase Integrity. Les vérificateurs et leurs tests sont regroupés dans `codebase-integrity/domaines/`.
+Les [conventions de périmètre](../../codebase-integrity/README.md#contrôles-existants) sont définies dans le README Codebase Integrity. Les vérificateurs et leurs tests sont regroupés dans `codebase-integrity/domaines/`.
 
 L’inventaire Git utilisé par les contrôles frontend couvre `webapp/app/`, `webapp/sites/<client>/app/`, `webapp/dashboard/app/` et `webapp/base/real-estate/`. Sélectionner un client pour un build ne limite donc pas la vérification à ce client. Les composants, pages, layouts et composables ont chacun leur sélection de fichiers.
 

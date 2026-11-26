@@ -6,7 +6,7 @@
 
 Depuis la racine du worktree concerné, la commande `make contribution-check BASE=<sha-cible> HEAD=<sha-candidat>` contrôle une plage explicite avec le vérificateur extrait de la base d’intégration. Remplacer les paramètres par les identifiants Git complets effectivement vérifiés.
 
-Les [conventions de contribution](../codebase-integrity/README.md#contributions) définissent les exigences applicables. Les résultats du contrôle ne remplacent pas le verdict humain.
+Les [conventions de contribution](../../codebase-integrity/README.md#contributions) définissent les exigences applicables. Les résultats du contrôle ne remplacent pas le verdict humain.
 
 ## Publication et clôture d’un espace de demande
 

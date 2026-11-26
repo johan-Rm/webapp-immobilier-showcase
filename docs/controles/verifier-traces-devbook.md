@@ -4,7 +4,7 @@
 
 ## Couverture et commande
 
-Les [conventions du dev-book](../dev-book/README.md#préservation-des-traces) définissent la règle. Le contrôle des demandes existant vérifie déjà leur type ; le contrôle des contributions vérifie les commits et leur déclaration. Le script complémentaire `check_devbook.py` examine les cartes nouvelles ou modifiées du worktree par rapport à une base Git explicite, y compris les modifications indexées et les fichiers non suivis non ignorés. Les cartes inchangées ne sont pas réinterprétées.
+Les [conventions du dev-book](../../dev-book/README.md#préservation-des-traces) définissent la règle. Le contrôle des demandes existant vérifie déjà leur type ; le contrôle des contributions vérifie les commits et leur déclaration. Le script complémentaire `check_devbook.py` examine les cartes nouvelles ou modifiées du worktree par rapport à une base Git explicite, y compris les modifications indexées et les fichiers non suivis non ignorés. Les cartes inchangées ne sont pas réinterprétées.
 
 Depuis la racine du worktree, lancer `make conventions-tests-devbook BASE=<sha-complet>`, après avoir vérifié le SHA de comparaison. Une base absente, inconnue ou abrégée est refusée. Le script ne fait aucun fetch et ne modifie ni carte ni historique Git.
 
@@ -12,7 +12,7 @@ Depuis la racine du worktree, lancer `make conventions-tests-devbook BASE=<sha-c
 
 ## Utiliser les modèles
 
-Les structures de départ sont le [modèle de demande](../dev-book/templates/demande.md) et le [modèle de carte](../dev-book/templates/carte.md). Les [conventions d’usage](../dev-book/README.md#usage-des-modèles) sont définies dans le README parent. Pour une demande de consolidation, ajouter un bloc `contribution-json` selon les [conventions de contribution](../codebase-integrity/README.md#contributions).
+Les structures de départ sont le [modèle de demande](../../dev-book/templates/demande.md) et le [modèle de carte](../../dev-book/templates/carte.md). Les [conventions d’usage](../../dev-book/README.md#usage-des-modèles) sont définies dans le README parent. Pour une demande de consolidation, ajouter un bloc `contribution-json` selon les [conventions de contribution](../../codebase-integrity/README.md#contributions).
 
 ## Identification des missions
 
@@ -47,7 +47,7 @@ La conservation de toutes les formulations successives, la pertinence des preuve
 
 ## Procédures opérationnelles exceptionnelles
 
-Le dossier `dev-book/runbooks/` conserve les procédures ponctuelles. Leurs [conventions](../dev-book/README.md#procédures-opérationnelles-exceptionnelles) définissent leur rôle et leur nommage.
+Le dossier `dev-book/runbooks/` conserve les procédures ponctuelles. Leurs [conventions](../../dev-book/README.md#procédures-opérationnelles-exceptionnelles) définissent leur rôle et leur nommage.
 
 Le format `YYYY-MM-DD-action-cible.md` permet un tri chronologique et identifie l’action et sa cible. Les verbes `migrate`, `backfill`, `purge` ou `reindex` précisent la nature de l’opération. Une migration de table et une reconstruction d’index doivent donc être identifiées par des actions et cibles explicites.
 

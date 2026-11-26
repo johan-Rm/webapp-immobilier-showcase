@@ -215,7 +215,7 @@ def check_recipe(root, name, text):
     return errors
 
 
-def check(root, paths):
+def check(root, paths, *, legacy_structure=True):
     root = root.resolve()
     errors, notices = [], []
     cache = {}
@@ -233,12 +233,12 @@ def check(root, paths):
         if not path.is_file():
             continue
         if relative.suffix != '.md':
-            if relative.parts[0] == 'docs':
+            if legacy_structure and relative.parts[0] == 'docs':
                 errors.extend(f'{relative} : {e}' for e in structure(relative, ''))
             continue
         try:
             text = path.read_text(encoding='utf-8')
-            if relative.parts[0] == 'docs':
+            if legacy_structure and relative.parts[0] == 'docs':
                 errors.extend(f'{relative} : {e}' for e in structure(relative, text))
             if relative.as_posix() in ROOT_GUIDES:
                 errors.extend(f'{relative} : {e}' for e in check_recipe(root, relative.name, text))
@@ -269,6 +269,48 @@ def check(root, paths):
     return errors, sorted(set(notices))
 
 
+def check_documentation_tree(root, paths):
+    """Check the published documentation without adopting legacy style rules."""
+    root = root.resolve()
+    docs_paths = {
+        path for path in paths
+        if path.parts[0] == 'docs' and ((root / path).exists() or (root / path).is_symlink())
+    }
+    errors, notices = check(root, docs_paths, legacy_structure=False)
+    root_index = Path('docs/index.md')
+    readme = Path('docs/README.md')
+    for path in sorted({root_index, readme} - docs_paths):
+        errors.append(f'{path} : fichier requis')
+    for path in sorted(docs_paths):
+        if len(path.parts) == 2 and path not in (root_index, readme):
+            errors.append(f'{path} : fichier inattendu à la racine de docs/')
+
+    def local_targets(index):
+        if index not in docs_paths or (root / index).is_symlink():
+            return set()
+        try:
+            targets = (urlsplit(target) for target in links((root / index).read_text(encoding='utf-8')))
+            return {
+                (root / index.parent / unquote(url.path)).resolve()
+                for url in targets if not url.scheme and not url.netloc and url.path
+            }
+        except (OSError, UnicodeError, ValueError):
+            return set()  # Link validation already reports unreadable or invalid indexes.
+
+    theme_links = local_targets(root_index)
+    themes = {Path(*path.parts[:2]) for path in docs_paths if len(path.parts) > 2}
+    for theme in sorted(themes):
+        index = theme / 'index.md'
+        if index not in docs_paths or root / index not in theme_links:
+            errors.append(f'{theme} : index absent du sommaire principal')
+        indexed = local_targets(index)
+        for path in sorted(docs_paths):
+            if (path.is_relative_to(theme) and path.suffix.lower() == '.md'
+                    and path.name not in ('README.md', 'index.md') and root / path not in indexed):
+                errors.append(f'{path} : page absente du sommaire de sa thématique')
+    return errors, notices
+
+
 def main():
     root = REPO_ROOT
     try:
@@ -278,14 +320,16 @@ def main():
         paths = [Path(os.fsdecode(name)) for name in output.split(b'\0') if name]
         from check_readmes import check_readmes
         readme_errors, readme_count = check_readmes(root, paths)
-        # Les liens hors README conservent leur adoption bornée.
+        tree_errors, tree_notices = check_documentation_tree(root, paths)
+        # Les liens hors README et hors guides conservent leur adoption bornée.
         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
-            'README.md', 'AGENTS.md', 'docs/README.md', 'codebase-integrity/README.md',
+            'README.md', 'AGENTS.md', 'codebase-integrity/README.md',
             'worktree/README.md', 'dev-book/README.md', *ROOT_GUIDES) or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)
-        errors.extend(readme_errors)
+        errors.extend(readme_errors + tree_errors)
+        notices = sorted(set(notices + tree_notices))
     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f'Contrôle documentaire impossible : {exc}', file=sys.stderr)
         return 1
