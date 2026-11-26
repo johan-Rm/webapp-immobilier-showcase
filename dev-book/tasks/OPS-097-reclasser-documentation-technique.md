@@ -7,7 +7,7 @@
 - Couche : devops
 - Branche : `layers/devops`
 - Worktree : `worktree/devops`
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Chemins autorisés : `docs/`, `dev-book/reports/` pour le relevé HAR, `codebase-integrity/domaines/fiabilite-verifications/scripts/check_runtime_names.py` pour la référence déplacée, le brouillon documentaire et cette carte
 - Base locale constatée : `59b90275a3573d9ffedccb4d21d53e57b34d0f73`
 - Dépendances : vérifier le contenu des guides modifiés par DEM-020 sur la base de réalisation et préserver ses changements à la reconstitution
@@ -30,8 +30,17 @@ Le patch applique les trois corrections autorisées et le chemin de `check_runti
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-026, carte OPS-097, contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "fe8adbedc74480ecf91fc4020c2c3906df1e6a15"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation : `fe8adbedc74480ecf91fc4020c2c3906df1e6a15`.

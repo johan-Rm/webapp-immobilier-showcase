@@ -7,7 +7,7 @@
 - Couche : devops
 - Branche : `layers/devops`
 - Worktree : `worktree/devops`
-- État : implémentée et commitée, à vérifier
+- État : validée humainement
 - Chemins autorisés : `codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py`, `docs/README.md` pour la portée du contrôle, le patch d’activation, les neuf destinations de liens historiques autorisées et cette carte
 - Dépendances : commit local OPS-097, `fe8adbedc74480ecf91fc4020c2c3906df1e6a15`
 
@@ -25,8 +25,17 @@ Dans une projection temporaire avec les deux patchs appliqués, le contrôle de 
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-026, carte OPS-098, contenu présenté à la vérification du 26 novembre 2026.",
+  "contenu": {
+    "type": "git",
+    "valeur": "ed0e2e787ee91c583bc36ef30c87d96bbe8ed50f"
+  }
+}
+```
 
 ## Commits
 
-À renseigner après réalisation.
+- Implémentation : `ed0e2e787ee91c583bc36ef30c87d96bbe8ed50f`.
