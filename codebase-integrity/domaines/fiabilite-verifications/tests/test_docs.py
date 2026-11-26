@@ -99,9 +99,10 @@ class DocumentsTest(unittest.TestCase):
 
     def test_dashboard_cards_are_discovered_by_cli(self):
         self.write('docs/README.md', '# Documentation\n\n## Rôle et responsabilités\n\n- Expliquer.\n\n## Conventions techniques\n\n### Sources\n\nUne référence par règle.\n')
+        self.write('docs/index.md', '# Sommaire\n')
         card = self.write('dev-book/tasks/DASH-001-exemple.md',
                           '# Carte\n[Documentation](../../docs/README.md#documentation)')
-        listing = b'docs/README.md\0dev-book/tasks/DASH-001-exemple.md\0'
+        listing = b''.join(path.as_posix().encode() + b'\0' for path in self.paths)
         with patch.object(docs, 'REPO_ROOT', self.root), \
              patch.object(docs.subprocess, 'check_output', return_value=listing), \
              redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
