@@ -25,13 +25,15 @@ Dans une projection temporaire avec les deux patchs appliqués, le contrôle de 
 
 ## Verdict humain
 
+Verdict initial « ok validé » sur `ed0e2e787ee91c583bc36ef30c87d96bbe8ed50f`, tracé par `e89ba40fae049f51318f5a16082ea95ab710b9a5`. Verdict « oui » sur le correctif présenté.
+
 ```verdict-json
 {
   "decision": "validé",
-  "portee": "DEM-026, carte OPS-098, contenu présenté à la vérification du 26 novembre 2026.",
+  "portee": "DEM-026, carte OPS-098, correctif de la fixture Dashboard présenté le 26 novembre 2026.",
   "contenu": {
     "type": "git",
-    "valeur": "ed0e2e787ee91c583bc36ef30c87d96bbe8ed50f"
+    "valeur": "d66ba4b6d7437abcf1cc7e298e45c3aac4e58bf5"
   }
 }
 ```
@@ -39,3 +41,4 @@ Dans une projection temporaire avec les deux patchs appliqués, le contrôle de 
 ## Commits
 
 - Implémentation : `ed0e2e787ee91c583bc36ef30c87d96bbe8ed50f`.
+- Correctif : `d66ba4b6d7437abcf1cc7e298e45c3aac4e58bf5`. Échec reproduit avant correction, puis deux tests ciblés réussis sur une projection avec le contrôle activé.
