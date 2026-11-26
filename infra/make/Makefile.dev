@@ -74,7 +74,11 @@ third-party-tests-sonar-preview:
 	@python3 webapp/scripts/quality/sonar_scope.py
 
 third-party-tests-sonar:
-	@python3 webapp/scripts/quality/sonar_run.py
+	@if test -n "$${SONAR_SCANNER_HOME:-}" || test -n "$${GITHUB_EVENT_NAME:-}"; then \
+	  python3 -B webapp/scripts/quality/sonar_run.py; \
+	else \
+	  bash webapp/scripts/quality/manual_sonar_cloud.sh; \
+	fi
 
 dev-playwright: dev-env
 	@mkdir -p webapp/.tmp/playwright
