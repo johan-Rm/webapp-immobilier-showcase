@@ -1,6 +1,6 @@
 # OPS-046 — Raccorder l’analyse SonarQube et présenter ses limites
 
-- Demande : DEM-017, brouillon au principal `tmp/demande-consolidation-sonarqube.md` ; demande définitive prévue à la reconstitution.
+- Demande : DEM-017, brouillon au principal `tmp/demande-consolidation-sonarqube.md` ; [demande définitive](../demand/DEM-017-cadrer-analyse-sonarqube.md).
 - Session de création : 01a1fed8-cd9a-7561-9aa0-6c26f1125293
 - Couche : devops ; branche : `layers/devops` ; worktree : `worktree/devops`.
 - État : validée humainement.
