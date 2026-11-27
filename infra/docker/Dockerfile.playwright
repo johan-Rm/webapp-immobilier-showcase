@@ -21,7 +21,6 @@ COPY --chown=${CHECKS_UID}:${CHECKS_GID} dev-book ./dev-book
 COPY --chown=${CHECKS_UID}:${CHECKS_GID} design ./design
 COPY --chown=${CHECKS_UID}:${CHECKS_GID} .github ./.github
 COPY --chown=${CHECKS_UID}:${CHECKS_GID} README.md AGENTS.md Makefile ./
-COPY --chown=${CHECKS_UID}:${CHECKS_GID} worktree/README.md ./worktree/README.md
 RUN mkdir -p webapp/node_modules/.cache webapp/node_modules/.vite codebase-integrity/node_modules/.cache codebase-integrity/node_modules/.vite \
     && chown ${CHECKS_UID}:${CHECKS_GID} /workspace /workspace/webapp /workspace/codebase-integrity \
       webapp/node_modules/.cache webapp/node_modules/.vite codebase-integrity/node_modules/.cache codebase-integrity/node_modules/.vite

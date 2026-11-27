@@ -33,7 +33,7 @@ class Worktrees(unittest.TestCase):
         (self.root / 'infra/config').mkdir(parents=True)
         (self.root / 'infra/config/layers.json').write_text(json.dumps({'layers': {
             'dashboard': {'branch': 'layers/dashboard'}, 'api': {'branch': 'layers/api'}, 'web': {'branch': 'layers/web'}}}))
-        (self.root / '.gitignore').write_text('/worktree/*\n!/worktree/README.md\n')
+        (self.root / '.gitignore').write_text('/worktree/*\n')
         (self.root / 'reference').write_text('base connue')
         self.git('add', 'infra/config/layers.json', '.gitignore', 'reference')
         self.git('commit', '-m', 'base')

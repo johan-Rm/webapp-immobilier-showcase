@@ -220,7 +220,7 @@ class DocumentsTest(unittest.TestCase):
         self.write('.env.md', '[secret](absent.md)')
         self.assertEqual(self.check(), ([], []))
         self.write('worktree/README.md', '[cassé](absent.md)')
-        self.assertIn('cible absente', self.check()[0][0])
+        self.assertEqual(self.check(), ([], []))
 
     def test_target_outside_repository_is_rejected(self):
         self.write('source.md', '[extérieur](../absent.md)')

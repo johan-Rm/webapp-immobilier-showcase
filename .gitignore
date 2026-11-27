@@ -63,7 +63,6 @@ webapp/schemas/dtos/
 
 # Couches AIDE (le guide reste versionné)
 /worktree/*
-!/worktree/README.md
 __pycache__/
 *.pyc
 

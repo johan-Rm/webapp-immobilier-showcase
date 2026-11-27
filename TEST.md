@@ -34,6 +34,7 @@ make internal-tests-verifiers
 python3 -B -m unittest discover -s infra/tests -p "test_demand_worktree.py"
 python3 -B -m unittest discover -s infra/tests -p "test_demand_delivery.py"
 python3 -B -m unittest discover -s infra/tests -p "test_demand_environment.py"
+# Documentation : structure, liens et exclusion des copies de worktrees
 make conventions-tests-docs
 make conventions-tests-devbook BASE="$(git merge-base develop HEAD)"
 

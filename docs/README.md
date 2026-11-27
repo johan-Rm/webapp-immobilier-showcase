@@ -61,7 +61,7 @@ Les README décrivent les **règles applicables**, sans historique, journal des 
 Le **contrôle déterministe** vérifie la forme des README ; la **relecture humaine** vérifie leur sens.
 
 - **Périmètre** : tous les README Markdown suivis ou non ignorés du dépôt courant, sans distinction de casse.
-- **Exclusions** : dépendances ignorées et copies de worktrees. Le README décrivant les worktrees reste contrôlé.
+- **Exclusions** : dépendances ignorées et copies de worktrees.
 - **Refus** : liens symboliques et écarts aux règles, sans exemption des écarts existants.
 - **Détection** : structure et formes reconnaissables de liens, chemins et informations temporaires, y compris dans les exemples.
 - **Relecture humaine** : pertinence du texte, inventaires exprimés en langage naturel et formes non reconnues par le script.

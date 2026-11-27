@@ -63,7 +63,15 @@ hors de cette convention ne sont pas attribués automatiquement à une couche.
 make demand-open DEMAND=DEM-NNN SUBJECT=sujet BASE=<sha-develop>
 ```
 
-La branche et le dossier utilisent `DEM-NNN-sujet`. Le sujet comprend des lettres minuscules, chiffres et tirets. Pour reprendre un ancien espace sur `demands/DEM-NNN`, omettre `SUBJECT`. L’ouverture ne démarre aucun service et ne copie aucun secret.
+La branche et le dossier utilisent `DEM-NNN-sujet`. Les nouvelles demandes sont créées dans le dossier frère `<nom-du-dépôt>.worktrees/`. Les demandes déjà enregistrées dans l’ancien dossier interne restent utilisables sur place. Le sujet comprend des lettres minuscules, chiffres et tirets. Pour reprendre un ancien espace sur `demands/DEM-NNN`, omettre `SUBJECT`. L’ouverture ne démarre aucun service et ne copie aucun secret.
+
+Après un déplacement explicite par Git, une divergence de chemin dans le registre bloque les commandes de la demande. Vérifier d’abord l’identité Git, les fichiers locaux et les ressources Docker associées à l’ancien emplacement. Depuis le worktree déplacé, une fois les ressources ambiguës traitées explicitement et les données préservées :
+
+```bash
+make demand-env-rebind
+```
+
+Cette commande conserve les ports et le suffixe de la réservation existante. Elle refuse une réservation absente, un ancien chemin occupé, une identité ambiguë, Docker inaccessible, un conteneur lié à un autre chemin ou tout réseau Compose identifié pour la demande. Elle ne déplace pas le worktree et ne supprime aucune ressource. Lister et examiner les ressources sans labels reconnus séparément ; leur absence n’est pas démontrée par ce contrôle. Si le registre ne contient aucune entrée, ne pas utiliser cette commande pour en créer une : vérifier l’environnement et ses ressources avant toute nouvelle préparation.
 
 Depuis le worktree de la demande, préparer le fichier d’environnement puis renseigner les accès API nécessaires sans copier automatiquement de secrets :
 

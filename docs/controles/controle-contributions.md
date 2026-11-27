@@ -15,10 +15,11 @@ Après vérification de la cible distante, exécuter depuis la racine du dépôt
 en plus du contrôle de contribution. Un échec bloque la publication. Les cartes
 historiques conservées sont exemptées du nouveau contrôle de rattachement.
 
-Après preuve du squash par l’humain, confirmer que l’espace a cessé d’être
-utilisé. Depuis le dossier principal, exécuter
+Après preuve du squash, la clôture reste distincte et nécessite une autorisation
+explicite applicable. Vérifier l’inventaire et confirmer que l’espace a cessé
+d’être utilisé. Une fois la clôture autorisée, depuis le dossier principal, exécuter
 `make demand-release DEMAND=DEM-NNN TARGET=<sha-develop> SQUASH=<sha-intégré>`.
-L’outil compare l’arbre attendu au commit intégré et refuse les espaces verrouillés, les changements ou fichiers locaux non identifiés et les ressources ambiguës. Il contrôle les ressources Docker de la demande, archive sa tête, puis retire son worktree et sa branche. Le seul fichier ignoré autorisé est le `.env` de ce worktree ; ceux du principal et des autres worktrees sont préservés. Un volume ou un autre fichier local bloque la clôture. Vérifier au préalable que personne n’utilise cet espace : la propreté Git ne le démontre pas.
+L’outil compare l’arbre attendu au commit intégré et refuse les espaces verrouillés, les changements ou fichiers locaux non identifiés et les ressources ambiguës. Il contrôle les ressources Docker de la demande même sans réservation enregistrée, archive sa tête, puis retire son worktree et sa branche. Docker inaccessible ou des ressources présentes sans réservation bloquent la clôture. Les ressources sans labels reconnus exigent un examen séparé. Le seul fichier ignoré autorisé est le `.env` de ce worktree ; ceux du principal et des autres worktrees sont préservés. Un volume ou un autre fichier local bloque la clôture. Vérifier au préalable que personne n’utilise cet espace : la propreté Git ne le démontre pas.
 
 ## Amorçage initial
 
