@@ -75,3 +75,56 @@ L’humain a validé OPS-102 `75a0691f0a7897e4e361e350225665784e81ff58` le 27 no
 L’humain a validé les changements d’OPS-103 avant leur commit `b7e926a98bfb9b458c32e45a8e294ad725fbbc51`.
 
 L’humain a validé OPS-104 avant son commit `d27d7c979e9e3fad18487db3b1f444d61eb4c4e7` et le correctif OPS-103 avant son commit `7d8c9f5676ad350a88f4ea3fdb73f61514024b15`. Il a accepté la livraison de la demande et différé l’essai simultané de deux worktrees à ses prochains développements ; ce critère reste non vérifié.
+
+## Déclaration de contribution
+
+```contribution-json
+{
+  "version": 1,
+  "corrections": [
+    {
+      "chemins": [
+        "codebase-integrity/domaines/construction-livraison/scripts/check_devbook.py",
+        "codebase-integrity/domaines/construction-livraison/tests/test_devbook.py",
+        "infra/docker/docker-compose.dashboard-dev.yml",
+        "infra/docker/docker-compose.demand-dev.yml",
+        "infra/make/Makefile.ai-development-engineering",
+        "infra/make/Makefile.dev",
+        "infra/scripts/demand_delivery.py",
+        "infra/scripts/demand_environment.py",
+        "infra/scripts/demand_status.py",
+        "infra/scripts/demand_worktree.py",
+        "infra/tests/test_demand_delivery.py",
+        "infra/tests/test_demand_environment.py",
+        "infra/tests/test_demand_status.py",
+        "infra/tests/test_demand_worktree.py"
+      ],
+      "convention": "infra/README.md#mode-test-des-couches",
+      "controles": [
+        "infra/tests/test_demand_environment.py",
+        "infra/tests/test_demand_delivery.py",
+        "codebase-integrity/domaines/construction-livraison/tests/test_devbook.py"
+      ]
+    }
+  ],
+  "accompagnements": [
+    {
+      "chemins": [
+        "AGENTS.md",
+        "README.md",
+        "TEST.md",
+        "dev-book/README.md",
+        "dev-book/templates/carte.md",
+        "docs/1.getting-started/ai-workflow.md",
+        "docs/1.getting-started/index.md",
+        "docs/1.getting-started/worktrees.md",
+        "docs/controles/controle-contributions.md",
+        "docs/controles/executer-controles.md",
+        "infra/README.md"
+      ],
+      "motif": "Adapter les consignes, modèles et guides au workflow et aux contrôles réalisés."
+    }
+  ],
+  "sans_correction": ""
+}
+```
