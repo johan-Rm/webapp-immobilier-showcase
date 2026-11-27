@@ -30,6 +30,10 @@ avec `Ctrl+C` dans le premier terminal.
 ```bash
 # 1. Cadre et traçabilité : vérificateurs, dont les métadonnées des nouvelles cartes
 make internal-tests-verifiers
+# Worktrees de demande : dépôts temporaires, sans Docker
+python3 -B -m unittest discover -s infra/tests -p "test_demand_worktree.py"
+python3 -B -m unittest discover -s infra/tests -p "test_demand_delivery.py"
+python3 -B -m unittest discover -s infra/tests -p "test_demand_environment.py"
 make conventions-tests-docs
 make conventions-tests-devbook BASE="$(git merge-base develop HEAD)"
 

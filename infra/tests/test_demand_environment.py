@@ -16,7 +16,8 @@ class DemandEnvironment(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name) / 'repo'
+        self.root.mkdir()
         git(self.root, 'init', '-b', 'develop')
         git(self.root, '-c', 'user.name=Tests', '-c', 'user.email=tests@example.invalid',
             'commit', '--allow-empty', '-m', 'base')

@@ -14,7 +14,9 @@ class DemandWorktree(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name) / 'repo'
+        self.root.mkdir()
+        self.parent = self.root.parent / (self.root.name + '.worktrees')
         git(self.root, 'init', '-b', 'develop')
         git(self.root, '-c', 'user.name=Tests', '-c', 'user.email=tests@example.invalid',
             'commit', '--allow-empty', '-m', 'base')
@@ -30,9 +32,27 @@ class DemandWorktree(unittest.TestCase):
         git(self.root, 'branch', 'demands/DEM-101')
         with self.assertRaisesRegex(ValueError, 'déjà attribué'):
             open_demand(self.root, 'DEM-101', 'develop')
-        (self.root / 'worktree/DEM-102').mkdir(parents=True)
+        (self.parent / 'DEM-102').mkdir(parents=True)
         with self.assertRaisesRegex(ValueError, 'occupée'):
             open_demand(self.root, 'DEM-102', 'develop')
+
+    def test_reopen_legacy_and_reject_foreign_parent(self):
+        old = self.root / 'worktree/DEM-110-sujet'
+        old.parent.mkdir()
+        git(self.root, 'worktree', 'add', '-b', 'demands/DEM-110-sujet', str(old), 'develop')
+        self.assertEqual(open_demand(self.root, 'DEM-110', 'develop', 'sujet'), old)
+        foreign = self.root.parent / 'foreign/DEM-111-sujet'
+        foreign.parent.mkdir()
+        git(self.root, 'worktree', 'add', '-b', 'demands/DEM-111-sujet', str(foreign), 'develop')
+        with self.assertRaisesRegex(ValueError, 'non réutilisable'):
+            open_demand(self.root, 'DEM-111', 'develop', 'sujet')
+
+    def test_refuses_symbolic_parent(self):
+        target = self.root.parent / 'other'
+        target.mkdir()
+        self.parent.symlink_to(target, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, 'symbolique'):
+            open_demand(self.root, 'DEM-112', 'develop', 'sujet')
 
     def test_reserved_draft_can_be_materialized(self):
         draft = self.root / 'tmp/demande.md'
@@ -85,6 +105,6 @@ class DemandWorktree(unittest.TestCase):
 
         with ThreadPoolExecutor(max_workers=2) as pool:
             results = list(pool.map(lambda _: attempt(), range(2)))
-        self.assertIn(self.root / 'worktree/DEM-101', results)
+        self.assertIn(self.parent / 'DEM-101', results)
         self.assertEqual(git(self.root, 'worktree', 'list', '--porcelain').count(
             'branch refs/heads/demands/DEM-101'), 1)

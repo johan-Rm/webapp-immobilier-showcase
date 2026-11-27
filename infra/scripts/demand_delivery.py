@@ -190,8 +190,10 @@ def release(cwd, identifier, target, squash):
     parents = git(root, 'rev-list', '--parents', '-n', '1', squash).split()
     if len(parents) != 2:
         raise ValueError('Le commit livré doit avoir un seul parent')
-    destination = root / 'worktree' / leaf
-    if (record.get('worktree') != str(destination) or 'locked' in record
+    destination = Path(record['worktree'])
+    allowed_parents = (root.parent / (root.name + '.worktrees'), root / 'worktree')
+    if (destination.parent not in allowed_parents or destination.name != leaf or 'locked' in record
+            or 'prunable' in record
             or destination.parent.is_symlink() or destination.is_symlink() or not destination.is_dir()
             or git(destination, 'rev-parse', '--show-toplevel') != str(destination)
             or git(destination, 'branch', '--show-current') != branch

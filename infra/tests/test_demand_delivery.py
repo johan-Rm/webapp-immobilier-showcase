@@ -15,7 +15,8 @@ class DemandDelivery(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name) / 'repo'
+        self.root.mkdir()
         git(self.root, 'init', '-b', 'develop')
         git(self.root, 'config', 'user.name', 'Tests')
         git(self.root, 'config', 'user.email', 'tests@example.invalid')
@@ -33,6 +34,17 @@ class DemandDelivery(unittest.TestCase):
         git(root, 'add', 'dev-book')
         git(root, 'commit', '-m', 'snapshot')
         return git(root, 'rev-parse', 'HEAD')
+
+    def test_release_legacy_internal_worktree(self):
+        legacy = self.root / 'worktree/DEM-101'
+        legacy.parent.mkdir()
+        git(self.root, 'worktree', 'move', str(self.space), str(legacy))
+        self.space = legacy
+        head = self.save(self.space)
+        git(self.root, 'merge', '--squash', head)
+        squash = self.save(self.root)
+        release(self.root, 'DEM-101', squash, squash)
+        self.assertFalse(legacy.exists())
 
     def test_new_orphan_blocks_historical_card_is_accepted(self):
         name = 'dev-book/tasks/OPS-002-test.md'
