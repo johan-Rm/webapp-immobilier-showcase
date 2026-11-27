@@ -36,8 +36,8 @@ Le contrôle des nouvelles cartes exige une demande et une couche uniques, une b
 }
 ```
 
-L’humain a validé le correctif avant son commit `04367601da7f771dc787d8e35e8fb5a5ab0f386e`.
+L’humain a validé le correctif avant son commit `7d8c9f5676ad350a88f4ea3fdb73f61514024b15`.
 
 ## Commits
 
-`b7e926a98bfb9b458c32e45a8e294ad725fbbc51` ; correctif `04367601da7f771dc787d8e35e8fb5a5ab0f386e`.
+`b7e926a98bfb9b458c32e45a8e294ad725fbbc51` ; correctif `7d8c9f5676ad350a88f4ea3fdb73f61514024b15`.

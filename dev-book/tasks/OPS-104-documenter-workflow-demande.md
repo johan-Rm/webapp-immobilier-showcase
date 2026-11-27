@@ -25,10 +25,10 @@ Les consignes et guides décrivent les worktrees de demande, la transition des c
 {
   "decision": "validé",
   "portee": "OPS-104 ; changements examinés avant commit",
-  "contenu": {"type": "git", "valeur": "e5184c370b83bca1dc2e39d6197a92d79df496bc"}
+  "contenu": {"type": "git", "valeur": "d27d7c979e9e3fad18487db3b1f444d61eb4c4e7"}
 }
 ```
 
 ## Commits
 
-`e5184c370b83bca1dc2e39d6197a92d79df496bc`.
+`d27d7c979e9e3fad18487db3b1f444d61eb4c4e7`.

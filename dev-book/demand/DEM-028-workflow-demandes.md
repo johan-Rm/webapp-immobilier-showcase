@@ -74,4 +74,4 @@ L’humain a validé OPS-102 `75a0691f0a7897e4e361e350225665784e81ff58` le 27 no
 
 L’humain a validé les changements d’OPS-103 avant leur commit `b7e926a98bfb9b458c32e45a8e294ad725fbbc51`.
 
-L’humain a validé OPS-104 avant son commit `e5184c370b83bca1dc2e39d6197a92d79df496bc` et le correctif OPS-103 avant son commit `04367601da7f771dc787d8e35e8fb5a5ab0f386e`. Il a accepté la livraison de la demande et différé l’essai simultané de deux worktrees à ses prochains développements ; ce critère reste non vérifié.
+L’humain a validé OPS-104 avant son commit `d27d7c979e9e3fad18487db3b1f444d61eb4c4e7` et le correctif OPS-103 avant son commit `7d8c9f5676ad350a88f4ea3fdb73f61514024b15`. Il a accepté la livraison de la demande et différé l’essai simultané de deux worktrees à ses prochains développements ; ce critère reste non vérifié.
