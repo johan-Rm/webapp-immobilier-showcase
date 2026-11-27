@@ -2,6 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import sys
+import json
 import socket
 import tempfile
 import unittest
@@ -39,6 +40,73 @@ class DemandEnvironment(unittest.TestCase):
             reserve(self.first)
         with self.assertRaisesRegex(ValueError, 'requise|requis'):
             reserve(self.root)
+
+    def test_rebind_preserves_identity_and_ports(self):
+        with patch('demand_environment.available', return_value=True):
+            original = dict(reserve(self.first))
+        registry = self.root / '.git/aide-demand-environments.json'
+        data = json.loads(registry.read_text())
+        old = self.root / 'worktree' / self.first.name
+        data['DEM-101']['worktree'] = str(old)
+        registry.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, 'autre worktree'):
+            reserve(self.first)
+        with patch('demand_delivery.docker', return_value=''):
+            updated = reserve(self.first, rebind=True)
+        self.assertEqual(updated['worktree'], str(self.first))
+        self.assertEqual(updated['ports'], original['ports'])
+        self.assertEqual(updated['host_suffix'], original['host_suffix'])
+        self.assertEqual(reserve(self.first), updated)
+
+    def test_rebind_refuses_resources_and_preserves_registry(self):
+        with patch('demand_environment.available', return_value=True):
+            reserve(self.first)
+        registry = self.root / '.git/aide-demand-environments.json'
+        data = json.loads(registry.read_text())
+        data['DEM-101']['worktree'] = str(self.root / 'worktree' / self.first.name)
+        registry.write_text(json.dumps(data))
+        before = registry.read_bytes()
+        with patch('demand_delivery.docker', side_effect=['container', json.dumps([
+                {'Config': {'Labels': {'com.docker.compose.project': 'foreign'}}}])]):
+            with self.assertRaisesRegex(ValueError, 'ambigu'):
+                reserve(self.first, rebind=True)
+        self.assertEqual(registry.read_bytes(), before)
+        with patch('demand_delivery.docker', side_effect=ValueError('Docker inaccessible')):
+            with self.assertRaisesRegex(ValueError, 'inaccessible'):
+                reserve(self.first, rebind=True)
+        self.assertEqual(registry.read_bytes(), before)
+
+    def test_rebind_concurrent_and_refuses_network(self):
+        with patch('demand_environment.available', return_value=True):
+            original = reserve(self.first)
+        registry = self.root / '.git/aide-demand-environments.json'
+        data = json.loads(registry.read_text())
+        data['DEM-101']['worktree'] = str(self.root / 'worktree' / self.first.name)
+        registry.write_text(json.dumps(data))
+        before = registry.read_bytes()
+        with patch('demand_delivery.docker', side_effect=['', 'network']):
+            with self.assertRaisesRegex(ValueError, 'Réseau'):
+                reserve(self.first, rebind=True)
+        self.assertEqual(registry.read_bytes(), before)
+        with patch('demand_delivery.docker', return_value=''):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(lambda _: reserve(self.first, rebind=True), range(2)))
+        self.assertEqual(results[0], results[1])
+        self.assertEqual(results[0]['ports'], original['ports'])
+
+    def test_rebind_refuses_absent_or_occupied_old_path(self):
+        with self.assertRaisesRegex(ValueError, 'Aucune réservation'):
+            reserve(self.first, rebind=True)
+        with patch('demand_environment.available', return_value=True):
+            reserve(self.first)
+        registry = self.root / '.git/aide-demand-environments.json'
+        data = json.loads(registry.read_text())
+        old = self.root / 'worktree' / self.first.name
+        old.mkdir(parents=True)
+        data['DEM-101']['worktree'] = str(old)
+        registry.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, 'ambigu'):
+            reserve(self.first, rebind=True)
 
     def test_prepare_preserves_existing_file(self):
         webapp = self.first / 'webapp'
