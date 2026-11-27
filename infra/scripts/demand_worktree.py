@@ -65,10 +65,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('identifier')
     parser.add_argument('--base', required=True)
-    parser.add_argument('--subject', required=True)
+    parser.add_argument('--subject')
     args = parser.parse_args()
     try:
-        print(open_demand(Path.cwd(), args.identifier, args.base, args.subject))
+        subject = args.subject or None
+        if subject is None:
+            branch = demand_branch(args.identifier)
+            _, records = context(Path.cwd())
+            if not any(item.get('branch') == 'refs/heads/' + branch for item in records):
+                raise ValueError('Sujet descriptif requis pour une nouvelle demande')
+        print(open_demand(Path.cwd(), args.identifier, args.base, subject))
     except (ValueError, OSError) as error:
         print(error, file=sys.stderr)
         return 1

@@ -21,7 +21,13 @@ Allocation persistante sous verrou ; environnement et projets Compose distincts 
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-101 ; essais réels de deux serveurs et vhosts non exécutés ; verdict humain du 27 novembre 2026",
+  "contenu": {"type": "git", "valeur": "e6bd10908c3c2c9ee9be054283af5efd2a8bf883"}
+}
+```
 
 ## Commits
 

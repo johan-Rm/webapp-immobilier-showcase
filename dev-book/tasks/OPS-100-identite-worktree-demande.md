@@ -19,7 +19,13 @@ Création descriptive avec verrou par identifiant, reprise de la branche attendu
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-100 ; revue signalant la reprise historique et la clôture descriptive à corriger ; verdict humain du 27 novembre 2026",
+  "contenu": {"type": "git", "valeur": "0267135813fbc57dd7cc8f59750343184c808aa0"}
+}
+```
 
 ## Commits
 

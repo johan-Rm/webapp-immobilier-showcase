@@ -61,3 +61,7 @@ L’humain a confirmé ces quatre principes le 2026-11-26. La mise en œuvre pr�
 La recherche des références actives hors historiques et copies de worktrees inclut également `Makefile`, les scripts de diagnostic des piles, `webapp/scripts/quality/run.ts`, les tests des environnements et du routage dans Codebase Integrity, ainsi que les guides d’architecture et du dashboard. Les occurrences des runbooks et des demandes, cartes et rapports historiques sont conservées comme traces ; leur valeur normative doit être distinguée lors de l’implémentation.
 
 `environment.py` impose actuellement la branche de couche, calcule les ports depuis son identifiant, génère un `.env` privé et refuse les destinations hors worktree ou symboliques. Il crée des répertoires de données et de cache ; le dashboard utilise aussi des sessions et un journal de publication. Ces éléments ne sont pas automatiquement considérés comme régénérables : leur provenance et leur traitement doivent être prouvés avant nettoyage. L’infrastructure documente que la perte du journal ne garantit pas la reconstitution de la file. La portée exacte des contrôles de tous les consommateurs reste à vérifier dans les cartes.
+
+## Verdicts humains du 27 novembre 2026
+
+L’humain a indiqué « les 2 » pour les commits OPS-100 `0267135813fbc57dd7cc8f59750343184c808aa0` et OPS-101 `e6bd10908c3c2c9ee9be054283af5efd2a8bf883`. La revue a identifié la reprise des branches historiques et la clôture descriptive ; les corrections restent à vérifier. Les essais réels des environnements demeurent inconnus.

@@ -2,6 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 
@@ -39,6 +40,18 @@ class DemandWorktree(unittest.TestCase):
         draft.write_text('# DEM-105 — Proposition\n')
         self.assertEqual(open_demand(self.root, 'DEM-105', 'develop', 'sujet').name,
                          'DEM-105-sujet')
+
+    def test_cli_reopens_legacy_but_does_not_create_legacy(self):
+        tree = open_demand(self.root, 'DEM-107', 'develop')
+        script = Path(__file__).resolve().parents[1] / 'scripts/demand_worktree.py'
+        reopened = subprocess.run([sys.executable, str(script), 'DEM-107', '--base', 'develop'],
+                                  cwd=self.root, capture_output=True, text=True)
+        self.assertEqual(reopened.returncode, 0, reopened.stderr)
+        self.assertEqual(reopened.stdout.strip(), str(tree))
+        new = subprocess.run([sys.executable, str(script), 'DEM-108', '--base', 'develop'],
+                             cwd=self.root, capture_output=True, text=True)
+        self.assertNotEqual(new.returncode, 0)
+        self.assertIn('Sujet descriptif requis', new.stderr)
 
     def test_descriptive_identity_and_collision(self):
         tree = open_demand(self.root, 'DEM-103', 'develop', 'mon-sujet')
