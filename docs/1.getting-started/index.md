@@ -19,4 +19,4 @@ et workflow des assistants IA.
 
 - [Nginx local](nginx-local.md)
 
-- [Worktrees de couche](worktrees.md)
+- [Worktrees de demande et de couche](worktrees.md)

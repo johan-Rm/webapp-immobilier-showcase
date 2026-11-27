@@ -128,7 +128,7 @@ conventions-tests-devbook:
 .PHONY: demand-open
 demand-open:
 	@test -n "$${DEMAND}" -a -n "$${BASE}" || { echo 'DEMAND et BASE explicites requis'; exit 1; }
-	python3 -B infra/scripts/demand_worktree.py "$${DEMAND}" --base "$${BASE}"
+	python3 -B infra/scripts/demand_worktree.py "$${DEMAND}" --base "$${BASE}" --subject "$${SUBJECT}"
 
 .PHONY: demand-publication-check demand-release
 demand-publication-check:
@@ -136,3 +136,10 @@ demand-publication-check:
 
 demand-release:
 	python3 -B infra/scripts/demand_delivery.py release "$${DEMAND}" --target "$${TARGET}" --squash "$${SQUASH}"
+
+.PHONY: demand-env demand-setup demand-up demand-down demand-logs demand-test-up demand-test-down
+demand-env:
+	python3 -B infra/scripts/demand_environment.py prepare
+
+demand-setup demand-up demand-down demand-logs demand-test-up demand-test-down:
+	python3 -B infra/scripts/demand_environment.py $(patsubst demand-%,%,$@) --target "$${TARGET:-site}"

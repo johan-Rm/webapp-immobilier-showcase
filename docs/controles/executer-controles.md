@@ -43,7 +43,7 @@ Reconstruire les images après modification des sources. L’image contient les 
 
 ## Automatisation et limites
 
-Six workflows distinguent cadre, outils tiers, conventions, tests internes, runtime et SonarQube. Les contrôles automatiques tournent sur PR et sur push vers develop ou master ; les statuts changent et les protections GitHub doivent être coordonnées sans contournement. Le workflow AIDE exécute séparément `make internal-tests-verifiers` (Python, Vitest et Bun), puis `make conventions-tests-docs`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct ; la demande définitive de consolidation est créée lors de la reconstitution, pas pendant cette implémentation.
+Six workflows distinguent cadre, outils tiers, conventions, tests internes, runtime et SonarQube. Les contrôles automatiques tournent sur PR et sur push vers develop ou master ; les statuts changent et les protections GitHub doivent être coordonnées sans contournement. Le workflow AIDE exécute séparément `make internal-tests-verifiers` (Python, Vitest et Bun), puis `make conventions-tests-docs`. Les messages de la plage PR sont contrôlés par le vérificateur extrait de la base PR. Le contrôle de contribution local reste distinct et utilise une base explicite.
 
 Fonctions et duplications sont signalées pour chaque cible ; les instructions de débogage restent bloquantes. La couverture est mesurée pour chaque cible avec un résultat informatif, mais une mesure vide ou échouée bloque. Les parcours et charges runtime utilisent uniquement des fixtures locales. Lighthouse, la mutation pilote et la vérification dev-book restent manuels ; la mutation étendue et la charge SaaS sont inactives. Les coûts et protections distants restent à vérifier.
 
@@ -53,7 +53,7 @@ Les versions non livrées des commandes appartiennent au worktree où elles sont
 
 Les commandes de prévisualisation et d’analyse SonarQube ainsi que leurs prérequis sont décrits dans le [guide SonarQube Cloud](../3.application/sonarqube-cloud.md).
 
-Pour exécuter la suite complète de Showcase Immobilier lors de la reconstitution, suivre [la procédure en deux terminaux](../../TEST.md).
+Pour exécuter la suite complète de Showcase Immobilier avant livraison, suivre [la procédure en deux terminaux](../../TEST.md).
 
 Depuis la racine du worktree, lancer **`make checks-prepare`**. Une image existante est réutilisée ; aucune commande de contrôle ne reconstruit implicitement. Après modification des sources, dépendances ou outils, lancer **`make checks-rebuild`** : la fraîcheur de l’image n’est pas détectée automatiquement.
 

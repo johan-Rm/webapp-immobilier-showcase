@@ -3,8 +3,8 @@
 - Demande : DEM-NNN
 - Session de création : <session réelle vérifiée>
 - Couche : <couche configurée>
-- Branche : layers/<couche>
-- Worktree : worktree/<couche>
+- Branche : demands/DEM-NNN-<sujet>
+- Worktree : worktree/DEM-NNN-<sujet>
 - État : prête
 - Chemins autorisés : <chemins exacts>
 - Dépendances : <SHA vérifiés ou aucune>
@@ -25,4 +25,4 @@ Aucun verdict humain.
 
 ## Commits
 
-<SHA après validation et traces de reconstitution.>
+<SHA du commit de tâche après validation humaine.>

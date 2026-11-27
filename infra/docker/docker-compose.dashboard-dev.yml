@@ -43,6 +43,8 @@ services:
       - ./webapp/.env
     environment:
       GD_TARGET: dashboard
+      SITE_URL: ${DEMAND_SITE_URL:-${SITE_URL:-http://dashboard.wt-dashboard.localhost:19405}}
+      PUBLIC_HOST: ${DASHBOARD_HOST:-dashboard.wt-dashboard.localhost}
       SAAS_SESSION_DIR: /app/.data/saas-sessions
       SAAS_PUBLICATION_DIR: /app/.data/saas-publication
       NODE_ENV: development
@@ -61,7 +63,7 @@ services:
     image: nginx:1.27-alpine
     environment:
       NGINX_ENVSUBST_FILTER: ^DASHBOARD_HOST
-      DASHBOARD_HOST: dashboard.wt-dashboard.localhost
+      DASHBOARD_HOST: ${DASHBOARD_HOST:-dashboard.wt-dashboard.localhost}
     depends_on:
       webapp-localhost:
         condition: service_healthy

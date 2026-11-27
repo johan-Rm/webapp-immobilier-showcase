@@ -39,6 +39,7 @@ Chaque mission porte les informations nécessaires pour identifier son **context
 
 - Indiquer la **session réelle**, le **worktree** et la **branche**.
 - Préciser le **périmètre autorisé** et les **dépendances**.
+- Pour une nouvelle carte, rattacher la **demande**, la **couche technique**, la branche descriptive et le worktree de cette demande. Les cartes historiques conservent leur contexte.
 
 ### Procédures opérationnelles exceptionnelles
 

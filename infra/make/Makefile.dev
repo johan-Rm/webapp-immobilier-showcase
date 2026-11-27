@@ -96,7 +96,7 @@ quality-generate-schemas:
 	$(DOCKER_RUN) bun run scripts/run-schema-hook.mjs
 
 _output-conventions-tests-frontend:
-	@bun codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts
+	$(call run-integrity-control,codebase-integrity/domaines/qualite-code/scripts/verify-frontend-conventions.ts)
 
 
 dev-content-sync:
@@ -209,6 +209,18 @@ define run-control
 
 endef
 
+define run-integrity-control
+	$(if $(filter true,$(GITHUB_ACTIONS)),@bun $(1),$(call run-integrity-control-container,$(1)))
+endef
+
+define run-integrity-control-container
+	@$(CHECKS_INFO) "INFO — Utilise l’image de contrôles préparée par make checks-rebuild."
+	@mkdir -p webapp/.tmp/quality/console-tmp
+	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
+	  $(CHECKS_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
+	@$(CHECKS_COMPOSE) run --pull never --no-deps --rm --workdir /workspace --entrypoint bun verify $(1)
+endef
+
 .PHONY: internal-tests-unit
 _output-internal-tests-unit:
 	$(call run-control,unit)
@@ -285,7 +297,7 @@ _output-conventions-tests-services:
 .PHONY: internal-tests-verifiers conventions-tests-guards conventions-tests-services
 _output-internal-tests-verifiers:
 	@$(CHECKS_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
-	@bun --no-env-file run --cwd codebase-integrity test
+	$(call run-integrity-control,--no-env-file run --cwd codebase-integrity test)
 
 
 

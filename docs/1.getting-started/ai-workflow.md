@@ -66,11 +66,7 @@ règle YAML → script CI → gate avant merge) est documentée dans son propri�
 
 ### Journal de demande
 
-Ouvrir l’espace documentaire selon le [guide des worktrees](worktrees.md#espaces-documentaires-de-demande)
-dès la réservation de la demande. Cette règle s’applique à la création de
-l’espace avant la reconstitution. Les cartes restent éditables dans leur couche.
-Le journal référence leurs révisions et leurs verdicts. À la reconstitution,
-réunir les seuls commits techniques validés sur la branche de demande.
+À l’analyse, ouvrir ou reprendre le worktree dédié selon le [guide des worktrees](worktrees.md#espaces-documentaires-de-demande). Les cartes conservent leur couche technique et leurs dépendances ; leurs commits et verdicts sont tracés dans le journal de la demande. Les nouvelles demandes ne passent pas par une reconstitution.
 
 ## Règle de non-duplication
 

@@ -18,9 +18,7 @@ historiques conservées sont exemptées du nouveau contrôle de rattachement.
 Après preuve du squash par l’humain, confirmer que l’espace a cessé d’être
 utilisé. Depuis le dossier principal, exécuter
 `make demand-release DEMAND=DEM-NNN TARGET=<sha-develop> SQUASH=<sha-intégré>`.
-L’outil refuse les espaces verrouillés et ceux qui contiennent des changements
-ou des fichiers locaux. Il compare l’arbre attendu à celui du commit intégré
-et archive localement la tête de demande avant de libérer son espace.
+L’outil compare l’arbre attendu au commit intégré et refuse les espaces verrouillés, les changements ou fichiers locaux non identifiés et les ressources ambiguës. Il contrôle les ressources Docker de la demande, archive sa tête, puis retire son worktree et sa branche. Le seul fichier ignoré autorisé est le `.env` de ce worktree ; ceux du principal et des autres worktrees sont préservés. Un volume ou un autre fichier local bloque la clôture. Vérifier au préalable que personne n’utilise cet espace : la propreté Git ne le démontre pas.
 
 ## Amorçage initial
 

@@ -72,7 +72,9 @@ def scan(cwd=None):
     for record in records:
         branch = record.get('branch', '')
         if branch.startswith('refs/heads/demands/'):
-            active_sources[branch.rsplit('/', 1)[-1]] = Path(record['worktree']) / 'dev-book/demand'
+            match = re.fullmatch(r'refs/heads/demands/(DEM-[0-9]{3,})(?:-[a-z0-9-]+)?', branch)
+            if match:
+                active_sources.setdefault(match[1], []).append(Path(record['worktree']) / 'dev-book/demand')
     seen = set()
     for directory, task in locations:
         if not directory.is_dir():
@@ -96,7 +98,11 @@ def scan(cwd=None):
                 (tasks if task else demands)[doc.identifier].append(doc)
             elif re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-\d+', path.name):
                 warnings.append(f'Identifiant non interprétable : {path}')
-    for identifier, directory in active_sources.items():
+    for identifier, directories in active_sources.items():
+        if len(directories) != 1:
+            warnings.append(f'Branches de demande ambiguës : {identifier}')
+            continue
+        directory = directories[0]
         canonical = [doc for doc in demands.get(identifier, []) if doc.source.parent == directory]
         if len(canonical) == 1:
             demands[identifier] = [

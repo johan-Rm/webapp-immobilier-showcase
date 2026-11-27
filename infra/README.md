@@ -13,6 +13,7 @@
 Le routage Nginx accepte uniquement les **hôtes déclarés pour la pile sélectionnée** ; les domaines distants sont hors du périmètre des configurations locales.
 
 - Refuser une **couche inconnue** avant le démarrage.
+- Attribuer aux demandes des **hôtes et ports stables et distincts**, et isoler leurs projets de services.
 - Répondre **HTTP 421 sans redirection** aux hôtes non autorisés.
 - Préserver les accès des **sondes internes Nuxt** et du **développement direct**, indépendamment du passage par Nginx.
 
@@ -54,3 +55,4 @@ Les commandes de cycle de vie des couches distinguent les modes **développement
 - Préserver un serveur de test déjà actif lors d’une relance ; refuser sa reconstruction tant qu’il reste actif.
 - Vérifier l’appartenance et le caractère jetable d’un ancien conteneur avant de libérer son nom ; ne jamais forcer sa suppression.
 - Ne jamais arrêter ni supprimer les conteneurs des autres modes ou projets.
+- Pour les demandes, conserver des **ports de test distincts** des ports de développement et des autres demandes.

@@ -2,6 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 
@@ -32,6 +33,48 @@ class DemandWorktree(unittest.TestCase):
         (self.root / 'worktree/DEM-102').mkdir(parents=True)
         with self.assertRaisesRegex(ValueError, 'occupée'):
             open_demand(self.root, 'DEM-102', 'develop')
+
+    def test_reserved_draft_can_be_materialized(self):
+        draft = self.root / 'tmp/demande.md'
+        draft.parent.mkdir()
+        draft.write_text('# DEM-105 — Proposition\n')
+        self.assertEqual(open_demand(self.root, 'DEM-105', 'develop', 'sujet').name,
+                         'DEM-105-sujet')
+
+    def test_cli_reopens_legacy_but_does_not_create_legacy(self):
+        tree = open_demand(self.root, 'DEM-107', 'develop')
+        script = Path(__file__).resolve().parents[1] / 'scripts/demand_worktree.py'
+        reopened = subprocess.run([sys.executable, str(script), 'DEM-107', '--base', 'develop'],
+                                  cwd=self.root, capture_output=True, text=True)
+        self.assertEqual(reopened.returncode, 0, reopened.stderr)
+        self.assertEqual(reopened.stdout.strip(), str(tree))
+        new = subprocess.run([sys.executable, str(script), 'DEM-108', '--base', 'develop'],
+                             cwd=self.root, capture_output=True, text=True)
+        self.assertNotEqual(new.returncode, 0)
+        self.assertIn('Sujet descriptif requis', new.stderr)
+
+    def test_descriptive_identity_and_collision(self):
+        tree = open_demand(self.root, 'DEM-103', 'develop', 'mon-sujet')
+        self.assertEqual(tree.name, 'DEM-103-mon-sujet')
+        self.assertEqual(git(tree, 'branch', '--show-current'), 'demands/DEM-103-mon-sujet')
+        self.assertEqual(open_demand(self.root, 'DEM-103', 'develop', 'mon-sujet'), tree)
+        with self.assertRaisesRegex(ValueError, 'déjà attribué'):
+            open_demand(self.root, 'DEM-103', 'develop', 'autre-sujet')
+        with self.assertRaisesRegex(ValueError, 'invalide'):
+            open_demand(self.root, 'DEM-104', 'develop', '../unsafe')
+
+    def test_concurrent_different_subjects_same_identity(self):
+        def attempt(subject):
+            try:
+                return open_demand(self.root, 'DEM-106', 'develop', subject)
+            except ValueError:
+                return None
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(attempt, ('premier', 'second')))
+        self.assertEqual(sum(result is not None for result in results), 1)
+        self.assertEqual(git(self.root, 'worktree', 'list', '--porcelain').count(
+            'branch refs/heads/demands/DEM-106-'), 1)
 
     def test_concurrent_same_identity(self):
         def attempt():
