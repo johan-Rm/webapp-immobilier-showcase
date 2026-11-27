@@ -120,6 +120,15 @@ Les adaptations des fixtures et sélections relatives à `worktree/README.md` so
         "codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py",
         "codebase-integrity/domaines/construction-livraison/tests/test_worktrees.py"
       ]
+    },
+    {
+      "chemins": [
+        "codebase-integrity/domaines/qualite-code/tests/verify-frontend-cli.vitest.ts"
+      ],
+      "convention": "codebase-integrity/README.md#contrôles-existants",
+      "controles": [
+        "codebase-integrity/domaines/qualite-code/tests/verify-frontend-cli.vitest.ts"
+      ]
     }
   ],
   "accompagnements": [
@@ -141,3 +150,11 @@ Les adaptations des fixtures et sélections relatives à `worktree/README.md` so
   "sans_correction": ""
 }
 ```
+
+## Correctif de vérification — délai du test frontend
+
+Après deux échecs humains du même scénario à la limite Vitest de 5 secondes, l’humain a demandé une correction. Le test existe à l’identique dans la base `53ef9d662fa0bce1a9b7a604721b3956036678a0` ; aucune causalité avec DEM-029 n’est établie. Le correctif porte son délai individuel à 15 secondes sans modifier les assertions ni le délai global.
+
+Exécution ciblée locale avec les dépendances du dépôt principal : 3 tests réussis, durée totale 4,97 s. Cette exécution ne reproduit pas la charge ni l’image Docker des deux échecs. La reconstruction de l’image et la relance humaine de `make internal-tests-verifiers VERBOSE=1` restent nécessaires pour vérifier la correction dans cet environnement. Correctif présenté à validation avant commit.
+
+L’humain a validé ce correctif le 27 novembre 2026. Empreinte SHA-256 du fichier de test présenté : `5abe76807f0f0602beede1b719133053ff7ec5db49354ca6a4b603d91f5be2d4`. La relance humaine de `make internal-tests-verifiers VERBOSE=1` a réussi : 204 tests Python, 102 Vitest et 44 Bun ; le contenu exact de l’image utilisée lors de cette relance n’est pas établi.
