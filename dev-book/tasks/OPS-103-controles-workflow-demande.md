@@ -15,6 +15,13 @@ Contrôler les nouvelles cartes et leur rattachement, nommage et chemins sans r�
 
 ## Réalisation et preuves
 
+Correctif en cours : les tests des vérificateurs et le contrôle frontend utilisent
+l’image préparée par `checks-rebuild`, plutôt que des dépendances Bun locales.
+Relance humaine sur le correctif non commité : `make checks-rebuild`,
+`make internal-tests-verifiers VERBOSE=1` et `make conventions-tests-frontend
+GD_TARGET=showcase-immobilier VERBOSE=1` réussis. Les tests des vérificateurs
+comptent 203 tests Python, 102 Vitest et 44 Bun ; 213 fichiers frontend examinés.
+
 Le contrôle des nouvelles cartes exige une demande et une couche uniques, une branche descriptive correspondant à la demande et un worktree de même nom. Les cartes déjà présentes sur la base conservent les contrôles historiques. L’inventaire reconnaît les branches descriptives et signale les identités ambiguës sans masquer leurs sources.
 
 `python3 -B -m unittest discover -s codebase-integrity/domaines/construction-livraison/tests -p 'test_devbook.py'` : 10 tests réussis. `python3 -B -m unittest discover -s infra/tests -p 'test_demand_status.py'` : 11 tests réussis. Le contrôle dev-book sur la base de DEM-028 vérifie cinq cartes sans écart. Aucun test avec service lancé ; la véracité des champs et l’activité réelle restent à examiner humainement.
