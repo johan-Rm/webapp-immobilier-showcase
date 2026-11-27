@@ -29,7 +29,7 @@ Les modifications du cadre AIDE partagé et de l’API externe sont exclues. Les
 
 | Carte | Résultat | Dépendance |
 | --- | --- | --- |
-| [OPS-100](../tasks/OPS-100-identite-worktree-demande.md) | Identité et création de demande | Aucune |
+| [OPS-100](../tasks/OPS-100-identite-worktree-demande.md) | Identité et création de demande | Aucune ; commit `0267135` à vérifier humainement |
 | [OPS-101](../tasks/OPS-101-environnement-demande.md) | Environnements et vhosts isolés | OPS-100 |
 | [OPS-102](../tasks/OPS-102-nettoyage-demande-livree.md) | Clôture et nettoyage contrôlé | OPS-100, OPS-101 |
 | [OPS-103](../tasks/OPS-103-controles-workflow-demande.md) | Contrôles et compatibilité du journal | OPS-100, OPS-101, OPS-102 |

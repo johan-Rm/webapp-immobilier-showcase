@@ -1,0 +1,20 @@
+services:
+  webapp-localhost:
+    extends:
+      file: infra/docker/docker-compose.dev.yml
+      service: webapp-localhost
+    environment:
+      SITE_URL: ${DEMAND_SITE_URL:?URL de demande requise}
+      PUBLIC_HOST: ${DASHBOARD_HOST:?Hôte de demande requis}
+  nginx:
+    image: nginx:1.27-alpine
+    environment:
+      NGINX_ENVSUBST_FILTER: ^DASHBOARD_HOST
+      DASHBOARD_HOST: ${DASHBOARD_HOST:?Hôte de demande requis}
+    depends_on:
+      webapp-localhost:
+        condition: service_healthy
+    ports:
+      - "${PUBLIC_PORT:?Port de demande requis}:80"
+    volumes:
+      - ./infra/nginx/dashboard-dev.conf.template:/etc/nginx/templates/default.conf.template:ro

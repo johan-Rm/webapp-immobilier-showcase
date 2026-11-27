@@ -5,8 +5,8 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête
-- Chemins autorisés : infra/config/, infra/scripts/, infra/docker/, infra/nginx/, infra/tests/, codebase-integrity/domaines/construction-livraison/scripts/environment.py, codebase-integrity/domaines/construction-livraison/tests/test_environment.py, infra/README.md, webapp/scripts/quality/, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-101-environnement-demande.md
+- État : implémentée et commitée, à vérifier
+- Chemins autorisés : infra/config/, infra/scripts/, infra/make/Makefile.ai-development-engineering, infra/docker/, infra/nginx/, infra/tests/, codebase-integrity/domaines/construction-livraison/scripts/environment.py, codebase-integrity/domaines/construction-livraison/tests/test_environment.py, infra/README.md, webapp/scripts/quality/, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-101-environnement-demande.md
 - Dépendances : OPS-100
 
 ## Résultat et critères
@@ -15,7 +15,9 @@ Attribuer identité, ports et vhosts stables avec réservation concurrente et re
 
 ## Réalisation et preuves
 
-À renseigner après réalisation ; distinguer tests automatisés, essais manuels et limites.
+Allocation persistante sous verrou ; environnement et projets Compose distincts par demande et cible. Les adresses et ports sont stables ; le mode fixtures n’utilise pas les secrets de développement. Les secrets d’API sont à configurer explicitement dans chaque environnement.
+
+`python3 -B -m unittest discover -s infra/tests -p 'test_demand_environment.py'` : 7 tests réussis, dont occupation réelle d’un port et allocations concurrentes simulées. `docker compose ... config --no-env-resolution` : configurations site et dashboard résolues avec leurs deux services et ports attendus ; aucun conteneur lancé. Les essais simultanés, HTTP et de chargement restent manuels et non vérifiés. Les données locales non identifiées et les journaux SaaS ne sont pas considérés jetables.
 
 ## Verdict humain
 
@@ -23,4 +25,4 @@ Aucun verdict humain.
 
 ## Commits
 
-À renseigner après implémentation.
+SHA référencé dans la trace de la demande.
