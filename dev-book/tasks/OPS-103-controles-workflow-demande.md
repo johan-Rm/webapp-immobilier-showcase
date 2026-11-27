@@ -21,6 +21,9 @@ Relance humaine sur le correctif non commité : `make checks-rebuild`,
 `make internal-tests-verifiers VERBOSE=1` et `make conventions-tests-frontend
 GD_TARGET=showcase-immobilier VERBOSE=1` réussis. Les tests des vérificateurs
 comptent 203 tests Python, 102 Vitest et 44 Bun ; 213 fichiers frontend examinés.
+Le job GitHub `cadre` a ensuite échoué : l’image locale n’y est pas préparée.
+La correction rétablit l’exécution sur le runner GitHub, qui installe les dépendances,
+et conserve l’image préparée pour les exécutions locales.
 
 Le contrôle des nouvelles cartes exige une demande et une couche uniques, une branche descriptive correspondant à la demande et un worktree de même nom. Les cartes déjà présentes sur la base conservent les contrôles historiques. L’inventaire reconnaît les branches descriptives et signale les identités ambiguës sans masquer leurs sources.
 

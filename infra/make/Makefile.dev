@@ -210,6 +210,10 @@ define run-control
 endef
 
 define run-integrity-control
+	$(if $(filter true,$(GITHUB_ACTIONS)),@bun $(1),$(call run-integrity-control-container,$(1)))
+endef
+
+define run-integrity-control-container
 	@$(CHECKS_INFO) "INFO — Utilise l’image de contrôles préparée par make checks-rebuild."
 	@mkdir -p webapp/.tmp/quality/console-tmp
 	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
