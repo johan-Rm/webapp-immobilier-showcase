@@ -21,7 +21,13 @@ La clôture accepte les branches descriptives ou historiques, vérifie le squash
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-102 ; Docker réel et absence d’activité humaine non vérifiés",
+  "contenu": {"type": "git", "valeur": "75a0691f0a7897e4e361e350225665784e81ff58"}
+}
+```
 
 ## Commits
 

@@ -22,7 +22,7 @@ def plain(text):
     return re.sub(r'^ {0,3}(`{3,}|~{3,})[^\n]*\n.*?^ {0,3}\1\s*$', '', text, flags=re.M | re.S)
 
 
-def card_errors(text, root):
+def card_errors(text, root, new=False):
     errors = []
     visible = plain(text)
     header = re.split(r'^##\s', visible, maxsplit=1, flags=re.M)[0]
@@ -35,6 +35,21 @@ def card_errors(text, root):
     for name, pattern in fields.items():
         if not re.search(pattern, header, re.I | re.M):
             errors.append(f'métadonnée absente ou invalide : {name}')
+    if new:
+        if (len(re.findall(r'^-\s*Couche\s*:', header, re.M)) != 1 or
+                not re.search(r'^-\s*Couche\s*:\s*`?[a-z][a-z0-9-]*`?\s*$', header, re.M)):
+            errors.append('couche technique requise')
+        demand = re.findall(r'^-\s*Demande\s*:\s*`?(DEM-[0-9]{3,})`?\s*$', header, re.M)
+        branch = re.findall(r'^-\s*Branche\s*:\s*`?(demands/(DEM-[0-9]{3,})-([a-z0-9]+(?:-[a-z0-9]+)*))`?\s*$', header, re.M)
+        worktree = re.findall(r'^-\s*Worktree\s*:\s*`?(worktree/[^`\s]+|/[^`\n]+)`?\s*$', header, re.M)
+        if len(demand) != 1 or len(re.findall(r'^-\s*Demande\s*:', header, re.M)) != 1:
+            errors.append('une demande DEM unique est requise')
+        if (len(branch) != 1 or len(re.findall(r'^-\s*Branche\s*:', header, re.M)) != 1
+                or len(demand) != 1 or branch[0][1] != demand[0]):
+            errors.append('branche descriptive de la demande requise')
+        if (len(worktree) != 1 or len(re.findall(r'^-\s*Worktree\s*:', header, re.M)) != 1
+                or len(branch) != 1 or Path(worktree[0]).name != branch[0][0].split('/')[-1]):
+            errors.append('worktree de demande cohérent requis')
     if not re.search(r'(?:Chemins autorisés|Périmètre(?: autorisé)?)\s*(?:\([^\n]*\))?\s*:\s*\S', visible, re.I):
         errors.append('périmètre autorisé explicite absent')
     sections = re.findall(r'^## Verdict humain\s*\n(.*?)(?=^## |\Z)', text, re.M | re.S)
@@ -103,7 +118,7 @@ def check(root, base):
         try:
             if any(p.is_symlink() for p in (path, *path.parents) if p.is_relative_to(root)):
                 raise ValueError('carte ou parent symbolique refusé')
-            errors.extend(f'{name} : {error}' for error in card_errors(path.read_text(), root))
+            errors.extend(f'{name} : {error}' for error in card_errors(path.read_text(), root, new=name not in tracked))
         except (OSError, ValueError) as exc:
             errors.append(f'{name} : {exc}')
     return errors, count

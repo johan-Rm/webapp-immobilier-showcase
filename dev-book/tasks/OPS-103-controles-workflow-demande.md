@@ -5,8 +5,8 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête
-- Chemins autorisés : codebase-integrity/domaines/construction-livraison/, infra/tests/, infra/scripts/demand_status.py, dev-book/templates/carte.md, dev-book/README.md, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-103-controles-workflow-demande.md
+- État : prête à vérifier, non commitée
+- Chemins autorisés : TEST.md, codebase-integrity/domaines/construction-livraison/, infra/tests/, infra/scripts/demand_status.py, dev-book/templates/carte.md, dev-book/README.md, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-103-controles-workflow-demande.md
 - Dépendances : OPS-100, OPS-101, OPS-102
 
 ## Résultat et critères
@@ -15,11 +15,13 @@ Contrôler les nouvelles cartes et leur rattachement, nommage et chemins sans r�
 
 ## Réalisation et preuves
 
-À renseigner après réalisation ; distinguer tests automatisés, essais manuels et limites.
+Le contrôle des nouvelles cartes exige une demande et une couche uniques, une branche descriptive correspondant à la demande et un worktree de même nom. Les cartes déjà présentes sur la base conservent les contrôles historiques. L’inventaire reconnaît les branches descriptives et signale les identités ambiguës sans masquer leurs sources.
+
+`python3 -B -m unittest discover -s codebase-integrity/domaines/construction-livraison/tests -p 'test_devbook.py'` : 10 tests réussis. `python3 -B -m unittest discover -s infra/tests -p 'test_demand_status.py'` : 11 tests réussis. Le contrôle dev-book sur la base de DEM-028 vérifie cinq cartes sans écart. Aucun test avec service lancé ; la véracité des champs et l’activité réelle restent à examiner humainement.
 
 ## Verdict humain
 
-Aucun verdict humain.
+À vérifier : référence Git à tracer après commit. Verdict humain du 27 novembre 2026 : « validé » sur le changement présenté avant commit.
 
 ## Commits
 

@@ -57,6 +57,23 @@ class DemandStatus(unittest.TestCase):
         self.assertFalse(warnings)
         self.assertFalse((self.main / '.git').exists())
 
+    def test_descriptive_branch_uses_canonical_demand(self):
+        self.doc('tmp/demande-test.md', self.demand('ancien brouillon'))
+        self.doc('worktree/devops/dev-book/demand/DEM-042-test.md', self.demand('analyse'))
+        self.records[1]['branch'] = 'refs/heads/demands/DEM-042-sujet'
+        demands, _, _ = self.scan()
+        self.assertEqual(len(demands['DEM-042']), 1)
+        self.assertEqual(demands['DEM-042'][0].state, 'analyse')
+
+    def test_ambiguous_branches_preserve_all_sources(self):
+        self.doc('tmp/demande-test.md', self.demand('ancien brouillon'))
+        self.doc('worktree/devops/dev-book/demand/DEM-042-test.md', self.demand('analyse'))
+        self.records[1]['branch'] = 'refs/heads/demands/DEM-042-sujet'
+        self.records.append({'worktree': str(self.main), 'branch': 'refs/heads/demands/DEM-042-autre'})
+        demands, _, warnings = self.scan()
+        self.assertGreaterEqual(len(demands['DEM-042']), 2)
+        self.assertTrue(any('ambiguës' in warning for warning in warnings))
+
     def test_partial_states_and_conflicts_are_preserved(self):
         self.doc('tmp/demande-test.md', self.demand())
         self.doc('dev-book/tasks/OPS-099-test.md', self.task('partiellement validée'))

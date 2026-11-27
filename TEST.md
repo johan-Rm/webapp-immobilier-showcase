@@ -26,7 +26,7 @@ Depuis la même racine, coller le bloc suivant. À la fin, arrêter les fixtures
 avec `Ctrl+C` dans le premier terminal.
 
 ```bash
-# 1. Cadre et traçabilité
+# 1. Cadre et traçabilité : vérificateurs, dont les métadonnées des nouvelles cartes
 make internal-tests-verifiers
 make conventions-tests-docs
 make conventions-tests-devbook

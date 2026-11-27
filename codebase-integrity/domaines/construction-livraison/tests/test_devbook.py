@@ -12,9 +12,11 @@ control = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(control)
 VALID = '''# Carte
 
+- Demande : DEM-999
+- Couche : devops
 - Session de création : 01a1d56d-446b-7931-bf53-7687a7d10912
-- Branche : layers/devops
-- Worktree : worktree/devops
+- Branche : demands/DEM-999-sujet
+- Worktree : worktree/DEM-999-sujet
 - Chemins autorisés : fichier.txt
 - Dépendances : aucune
 
@@ -55,7 +57,28 @@ class DevbookTest(unittest.TestCase):
             if line.startswith('- '):
                 with self.subTest(line=line):
                     text = VALID.replace(line, '') + '\n```md\n' + line + '\n```'
-                    self.assertTrue(control.card_errors(text, self.root))
+                    self.assertTrue(control.card_errors(text, self.root, new=True))
+
+    def test_new_card_requires_consistent_request_identity(self):
+        for wrong in (VALID.replace('Demande : DEM-999', 'Demande : DEM-998'),
+                      VALID.replace('demands/DEM-999-sujet', 'layers/devops'),
+                      VALID.replace('worktree/DEM-999-sujet', 'worktree/DEM-999-other'),
+                      VALID.replace('Couche : devops', 'Couche : <choisir>'),
+                      VALID.replace('- Branche : demands/DEM-999-sujet', '- Branche : demands/DEM-999-sujet\n- Branche : layers/devops')):
+            with self.subTest(text=wrong):
+                self.assertTrue(control.card_errors(wrong, self.root, new=True))
+        self.assertEqual(control.card_errors(VALID, self.root, new=True), [])
+
+    def test_historical_card_can_be_updated_without_new_identity(self):
+        legacy = VALID.replace('- Demande : DEM-999\n', '').replace('- Couche : devops\n', '')
+        legacy = legacy.replace('demands/DEM-999-sujet', 'layers/devops')
+        legacy = legacy.replace('worktree/DEM-999-sujet', 'worktree/devops')
+        self.card(legacy)
+        self.git('add', '.')
+        self.git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-qm', 'legacy')
+        base = self.git('rev-parse', 'HEAD').strip()
+        self.card(legacy + '\nPrécision historique.\n')
+        self.assertEqual(control.check(self.root, base), ([], 1))
 
     def test_unknown_verdict_fails_without_inventing_a_decision(self):
         self.assertTrue(control.card_errors(VALID.replace('Aucun verdict.', 'Validé.'), self.root))

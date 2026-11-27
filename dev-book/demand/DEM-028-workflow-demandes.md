@@ -69,3 +69,5 @@ L’humain a indiqué « les 2 » pour les commits OPS-100 `0267135813fbc57dd7cc
 L’humain a validé le correctif OPS-100 `eb29270f3a05cbef8aaf4a43664685fb309c4c76` le 27 novembre 2026.
 
 Le 27 novembre 2026, l’humain a confirmé la suppression du seul `.env` situé dans le worktree livré, après vérifications ; les `.env` du principal et des autres worktrees sont préservés. Les autres données locales non identifiées restent bloquantes.
+
+L’humain a validé OPS-102 `75a0691f0a7897e4e361e350225665784e81ff58` le 27 novembre 2026 ; les essais Docker réels restent inconnus.
