@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-029-emplacement-worktrees
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier.worktrees/DEM-029-emplacement-worktrees
-- État : à vérifier par l’humain
+- État : validée par l’humain
 - Chemins autorisés : infra/scripts/demand_delivery.py, infra/tests/test_demand_delivery.py, TEST.md, dev-book/tasks/OPS-107-cloturer-worktrees-demande.md, dev-book/demand/DEM-029-emplacement-worktrees.md
 - Dépendances : OPS-105 et OPS-106 validées et commitées
 
@@ -39,4 +39,6 @@ Verdict explicite de l’humain le 2026-11-27.
 
 ## Commits
 
-En attente.
+`929abf0def0b87b9f0fe9d09991d8b40493cd64c`
+
+Vérification globale : validation humaine du 27 novembre 2026 sur `95324bb638fe3bc216c54a60ff08c964d3fb8a27`, avec les limites consignées dans la demande.

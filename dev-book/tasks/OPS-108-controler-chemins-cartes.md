@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-029-emplacement-worktrees
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier.worktrees/DEM-029-emplacement-worktrees
-- État : à vérifier par l’humain
+- État : validée par l’humain
 - Chemins autorisés : codebase-integrity/domaines/construction-livraison/scripts/check_devbook.py, codebase-integrity/domaines/construction-livraison/tests/test_devbook.py, codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py, codebase-integrity/domaines/fiabilite-verifications/scripts/check_readmes.py, codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py, codebase-integrity/domaines/fiabilite-verifications/tests/test_readmes.py, codebase-integrity/domaines/construction-livraison/tests/test_worktrees.py, dev-book/templates/carte.md, TEST.md, dev-book/tasks/OPS-108-controler-chemins-cartes.md, dev-book/demand/DEM-029-emplacement-worktrees.md
 - Dépendances : OPS-105 validée et commitée
 
@@ -39,4 +39,6 @@ Verdict explicite de l’humain le 2026-11-27.
 
 ## Commits
 
-En attente.
+`2f7f08ed58f56c664df5e80f570568170143a8a8` ; correctif `95324bb638fe3bc216c54a60ff08c964d3fb8a27`
+
+Vérification globale : validation humaine du 27 novembre 2026 sur `95324bb638fe3bc216c54a60ff08c964d3fb8a27`, avec les limites consignées dans la demande.

@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-029-emplacement-worktrees
 - Worktree : /home/johan/www/graines-digitales/modern-web-apps/showcase-immobilier.worktrees/DEM-029-emplacement-worktrees
-- État : à vérifier par l’humain
+- État : validée par l’humain
 - Chemins autorisés : README.md, AGENTS.md, .gitignore, worktree/README.md, docs/README.md, docs/1.getting-started/worktrees.md, docs/controles/controle-contributions.md, infra/docker/Dockerfile.playwright, TEST.md, codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py, codebase-integrity/domaines/fiabilite-verifications/scripts/check_readmes.py, codebase-integrity/domaines/fiabilite-verifications/tests/test_docs.py, codebase-integrity/domaines/fiabilite-verifications/tests/test_readmes.py, codebase-integrity/domaines/construction-livraison/tests/test_worktrees.py, dev-book/tasks/OPS-109-documenter-transition-worktrees.md, dev-book/demand/DEM-029-emplacement-worktrees.md
 - Dépendances : OPS-105 à OPS-108 validées et commitées
 
@@ -41,4 +41,6 @@ Verdict explicite de l’humain le 2026-11-27.
 
 ## Commits
 
-En attente.
+`4a0dafa461675961a1be1b53e4b9ca12beed1af9`
+
+Vérification globale : validation humaine du 27 novembre 2026 sur `95324bb638fe3bc216c54a60ff08c964d3fb8a27`, avec les limites consignées dans la demande.

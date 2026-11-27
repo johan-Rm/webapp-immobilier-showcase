@@ -3,7 +3,7 @@
 - Type : consolidation
 - Session de création : 01a21cf5-ae80-79e1-93aa-e5bca7961807
 - Date : 2026-11-27
-- État : cadrage confirmé par l’humain ; analyse et découpage à réaliser.
+- État : validée par l’humain ; livraison à engager séparément.
 
 ## Constat et objectif
 
@@ -158,3 +158,9 @@ Après deux échecs humains du même scénario à la limite Vitest de 5 secondes
 Exécution ciblée locale avec les dépendances du dépôt principal : 3 tests réussis, durée totale 4,97 s. Cette exécution ne reproduit pas la charge ni l’image Docker des deux échecs. La reconstruction de l’image et la relance humaine de `make internal-tests-verifiers VERBOSE=1` restent nécessaires pour vérifier la correction dans cet environnement. Correctif présenté à validation avant commit.
 
 L’humain a validé ce correctif le 27 novembre 2026. Empreinte SHA-256 du fichier de test présenté : `5abe76807f0f0602beede1b719133053ff7ec5db49354ca6a4b603d91f5be2d4`. La relance humaine de `make internal-tests-verifiers VERBOSE=1` a réussi : 204 tests Python, 102 Vitest et 44 Bun ; le contenu exact de l’image utilisée lors de cette relance n’est pas établi.
+
+## Vérification globale — 27 novembre 2026
+
+L’humain a validé DEM-029 après présentation des cinq cartes et du correctif, sur la contribution examinée au SHA `95324bb638fe3bc216c54a60ff08c964d3fb8a27`. Les tests des vérificateurs ont réussi sur ce SHA après reconstruction de l’image : 204 Python, 102 Vitest et 44 Bun. Les 28 autres contrôles ont réussi sur le SHA précédent `4a0dafa461675961a1be1b53e4b9ca12beed1af9` et n’ont pas été rejoués sur le SHA final. Les essais réels de transition des worktrees restent non réalisés ; ce verdict ne les transforme pas en réussite.
+
+Commits examinés : OPS-105 `9681827fe08f616a74ab12453e68867ac9bd3332` ; OPS-106 `55a6f9f35d6676cbe099d416cffa3715db2a27fb` ; OPS-107 `929abf0def0b87b9f0fe9d09991d8b40493cd64c` ; OPS-108 `2f7f08ed58f56c664df5e80f570568170143a8a8` et correctif `95324bb638fe3bc216c54a60ff08c964d3fb8a27` ; OPS-109 `4a0dafa461675961a1be1b53e4b9ca12beed1af9`. La livraison et la clôture relèvent d’autorisations distinctes.
