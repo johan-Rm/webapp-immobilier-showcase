@@ -28,7 +28,7 @@ Depuis la même racine, coller le bloc suivant. À la fin, arrêter les fixtures
 avec `Ctrl+C` dans le premier terminal.
 
 ```bash
-# 1. Cadre et traçabilité : vérificateurs, dont les métadonnées des nouvelles cartes
+# 1. Cadre et traçabilité : vérificateurs, dont la forme des chemins des nouvelles cartes
 make internal-tests-verifiers
 # Worktrees, correction du registre et clôture : dépôts temporaires, Docker simulé
 python3 -B -m unittest discover -s infra/tests -p "test_demand_worktree.py"

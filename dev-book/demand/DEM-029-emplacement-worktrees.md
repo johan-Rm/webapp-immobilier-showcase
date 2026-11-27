@@ -70,3 +70,7 @@ Les dépendances indiquent l’ordre de réalisation ; les contrôles d’ensemb
 ### Ajustement du découpage — 2026-11-27
 
 L’humain confirme le déplacement vers OPS-105 de l’adaptation minimale de clôture et des tests concernés, pour préserver le contrat entre les commits ; OPS-107 conserve les vérifications approfondies des ressources et des refus.
+
+### Coordination des contrôles documentaires
+
+Les adaptations des fixtures et sélections relatives à `worktree/README.md` sont coordonnées avec sa suppression en OPS-109 : les supprimer en OPS-108 désactiverait prématurément la couverture du fichier encore présent. OPS-108 reste responsable du contrôle des chemins des cartes.
