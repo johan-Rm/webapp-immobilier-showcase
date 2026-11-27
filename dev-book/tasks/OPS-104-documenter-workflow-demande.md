@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête à vérifier, non commitée
+- État : validée et commitée
 - Chemins autorisés : AGENTS.md, README.md, TEST.md, docs/, infra/README.md, dev-book/templates/, Makefile, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-104-documenter-workflow-demande.md
 - Dépendances : OPS-100, OPS-101, OPS-102, OPS-103
 
@@ -21,8 +21,14 @@ Les consignes et guides décrivent les worktrees de demande, la transition des c
 
 ## Verdict humain
 
-Aucun verdict humain.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-104 ; changements examinés avant commit",
+  "contenu": {"type": "git", "valeur": "e5184c370b83bca1dc2e39d6197a92d79df496bc"}
+}
+```
 
 ## Commits
 
-À renseigner après implémentation.
+`e5184c370b83bca1dc2e39d6197a92d79df496bc`.

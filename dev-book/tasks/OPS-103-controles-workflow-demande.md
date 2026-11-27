@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête à vérifier, non commitée
+- État : validée ; correctif commité
 - Chemins autorisés : TEST.md, codebase-integrity/domaines/construction-livraison/, infra/tests/, infra/scripts/demand_status.py, dev-book/templates/carte.md, dev-book/README.md, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-103-controles-workflow-demande.md
 - Dépendances : OPS-100, OPS-101, OPS-102
 
@@ -15,7 +15,7 @@ Contrôler les nouvelles cartes et leur rattachement, nommage et chemins sans r�
 
 ## Réalisation et preuves
 
-Correctif en cours : les tests des vérificateurs et le contrôle frontend utilisent
+Correctif : les tests des vérificateurs et le contrôle frontend utilisent
 l’image préparée par `checks-rebuild`, plutôt que des dépendances Bun locales.
 Relance humaine sur le correctif non commité : `make checks-rebuild`,
 `make internal-tests-verifiers VERBOSE=1` et `make conventions-tests-frontend
@@ -36,6 +36,8 @@ Le contrôle des nouvelles cartes exige une demande et une couche uniques, une b
 }
 ```
 
+L’humain a validé le correctif avant son commit `04367601da7f771dc787d8e35e8fb5a5ab0f386e`.
+
 ## Commits
 
-À renseigner après implémentation.
+`b7e926a98bfb9b458c32e45a8e294ad725fbbc51` ; correctif `04367601da7f771dc787d8e35e8fb5a5ab0f386e`.

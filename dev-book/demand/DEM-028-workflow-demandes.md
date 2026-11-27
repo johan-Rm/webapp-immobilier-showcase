@@ -3,7 +3,7 @@
 - Type : consolidation
 - Session de création : 01a21940-493f-7ee2-9901-d4c9a15de91d
 - Date : 2026-11-26
-- État : analysée et découpée ; implémentation à réaliser.
+- État : implémentée et acceptée pour livraison ; contrôles finaux à réaliser.
 
 ## Constat et objectif
 
@@ -73,3 +73,5 @@ Le 27 novembre 2026, l’humain a confirmé la suppression du seul `.env` situé
 L’humain a validé OPS-102 `75a0691f0a7897e4e361e350225665784e81ff58` le 27 novembre 2026 ; les essais Docker réels restent inconnus.
 
 L’humain a validé les changements d’OPS-103 avant leur commit `b7e926a98bfb9b458c32e45a8e294ad725fbbc51`.
+
+L’humain a validé OPS-104 avant son commit `e5184c370b83bca1dc2e39d6197a92d79df496bc` et le correctif OPS-103 avant son commit `04367601da7f771dc787d8e35e8fb5a5ab0f386e`. Il a accepté la livraison de la demande et différé l’essai simultané de deux worktrees à ses prochains développements ; ce critère reste non vérifié.
