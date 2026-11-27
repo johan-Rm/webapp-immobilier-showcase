@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête
+- État : prête à vérifier, non commitée
 - Chemins autorisés : AGENTS.md, README.md, TEST.md, docs/, infra/README.md, dev-book/templates/, Makefile, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-104-documenter-workflow-demande.md
 - Dépendances : OPS-100, OPS-101, OPS-102, OPS-103
 
@@ -15,7 +15,9 @@ Aligner instructions, guides, modèles et commandes sur les comportements réali
 
 ## Réalisation et preuves
 
-À renseigner après réalisation ; distinguer tests automatisés, essais manuels et limites.
+Les consignes et guides décrivent les worktrees de demande, la transition des couches, les commandes d’environnement, la clôture et la recette avant livraison sur le SHA final. Les traces historiques et les rubriques des README sont conservées.
+
+`python3 -B codebase-integrity/domaines/fiabilite-verifications/scripts/check_docs.py` : structure, 24 README et liens locaux conformes. La recette de deux serveurs et la suite complète restent à exécuter manuellement ; aucun test avec service ni vérification distante n’a été réalisé.
 
 ## Verdict humain
 

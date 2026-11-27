@@ -13,7 +13,7 @@ et de l’espagnol.
 - `docs/` : documentation du projet.
 - `dev-book/` : demandes, cartes et suivi des travaux.
 - `design/` : ressources de création graphique et références visuelles.
-- `worktree/` : espaces de travail associés aux couches.
+- `worktree/` : espaces de travail des demandes et anciens espaces de couche.
 - `.github/` : automatisations GitHub.
 - `Makefile` : point d’entrée des commandes du projet.
 

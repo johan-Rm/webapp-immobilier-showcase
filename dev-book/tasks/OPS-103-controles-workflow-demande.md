@@ -21,7 +21,13 @@ Le contrôle des nouvelles cartes exige une demande et une couche uniques, une b
 
 ## Verdict humain
 
-À vérifier : référence Git à tracer après commit. Verdict humain du 27 novembre 2026 : « validé » sur le changement présenté avant commit.
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "OPS-103 ; changement examiné avant commit le 27 novembre 2026",
+  "contenu": {"type": "git", "valeur": "b7e926a98bfb9b458c32e45a8e294ad725fbbc51"}
+}
+```
 
 ## Commits
 

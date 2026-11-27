@@ -1,8 +1,8 @@
-# Worktrees de couche
+# Worktrees de demande et de couche
 
-> Préparer et utiliser les environnements des couches sans déplacer les missions.
+> Préparer les environnements des demandes et conserver les environnements de couche historiques.
 
-Créer une copie uniquement pour une mission affectée, avec une base explicite :
+Les commandes suivantes concernent les environnements de couche historiques. Créer une copie uniquement pour une mission affectée, avec une base explicite :
 
 ```bash
 make worktree-add LAYER=web BASE=develop
@@ -57,15 +57,31 @@ hors de cette convention ne sont pas attribués automatiquement à une couche.
 
 ## Espaces documentaires de demande
 
-À l’ouverture, résoudre la base locale sur `develop` et lancer
-`make demand-open DEMAND=DEM-NNN BASE=<sha-develop>`. La commande réserve
-l’identifiant localement et ouvre l’espace dédié sous `worktree/`. Les couches
-gardent leurs espaces techniques. L’espace documentaire ne démarre aucun
-service et ne prépare aucun secret.
+À l’analyse, vérifier `develop` local et ouvrir l’espace depuis le dépôt principal :
 
-Consigner les étapes terminées dans le journal par des commits locaux.
-Voir le [contrôle des contributions](../controles/controle-contributions.md#publication-et-clôture-dun-espace-de-demande)
-pour les contrôles de publication, la preuve du squash et l’archivage local.
+```bash
+make demand-open DEMAND=DEM-NNN SUBJECT=sujet BASE=<sha-develop>
+```
+
+La branche et le dossier utilisent `DEM-NNN-sujet`. Le sujet comprend des lettres minuscules, chiffres et tirets. Pour reprendre un ancien espace sur `demands/DEM-NNN`, omettre `SUBJECT`. L’ouverture ne démarre aucun service et ne copie aucun secret.
+
+Depuis le worktree de la demande, préparer le fichier d’environnement puis renseigner les accès API nécessaires sans copier automatiquement de secrets :
+
+```bash
+make demand-env
+make demand-setup TARGET=site
+make demand-up TARGET=site
+make demand-setup TARGET=dashboard
+make demand-up TARGET=dashboard
+```
+
+Les commandes affichent l’adresse locale et son port. Les adresses sont stables pour la demande ; les projets et ports du site et du dashboard sont distincts. L’API distante et ses données peuvent être partagées. `make demand-down TARGET=site` ou `TARGET=dashboard` arrête uniquement la cible. `make demand-test-up TARGET=site` lance les fixtures sur le port de test réservé ; `make demand-test-down TARGET=site` les arrête. Le mode test ne lit pas les secrets de développement.
+
+### Vérifier deux demandes simultanées
+
+Prérequis : deux worktrees de demande distincts, Docker et Compose disponibles, accès API configuré si le parcours le nécessite. Dans deux terminaux, entrer respectivement dans chaque worktree et lancer `make demand-env`, `make demand-setup TARGET=site`, puis `make demand-up TARGET=site`. Ouvrir les deux adresses affichées et vérifier le parcours attendu. Arrêter le site de la première demande avec `make demand-down TARGET=site` et vérifier que la seconde répond toujours. Répéter avec `TARGET=dashboard` lorsque le dashboard est concerné. Enfin arrêter les seules cibles démarrées. Cette recette observe les serveurs locaux ; elle ne démontre pas l’isolation des données de l’API partagée.
+
+Consigner les étapes dans le journal et suivre le [contrôle des contributions](../controles/controle-contributions.md#publication-et-clôture-dun-espace-de-demande) pour la clôture après squash. Une activité humaine sur le worktree ne peut pas être déduite de sa propreté Git.
 
 Le mode test démarre le service `app-test` du Compose commun, avec une image préparée depuis la couche et un port propre à celle-ci.
 

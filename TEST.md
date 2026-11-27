@@ -1,9 +1,11 @@
-# Suite complète de contrôles à la reconstitution
+# Suite complète de contrôles avant livraison
 
-À l’étape de reconstitution AIDE, lancer cette suite complète pour Showcase
-Immobilier après avoir réuni les commits validés sur la branche de demande
-`demands/DEM-NNN`. Lancer les commandes depuis la racine du dépôt dans les
-deux terminaux.
+Avant livraison, lancer cette suite complète pour Showcase Immobilier depuis
+la racine du worktree de la demande, sur son SHA final vérifié. Relever le SHA
+avec `git rev-parse HEAD` et conserver les résultats associés à cette révision.
+Utiliser les deux terminaux dans le même worktree. Le port local 19856 doit être
+libre ; cette recette utilise les fixtures et ne prouve pas le fonctionnement de
+l’API distante.
 
 Le catalogue et les rapports sont décrits dans le
 [guide des contrôles](docs/controles/executer-controles.md).
@@ -29,7 +31,7 @@ avec `Ctrl+C` dans le premier terminal.
 # 1. Cadre et traçabilité : vérificateurs, dont les métadonnées des nouvelles cartes
 make internal-tests-verifiers
 make conventions-tests-docs
-make conventions-tests-devbook
+make conventions-tests-devbook BASE="$(git merge-base develop HEAD)"
 
 # 2. Outils tiers
 make third-party-tests-lint GD_TARGET=showcase-immobilier
