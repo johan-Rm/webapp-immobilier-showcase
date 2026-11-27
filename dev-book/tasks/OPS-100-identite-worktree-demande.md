@@ -19,11 +19,16 @@ Création descriptive avec verrou par identifiant, reprise de la branche attendu
 
 ## Verdict humain
 
+Verdict humain du 27 novembre 2026 : « validé » pour le commit initial `0267135813fbc57dd7cc8f59750343184c808aa0`, avec la revue signalant la reprise historique et la clôture descriptive.
+
+
+Verdict humain complémentaire du 27 novembre 2026 : « validé » pour le correctif de reprise des anciennes demandes.
+
 ```verdict-json
 {
   "decision": "validé",
-  "portee": "OPS-100 ; revue signalant la reprise historique et la clôture descriptive à corriger ; verdict humain du 27 novembre 2026",
-  "contenu": {"type": "git", "valeur": "0267135813fbc57dd7cc8f59750343184c808aa0"}
+  "portee": "OPS-100 ; correctif de reprise des branches historiques",
+  "contenu": {"type": "git", "valeur": "eb29270f3a05cbef8aaf4a43664685fb309c4c76"}
 }
 ```
 

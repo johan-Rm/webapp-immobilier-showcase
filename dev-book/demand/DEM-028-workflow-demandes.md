@@ -65,3 +65,7 @@ La recherche des références actives hors historiques et copies de worktrees in
 ## Verdicts humains du 27 novembre 2026
 
 L’humain a indiqué « les 2 » pour les commits OPS-100 `0267135813fbc57dd7cc8f59750343184c808aa0` et OPS-101 `e6bd10908c3c2c9ee9be054283af5efd2a8bf883`. La revue a identifié la reprise des branches historiques et la clôture descriptive ; les corrections restent à vérifier. Les essais réels des environnements demeurent inconnus.
+
+L’humain a validé le correctif OPS-100 `eb29270f3a05cbef8aaf4a43664685fb309c4c76` le 27 novembre 2026.
+
+Le 27 novembre 2026, l’humain a confirmé la suppression du seul `.env` situé dans le worktree livré, après vérifications ; les `.env` du principal et des autres worktrees sont préservés. Les autres données locales non identifiées restent bloquantes.

@@ -5,7 +5,7 @@
 - Couche : devops
 - Branche : demands/DEM-028-workflow-demandes
 - Worktree : worktree/DEM-028-workflow-demandes
-- État : prête
+- État : implémentée et commitée, à vérifier
 - Chemins autorisés : infra/scripts/demand_delivery.py, infra/scripts/demand_worktree.py, infra/tests/test_demand_delivery.py, infra/make/Makefile.ai-development-engineering, dev-book/demand/DEM-028-workflow-demandes.md, dev-book/tasks/OPS-102-nettoyage-demande-livree.md
 - Dépendances : OPS-100, OPS-101
 
@@ -15,7 +15,9 @@ Vérifier preuve de squash, identité, disponibilité et absence de travail iné
 
 ## Réalisation et preuves
 
-À renseigner après réalisation ; distinguer tests automatisés, essais manuels et limites.
+La clôture accepte les branches descriptives ou historiques, vérifie le squash et l’arbre, archive la tête et supprime la branche après retrait du worktree. Le seul fichier local supprimable par Git est le `.env` ignoré du worktree livré : décision humaine du 27 novembre 2026. Les autres fichiers locaux, liens symboliques, volumes et objets Docker ambigus bloquent la suppression. Le registre reste verrouillé pendant la clôture ; les conteneurs et réseaux de la demande sont vérifiés avant arrêt et suppression.
+
+`python3 -B -m unittest discover -s infra/tests -p 'test_demand*.py'` : 35 tests réussis, dont 12 tests de clôture avec dépôts Git temporaires et Docker simulé. Les tests préservent les fichiers `.env` du principal et d’un autre worktree. Le contrôle dev-book et `git diff --check` réussissent. Aucun service Docker réel n’a été démarré ou supprimé ; l’absence d’une autre activité humaine sur le worktree reste à confirmer lors de la livraison.
 
 ## Verdict humain
 
@@ -23,4 +25,4 @@ Aucun verdict humain.
 
 ## Commits
 
-À renseigner après implémentation.
+SHA référencé dans la trace de la demande.
