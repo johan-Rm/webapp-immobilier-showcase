@@ -69,6 +69,16 @@ class DevbookTest(unittest.TestCase):
                 self.assertTrue(control.card_errors(wrong, self.root, new=True))
         self.assertEqual(control.card_errors(VALID, self.root, new=True), [])
 
+    def test_new_worktree_paths_are_statically_bounded(self):
+        for path in ('worktree/DEM-999-sujet', '/projet/worktree/DEM-999-sujet',
+                     '/projet/repo.worktrees/DEM-999-sujet'):
+            card = VALID.replace('worktree/DEM-999-sujet', path)
+            self.assertEqual(control.card_errors(card, self.root, new=True), [], path)
+        for path in ('/autre/DEM-999-sujet', '/projet/repo.worktrees/../DEM-999-sujet',
+                     'ailleurs/DEM-999-sujet', '/projet/.worktrees/DEM-999-sujet'):
+            card = VALID.replace('worktree/DEM-999-sujet', path)
+            self.assertTrue(control.card_errors(card, self.root, new=True), path)
+
     def test_historical_card_can_be_updated_without_new_identity(self):
         legacy = VALID.replace('- Demande : DEM-999\n', '').replace('- Couche : devops\n', '')
         legacy = legacy.replace('demands/DEM-999-sujet', 'layers/devops')

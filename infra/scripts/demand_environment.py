@@ -43,7 +43,38 @@ def available(ports):
             sock.close()
 
 
-def reserve(cwd):
+def assert_rebind_safe(root, demand, old_path, tree):
+    """Refuser les ressources ou identités qu'on ne peut attribuer sûrement."""
+    from demand_delivery import docker
+    _, records = context(tree)
+    matches = [r for r in records if re.fullmatch(
+        r'refs/heads/demands/' + re.escape(demand) + r'(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?',
+        r.get('branch', ''))]
+    old = Path(old_path)
+    allowed = (root / 'worktree', root.parent / (root.name + '.worktrees'))
+    if (len(matches) != 1 or matches[0].get('worktree') != str(tree)
+            or 'locked' in matches[0] or 'prunable' in matches[0]
+            or tree.parent not in allowed or old.parent not in allowed
+            or old.name != tree.name or old.parent.is_symlink() or old.is_symlink()
+            or tree.parent.is_symlink() or tree.is_symlink()
+            or old.exists() or any(r.get('worktree') == str(old) for r in records)):
+        raise ValueError('Ancien ou nouveau worktree ambigu ; correction refusée')
+    fingerprint = hashlib.sha256(str(root).encode()).hexdigest()[:8]
+    for target in ('site', 'dashboard', 'test'):
+        project = 'showcase-' + fingerprint + '-' + demand.lower() + '-' + target
+        filters = ['--filter', 'label=com.docker.compose.project=' + project]
+        ids = docker('ps', '-aq', *filters).splitlines()
+        if ids:
+            for item in json.loads(docker('inspect', *ids)):
+                labels = item.get('Config', {}).get('Labels') or {}
+                if (labels.get('com.docker.compose.project') != project
+                        or labels.get('com.docker.compose.project.working_dir') != str(tree)):
+                    raise ValueError('Conteneur lié à un autre chemin ou ambigu ; correction refusée')
+        if docker('network', 'ls', '-q', *filters):
+            raise ValueError('Réseau de la demande présent ; correction refusée')
+
+
+def reserve(cwd, rebind=False):
     root, tree, demand = identity(cwd)
     registry = root / '.git' / 'aide-demand-environments.json'
     lockfile = root / '.git' / 'aide-demand-environments.lock'
@@ -66,9 +97,31 @@ def reserve(cwd):
         if len(allocated) != len(set(allocated)):
             raise ValueError('Ports dupliqués dans le registre')
         if demand in data:
-            if data[demand]['worktree'] != str(tree):
+            if data[demand]['worktree'] == str(tree):
+                return data[demand]
+            if not rebind:
                 raise ValueError('Identifiant déjà affecté à un autre worktree')
-            return data[demand]
+            old_path = data[demand]['worktree']
+            assert_rebind_safe(root, demand, old_path, tree)
+            data[demand]['worktree'] = str(tree)
+            entry = data[demand]
+        elif rebind:
+            raise ValueError('Aucune réservation existante à corriger')
+        else:
+            entry = None
+        if entry is not None:
+            descriptor, name = tempfile.mkstemp(prefix='.aide-env-', dir=registry.parent)
+            try:
+                with os.fdopen(descriptor, 'w') as output:
+                    json.dump(data, output, sort_keys=True, indent=2)
+                    output.write('\n')
+                    output.flush()
+                    os.fsync(output.fileno())
+                os.replace(name, registry)
+            finally:
+                if os.path.exists(name):
+                    os.unlink(name)
+            return entry
         occupied = set(allocated)
         for first in range(PORT_FIRST, PORT_LAST - PORTS_PER_DEMAND + 2, PORTS_PER_DEMAND):
             ports = list(range(first, first + PORTS_PER_DEMAND))
@@ -187,10 +240,13 @@ def run(cwd, action, target):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'setup', 'up', 'down', 'logs', 'test-up', 'test-down'])
+    parser.add_argument('action', choices=['prepare', 'rebind', 'setup', 'up', 'down', 'logs', 'test-up', 'test-down'])
     parser.add_argument('--target', choices=['site', 'dashboard'], default='site')
     args = parser.parse_args()
     try:
+        if args.action == 'rebind':
+            print('Registre corrigé : ' + str(reserve(Path.cwd(), rebind=True)['worktree']))
+            return 0
         if args.action == 'prepare':
             print(prepare(Path.cwd()))
             return 0

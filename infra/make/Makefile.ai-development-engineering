@@ -137,9 +137,12 @@ demand-publication-check:
 demand-release:
 	python3 -B infra/scripts/demand_delivery.py release "$${DEMAND}" --target "$${TARGET}" --squash "$${SQUASH}"
 
-.PHONY: demand-env demand-setup demand-up demand-down demand-logs demand-test-up demand-test-down
+.PHONY: demand-env demand-env-rebind demand-setup demand-up demand-down demand-logs demand-test-up demand-test-down
 demand-env:
 	python3 -B infra/scripts/demand_environment.py prepare
+
+demand-env-rebind:
+	python3 -B infra/scripts/demand_environment.py rebind
 
 demand-setup demand-up demand-down demand-logs demand-test-up demand-test-down:
 	python3 -B infra/scripts/demand_environment.py $(patsubst demand-%,%,$@) --target "$${TARGET:-site}"

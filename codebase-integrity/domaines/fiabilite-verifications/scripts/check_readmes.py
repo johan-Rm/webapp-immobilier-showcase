@@ -97,7 +97,7 @@ def check_readmes(root, paths):
     for relative in sorted(set(paths)):
         if relative.name.casefold() != 'readme.md':
             continue
-        if relative.parts[0] == 'worktree' and relative != Path('worktree/README.md'):
+        if relative.parts[0] == 'worktree':
             continue
         if any(p.startswith('.env') for p in relative.parts):
             continue

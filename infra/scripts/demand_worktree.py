@@ -31,19 +31,28 @@ def open_demand(cwd, identifier, base, subject=None):
 
 def _open_demand(root, identifier, base, branch, subject):
     root, records = context(root)
-    parent = root / 'worktree'
-    destination = parent / (identifier + (f'-{subject}' if subject else ''))
-    if parent.is_symlink() or destination.is_symlink():
+    parents = (root.parent / (root.name + '.worktrees'), root / 'worktree')
+    leaf = identifier + (f'-{subject}' if subject else '')
+    destination = parents[0] / leaf
+    matches = [record for record in records if re.fullmatch(
+        r'refs/heads/demands/' + re.escape(identifier) + r'(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?',
+        record.get('branch', ''))]
+    if len(matches) > 1 or (matches and matches[0].get('branch') != f'refs/heads/{branch}'):
+        raise ValueError('Identité de demande ambiguë ou déjà attribuée')
+    if matches:
+        record = matches[0]
+        tree = Path(record['worktree'])
+        if (tree.parent not in parents or tree.name != leaf or tree.parent.is_symlink()
+                or tree.is_symlink() or record.get('locked') is not None or 'prunable' in record
+                or not tree.is_dir()
+                or git(tree, 'rev-parse', '--show-toplevel') != str(tree)
+                or git(tree, 'rev-parse', '--path-format=absolute', '--git-common-dir') != str(root / '.git')
+                or git(tree, 'branch', '--show-current') != branch
+                or git(tree, 'status', '--porcelain=v1', '--untracked-files=all')):
+            raise ValueError('Espace de demande non réutilisable')
+        return tree
+    if parents[0].is_symlink() or destination.is_symlink():
         raise ValueError('Destination symbolique refusée')
-    for record in records:
-        if record.get('branch') == f'refs/heads/{branch}':
-            if (Path(record['worktree']) != destination or record.get('locked') is not None
-                    or not destination.is_dir()
-                    or git(destination, 'rev-parse', '--show-toplevel') != str(destination)
-                    or git(destination, 'branch', '--show-current') != branch
-                    or git(destination, 'status', '--porcelain=v1', '--untracked-files=all')):
-                raise ValueError('Espace de demande non réutilisable')
-            return destination
     demands, _, _ = scan(root)
     refs = git(root, 'for-each-ref', '--format=%(refname)', 'refs/heads', 'refs/remotes', 'refs/demands')
     existing = demands.get(identifier, [])
@@ -56,6 +65,9 @@ def _open_demand(root, identifier, base, branch, subject):
         raise ValueError('La base doit correspondre à develop local')
     if destination.exists():
         raise ValueError('Destination déjà occupée')
+    parents[0].mkdir(exist_ok=True)
+    if parents[0].is_symlink() or not parents[0].is_dir():
+        raise ValueError('Parent de destination invalide')
     # Git crée la ref sans force et arbitre les créations concurrentes de la même branche.
     git(root, 'worktree', 'add', '-b', branch, str(destination), sha)
     return destination

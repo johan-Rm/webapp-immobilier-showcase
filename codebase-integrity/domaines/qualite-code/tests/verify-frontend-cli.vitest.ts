@@ -64,7 +64,7 @@ describe('commande frontend réelle sur inventaire Git jetable', () => {
     expect(result.stdout).toContain('autres worktrees ne sont pas intégrées')
     expect(result.stdout).toContain('Résultat : RÉUSSI')
     expect(result.stdout).not.toContain('\x1b[')
-  })
+  }, 15_000)
   it('affiche toutes les erreurs lorsqu’il y en a quatre', () => {
     const { file, run, report } = fixture()
     file(

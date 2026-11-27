@@ -223,7 +223,7 @@ def check(root, paths, *, legacy_structure=True):
         path = root / relative
         if not path.exists():
             continue  # Suppression locale non encore indexée.
-        if relative.parts[0] == 'worktree' and relative != Path('worktree/README.md'):
+        if relative.parts[0] == 'worktree':
             continue
         if any(part.startswith('.env') and part != '.env.example' for part in relative.parts):
             continue
@@ -324,7 +324,7 @@ def main():
         # Les liens hors README et hors guides conservent leur adoption bornée.
         paths = [p for p in paths if p.parts[:2] == ('dev-book', 'templates') or p.as_posix() in (
             'README.md', 'AGENTS.md', 'codebase-integrity/README.md',
-            'worktree/README.md', 'dev-book/README.md', *ROOT_GUIDES) or
+            'dev-book/README.md', *ROOT_GUIDES) or
             (p.parent.as_posix() in ('dev-book/demand', 'dev-book/tasks') and
              re.match(r'(DEM|OPS|WEB|BFF|DOM|DASH)-[0-9]+-', p.name))]
         errors, notices = check(root, paths)

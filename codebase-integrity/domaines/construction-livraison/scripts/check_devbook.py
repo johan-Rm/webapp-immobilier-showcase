@@ -22,6 +22,17 @@ def plain(text):
     return re.sub(r'^ {0,3}(`{3,}|~{3,})[^\n]*\n.*?^ {0,3}\1\s*$', '', text, flags=re.M | re.S)
 
 
+def request_worktree_path(value, leaf):
+    """Valider la forme seulement ; Git vérifie l'identité effective ailleurs."""
+    path = Path(value)
+    if '..' in path.parts or path.name != leaf:
+        return False
+    if not path.is_absolute():
+        return path.parent == Path('worktree')
+    parent = path.parent.name
+    return parent == 'worktree' or (parent.endswith('.worktrees') and parent != '.worktrees')
+
+
 def card_errors(text, root, new=False):
     errors = []
     visible = plain(text)
@@ -48,7 +59,7 @@ def card_errors(text, root, new=False):
                 or len(demand) != 1 or branch[0][1] != demand[0]):
             errors.append('branche descriptive de la demande requise')
         if (len(worktree) != 1 or len(re.findall(r'^-\s*Worktree\s*:', header, re.M)) != 1
-                or len(branch) != 1 or Path(worktree[0]).name != branch[0][0].split('/')[-1]):
+                or len(branch) != 1 or not request_worktree_path(worktree[0], branch[0][0].split('/')[-1])):
             errors.append('worktree de demande cohérent requis')
     if not re.search(r'(?:Chemins autorisés|Périmètre(?: autorisé)?)\s*(?:\([^\n]*\))?\s*:\s*\S', visible, re.I):
         errors.append('périmètre autorisé explicite absent')
@@ -135,7 +146,7 @@ def main(argv=None):
         print(f'Contrôle des traces impossible : {exc}', file=sys.stderr)
         return 1
     print(f'{count} cartes nouvelles ou modifiées vérifiées ; {len(errors)} écart(s).')
-    print('Portée : métadonnées, références des verdicts et suppressions ; adéquation des preuves et décision humaine non évaluées.')
+    print('Portée : métadonnées, forme des chemins, références des verdicts et suppressions ; identité Git, adéquation des preuves et décision humaine non évaluées.')
     for error in errors:
         print(error, file=sys.stderr)
     return int(bool(errors))

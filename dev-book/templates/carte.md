@@ -4,7 +4,7 @@
 - Session de création : <session réelle vérifiée>
 - Couche : <couche configurée>
 - Branche : demands/DEM-NNN-<sujet>
-- Worktree : worktree/DEM-NNN-<sujet>
+- Worktree : <chemin absolu du worktree de demande>
 - État : prête
 - Chemins autorisés : <chemins exacts>
 - Dépendances : <SHA vérifiés ou aucune>
