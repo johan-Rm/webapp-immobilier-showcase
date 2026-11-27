@@ -30,7 +30,7 @@ avec `Ctrl+C` dans le premier terminal.
 ```bash
 # 1. Cadre et traçabilité : vérificateurs, dont les métadonnées des nouvelles cartes
 make internal-tests-verifiers
-# Worktrees et correction du registre : dépôts temporaires, Docker simulé
+# Worktrees, correction du registre et clôture : dépôts temporaires, Docker simulé
 python3 -B -m unittest discover -s infra/tests -p "test_demand_worktree.py"
 python3 -B -m unittest discover -s infra/tests -p "test_demand_delivery.py"
 python3 -B -m unittest discover -s infra/tests -p "test_demand_environment.py"

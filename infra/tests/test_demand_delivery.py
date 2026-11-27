@@ -15,6 +15,9 @@ class DemandDelivery(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
+        docker_mock = patch('demand_delivery.docker', return_value='')
+        docker_mock.start()
+        self.addCleanup(docker_mock.stop)
         self.root = Path(temporary.name) / 'repo'
         self.root.mkdir()
         git(self.root, 'init', '-b', 'develop')
@@ -131,6 +134,38 @@ class DemandDelivery(unittest.TestCase):
         self.assertEqual(json.loads(registry.read_text()), {})
         self.assertFalse(self.space.exists())
 
+    def test_unregistered_resources_block_release(self):
+        head = self.save(self.space)
+        git(self.root, 'merge', '--squash', head)
+        squash = self.save(self.root)
+        def response(*args):
+            if args[:2] == ('ps', '-aq') and args[-1].endswith('-site'):
+                return 'owned'
+            if args[:2] == ('inspect', 'owned'):
+                project = args_project
+                return json.dumps([{'Id': 'owned', 'Config': {'Labels': {
+                    'com.docker.compose.project': project,
+                    'com.docker.compose.project.working_dir': str(self.space)}},
+                    'HostConfig': {}, 'State': {}}])
+            return ''
+        import hashlib
+        fingerprint = hashlib.sha256(str(self.root).encode()).hexdigest()[:8]
+        args_project = 'showcase-' + fingerprint + '-dem-101-site'
+        with patch('demand_delivery.docker', side_effect=response) as mocked:
+            with self.assertRaisesRegex(ValueError, 'sans entrée de registre'):
+                release(self.root, 'DEM-101', squash, squash)
+        self.assertTrue(self.space.exists())
+        self.assertFalse(any(call.args[0] in ('stop', 'rm') for call in mocked.call_args_list))
+
+    def test_docker_unavailable_blocks_unregistered_release(self):
+        head = self.save(self.space)
+        git(self.root, 'merge', '--squash', head)
+        squash = self.save(self.root)
+        with patch('demand_delivery.docker', side_effect=ValueError('Docker inaccessible')):
+            with self.assertRaisesRegex(ValueError, 'Docker inaccessible'):
+                release(self.root, 'DEM-101', squash, squash)
+        self.assertTrue(self.space.exists())
+
     def test_foreign_container_is_never_removed(self):
         def response(*args):
             if args[:2] == ('ps', '-aq'):
@@ -154,6 +189,22 @@ class DemandDelivery(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Volume'):
                 clean_environment(self.root, 'DEM-101', self.space)
         self.assertFalse(any(call.args[0] in ('stop', 'rm') for call in mocked.call_args_list))
+
+    def test_shared_network_blocks_cleanup(self):
+        def response(*args):
+            if args[:3] == ('network', 'ls', '-q') and args[-1].endswith('-site'):
+                return 'shared'
+            if args[:3] == ('network', 'inspect', 'shared'):
+                import hashlib
+                project = 'showcase-' + hashlib.sha256(str(self.root).encode()).hexdigest()[:8] + '-dem-101-site'
+                return json.dumps([{'Id': 'shared', 'Labels': {
+                    'com.docker.compose.project': project}, 'Containers': {'foreign': {}}}])
+            return ''
+        with patch('demand_delivery.docker', side_effect=response) as mocked:
+            with self.assertRaisesRegex(ValueError, 'partagé'):
+                clean_environment(self.root, 'DEM-101', self.space)
+        self.assertFalse(any(call.args[0] in ('stop', 'rm') or call.args[:2] == ('network', 'rm')
+                             for call in mocked.call_args_list))
 
     def test_owned_resources_are_removed_after_complete_inventory(self):
         calls = []

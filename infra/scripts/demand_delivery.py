@@ -120,7 +120,7 @@ def environment_guard(root, identifier, destination):
                     os.unlink(name)
 
 
-def clean_environment(root, identifier, destination):
+def clean_environment(root, identifier, destination, allow_cleanup=True):
     """Nettoyer uniquement des objets Compose identifiés, après contrôle complet."""
     fingerprint = hashlib.sha256(str(root).encode()).hexdigest()[:8]
     prefix = 'showcase-' + fingerprint + '-' + identifier.lower() + '-'
@@ -149,6 +149,8 @@ def clean_environment(root, identifier, destination):
     owned = {item[0] for item in containers}
     if any(attached - owned for _, attached in networks):
         raise ValueError('Réseau partagé avec un conteneur étranger ; aucun nettoyage')
+    if not allow_cleanup and (containers or networks):
+        raise ValueError('Ressources sans entrée de registre ; aucun nettoyage')
     for identifier, auto_remove, running in containers:
         if running:
             docker('stop', '--time', '15', identifier)
@@ -210,8 +212,7 @@ def release(cwd, identifier, target, squash):
     if current and current != head:
         raise ValueError('Archive existante pour une autre révision')
     with environment_guard(root, identifier, destination) as environment:
-        if environment is not None:
-            clean_environment(root, identifier, destination)
+        clean_environment(root, identifier, destination, allow_cleanup=environment is not None)
         if not current:
             git(root, 'update-ref', archive, head, '0' * len(head))
         check_local_files(destination)
