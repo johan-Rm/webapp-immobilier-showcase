@@ -3,7 +3,7 @@
 - Type : consolidation
 - Session de création : 01a212d6-83eb-70a1-9a72-8dc9160ffae5
 - Session intervenante : 01a21d01-fa3f-7e51-8fca-8a4c2d4e0307
-- État : découpée, implémentation et vérification humaines en attente
+- État : implémentée, vérification globale en attente
 - Branche : `demands/DEM-025-lisibilite-tests-verificateurs`
 - Worktree : `worktree/DEM-025-lisibilite-tests-verificateurs`
 - Base locale d’analyse : `53ef9d662fa0bce1a9b7a604721b3956036678a0`
@@ -28,7 +28,7 @@ Les tests ciblés couvrent les deux présentations, le passage des paramètres e
 
 ## Vérification et livraison
 
-Aucun test, verdict d’implémentation, commit ou livraison n’est établi. Les résultats seront liés au SHA exact examiné dans la carte. Les tests complets et ceux nécessitant des services restent manuels. Toute modification des tests CI/CD actualise `TEST.md` dans le même changement.
+La carte porte le verdict humain sur le changement et référence le commit de tâche. La vérification globale et la livraison restent en attente. Les tests complets et ceux nécessitant des services restent manuels ; leurs résultats sont associés au SHA testé. Toute modification des tests CI/CD actualise `TEST.md` dans le même changement.
 
 ## Déclaration de contribution
 

@@ -39,6 +39,17 @@ make internal-tests-verifiers VERBOSE=1
 
 Le 28 novembre 2026, l’humain répond « c’est validé » au changement présenté pour OPS-110, avec les limites de vérification indiquées ci-dessus. Le diff des fichiers suivis présenté a pour empreinte SHA-256 `19fb528f4ac59f67f7d5b3bf6c250f702ad81211301804538ed156871543cda8` ; les versions présentées de la demande et de cette carte ont respectivement pour empreintes `e3c63685a90d825193e3b1a7ab614fead97d259a0f98d385a07ad3b3f4b770ce` et `c0edf95b1ece412088b1b89595ccc123471bcbd2d49626e5857c0c70dcef443f`. La vérification globale de la demande et les exécutions manuelles restent distinctes.
 
+```verdict-json
+{
+  "decision": "validé",
+  "portee": "DEM-025, changement OPS-110 présenté avant commit ; la vérification globale et les tests manuels restent distincts.",
+  "contenu": {
+    "type": "git",
+    "valeur": "025a2698de632f9af99fc5223034cafc3a9f9791"
+  }
+}
+```
+
 ## Commits
 
 Le SHA du commit de tâche est établi par l’historique Git de la branche.
