@@ -3,6 +3,7 @@ from contextlib import redirect_stdout
 import io
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import tempfile
@@ -93,6 +94,29 @@ class PresentationTest(unittest.TestCase):
                 self.assertEqual('OUTIL — detail-unique' in output.getvalue(), flag == '1')
                 self.assertIn('detail-unique', Path(result['log']).read_text())
                 self.assertIn('erreur-unique', Path(result['log']).read_text())
+
+    def test_verifier_modes_propagate_environment_and_preserve_results(self):
+        for verbose in ('0', '1'):
+            for status in (0, 7):
+                with self.subTest(verbose=verbose, status=status), tempfile.TemporaryDirectory() as directory:
+                    command = [sys.executable, '-c',
+                               'import os,sys; print("mode=" + os.environ.get("VERBOSE", "")); '
+                               'print("parent=" + os.environ.get("CHECK_PRESENTATION_ACTIVE", "")); '
+                               f'sys.exit({status})']
+                    with redirect_stdout(io.StringIO()):
+                        result = presentation.run('internal-tests-verifiers', command, {'VERBOSE': verbose}, directory)
+                    self.assertEqual(result['exit_code'], status)
+                    log = Path(result['log']).read_text()
+                    self.assertIn('mode=' + verbose, log)
+                    self.assertIn('parent=1', log)
+
+    def test_verifier_container_receives_presentation_flags(self):
+        result = subprocess.run(['make', '-n', '_output-internal-tests-verifiers', 'VERBOSE=1'],
+                                cwd=presentation.ROOT, env={**os.environ, 'GITHUB_ACTIONS': 'false'},
+                                capture_output=True, text=True, check=True)
+        command = next(line for line in result.stdout.splitlines() if ' --entrypoint bun verify ' in line)
+        self.assertIn(' -e VERBOSE ', command)
+        self.assertIn(' -e CHECK_PRESENTATION_ACTIVE ', command)
 
     def test_nested_output_is_not_abbreviated_in_verbose_mode(self):
         import run_check_output

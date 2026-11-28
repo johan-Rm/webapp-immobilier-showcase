@@ -210,7 +210,7 @@ define run-control
 endef
 
 define run-integrity-control
-	$(if $(filter true,$(GITHUB_ACTIONS)),@bun $(1),$(call run-integrity-control-container,$(1)))
+	$(if $(filter true,$(GITHUB_ACTIONS)),@bun $(1),$(call run-integrity-control-container,$(1),$(2)))
 endef
 
 define run-integrity-control-container
@@ -218,7 +218,7 @@ define run-integrity-control-container
 	@mkdir -p webapp/.tmp/quality/console-tmp
 	@image=$$($(CHECKS_COMPOSE) config --format json | python3 -c 'import sys,json; c=json.load(sys.stdin); print(c["services"]["verify"].get("image") or c["name"]+"-verify")') || exit 2; \
 	  $(CHECKS_DOCKER) image inspect "$$image" >/dev/null 2>&1 || { echo "Image des contrôles absente ou Docker indisponible : lancer make checks-prepare."; exit 2; }
-	@$(CHECKS_COMPOSE) run --pull never --no-deps --rm --workdir /workspace --entrypoint bun verify $(1)
+	@$(CHECKS_COMPOSE) run --pull never --no-deps --rm $(2) --workdir /workspace --entrypoint bun verify $(1)
 endef
 
 .PHONY: internal-tests-unit
@@ -297,7 +297,7 @@ _output-conventions-tests-services:
 .PHONY: internal-tests-verifiers conventions-tests-guards conventions-tests-services
 _output-internal-tests-verifiers:
 	@$(CHECKS_INFO) "INFO — Teste les vérificateurs avec Python, Vitest et Bun ; aucun test applicatif ni serveur web lancé."
-	$(call run-integrity-control,--no-env-file run --cwd codebase-integrity test)
+	$(call run-integrity-control,--no-env-file run --cwd codebase-integrity test,-e VERBOSE -e CHECK_PRESENTATION_ACTIVE)
 
 
 

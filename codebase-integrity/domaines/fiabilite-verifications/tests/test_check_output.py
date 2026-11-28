@@ -1,6 +1,7 @@
 """La présentation commune conserve le résultat du contrôle et tous ses diagnostics."""
 import importlib.util
 import io
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -16,6 +17,28 @@ spec.loader.exec_module(runner)
 
 
 class CheckOutputTest(unittest.TestCase):
+    def setUp(self):
+        # Ces scénarios vérifient explicitement la présentation synthétique.
+        environment = patch.dict(os.environ, {'VERBOSE': '0', 'CHECK_PRESENTATION_ACTIVE': '0'})
+        environment.start()
+        self.addCleanup(environment.stop)
+
+    def test_verbose_vitest_reporter_preserves_command_and_status(self):
+        command = ['node', 'vitest', 'run', '--testNamePattern=example']
+        with patch.dict(os.environ, {'VERBOSE': '1', 'CHECK_PRESENTATION_ACTIVE': '1'}), \
+             patch.object(runner.subprocess, 'run') as launch:
+            launch.return_value.returncode = 7
+            self.assertEqual(runner.run('tests-typescript', command), 7)
+            self.assertEqual(launch.call_args.args[0], command + ['--reporter=verbose'])
+            self.assertEqual(command, ['node', 'vitest', 'run', '--testNamePattern=example'])
+
+    def test_signal_status_is_normalized_in_both_modes(self):
+        for verbose in ('0', '1'):
+            with self.subTest(verbose=verbose), patch.dict(os.environ, {'VERBOSE': verbose, 'CHECK_PRESENTATION_ACTIVE': '1'}), \
+                 patch.object(runner.subprocess, 'run') as launch, redirect_stdout(io.StringIO()):
+                launch.return_value.returncode = -15
+                self.assertEqual(runner.run('devbook', ['fake']), 143)
+
     def test_success_failure_and_full_plain_log(self):
         for status in (0, 1, 7):
             with self.subTest(status=status), tempfile.TemporaryDirectory() as directory:

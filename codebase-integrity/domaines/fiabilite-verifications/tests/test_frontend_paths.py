@@ -15,18 +15,21 @@ import check_registry as registry
 
 class FrontendPaths(unittest.TestCase):
     def test_registry_moves_the_source_without_dropping_conventions(self):
+        """Le registre pointe vers les conventions déplacées sans en perdre."""
         data = json.loads((REPO_ROOT / 'codebase-integrity/conventions.json').read_text())
         app = [item for item in data['conventions'] if item['source'].startswith('webapp/base/')]
         self.assertGreater(len(app), 5)
         self.assertFalse(any(item['source'].startswith('webapp/app/') for item in data['conventions']))
 
     def test_renamed_source_is_required_even_when_the_old_source_exists(self):
+        """La source déclarée reste obligatoire même si l'ancienne existe."""
         data = json.loads((REPO_ROOT / 'codebase-integrity/conventions.json').read_text())
         item = copy.deepcopy(next(item for item in data['conventions'] if item['id'] == 'app-no-redundant-guards'))
         data['conventions'] = [item]
         with tempfile.TemporaryDirectory(prefix='frontend-reference-') as directory:
             root = Path(directory)
             content = '# Application\n\n## Conventions techniques\n\n### Vérifications des valeurs\n\nRègle témoin.\n'
+            # Les copies identiques prouvent que seul le chemin déclaré fait foi.
             for name in ['webapp/sites/showcase-immobilier/app/README.md', item['source'].split('#')[0]]:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -37,6 +40,7 @@ class FrontendPaths(unittest.TestCase):
                     path.parent.mkdir(parents=True, exist_ok=True)
                     path.write_text('# témoin\n')
             registry.validate(root, data)
+            # Retirer la source déclarée en conservant l'ancienne copie.
             (root / item['source'].split('#')[0]).unlink()
             with self.assertRaises(ValueError):
                 registry.validate(root, data)

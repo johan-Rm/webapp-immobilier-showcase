@@ -10,6 +10,10 @@ l’API distante.
 Le catalogue et les rapports sont décrits dans le
 [guide des contrôles](docs/controles/executer-controles.md).
 
+Pour examiner les scénarios des vérificateurs en direct, utiliser aussi
+`make internal-tests-verifiers VERBOSE=1` sur le même SHA et avec la même
+image ; comparer le verdict, le code de sortie et les rapports des deux modes.
+
 ## Terminal 1 — Démarrer l’environnement de test
 
 Prérequis sur l’hôte : Git, Make, Python 3 et Docker avec le plugin Compose.
