@@ -3,7 +3,7 @@
 - Type : consolidation
 - Session de création : 01a212d6-83eb-70a1-9a72-8dc9160ffae5
 - Session intervenante : 01a21d01-fa3f-7e51-8fca-8a4c2d4e0307
-- État : implémentée, vérification globale en attente
+- État : vérifiée et validée humainement, livraison en attente
 - Branche : `demands/DEM-025-lisibilite-tests-verificateurs`
 - Worktree : `worktree/DEM-025-lisibilite-tests-verificateurs`
 - Base locale d’analyse : `53ef9d662fa0bce1a9b7a604721b3956036678a0`
@@ -28,7 +28,7 @@ Les tests ciblés couvrent les deux présentations, le passage des paramètres e
 
 ## Vérification et livraison
 
-La carte porte le verdict humain sur le changement et référence le commit de tâche. La vérification globale et la livraison restent en attente. Les tests complets et ceux nécessitant des services restent manuels ; leurs résultats sont associés au SHA testé. Toute modification des tests CI/CD actualise `TEST.md` dans le même changement.
+Le 28 novembre 2026, l’humain valide explicitement DEM-025 complète et sa carte OPS-110, sur le contenu des commits `025a2698de632f9af99fc5223034cafc3a9f9791` et `58c821e6bcbcdb54838bb51de1a2c988dd66005b`. Le journal transmis sur ce dernier SHA rapporte 30 bilans réussis, code 0 ; les modes normal et détaillé comptent chacun 207 tests Python, 102 Vitest et 44 Bun. Ces totaux identiques ne démontrent pas à eux seuls l’identité de chaque scénario. Les simulations ciblées couvrent un échec maîtrisé ; aucune comparaison d’échec de la suite complète n’est établie. La livraison reste distincte.
 
 ## Déclaration de contribution
 

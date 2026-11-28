@@ -6,7 +6,7 @@
 - Couche : devops
 - Branche : `demands/DEM-025-lisibilite-tests-verificateurs`
 - Worktree : `worktree/DEM-025-lisibilite-tests-verificateurs`
-- État : validée humainement avant commit ; suite complète à vérifier
+- État : validée humainement, vérification globale effectuée
 - Chemins autorisés : `codebase-integrity/commun/check_presentation.py`, `codebase-integrity/commun/run_check_output.py`, `codebase-integrity/commun/test_domains.py`, `codebase-integrity/package.json`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_check_output.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_check_presentation.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_aide_runner.py`, `codebase-integrity/domaines/fiabilite-verifications/tests/test_frontend_paths.py`, `infra/make/Makefile.dev`, `infra/docker/docker-compose.test.yml`, `docs/controles/executer-controles.md`, `TEST.md`, la demande et cette carte.
 - Dépendances : aucune dépendance de réalisation ; base d’analyse `53ef9d662fa0bce1a9b7a604721b3956036678a0`.
 
@@ -39,13 +39,15 @@ make internal-tests-verifiers VERBOSE=1
 
 Le 28 novembre 2026, l’humain répond « c’est validé » au changement présenté pour OPS-110, avec les limites de vérification indiquées ci-dessus. Le diff des fichiers suivis présenté a pour empreinte SHA-256 `19fb528f4ac59f67f7d5b3bf6c250f702ad81211301804538ed156871543cda8` ; les versions présentées de la demande et de cette carte ont respectivement pour empreintes `e3c63685a90d825193e3b1a7ab614fead97d259a0f98d385a07ad3b3f4b770ce` et `c0edf95b1ece412088b1b89595ccc123471bcbd2d49626e5857c0c70dcef443f`. La vérification globale de la demande et les exécutions manuelles restent distinctes.
 
+Le 28 novembre 2026, l’humain valide explicitement la demande complète et OPS-110 après les résultats transmis sur `58c821e6bcbcdb54838bb51de1a2c988dd66005b`. Les limites des preuves figurent dans la demande.
+
 ```verdict-json
 {
   "decision": "validé",
-  "portee": "DEM-025, changement OPS-110 présenté avant commit ; la vérification globale et les tests manuels restent distincts.",
+  "portee": "DEM-025, carte OPS-110 et demande complète, verdict humain après examen des résultats sur le SHA indiqué ; le verdict antérieur est conservé ci-dessus.",
   "contenu": {
     "type": "git",
-    "valeur": "025a2698de632f9af99fc5223034cafc3a9f9791"
+    "valeur": "58c821e6bcbcdb54838bb51de1a2c988dd66005b"
   }
 }
 ```
