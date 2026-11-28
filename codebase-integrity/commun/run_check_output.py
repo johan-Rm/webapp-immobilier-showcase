@@ -29,6 +29,8 @@ PROFILES = {
 
 
 def run(profile, command):
+    if profile == 'tests-typescript' and os.environ.get('VERBOSE') == '1':
+        command = [*command, '--reporter=verbose']
     # Le présentateur parent capture déjà le journal complet et gère le contexte.
     if os.environ.get('VERBOSE') == '1' and os.environ.get('CHECK_PRESENTATION_ACTIVE') == '1':
         try:
@@ -36,7 +38,8 @@ def run(profile, command):
                 index = command.index('--env-file') + 1
                 if index >= len(command) or not Path(command[index]).is_file():
                     raise FileNotFoundError('Fichier d’environnement absent ; aucun vérificateur lancé.')
-            return subprocess.run(command, env={**os.environ, 'NO_COLOR': '1', 'TERM': 'dumb'}).returncode
+            code = subprocess.run(command, env={**os.environ, 'NO_COLOR': '1', 'TERM': 'dumb'}).returncode
+            return code if code >= 0 else 128 - code
         except OSError as exc:
             print(str(exc), flush=True)
             return 2

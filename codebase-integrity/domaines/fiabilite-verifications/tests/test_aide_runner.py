@@ -16,6 +16,7 @@ spec.loader.exec_module(runner)
 
 class AideRunnerTest(unittest.TestCase):
     def execute(self, codes, colored=False):
+        # Simuler les codes des quatre contrôles et vérifier leur ordre d'appel.
         with tempfile.TemporaryDirectory() as directory:
             output = io.StringIO()
             def run(*args, **kwargs):
@@ -33,6 +34,7 @@ class AideRunnerTest(unittest.TestCase):
             return code, output.getvalue()
 
     def test_color_requires_compatible_terminal_and_respects_no_color(self):
+        """La couleur exige un terminal compatible et respecte NO_COLOR."""
         terminal = SimpleNamespace(isatty=lambda: True)
         pipe = SimpleNamespace(isatty=lambda: False)
         self.assertTrue(runner.supports_color(terminal, {'TERM': 'xterm-256color'}))
@@ -41,10 +43,12 @@ class AideRunnerTest(unittest.TestCase):
                 self.assertFalse(runner.supports_color(stream, env))
 
     def test_color_keeps_labels_and_resets_each_span(self):
+        """La coloration conserve le libellé et réinitialise chaque séquence."""
         self.assertEqual(runner.paint('ÉCHEC', 'red', True), '\033[31mÉCHEC\033[0m')
         self.assertEqual(runner.paint('ÉCHEC', 'red', False), 'ÉCHEC')
 
     def test_colored_run_keeps_diagnostics_and_reports_plain(self):
+        """Les diagnostics colorés restent lisibles et les rapports sans couleur."""
         code, output = self.execute(iter([0, 0, 1, 0]), colored=True)
         self.assertEqual(code, 1)
         self.assertIn('\033[34m[1/4] EN COURS', output)
@@ -56,6 +60,7 @@ class AideRunnerTest(unittest.TestCase):
                 self.assertNotIn('\033[', line)
 
     def test_success_is_explained(self):
+        """Le bilan explique la réussite des quatre contrôles."""
         code, output = self.execute(iter([0, 0, 0, 0]))
         self.assertEqual(code, 0)
         self.assertIn('4/4 étapes réussies', output)
@@ -63,6 +68,7 @@ class AideRunnerTest(unittest.TestCase):
         self.assertNotIn('tests réussis', output)
 
     def test_failure_is_not_hidden_and_all_steps_run(self):
+        """Les échecs restent visibles et tous les contrôles sont exécutés."""
         code, output = self.execute(iter([1, 0, 1, 0]))
         self.assertEqual(code, 1)
         self.assertIn('2/4 étapes réussies', output)
